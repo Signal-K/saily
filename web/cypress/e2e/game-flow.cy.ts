@@ -1,12 +1,15 @@
 describe("Daily puzzle flow", () => {
   it("submits minigame 1 evidence, runs demo minigames 2/3, then returns home", () => {
+    const today = new Date().toISOString().slice(0, 10);
+    const anomalyId = 238004786;
+
     cy.intercept("GET", "/api/game/today*", {
       statusCode: 200,
       body: {
-        date: "2026-02-11",
+        date: today,
         puzzle: null,
         anomaly: {
-          id: 238004786,
+          id: anomalyId,
           ticId: "238004786",
           label: "TIC 238004786",
           anomalyType: "planet",
@@ -27,6 +30,17 @@ describe("Daily puzzle flow", () => {
         rewardMultiplier: 0.8,
       },
     }).as("submitEvidence");
+    cy.intercept("GET", "/api/anomaly/submit*", {
+      statusCode: 200,
+      body: {
+        submission: {
+          annotations: [{ xStart: 0.22, xEnd: 0.3, confidence: 70, tag: "Transit dip" }],
+          note: "",
+          hint_flags: { phaseFold: false, bin: false },
+          period_days: 2,
+        },
+      },
+    }).as("loadSavedSubmission");
 
     cy.intercept("POST", "/api/game/complete", {
       statusCode: 200,
@@ -39,22 +53,10 @@ describe("Daily puzzle flow", () => {
 
     cy.visit("/games/today");
     cy.wait("@todayGame");
+    cy.wait("@loadSavedSubmission");
 
     cy.contains("h1", "Find the Transit Signal").should("be.visible");
-
-    cy.get("svg.puzzle-lightcurve").then(($svg) => {
-      const rect = $svg[0].getBoundingClientRect();
-      const startX = rect.left + rect.width * 0.22;
-      const endX = rect.left + rect.width * 0.3;
-      const y = rect.top + rect.height * 0.35;
-
-      cy.wrap($svg)
-        .trigger("pointerdown", { clientX: startX, clientY: y, pointerId: 1, pointerType: "mouse", force: true })
-        .trigger("pointermove", { clientX: endX, clientY: y, pointerId: 1, pointerType: "mouse", force: true })
-        .trigger("pointerup", { clientX: endX, clientY: y, pointerId: 1, pointerType: "mouse", force: true });
-    });
-
-    cy.contains("#1").should("be.visible");
+    cy.contains(".puzzle-annotation-item", "#1", { timeout: 10000 }).should("be.visible");
     cy.getBySel("puzzle-note").type("Likely repeatable dip profile.");
     cy.contains("button", "Use Phase Fold Hint").click();
 
@@ -68,6 +70,10 @@ describe("Daily puzzle flow", () => {
     cy.getBySel("puzzle-demo-next-button").click();
     cy.wait("@completeDailySet");
     cy.location("pathname").should("eq", "/");
-    cy.contains("h1", "One game a day. Keep your streak alive.").should("be.visible");
+    cy.get("h1")
+      .invoke("text")
+      .should((text) => {
+        expect(text).to.match(/One game a day\. Keep your streak alive\.|Your command center/);
+      });
   });
 });

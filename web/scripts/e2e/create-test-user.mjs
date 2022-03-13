@@ -40,6 +40,9 @@ const outputLines = [
   `TEST_USER_EMAIL=${email}`,
   `TEST_USER_PASSWORD=${password}`,
   `TEST_RUN_TAG=e2e-${runId}-${runAttempt}-${nonce}`,
+  `CYPRESS_E2E_TEST_EMAIL=${email}`,
+  `CYPRESS_E2E_TEST_PASSWORD=${password}`,
+  `CYPRESS_E2E_TEST_RUN_TAG=e2e-${runId}-${runAttempt}-${nonce}`,
 ];
 
 if (process.env.GITHUB_ENV) {

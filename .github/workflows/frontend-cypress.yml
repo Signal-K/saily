@@ -52,10 +52,6 @@ jobs:
 
       - name: Run Cypress E2E
         uses: cypress-io/github-action@v6
-        env:
-          CYPRESS_E2E_TEST_EMAIL: ${{ env.TEST_USER_EMAIL }}
-          CYPRESS_E2E_TEST_PASSWORD: ${{ env.TEST_USER_PASSWORD }}
-          CYPRESS_E2E_TEST_RUN_TAG: ${{ env.TEST_RUN_TAG }}
         with:
           working-directory: web
           install: false
