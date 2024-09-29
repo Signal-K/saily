@@ -50,21 +50,7 @@ jobs:
         working-directory: web
         run: npm run e2e:user:create
 
-      - name: Run Cypress Smoke
-        uses: cypress-io/github-action@v6
-        env:
-          CYPRESS_E2E_TEST_EMAIL: ${{ env.TEST_USER_EMAIL }}
-          CYPRESS_E2E_TEST_PASSWORD: ${{ env.TEST_USER_PASSWORD }}
-          CYPRESS_E2E_TEST_RUN_TAG: ${{ env.TEST_RUN_TAG }}
-        with:
-          working-directory: web
-          install: false
-          start: npm run dev
-          wait-on: "http://localhost:3000"
-          wait-on-timeout: 120
-          command: npm run cypress:run:smoke
-
-      - name: Run Cypress E2E (Full)
+      - name: Run Cypress E2E
         uses: cypress-io/github-action@v6
         env:
           CYPRESS_E2E_TEST_EMAIL: ${{ env.TEST_USER_EMAIL }}
