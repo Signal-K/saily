@@ -11,7 +11,9 @@
     "cypress:run": "cypress run",
     "test:e2e": "start-server-and-test dev http://localhost:3000 cypress:run",
     "cypress:run:smoke": "cypress run --spec cypress/e2e/smoke.cy.ts",
-    "cypress:run:all": "cypress run"
+    "cypress:run:all": "cypress run",
+    "e2e:user:create": "node scripts/e2e/create-test-user.mjs",
+    "e2e:user:cleanup": "node scripts/e2e/cleanup-test-user.mjs"
   },
   "dependencies": {
     "@dicebear/bottts-neutral": "^9.3.1",

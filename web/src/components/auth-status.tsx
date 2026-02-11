@@ -75,7 +75,7 @@ export function AuthStatus() {
 
   if (!auth) {
     return (
-      <Link href="/auth/sign-in" className="sign-in-pill">
+      <Link href="/auth/sign-in" className="sign-in-pill" data-cy="header-signin-link">
         Sign in
       </Link>
     );
@@ -86,6 +86,7 @@ export function AuthStatus() {
       <button
         type="button"
         className="profile-trigger"
+        data-cy="profile-trigger"
         onClick={() => setMenuOpen((open) => !open)}
         aria-expanded={menuOpen}
         aria-haspopup="menu"
@@ -95,15 +96,15 @@ export function AuthStatus() {
       </button>
 
       {menuOpen ? (
-        <div className="profile-dropdown" role="menu">
-          <Link href="/profile" role="menuitem" onClick={() => setMenuOpen(false)}>
+        <div className="profile-dropdown" role="menu" data-cy="profile-dropdown">
+          <Link href="/profile" role="menuitem" data-cy="profile-menu-profile" onClick={() => setMenuOpen(false)}>
             Profile
           </Link>
-          <Link href="/games/today" role="menuitem" onClick={() => setMenuOpen(false)}>
+          <Link href="/games/today" role="menuitem" data-cy="profile-menu-today" onClick={() => setMenuOpen(false)}>
             Today&apos;s game
           </Link>
           <form action="/auth/sign-out" method="post">
-            <button type="submit" role="menuitem">
+            <button type="submit" role="menuitem" data-cy="profile-menu-signout">
               Sign out
             </button>
           </form>

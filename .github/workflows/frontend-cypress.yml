@@ -15,10 +15,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:
-      NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_URL_INTERNAL: ${{ secrets.SUPABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_PUBLISHABLE || secrets.SUPABASE_ANON }}
       NEXT_PUBLIC_AUTH_GOOGLE_ENABLED: false
       NEXT_PUBLIC_E2E_AUTH_BYPASS: true
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE: ${{ secrets.SUPABASE_SERVICE_ROLE }}
 
     steps:
       - name: Checkout
@@ -43,8 +46,16 @@ jobs:
         working-directory: web
         run: npm run build
 
+      - name: Create E2E user
+        working-directory: web
+        run: npm run e2e:user:create
+
       - name: Run Cypress Smoke
         uses: cypress-io/github-action@v6
+        env:
+          CYPRESS_E2E_TEST_EMAIL: ${{ env.TEST_USER_EMAIL }}
+          CYPRESS_E2E_TEST_PASSWORD: ${{ env.TEST_USER_PASSWORD }}
+          CYPRESS_E2E_TEST_RUN_TAG: ${{ env.TEST_RUN_TAG }}
         with:
           working-directory: web
           install: false
@@ -55,6 +66,10 @@ jobs:
 
       - name: Run Cypress E2E (Full)
         uses: cypress-io/github-action@v6
+        env:
+          CYPRESS_E2E_TEST_EMAIL: ${{ env.TEST_USER_EMAIL }}
+          CYPRESS_E2E_TEST_PASSWORD: ${{ env.TEST_USER_PASSWORD }}
+          CYPRESS_E2E_TEST_RUN_TAG: ${{ env.TEST_RUN_TAG }}
         with:
           working-directory: web
           install: false
@@ -62,3 +77,8 @@ jobs:
           wait-on: "http://localhost:3000"
           wait-on-timeout: 120
           command: npm run cypress:run:all
+
+      - name: Cleanup E2E user + data
+        if: always()
+        working-directory: web
+        run: npm run e2e:user:cleanup
