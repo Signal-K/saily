@@ -43,7 +43,7 @@ jobs:
         working-directory: web
         run: npm run build
 
-      - name: Run Cypress E2E
+      - name: Run Cypress Smoke
         uses: cypress-io/github-action@v6
         with:
           working-directory: web
@@ -51,3 +51,14 @@ jobs:
           start: npm run dev
           wait-on: "http://localhost:3000"
           wait-on-timeout: 120
+          command: npm run cypress:run:smoke
+
+      - name: Run Cypress E2E (Full)
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: web
+          install: false
+          start: npm run dev
+          wait-on: "http://localhost:3000"
+          wait-on-timeout: 120
+          command: npm run cypress:run:all

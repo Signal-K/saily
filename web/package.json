@@ -9,7 +9,9 @@
     "lint": "eslint",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
-    "test:e2e": "start-server-and-test dev http://localhost:3000 cypress:run"
+    "test:e2e": "start-server-and-test dev http://localhost:3000 cypress:run",
+    "cypress:run:smoke": "cypress run --spec cypress/e2e/smoke.cy.ts",
+    "cypress:run:all": "cypress run"
   },
   "dependencies": {
     "@dicebear/bottts-neutral": "^9.3.1",
