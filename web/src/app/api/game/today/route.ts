@@ -1,18 +1,35 @@
 import { NextResponse } from "next/server";
-import { getDateKey, getPuzzleForDate } from "@/lib/game";
+import { getPuzzleForDate, resolveGameDate } from "@/lib/game";
+import { getDateSeed, toDailyAnomaly } from "@/lib/anomaly";
 import { createClient } from "@/lib/supabase/server";
 
-export async function GET() {
-  const date = getDateKey();
+export async function GET(request: Request) {
+  const requestUrl = new URL(request.url);
+  const date = resolveGameDate(requestUrl.searchParams.get("date"));
   const puzzle = getPuzzleForDate(date);
 
   const supabase = await createClient();
+  const { count } = await supabase.from("anomalies").select("id", { count: "exact", head: true });
+  let anomaly = null;
+  if (count && count > 0) {
+    const offset = getDateSeed(date) % count;
+    const { data: rows } = await supabase
+      .from("anomalies")
+      .select('id,content,"ticId",anomalytype,"anomalySet","anomalyConfiguration"')
+      .order("id", { ascending: true })
+      .range(offset, offset);
+    const row = rows?.[0];
+    if (row) {
+      anomaly = toDailyAnomaly(row);
+    }
+  }
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return NextResponse.json({ date, puzzle, user: null, stats: null, play: null });
+    return NextResponse.json({ date, puzzle, anomaly, user: null, stats: null, play: null });
   }
 
   const [{ data: stats }, { data: play }, { data: badges }] = await Promise.all([
@@ -25,5 +42,5 @@ export async function GET() {
       .order("awarded_at", { ascending: false }),
   ]);
 
-  return NextResponse.json({ date, puzzle, user: { id: user.id, email: user.email }, stats, play, badges: badges ?? [] });
+  return NextResponse.json({ date, puzzle, anomaly, user: { id: user.id, email: user.email }, stats, play, badges: badges ?? [] });
 }

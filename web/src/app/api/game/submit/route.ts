@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
-import { getDateKey, getDailyWord, normalizeGuess, scoreGuess } from "@/lib/game";
+import { getDailyWord, normalizeGuess, resolveGameDate, scoreGuess } from "@/lib/game";
 import { createClient } from "@/lib/supabase/server";
 
 type SubmitBody = {
   guess?: string;
   attempts?: number;
+  date?: string;
 };
 
 export async function POST(request: Request) {
@@ -21,7 +22,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const date = getDateKey();
+  const date = resolveGameDate(body.date);
   const answer = getDailyWord(date);
   const won = guess === answer;
   const score = scoreGuess(attempts, won);

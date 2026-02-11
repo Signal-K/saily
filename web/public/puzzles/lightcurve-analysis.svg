@@ -1,0 +1,38 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="675" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0C1933"/>
+      <stop offset="1" stop-color="#13223F"/>
+    </linearGradient>
+    <linearGradient id="area" x1="0" y1="250" x2="0" y2="560" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#58A6FF" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#58A6FF" stop-opacity="0.02"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" rx="24" fill="url(#bg)"/>
+
+  <rect x="92" y="88" width="1016" height="500" rx="14" stroke="#2A3B5E" stroke-width="2"/>
+
+  <g opacity="0.35" stroke="#2A3B5E">
+    <line x1="92" y1="188.5" x2="1108" y2="188.5"/>
+    <line x1="92" y1="288.5" x2="1108" y2="288.5"/>
+    <line x1="92" y1="388.5" x2="1108" y2="388.5"/>
+    <line x1="92" y1="488.5" x2="1108" y2="488.5"/>
+    <line x1="266.5" y1="88" x2="266.5" y2="588"/>
+    <line x1="441.5" y1="88" x2="441.5" y2="588"/>
+    <line x1="616.5" y1="88" x2="616.5" y2="588"/>
+    <line x1="791.5" y1="88" x2="791.5" y2="588"/>
+    <line x1="966.5" y1="88" x2="966.5" y2="588"/>
+  </g>
+
+  <path d="M92 360 L160 346 L218 348 L278 332 L332 490 L388 345 L450 360 L518 352 L576 430 L642 366 L706 350 L768 306 L828 420 L892 338 L958 322 L1018 310 L1108 332 L1108 588 L92 588 Z" fill="url(#area)"/>
+  <path d="M92 360 L160 346 L218 348 L278 332 L332 490 L388 345 L450 360 L518 352 L576 430 L642 366 L706 350 L768 306 L828 420 L892 338 L958 322 L1018 310 L1108 332" stroke="#8BC7FF" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <rect x="322" y="88" width="70" height="500" fill="#14B8A6" fill-opacity="0.2" stroke="#14B8A6" stroke-width="2"/>
+  <rect x="545" y="88" width="58" height="500" fill="#0EA5E9" fill-opacity="0.2" stroke="#0EA5E9" stroke-width="2"/>
+  <rect x="806" y="88" width="66" height="500" fill="#14B8A6" fill-opacity="0.2" stroke="#14B8A6" stroke-width="2"/>
+
+  <text x="92" y="52" fill="#D7E4FF" font-size="34" font-family="IBM Plex Sans, Arial, sans-serif" font-weight="700">Lightcurve Transit Analysis</text>
+  <text x="92" y="625" fill="#9EB3D7" font-size="20" font-family="IBM Plex Sans, Arial, sans-serif">Time / Phase</text>
+  <text x="20" y="100" fill="#9EB3D7" font-size="20" font-family="IBM Plex Sans, Arial, sans-serif" transform="rotate(-90 20 100)">Flux</text>
+</svg>

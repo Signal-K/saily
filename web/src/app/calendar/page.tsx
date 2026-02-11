@@ -140,7 +140,7 @@ export default async function CalendarPage({
         <div>
           <p className="eyebrow">Activity</p>
           <h1>Puzzle Calendar</h1>
-          <p className="muted">Track real completion from Supabase and jump straight into any day&apos;s thread.</p>
+          <p className="muted">Track real completion from Supabase and open any previous day&apos;s puzzle directly.</p>
         </div>
       </header>
 
@@ -177,9 +177,9 @@ export default async function CalendarPage({
           {progress.map(({ day, state, dateKey }) => (
             <Link
               key={day}
-              href={`/discuss?date=${dateKey}`}
+              href={`/games/today?date=${dateKey}&returnTo=${encodeURIComponent(`/calendar?month=${toMonthKey(year, month)}`)}`}
               className={`calendar-page-cell is-${state}`}
-              title={`Open discuss for ${dateKey}`}
+              title={`Open puzzle for ${dateKey}`}
             >
               <span>{day}</span>
             </Link>

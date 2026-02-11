@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
-import { getDateKey } from "@/lib/game";
+import { isPastGameDate, resolveGameDate } from "@/lib/game";
 import { createClient } from "@/lib/supabase/server";
 
 type CompleteBody = {
   completedPuzzles?: number;
   confidence?: number;
   note?: string;
+  date?: string;
 };
 
 function normalizeNumber(value: unknown, fallback: number, min: number, max: number) {
@@ -27,10 +28,12 @@ export async function POST(request: Request) {
   const payload = (await request.json().catch(() => ({}))) as CompleteBody;
   const completedPuzzles = normalizeNumber(payload.completedPuzzles, 3, 1, 3);
   const confidence = normalizeNumber(payload.confidence, 70, 0, 100);
-  const date = getDateKey();
+  const date = resolveGameDate(payload.date);
+  const xpMultiplier = isPastGameDate(date) ? 0.5 : 1;
 
   const attempts = Math.max(1, 4 - completedPuzzles);
-  const score = Math.round((completedPuzzles / 3) * (60 + confidence * 0.4));
+  const baseScore = Math.round((completedPuzzles / 3) * (60 + confidence * 0.4));
+  const score = Math.max(1, Math.round(baseScore * xpMultiplier));
 
   const { data, error } = await supabase.rpc("submit_daily_result", {
     p_game_date: date,
@@ -51,5 +54,7 @@ export async function POST(request: Request) {
     stats: data?.stats ?? null,
     badgesAwarded: data?.badges_awarded ?? 0,
     score,
+    xpMultiplier,
+    gameDate: date,
   });
 }

@@ -74,7 +74,7 @@ export function HeaderSearch() {
           data-cy="header-search-input"
           id="header-search-input"
           type="search"
-          placeholder="Search players, comments, and game history"
+          placeholder="Search everything"
           value={query}
           onFocus={() => setIsOpen(true)}
           onChange={(event) => setQuery(event.target.value)}

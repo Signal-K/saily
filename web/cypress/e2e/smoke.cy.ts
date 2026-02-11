@@ -1,7 +1,8 @@
 describe("Smoke", () => {
   it("loads core pages and primary header controls", () => {
     cy.visit("/");
-    cy.contains("Daily Grid").should("be.visible");
+    cy.getBySel("nav-today").should("be.visible");
+    cy.contains("h1", "One game a day. Keep your streak alive.").should("be.visible");
     cy.getBySel("header-search-input").should("be.visible");
     cy.getBySel("theme-toggle").should("be.visible");
 

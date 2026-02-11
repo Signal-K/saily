@@ -5,6 +5,7 @@ import { SWRegister } from "@/components/sw-register";
 import { AuthStatus } from "@/components/auth-status";
 import { HeaderSearch } from "@/components/header-search";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { BreadcrumbsNav } from "@/components/breadcrumbs-nav";
 import "./globals.css";
 
 const THEME_COOKIE = "daily_grid_theme";
@@ -76,7 +77,10 @@ export default async function RootLayout({
             </div>
           </div>
         </header>
-        <main className="container page-shell">{children}</main>
+        <main className="container page-shell">
+          <BreadcrumbsNav />
+          {children}
+        </main>
       </body>
     </html>
   );
