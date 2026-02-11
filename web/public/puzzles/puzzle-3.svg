@@ -1,0 +1,22 @@
+<svg width="1300" height="760" viewBox="0 0 1300 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1300" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1B1038"/>
+      <stop offset="1" stop-color="#5B2F8A"/>
+    </linearGradient>
+  </defs>
+  <rect width="1300" height="760" rx="28" fill="url(#bg)"/>
+  <g fill="#E7DAFF" fill-opacity="0.2">
+    <circle cx="220" cy="220" r="90"/>
+    <circle cx="520" cy="220" r="90"/>
+    <circle cx="820" cy="220" r="90"/>
+    <circle cx="1120" cy="220" r="90"/>
+    <circle cx="220" cy="510" r="90"/>
+    <circle cx="520" cy="510" r="90"/>
+    <circle cx="820" cy="510" r="90"/>
+    <circle cx="1120" cy="510" r="90"/>
+  </g>
+  <path d="M220 220L520 510L820 220L1120 510" stroke="#FFE27A" stroke-width="14" stroke-linecap="round"/>
+  <path d="M220 510L520 220L820 510L1120 220" stroke="#96F3C8" stroke-width="8" stroke-linecap="round" stroke-dasharray="3 16"/>
+  <text x="80" y="706" fill="#F6EEFF" font-size="36" font-family="IBM Plex Sans, Arial, sans-serif">Final Recognition Puzzle</text>
+</svg>

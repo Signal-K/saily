@@ -1,0 +1,37 @@
+{
+  "name": "saily",
+  "id": "saily",
+  "createdAt": "2026-02-10T03:46:49.014Z",
+  "settings": {
+    "defaultPriority": "medium",
+    "statuses": [
+      "todo",
+      "in-progress",
+      "in-review",
+      "done",
+      "blocked",
+      "on-hold",
+      "urgent"
+    ],
+    "statusColors": {
+      "todo": "gray",
+      "in-progress": "blue",
+      "in-review": "purple",
+      "done": "green",
+      "blocked": "red",
+      "on-hold": "yellow",
+      "urgent": "orange"
+    },
+    "visibleColumns": [
+      "todo",
+      "in-progress",
+      "blocked",
+      "done",
+      "in-review"
+    ],
+    "defaultLabels": [],
+    "timeFormat": "24h",
+    "gitTrackingMode": "git-tracked",
+    "serverPort": 6420
+  }
+}

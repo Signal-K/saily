@@ -1,0 +1,170 @@
+{
+  "taskId": "mgz6bl",
+  "currentVersion": 3,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "mgz6bl",
+      "version": 1,
+      "timestamp": "2026-02-10T03:49:29.268Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "in-progress"
+        },
+        {
+          "field": "assignee",
+          "newValue": "@me"
+        }
+      ],
+      "snapshot": {
+        "title": "Set up local Supabase stack and DB schema",
+        "description": "Initialize local Supabase, create migrations, and define schema for users, game sessions, streaks, stats, comments, and badges.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "supabase",
+          "database",
+          "local-dev",
+          "migrations",
+          "rls"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Supabase local services start successfully"
+          },
+          {
+            "completed": false,
+            "text": "Schema/migrations are committed"
+          },
+          {
+            "completed": false,
+            "text": "RLS policies protect user data"
+          }
+        ]
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "mgz6bl",
+      "version": 2,
+      "timestamp": "2026-02-10T04:09:46.302Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "Supabase local services start successfully"
+            },
+            {
+              "completed": false,
+              "text": "Schema/migrations are committed"
+            },
+            {
+              "completed": false,
+              "text": "RLS policies protect user data"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "Supabase local services start successfully"
+            },
+            {
+              "completed": true,
+              "text": "Schema/migrations are committed"
+            },
+            {
+              "completed": true,
+              "text": "RLS policies protect user data"
+            }
+          ]
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Done: local Supabase initialized, migration+seed created, RLS and SQL functions added."
+        }
+      ],
+      "snapshot": {
+        "title": "Set up local Supabase stack and DB schema",
+        "description": "Initialize local Supabase, create migrations, and define schema for users, game sessions, streaks, stats, comments, and badges.",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "supabase",
+          "database",
+          "local-dev",
+          "migrations",
+          "rls"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Supabase local services start successfully"
+          },
+          {
+            "completed": true,
+            "text": "Schema/migrations are committed"
+          },
+          {
+            "completed": true,
+            "text": "RLS policies protect user data"
+          }
+        ],
+        "implementationNotes": "Done: local Supabase initialized, migration+seed created, RLS and SQL functions added."
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "mgz6bl",
+      "version": 3,
+      "timestamp": "2026-02-10T06:15:25.832Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "oldValue": "Done: local Supabase initialized, migration+seed created, RLS and SQL functions added.",
+          "newValue": "Done: local Supabase initialized, migration+seed created, RLS and SQL functions added.\n\nSetup synopsis: @doc/runbooks/local-docker-setup-synopsis-setup-20260210-141454"
+        }
+      ],
+      "snapshot": {
+        "title": "Set up local Supabase stack and DB schema",
+        "description": "Initialize local Supabase, create migrations, and define schema for users, game sessions, streaks, stats, comments, and badges.",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "supabase",
+          "database",
+          "local-dev",
+          "migrations",
+          "rls"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Supabase local services start successfully"
+          },
+          {
+            "completed": true,
+            "text": "Schema/migrations are committed"
+          },
+          {
+            "completed": true,
+            "text": "RLS policies protect user data"
+          }
+        ],
+        "implementationNotes": "Done: local Supabase initialized, migration+seed created, RLS and SQL functions added.\n\nSetup synopsis: @doc/runbooks/local-docker-setup-synopsis-setup-20260210-141454"
+      }
+    }
+  ]
+}

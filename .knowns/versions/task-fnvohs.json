@@ -1,0 +1,111 @@
+{
+  "taskId": "fnvohs",
+  "currentVersion": 2,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "fnvohs",
+      "version": 1,
+      "timestamp": "2026-02-10T04:09:53.077Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "assignee",
+          "newValue": "@me"
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "App meets installability checks"
+            },
+            {
+              "completed": false,
+              "text": "Core shell loads offline"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "App meets installability checks"
+            },
+            {
+              "completed": true,
+              "text": "Core shell loads offline"
+            }
+          ]
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Done: manifest, icons, service worker registration, offline fallback route."
+        }
+      ],
+      "snapshot": {
+        "title": "Enable PWA installability and offline shell",
+        "description": "Configure manifest, service worker, icons, and basic offline caching strategy for core routes/assets.",
+        "status": "done",
+        "priority": "medium",
+        "assignee": "@me",
+        "labels": [
+          "pwa",
+          "offline",
+          "manifest",
+          "service-worker"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "App meets installability checks"
+          },
+          {
+            "completed": true,
+            "text": "Core shell loads offline"
+          }
+        ],
+        "implementationNotes": "Done: manifest, icons, service worker registration, offline fallback route."
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "fnvohs",
+      "version": 2,
+      "timestamp": "2026-02-10T06:21:52.014Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "oldValue": "Done: manifest, icons, service worker registration, offline fallback route.",
+          "newValue": "Done: manifest, icons, service worker registration, offline fallback route.\n\nSetup synopsis: @doc/runbooks/local-docker-setup-synopsis-setup-20260210-141454"
+        }
+      ],
+      "snapshot": {
+        "title": "Enable PWA installability and offline shell",
+        "description": "Configure manifest, service worker, icons, and basic offline caching strategy for core routes/assets.",
+        "status": "done",
+        "priority": "medium",
+        "assignee": "@me",
+        "labels": [
+          "pwa",
+          "offline",
+          "manifest",
+          "service-worker"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "App meets installability checks"
+          },
+          {
+            "completed": true,
+            "text": "Core shell loads offline"
+          }
+        ],
+        "implementationNotes": "Done: manifest, icons, service worker registration, offline fallback route.\n\nSetup synopsis: @doc/runbooks/local-docker-setup-synopsis-setup-20260210-141454"
+      }
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "taskId": "g02dln",
+  "currentVersion": 2,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "g02dln",
+      "version": 1,
+      "timestamp": "2026-02-10T04:09:53.077Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "assignee",
+          "newValue": "@me"
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "Daily puzzle is deterministic by date"
+            },
+            {
+              "completed": false,
+              "text": "Submitting a result updates streak and aggregate stats"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "Daily puzzle is deterministic by date"
+            },
+            {
+              "completed": true,
+              "text": "Submitting a result updates streak and aggregate stats"
+            }
+          ]
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Done: deterministic daily anagram + submit API with streak/stat scoring via RPC."
+        }
+      ],
+      "snapshot": {
+        "title": "Build daily game engine + streak/stat calculation",
+        "description": "Implement at least one daily puzzle flow with deterministic daily seed and backend scoring updates for streaks/stats.",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "games",
+          "logic",
+          "streaks",
+          "stats",
+          "daily-seed"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Daily puzzle is deterministic by date"
+          },
+          {
+            "completed": true,
+            "text": "Submitting a result updates streak and aggregate stats"
+          }
+        ],
+        "implementationNotes": "Done: deterministic daily anagram + submit API with streak/stat scoring via RPC."
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "g02dln",
+      "version": 2,
+      "timestamp": "2026-02-10T06:21:52.014Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "oldValue": "Done: deterministic daily anagram + submit API with streak/stat scoring via RPC.",
+          "newValue": "Done: deterministic daily anagram + submit API with streak/stat scoring via RPC.\n\nSetup synopsis: @doc/runbooks/local-docker-setup-synopsis-setup-20260210-141454"
+        }
+      ],
+      "snapshot": {
+        "title": "Build daily game engine + streak/stat calculation",
+        "description": "Implement at least one daily puzzle flow with deterministic daily seed and backend scoring updates for streaks/stats.",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "games",
+          "logic",
+          "streaks",
+          "stats",
+          "daily-seed"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Daily puzzle is deterministic by date"
+          },
+          {
+            "completed": true,
+            "text": "Submitting a result updates streak and aggregate stats"
+          }
+        ],
+        "implementationNotes": "Done: deterministic daily anagram + submit API with streak/stat scoring via RPC.\n\nSetup synopsis: @doc/runbooks/local-docker-setup-synopsis-setup-20260210-141454"
+      }
+    }
+  ]
+}

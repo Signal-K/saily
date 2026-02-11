@@ -1,0 +1,150 @@
+{
+  "taskId": "5froqu",
+  "currentVersion": 3,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "5froqu",
+      "version": 1,
+      "timestamp": "2026-02-10T03:49:29.269Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "in-progress"
+        },
+        {
+          "field": "assignee",
+          "newValue": "@me"
+        }
+      ],
+      "snapshot": {
+        "title": "Scaffold Next.js app with TypeScript and core UI shell",
+        "description": "Initialize project with app router, base layout, game landing page, and shared component structure.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "nextjs",
+          "frontend",
+          "scaffold",
+          "ui",
+          "mvp"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Next.js app boots with lint/typecheck passing"
+          },
+          {
+            "completed": false,
+            "text": "Home page lists daily games"
+          }
+        ]
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "5froqu",
+      "version": 2,
+      "timestamp": "2026-02-10T04:09:46.302Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "Next.js app boots with lint/typecheck passing"
+            },
+            {
+              "completed": false,
+              "text": "Home page lists daily games"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "Next.js app boots with lint/typecheck passing"
+            },
+            {
+              "completed": true,
+              "text": "Home page lists daily games"
+            }
+          ]
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Done: App Router scaffold, home page game hub, lint/build pass."
+        }
+      ],
+      "snapshot": {
+        "title": "Scaffold Next.js app with TypeScript and core UI shell",
+        "description": "Initialize project with app router, base layout, game landing page, and shared component structure.",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "nextjs",
+          "frontend",
+          "scaffold",
+          "ui",
+          "mvp"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Next.js app boots with lint/typecheck passing"
+          },
+          {
+            "completed": true,
+            "text": "Home page lists daily games"
+          }
+        ],
+        "implementationNotes": "Done: App Router scaffold, home page game hub, lint/build pass."
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "5froqu",
+      "version": 3,
+      "timestamp": "2026-02-10T06:21:52.013Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "oldValue": "Done: App Router scaffold, home page game hub, lint/build pass.",
+          "newValue": "Done: App Router scaffold, home page game hub, lint/build pass.\n\nSetup synopsis: @doc/runbooks/local-docker-setup-synopsis-setup-20260210-141454"
+        }
+      ],
+      "snapshot": {
+        "title": "Scaffold Next.js app with TypeScript and core UI shell",
+        "description": "Initialize project with app router, base layout, game landing page, and shared component structure.",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "nextjs",
+          "frontend",
+          "scaffold",
+          "ui",
+          "mvp"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Next.js app boots with lint/typecheck passing"
+          },
+          {
+            "completed": true,
+            "text": "Home page lists daily games"
+          }
+        ],
+        "implementationNotes": "Done: App Router scaffold, home page game hub, lint/build pass.\n\nSetup synopsis: @doc/runbooks/local-docker-setup-synopsis-setup-20260210-141454"
+      }
+    }
+  ]
+}

@@ -1,0 +1,181 @@
+{
+  "taskId": "4kz8fq",
+  "currentVersion": 4,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "4kz8fq",
+      "version": 1,
+      "timestamp": "2026-02-10T04:12:28.091Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "in-progress"
+        },
+        {
+          "field": "assignee",
+          "newValue": "@me"
+        }
+      ],
+      "snapshot": {
+        "title": "Dockerize local stack (Next.js + Supabase)",
+        "description": "Add Dockerfile(s), compose orchestration, and scripts so app + local Supabase can be started/stopped in a containerized workflow.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "docker",
+          "compose",
+          "devx",
+          "nextjs",
+          "supabase",
+          "local-dev"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Single documented compose workflow starts web app against local Supabase"
+          },
+          {
+            "completed": false,
+            "text": "Docker config supports local development reload"
+          },
+          {
+            "completed": false,
+            "text": "Build/lint commands can run in container"
+          }
+        ]
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "4kz8fq",
+      "version": 2,
+      "timestamp": "2026-02-10T04:12:36.160Z",
+      "changes": [
+        {
+          "field": "implementationPlan",
+          "newValue": "1. Add a Dockerfile for the Next.js app with dev and production targets.\n2. Add docker-compose to orchestrate app container plus Supabase CLI container that brings up the local Supabase stack through Docker socket.\n3. Add env wiring for containerized app (`host.docker.internal` Supabase URL + publishable key), plus helper scripts/Make targets for up/down/logs.\n4. Validate by running compose config/build and containerized lint/build commands.\n5. Update Knowns setup doc with Docker workflow commands and caveats."
+        }
+      ],
+      "snapshot": {
+        "title": "Dockerize local stack (Next.js + Supabase)",
+        "description": "Add Dockerfile(s), compose orchestration, and scripts so app + local Supabase can be started/stopped in a containerized workflow.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "docker",
+          "compose",
+          "devx",
+          "nextjs",
+          "supabase",
+          "local-dev"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Single documented compose workflow starts web app against local Supabase"
+          },
+          {
+            "completed": false,
+            "text": "Docker config supports local development reload"
+          },
+          {
+            "completed": false,
+            "text": "Build/lint commands can run in container"
+          }
+        ],
+        "implementationPlan": "1. Add a Dockerfile for the Next.js app with dev and production targets.\n2. Add docker-compose to orchestrate app container plus Supabase CLI container that brings up the local Supabase stack through Docker socket.\n3. Add env wiring for containerized app (`host.docker.internal` Supabase URL + publishable key), plus helper scripts/Make targets for up/down/logs.\n4. Validate by running compose config/build and containerized lint/build commands.\n5. Update Knowns setup doc with Docker workflow commands and caveats."
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "4kz8fq",
+      "version": 3,
+      "timestamp": "2026-02-10T06:15:25.832Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "newValue": "Setup synopsis: @doc/runbooks/local-docker-setup-synopsis-setup-20260210-141454"
+        }
+      ],
+      "snapshot": {
+        "title": "Dockerize local stack (Next.js + Supabase)",
+        "description": "Add Dockerfile(s), compose orchestration, and scripts so app + local Supabase can be started/stopped in a containerized workflow.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "docker",
+          "compose",
+          "devx",
+          "nextjs",
+          "supabase",
+          "local-dev"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Single documented compose workflow starts web app against local Supabase"
+          },
+          {
+            "completed": false,
+            "text": "Docker config supports local development reload"
+          },
+          {
+            "completed": false,
+            "text": "Build/lint commands can run in container"
+          }
+        ],
+        "implementationPlan": "1. Add a Dockerfile for the Next.js app with dev and production targets.\n2. Add docker-compose to orchestrate app container plus Supabase CLI container that brings up the local Supabase stack through Docker socket.\n3. Add env wiring for containerized app (`host.docker.internal` Supabase URL + publishable key), plus helper scripts/Make targets for up/down/logs.\n4. Validate by running compose config/build and containerized lint/build commands.\n5. Update Knowns setup doc with Docker workflow commands and caveats.",
+        "implementationNotes": "Setup synopsis: @doc/runbooks/local-docker-setup-synopsis-setup-20260210-141454"
+      }
+    },
+    {
+      "id": "v4",
+      "taskId": "4kz8fq",
+      "version": 4,
+      "timestamp": "2026-02-10T06:24:46.659Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "in-review"
+        }
+      ],
+      "snapshot": {
+        "title": "Dockerize local stack (Next.js + Supabase)",
+        "description": "Add Dockerfile(s), compose orchestration, and scripts so app + local Supabase can be started/stopped in a containerized workflow.",
+        "status": "in-review",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "docker",
+          "compose",
+          "devx",
+          "nextjs",
+          "supabase",
+          "local-dev"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Single documented compose workflow starts web app against local Supabase"
+          },
+          {
+            "completed": false,
+            "text": "Docker config supports local development reload"
+          },
+          {
+            "completed": false,
+            "text": "Build/lint commands can run in container"
+          }
+        ],
+        "implementationPlan": "1. Add a Dockerfile for the Next.js app with dev and production targets.\n2. Add docker-compose to orchestrate app container plus Supabase CLI container that brings up the local Supabase stack through Docker socket.\n3. Add env wiring for containerized app (`host.docker.internal` Supabase URL + publishable key), plus helper scripts/Make targets for up/down/logs.\n4. Validate by running compose config/build and containerized lint/build commands.\n5. Update Knowns setup doc with Docker workflow commands and caveats.",
+        "implementationNotes": "Setup synopsis: @doc/runbooks/local-docker-setup-synopsis-setup-20260210-141454"
+      }
+    }
+  ]
+}

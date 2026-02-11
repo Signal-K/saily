@@ -1,0 +1,111 @@
+{
+  "taskId": "wrb0pd",
+  "currentVersion": 2,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "wrb0pd",
+      "version": 1,
+      "timestamp": "2026-02-10T04:09:46.320Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "assignee",
+          "newValue": "@me"
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "Email magic link auth works locally"
+            },
+            {
+              "completed": false,
+              "text": "Authenticated users can save and load game progress"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "Email magic link auth works locally"
+            },
+            {
+              "completed": true,
+              "text": "Authenticated users can save and load game progress"
+            }
+          ]
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Done: magic link auth, callback/signout routes, profile/progress persistence integrated."
+        }
+      ],
+      "snapshot": {
+        "title": "Implement auth + profile + persistent game progress",
+        "description": "Integrate Supabase Auth and wire profile/progress persistence from game submissions.",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "auth",
+          "supabase-auth",
+          "profile",
+          "progress"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Email magic link auth works locally"
+          },
+          {
+            "completed": true,
+            "text": "Authenticated users can save and load game progress"
+          }
+        ],
+        "implementationNotes": "Done: magic link auth, callback/signout routes, profile/progress persistence integrated."
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "wrb0pd",
+      "version": 2,
+      "timestamp": "2026-02-10T06:15:25.903Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "oldValue": "Done: magic link auth, callback/signout routes, profile/progress persistence integrated.",
+          "newValue": "Done: magic link auth, callback/signout routes, profile/progress persistence integrated.\n\nSetup synopsis: @doc/runbooks/local-docker-setup-synopsis-setup-20260210-141454"
+        }
+      ],
+      "snapshot": {
+        "title": "Implement auth + profile + persistent game progress",
+        "description": "Integrate Supabase Auth and wire profile/progress persistence from game submissions.",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "auth",
+          "supabase-auth",
+          "profile",
+          "progress"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Email magic link auth works locally"
+          },
+          {
+            "completed": true,
+            "text": "Authenticated users can save and load game progress"
+          }
+        ],
+        "implementationNotes": "Done: magic link auth, callback/signout routes, profile/progress persistence integrated.\n\nSetup synopsis: @doc/runbooks/local-docker-setup-synopsis-setup-20260210-141454"
+      }
+    }
+  ]
+}

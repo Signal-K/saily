@@ -1,0 +1,19 @@
+<svg width="1300" height="760" viewBox="0 0 1300 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="1300" y1="0" x2="0" y2="760" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#121B2F"/>
+      <stop offset="1" stop-color="#2F355E"/>
+    </linearGradient>
+  </defs>
+  <rect width="1300" height="760" rx="28" fill="url(#bg)"/>
+  <g stroke="#D8E6FF" stroke-opacity="0.75" stroke-width="3">
+    <path d="M120 130L600 130L600 610L120 610Z"/>
+    <path d="M230 210L510 210L510 530L230 530Z"/>
+    <path d="M760 130L1180 130L1180 610L760 610Z"/>
+    <path d="M840 220L1100 220L1100 520L840 520Z"/>
+  </g>
+  <path d="M140 370C260 270 430 270 550 370C670 470 840 470 960 370C1070 290 1160 300 1210 350" stroke="#67D3FF" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="550" cy="370" r="16" fill="#67D3FF"/>
+  <circle cx="960" cy="370" r="16" fill="#67D3FF"/>
+  <text x="80" y="706" fill="#EAF5FF" font-size="36" font-family="IBM Plex Sans, Arial, sans-serif">Pattern Recognition Puzzle</text>
+</svg>

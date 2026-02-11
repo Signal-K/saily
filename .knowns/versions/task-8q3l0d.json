@@ -1,0 +1,111 @@
+{
+  "taskId": "8q3l0d",
+  "currentVersion": 2,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "8q3l0d",
+      "version": 1,
+      "timestamp": "2026-02-10T04:09:53.077Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "assignee",
+          "newValue": "@me"
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "Authenticated users can create/read comments"
+            },
+            {
+              "completed": false,
+              "text": "Badge milestones are awarded and visible on profile"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "Authenticated users can create/read comments"
+            },
+            {
+              "completed": true,
+              "text": "Badge milestones are awarded and visible on profile"
+            }
+          ]
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Done: comments API/UI + comment badge awarding + badge display on profile."
+        }
+      ],
+      "snapshot": {
+        "title": "Add comments and badge awarding",
+        "description": "Allow users to post comments on daily game pages and automatically award badges based on milestones.",
+        "status": "done",
+        "priority": "medium",
+        "assignee": "@me",
+        "labels": [
+          "comments",
+          "badges",
+          "social",
+          "engagement"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Authenticated users can create/read comments"
+          },
+          {
+            "completed": true,
+            "text": "Badge milestones are awarded and visible on profile"
+          }
+        ],
+        "implementationNotes": "Done: comments API/UI + comment badge awarding + badge display on profile."
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "8q3l0d",
+      "version": 2,
+      "timestamp": "2026-02-10T06:21:52.013Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "oldValue": "Done: comments API/UI + comment badge awarding + badge display on profile.",
+          "newValue": "Done: comments API/UI + comment badge awarding + badge display on profile.\n\nSetup synopsis: @doc/runbooks/local-docker-setup-synopsis-setup-20260210-141454"
+        }
+      ],
+      "snapshot": {
+        "title": "Add comments and badge awarding",
+        "description": "Allow users to post comments on daily game pages and automatically award badges based on milestones.",
+        "status": "done",
+        "priority": "medium",
+        "assignee": "@me",
+        "labels": [
+          "comments",
+          "badges",
+          "social",
+          "engagement"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Authenticated users can create/read comments"
+          },
+          {
+            "completed": true,
+            "text": "Badge milestones are awarded and visible on profile"
+          }
+        ],
+        "implementationNotes": "Done: comments API/UI + comment badge awarding + badge display on profile.\n\nSetup synopsis: @doc/runbooks/local-docker-setup-synopsis-setup-20260210-141454"
+      }
+    }
+  ]
+}

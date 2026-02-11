@@ -1,0 +1,305 @@
+{
+  "taskId": "o61hg1",
+  "currentVersion": 4,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "o61hg1",
+      "version": 1,
+      "timestamp": "2026-02-10T03:49:01.930Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "in-progress"
+        },
+        {
+          "field": "assignee",
+          "newValue": "@me"
+        }
+      ],
+      "snapshot": {
+        "title": "Build NYT-style daily games app (Next.js + Supabase + PWA)",
+        "description": "Create a minimal but production-structured web app with daily games, streak/stat tracking, auth, comments, badges, and local Supabase dev environment.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "nextjs",
+          "supabase",
+          "pwa",
+          "games",
+          "auth",
+          "streaks",
+          "stats",
+          "comments",
+          "badges",
+          "mvp"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "App runs locally with one command sequence"
+          },
+          {
+            "completed": false,
+            "text": "Users can sign in and persist profile/progress"
+          },
+          {
+            "completed": false,
+            "text": "At least one daily game works end-to-end"
+          },
+          {
+            "completed": false,
+            "text": "Streaks and stats update correctly"
+          },
+          {
+            "completed": false,
+            "text": "Comments and badges are functional"
+          },
+          {
+            "completed": false,
+            "text": "PWA install + offline shell support are enabled"
+          }
+        ]
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "o61hg1",
+      "version": 2,
+      "timestamp": "2026-02-10T03:49:11.581Z",
+      "changes": [
+        {
+          "field": "implementationPlan",
+          "newValue": "1. Scaffold a minimal Next.js (App Router + TypeScript) app and baseline game-shell UI.\n2. Initialize local Supabase (CLI + docker), create schema/migrations for profiles, daily_games, plays, streaks, comments, badges, and set RLS.\n3. Integrate Supabase Auth (magic link) and session-aware app structure.\n4. Implement one NYT-style daily game (date-seeded), submission API, and streak/stat updates in DB.\n5. Add comments and badge milestone logic.\n6. Add PWA support (manifest, icons, service worker, offline shell caching).\n7. Add seed/dev scripts and concise setup docs + run validation/tests."
+        }
+      ],
+      "snapshot": {
+        "title": "Build NYT-style daily games app (Next.js + Supabase + PWA)",
+        "description": "Create a minimal but production-structured web app with daily games, streak/stat tracking, auth, comments, badges, and local Supabase dev environment.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "nextjs",
+          "supabase",
+          "pwa",
+          "games",
+          "auth",
+          "streaks",
+          "stats",
+          "comments",
+          "badges",
+          "mvp"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "App runs locally with one command sequence"
+          },
+          {
+            "completed": false,
+            "text": "Users can sign in and persist profile/progress"
+          },
+          {
+            "completed": false,
+            "text": "At least one daily game works end-to-end"
+          },
+          {
+            "completed": false,
+            "text": "Streaks and stats update correctly"
+          },
+          {
+            "completed": false,
+            "text": "Comments and badges are functional"
+          },
+          {
+            "completed": false,
+            "text": "PWA install + offline shell support are enabled"
+          }
+        ],
+        "implementationPlan": "1. Scaffold a minimal Next.js (App Router + TypeScript) app and baseline game-shell UI.\n2. Initialize local Supabase (CLI + docker), create schema/migrations for profiles, daily_games, plays, streaks, comments, badges, and set RLS.\n3. Integrate Supabase Auth (magic link) and session-aware app structure.\n4. Implement one NYT-style daily game (date-seeded), submission API, and streak/stat updates in DB.\n5. Add comments and badge milestone logic.\n6. Add PWA support (manifest, icons, service worker, offline shell caching).\n7. Add seed/dev scripts and concise setup docs + run validation/tests."
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "o61hg1",
+      "version": 3,
+      "timestamp": "2026-02-10T04:10:41.670Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "App runs locally with one command sequence"
+            },
+            {
+              "completed": false,
+              "text": "Users can sign in and persist profile/progress"
+            },
+            {
+              "completed": false,
+              "text": "At least one daily game works end-to-end"
+            },
+            {
+              "completed": false,
+              "text": "Streaks and stats update correctly"
+            },
+            {
+              "completed": false,
+              "text": "Comments and badges are functional"
+            },
+            {
+              "completed": false,
+              "text": "PWA install + offline shell support are enabled"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "App runs locally with one command sequence"
+            },
+            {
+              "completed": true,
+              "text": "Users can sign in and persist profile/progress"
+            },
+            {
+              "completed": true,
+              "text": "At least one daily game works end-to-end"
+            },
+            {
+              "completed": true,
+              "text": "Streaks and stats update correctly"
+            },
+            {
+              "completed": true,
+              "text": "Comments and badges are functional"
+            },
+            {
+              "completed": true,
+              "text": "PWA install + offline shell support are enabled"
+            }
+          ]
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Done: delivered Next.js + Supabase + PWA MVP with daily game, auth, streak/stats, comments, badges, and local Supabase setup.\nRunbook: @doc/guides/daily-grid-local-setup"
+        }
+      ],
+      "snapshot": {
+        "title": "Build NYT-style daily games app (Next.js + Supabase + PWA)",
+        "description": "Create a minimal but production-structured web app with daily games, streak/stat tracking, auth, comments, badges, and local Supabase dev environment.",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "nextjs",
+          "supabase",
+          "pwa",
+          "games",
+          "auth",
+          "streaks",
+          "stats",
+          "comments",
+          "badges",
+          "mvp"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "App runs locally with one command sequence"
+          },
+          {
+            "completed": true,
+            "text": "Users can sign in and persist profile/progress"
+          },
+          {
+            "completed": true,
+            "text": "At least one daily game works end-to-end"
+          },
+          {
+            "completed": true,
+            "text": "Streaks and stats update correctly"
+          },
+          {
+            "completed": true,
+            "text": "Comments and badges are functional"
+          },
+          {
+            "completed": true,
+            "text": "PWA install + offline shell support are enabled"
+          }
+        ],
+        "implementationPlan": "1. Scaffold a minimal Next.js (App Router + TypeScript) app and baseline game-shell UI.\n2. Initialize local Supabase (CLI + docker), create schema/migrations for profiles, daily_games, plays, streaks, comments, badges, and set RLS.\n3. Integrate Supabase Auth (magic link) and session-aware app structure.\n4. Implement one NYT-style daily game (date-seeded), submission API, and streak/stat updates in DB.\n5. Add comments and badge milestone logic.\n6. Add PWA support (manifest, icons, service worker, offline shell caching).\n7. Add seed/dev scripts and concise setup docs + run validation/tests.",
+        "implementationNotes": "Done: delivered Next.js + Supabase + PWA MVP with daily game, auth, streak/stats, comments, badges, and local Supabase setup.\nRunbook: @doc/guides/daily-grid-local-setup"
+      }
+    },
+    {
+      "id": "v4",
+      "taskId": "o61hg1",
+      "version": 4,
+      "timestamp": "2026-02-10T06:15:25.887Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "oldValue": "Done: delivered Next.js + Supabase + PWA MVP with daily game, auth, streak/stats, comments, badges, and local Supabase setup.\nRunbook: @doc/guides/daily-grid-local-setup",
+          "newValue": "Done: delivered Next.js + Supabase + PWA MVP with daily game, auth, streak/stats, comments, badges, and local Supabase setup.\nRunbook: @doc/guides/daily-grid-local-setup\n\nSetup synopsis: @doc/runbooks/local-docker-setup-synopsis-setup-20260210-141454"
+        }
+      ],
+      "snapshot": {
+        "title": "Build NYT-style daily games app (Next.js + Supabase + PWA)",
+        "description": "Create a minimal but production-structured web app with daily games, streak/stat tracking, auth, comments, badges, and local Supabase dev environment.",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "nextjs",
+          "supabase",
+          "pwa",
+          "games",
+          "auth",
+          "streaks",
+          "stats",
+          "comments",
+          "badges",
+          "mvp"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "App runs locally with one command sequence"
+          },
+          {
+            "completed": true,
+            "text": "Users can sign in and persist profile/progress"
+          },
+          {
+            "completed": true,
+            "text": "At least one daily game works end-to-end"
+          },
+          {
+            "completed": true,
+            "text": "Streaks and stats update correctly"
+          },
+          {
+            "completed": true,
+            "text": "Comments and badges are functional"
+          },
+          {
+            "completed": true,
+            "text": "PWA install + offline shell support are enabled"
+          }
+        ],
+        "implementationPlan": "1. Scaffold a minimal Next.js (App Router + TypeScript) app and baseline game-shell UI.\n2. Initialize local Supabase (CLI + docker), create schema/migrations for profiles, daily_games, plays, streaks, comments, badges, and set RLS.\n3. Integrate Supabase Auth (magic link) and session-aware app structure.\n4. Implement one NYT-style daily game (date-seeded), submission API, and streak/stat updates in DB.\n5. Add comments and badge milestone logic.\n6. Add PWA support (manifest, icons, service worker, offline shell caching).\n7. Add seed/dev scripts and concise setup docs + run validation/tests.",
+        "implementationNotes": "Done: delivered Next.js + Supabase + PWA MVP with daily game, auth, streak/stats, comments, badges, and local Supabase setup.\nRunbook: @doc/guides/daily-grid-local-setup\n\nSetup synopsis: @doc/runbooks/local-docker-setup-synopsis-setup-20260210-141454"
+      }
+    }
+  ]
+}

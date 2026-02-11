@@ -1,0 +1,53 @@
+name: Frontend E2E (Cypress)
+
+on:
+  push:
+    paths:
+      - "web/**"
+      - ".github/workflows/frontend-cypress.yml"
+  pull_request:
+    paths:
+      - "web/**"
+      - ".github/workflows/frontend-cypress.yml"
+
+jobs:
+  cypress-e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH
+      NEXT_PUBLIC_AUTH_GOOGLE_ENABLED: false
+      NEXT_PUBLIC_E2E_AUTH_BYPASS: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install dependencies
+        working-directory: web
+        run: npm ci
+
+      - name: Lint
+        working-directory: web
+        run: npm run lint
+
+      - name: Build
+        working-directory: web
+        run: npm run build
+
+      - name: Run Cypress E2E
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: web
+          install: false
+          start: npm run dev
+          wait-on: "http://localhost:3000"
+          wait-on-timeout: 120
