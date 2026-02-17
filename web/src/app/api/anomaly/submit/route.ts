@@ -8,6 +8,8 @@ type Annotation = {
   confidence: number;
   tag: string;
   note?: string;
+  coordinateMode?: "time" | "phase";
+  sourcePeriodDays?: number;
 };
 
 type SubmitBody = {
@@ -46,12 +48,17 @@ function normalizeAnnotations(value: unknown): Annotation[] {
       const xStart = Math.max(0, Math.min(1, rawStart));
       const xEnd = Math.max(0, Math.min(1, rawEnd));
       const confidence = Math.max(0, Math.min(100, Math.round(rawConfidence)));
+      const coordinateMode: Annotation["coordinateMode"] = annotation.coordinateMode === "phase" ? "phase" : "time";
+      const sourcePeriodRaw = Number(annotation.sourcePeriodDays);
+      const sourcePeriodDays = coordinateMode === "phase" && Number.isFinite(sourcePeriodRaw) ? Math.max(0.2, Math.min(30, Number(sourcePeriodRaw.toFixed(4)))) : undefined;
 
-      const base = {
+      const base: Annotation = {
         xStart: Number(Math.min(xStart, xEnd).toFixed(5)),
         xEnd: Number(Math.max(xStart, xEnd).toFixed(5)),
         confidence,
         tag: annotation.tag.trim().slice(0, 60),
+        coordinateMode,
+        sourcePeriodDays,
       };
       if (typeof annotation.note === "string") {
         return { ...base, note: annotation.note.trim().slice(0, 300) };

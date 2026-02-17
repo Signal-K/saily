@@ -1077,6 +1077,44 @@ body {
   object-fit: cover;
 }
 
+.profile-post-list {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.profile-post-item {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.65rem;
+  display: grid;
+  gap: 0.42rem;
+}
+
+.profile-post-body {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.profile-follow-list {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.profile-follow-item {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.55rem 0.65rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.profile-follow-name {
+  margin: 0;
+  font-weight: 600;
+}
+
 .puzzle-screen {
   height: auto;
   min-height: 0;
@@ -1089,6 +1127,19 @@ body {
 .puzzle-header h1 {
   margin: 0.2rem 0 0.35rem;
   font-size: clamp(1.4rem, 2.7vw, 2rem);
+}
+
+.puzzle-header {
+  padding: 0.75rem 0.9rem;
+}
+
+.puzzle-header .muted {
+  margin: 0.2rem 0 0;
+}
+
+.puzzle-header-summary {
+  font-size: 0.96rem;
+  line-height: 1.25;
 }
 
 .puzzle-header-row {
@@ -1122,7 +1173,7 @@ body {
 
 .puzzle-canvas {
   flex: 1 1 auto;
-  padding: 0.7rem;
+  padding: 0.55rem;
 }
 
 .puzzle-media-wrap {
@@ -1148,15 +1199,15 @@ body {
     radial-gradient(circle at 20% 0%, color-mix(in oklab, #dbeafe 45%, transparent), transparent 40%),
     radial-gradient(circle at 85% 100%, color-mix(in oklab, #dcfce7 40%, transparent), transparent 45%),
     color-mix(in oklab, var(--surface) 88%, transparent);
-  padding: 0.6rem;
+  padding: 0.45rem;
 }
 
 .puzzle-lightcurve {
   width: 100%;
   height: auto;
   aspect-ratio: 1000 / 360;
-  min-height: 320px;
-  max-height: min(62vh, 560px);
+  min-height: 360px;
+  max-height: min(68vh, 640px);
   cursor: crosshair;
   user-select: none;
   touch-action: none;
@@ -1228,12 +1279,74 @@ body {
   background: color-mix(in oklab, var(--surface) 90%, transparent);
 }
 
+.puzzle-context-pill-link {
+  text-decoration: none;
+}
+
+.puzzle-context-pill-link:hover {
+  border-color: color-mix(in oklab, var(--brand) 30%, var(--border));
+  color: color-mix(in oklab, var(--brand) 70%, var(--text));
+}
+
 .puzzle-header-edu {
   margin: 0.38rem 0 0;
   color: color-mix(in oklab, var(--text) 86%, var(--muted));
   font-size: 0.88rem;
   line-height: 1.35;
   max-width: 74ch;
+}
+
+.puzzle-source-meta {
+  margin: 0.36rem 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.puzzle-source-link {
+  color: color-mix(in oklab, var(--brand) 72%, var(--text));
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.puzzle-source-link:hover {
+  color: color-mix(in oklab, var(--brand) 86%, var(--text));
+}
+
+.source-page {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.source-page-header h1 {
+  margin: 0.2rem 0 0.35rem;
+  font-size: clamp(1.2rem, 2.2vw, 1.7rem);
+}
+
+.source-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.source-image-wrap {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 0.5rem;
+  background: color-mix(in oklab, var(--surface) 88%, transparent);
+}
+
+.source-lightcurve-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+}
+
+.source-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .puzzle-controls {

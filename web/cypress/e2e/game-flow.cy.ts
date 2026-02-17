@@ -1,24 +1,29 @@
 describe("Daily puzzle flow", () => {
-  it("submits minigame 1 evidence, runs demo minigames 2/3, then returns home", () => {
+  it("submits three transit signals (easy/medium/hard) then returns home", () => {
     const today = new Date().toISOString().slice(0, 10);
-    const anomalyId = 238004786;
+    const anomalies = [238004786, 159238472, 402918337].map((id, idx) => ({
+      id,
+      ticId: String(id),
+      label: `TIC ${id}`,
+      anomalyType: "planet",
+      anomalySet: "telescope-tess",
+      lightcurve: Array.from({ length: 80 }, (_, i) => ({
+        x: i / 79,
+        y:
+          1 -
+          (i > 20 + idx * 2 && i < 26 + idx * 2 ? 0.013 - idx * 0.002 : 0) -
+          (i > 55 && i < 62 ? 0.009 - idx * 0.0015 : 0) +
+          ((i % 7) - 3) * 0.00008 * idx,
+      })),
+    }));
 
     cy.intercept("GET", "/api/game/today*", {
       statusCode: 200,
       body: {
         date: today,
         puzzle: null,
-        anomaly: {
-          id: anomalyId,
-          ticId: "238004786",
-          label: "TIC 238004786",
-          anomalyType: "planet",
-          anomalySet: "telescope-tess",
-          lightcurve: Array.from({ length: 80 }, (_, i) => ({
-            x: i / 79,
-            y: 1 - (i > 20 && i < 26 ? 0.013 : 0) - (i > 55 && i < 62 ? 0.009 : 0),
-          })),
-        },
+        anomaly: anomalies[0],
+        anomalies,
       },
     }).as("todayGame");
 
@@ -62,12 +67,15 @@ describe("Daily puzzle flow", () => {
 
     cy.getBySel("puzzle-finish-button").click();
     cy.wait("@submitEvidence");
-    cy.contains("h1", "Minigame 2 (Demo): Pattern Trace").should("be.visible");
+    cy.contains("h1", "Find the Transit Signal").should("be.visible");
+    cy.contains(".puzzle-context-pill", "Difficulty Medium").should("be.visible");
 
-    cy.getBySel("puzzle-demo-next-button").click();
-    cy.contains("h1", "Minigame 3 (Demo): Final Recognition").should("be.visible");
+    cy.getBySel("puzzle-finish-button").click();
+    cy.wait("@submitEvidence");
+    cy.contains(".puzzle-context-pill", "Difficulty Hard").should("be.visible");
 
-    cy.getBySel("puzzle-demo-next-button").click();
+    cy.getBySel("puzzle-finish-button").click();
+    cy.wait("@submitEvidence");
     cy.wait("@completeDailySet");
     cy.location("pathname").should("eq", "/");
     cy.get("h1")
