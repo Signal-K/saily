@@ -6,6 +6,7 @@ import { AuthStatus } from "@/components/auth-status";
 import { HeaderSearch } from "@/components/header-search";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { BreadcrumbsNav } from "@/components/breadcrumbs-nav";
+import { PostHogRuntime } from "@/components/posthog-runtime";
 import "./globals.css";
 
 const THEME_COOKIE = "daily_grid_theme";
@@ -33,6 +34,7 @@ export default async function RootLayout({
   return (
     <html lang="en" data-theme={initialTheme}>
       <body>
+        <PostHogRuntime />
         <SWRegister />
         <header className="site-header">
           <div className="container">

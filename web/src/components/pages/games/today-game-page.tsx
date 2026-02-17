@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { queueExitSurvey } from "@/lib/posthog/exit-survey";
 
 type LightcurvePoint = {
   x: number;
@@ -597,6 +598,9 @@ export default function TodayGamePage() {
       score?: number;
       badgesAwarded?: number;
       xpMultiplier?: number;
+      stats?: {
+        games_played?: number;
+      } | null;
     };
 
     if (!completeResponse.ok) {
@@ -609,6 +613,15 @@ export default function TodayGamePage() {
       `Daily set complete. Score ${completePayload.score ?? 0}${completePayload.xpMultiplier === 0.5 ? " (50% XP for past-day puzzle)." : ""}${completePayload.badgesAwarded ? ` New badges: ${completePayload.badgesAwarded}.` : ""}`,
     );
     setSubmitting(false);
+    const gamesPlayed = Number(completePayload.stats?.games_played ?? 0);
+    if (gamesPlayed === 1) {
+      queueExitSurvey({
+        source: "first_game_complete",
+        version: process.env.NEXT_PUBLIC_APP_VERSION?.trim() || "v1",
+        gameDate,
+        score: completePayload.score,
+      });
+    }
     router.push("/");
   }
 
