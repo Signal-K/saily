@@ -78,13 +78,14 @@ body {
   display: grid;
   align-items: center;
   gap: 0.75rem;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr) auto;
 }
 
 .header-brand-row {
   display: flex;
   align-items: center;
   gap: 1rem;
+  min-width: 0;
 }
 
 .home-icon-link {
@@ -114,6 +115,7 @@ body {
   align-items: center;
   gap: 0.9rem;
   justify-content: center;
+  min-width: 0;
 }
 
 .header-nav-link {
@@ -432,6 +434,7 @@ body {
   align-items: center;
   justify-content: flex-end;
   gap: 0.65rem;
+  min-width: 0;
 }
 
 .theme-switch {
@@ -684,6 +687,7 @@ body {
 
 .header-search-wrap {
   position: relative;
+  min-width: 0;
 }
 
 .header-search {
@@ -918,6 +922,7 @@ body {
 
 .hero p {
   color: var(--muted);
+  margin: 0;
 }
 
 .cta-row {
@@ -1020,10 +1025,10 @@ body {
 .home-list-item {
   border: 1px solid var(--border);
   border-radius: 10px;
-  padding: 0.45rem 0.55rem;
+  padding: 0.55rem 0.65rem;
   display: grid;
-  grid-template-columns: 1fr auto auto auto;
-  gap: 0.5rem;
+  grid-template-columns: 1fr auto;
+  gap: 0.4rem 0.55rem;
   align-items: center;
   font-size: 0.84rem;
 }
@@ -1038,6 +1043,37 @@ body {
 
 .home-feed-item p {
   margin: 0;
+}
+
+.home-result-date {
+  font-weight: 600;
+}
+
+.home-result-status {
+  justify-self: end;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 0.16rem 0.45rem;
+}
+
+.home-result-status.is-win {
+  border-color: color-mix(in oklab, var(--brand) 40%, var(--border));
+  background: color-mix(in oklab, var(--brand) 10%, var(--surface));
+  color: color-mix(in oklab, var(--brand) 70%, var(--text));
+}
+
+.home-result-status.is-played {
+  color: var(--muted);
+}
+
+.home-result-meta {
+  color: var(--muted);
+  font-size: 0.78rem;
+  grid-column: 1 / -1;
 }
 
 .comment-meta {
@@ -2489,6 +2525,7 @@ body {
 
   .header-brand-row {
     justify-content: space-between;
+    gap: 0.75rem;
   }
 
   .desktop-nav {
@@ -2497,6 +2534,12 @@ body {
 
   .mobile-nav {
     display: flex;
+    gap: 0.5rem;
+  }
+
+  .mobile-nav .header-nav-link {
+    flex: 1;
+    text-align: center;
   }
 
   .nav-links {
@@ -2506,10 +2549,16 @@ body {
 
   .header-actions {
     justify-content: space-between;
+    gap: 0.4rem;
+  }
+
+  .theme-switch {
+    transform: scale(0.85);
+    transform-origin: left center;
   }
 
   .profile-email {
-    max-width: 9rem;
+    max-width: 7rem;
   }
 
   .forum-header {
@@ -2580,7 +2629,7 @@ body {
   }
 
   .home-list-item {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr auto;
   }
 
 }
@@ -2604,7 +2653,7 @@ body {
 
   .header-shell {
     border-radius: 14px;
-    padding: 0.65rem;
+    padding: 0.6rem;
   }
 
   .header-search {
@@ -2612,7 +2661,8 @@ body {
   }
 
   .header-search button {
-    height: 2.5rem;
+    height: 2.3rem;
+    min-width: 100%;
   }
 
   .breadcrumbs-shell {
@@ -2658,6 +2708,32 @@ body {
 
   .home-list-item {
     grid-template-columns: 1fr;
+  }
+
+  .home-result-status {
+    justify-self: start;
+  }
+
+  .cta-row {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .cta-row .button {
+    width: 100%;
+  }
+
+  .hero {
+    padding: 1rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.4rem, 8vw, 1.9rem);
+    margin-bottom: 0.55rem;
+  }
+
+  .profile-email {
+    display: none;
   }
 
   .auth-shell {

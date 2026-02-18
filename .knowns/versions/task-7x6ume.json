@@ -1,0 +1,116 @@
+{
+  "taskId": "7x6ume",
+  "currentVersion": 4,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "7x6ume",
+      "version": 1,
+      "timestamp": "2026-02-18T14:14:11.357Z",
+      "changes": [
+        {
+          "field": "assignee",
+          "newValue": "@me"
+        }
+      ],
+      "snapshot": {
+        "title": "Improve responsiveness",
+        "description": "<!-- SECTION:DESCRIPTION:BEGIN -->\n<!-- SECTION:DESCRIPTION:END -->",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "mobile",
+          "ui",
+          "layout",
+          "styling"
+        ],
+        "acceptanceCriteria": []
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "7x6ume",
+      "version": 2,
+      "timestamp": "2026-02-18T14:14:25.025Z",
+      "changes": [
+        {
+          "field": "implementationPlan",
+          "newValue": "1. Audit global header/home layout bottlenecks on <=900px and <=720px breakpoints (see @doc/runbooks/local-docker-setup-synopsis-setup-20260210-141454).\n2. Reduce text density on home dashboard (shorter hero copy, tighter list items, clamp/truncate feed snippets) while preserving key actions.\n3. Implement mobile-first CSS refinements for header actions/search/nav and home cards/lists.\n4. Validate via lint/build and mobile viewport checks, then append notes and update task status/AC."
+        }
+      ],
+      "snapshot": {
+        "title": "Improve responsiveness",
+        "description": "<!-- SECTION:DESCRIPTION:BEGIN -->",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "mobile",
+          "ui",
+          "layout",
+          "styling"
+        ],
+        "acceptanceCriteria": [],
+        "implementationPlan": "1. Audit global header/home layout bottlenecks on <=900px and <=720px breakpoints (see @doc/runbooks/local-docker-setup-synopsis-setup-20260210-141454).\n2. Reduce text density on home dashboard (shorter hero copy, tighter list items, clamp/truncate feed snippets) while preserving key actions.\n3. Implement mobile-first CSS refinements for header actions/search/nav and home cards/lists.\n4. Validate via lint/build and mobile viewport checks, then append notes and update task status/AC."
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "7x6ume",
+      "version": 3,
+      "timestamp": "2026-02-18T14:17:36.044Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "newValue": "Done: mobile-first header/home refinements; reduced home copy; compact result/feed rows; verified npm run lint + npm run build."
+        }
+      ],
+      "snapshot": {
+        "title": "Improve responsiveness",
+        "description": "<!-- SECTION:DESCRIPTION:BEGIN -->",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "mobile",
+          "ui",
+          "layout",
+          "styling"
+        ],
+        "acceptanceCriteria": [],
+        "implementationPlan": "1. Audit global header/home layout bottlenecks on <=900px and <=720px breakpoints (see @doc/runbooks/local-docker-setup-synopsis-setup-20260210-141454).\n2. Reduce text density on home dashboard (shorter hero copy, tighter list items, clamp/truncate feed snippets) while preserving key actions.\n3. Implement mobile-first CSS refinements for header actions/search/nav and home cards/lists.\n4. Validate via lint/build and mobile viewport checks, then append notes and update task status/AC.",
+        "implementationNotes": "Done: mobile-first header/home refinements; reduced home copy; compact result/feed rows; verified npm run lint + npm run build."
+      }
+    },
+    {
+      "id": "v4",
+      "taskId": "7x6ume",
+      "version": 4,
+      "timestamp": "2026-02-18T14:17:48.428Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        }
+      ],
+      "snapshot": {
+        "title": "Improve responsiveness",
+        "description": "<!-- SECTION:DESCRIPTION:BEGIN -->",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "mobile",
+          "ui",
+          "layout",
+          "styling"
+        ],
+        "acceptanceCriteria": [],
+        "implementationPlan": "1. Audit global header/home layout bottlenecks on <=900px and <=720px breakpoints (see @doc/runbooks/local-docker-setup-synopsis-setup-20260210-141454).\n2. Reduce text density on home dashboard (shorter hero copy, tighter list items, clamp/truncate feed snippets) while preserving key actions.\n3. Implement mobile-first CSS refinements for header actions/search/nav and home cards/lists.\n4. Validate via lint/build and mobile viewport checks, then append notes and update task status/AC.",
+        "implementationNotes": "Done: mobile-first header/home refinements; reduced home copy; compact result/feed rows; verified npm run lint + npm run build."
+      }
+    }
+  ]
+}
