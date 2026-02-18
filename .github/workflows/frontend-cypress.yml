@@ -2,9 +2,6 @@ name: Frontend E2E (Cypress)
 
 on:
   push:
-    paths:
-      - "web/**"
-      - ".github/workflows/frontend-cypress.yml"
   pull_request:
     paths:
       - "web/**"
@@ -22,6 +19,7 @@ jobs:
       NEXT_PUBLIC_E2E_AUTH_BYPASS: true
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE: ${{ secrets.SUPABASE_SERVICE_ROLE }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE }}
 
     steps:
       - name: Checkout
@@ -64,3 +62,137 @@ jobs:
         if: always()
         working-directory: web
         run: npm run e2e:user:cleanup
+
+  deploy-vercel:
+    name: Deploy to Vercel
+    runs-on: ubuntu-latest
+    needs: cypress-e2e
+    if: github.event_name == 'push'
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_TEAM_ID }}
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_URL_INTERNAL: ${{ secrets.SUPABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_PUBLISHABLE || secrets.SUPABASE_ANON }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE: ${{ secrets.SUPABASE_SERVICE_ROLE }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install dependencies
+        working-directory: web
+        run: npm ci
+
+      - name: Resolve Vercel project/org ids
+        id: vercel_ids
+        working-directory: web
+        shell: bash
+        run: |
+          if [[ -z "${VERCEL_TOKEN}" ]]; then
+            echo "Missing VERCEL_TOKEN secret."
+            exit 1
+          fi
+
+          secret_project_id="${VERCEL_PROJECT_ID:-}"
+          secret_org_id="${VERCEL_ORG_ID:-}"
+          file_project_id=""
+          file_org_id=""
+
+          if [[ -f ".vercel/project.json" ]]; then
+            file_project_id="$(node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('.vercel/project.json','utf8'));process.stdout.write(p.projectId||'')")"
+            file_org_id="$(node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('.vercel/project.json','utf8'));process.stdout.write(p.orgId||'')")"
+          fi
+
+          if [[ -n "$secret_project_id" && -n "$file_project_id" && "$secret_project_id" != "$file_project_id" ]]; then
+            echo "VERCEL_PROJECT_ID secret does not match web/.vercel/project.json"
+            exit 1
+          fi
+          if [[ -n "$secret_org_id" && -n "$file_org_id" && "$secret_org_id" != "$file_org_id" ]]; then
+            echo "VERCEL_TEAM_ID secret does not match web/.vercel/project.json orgId"
+            exit 1
+          fi
+
+          resolved_project_id="${secret_project_id:-$file_project_id}"
+          resolved_org_id="${secret_org_id:-$file_org_id}"
+
+          if [[ -z "$resolved_project_id" || -z "$resolved_org_id" ]]; then
+            echo "Missing Vercel project/org ids. Set VERCEL_PROJECT_ID + VERCEL_TEAM_ID secrets or commit web/.vercel/project.json."
+            exit 1
+          fi
+
+          echo "project_id=$resolved_project_id" >> "$GITHUB_OUTPUT"
+          echo "org_id=$resolved_org_id" >> "$GITHUB_OUTPUT"
+
+      - name: Select Vercel environment
+        id: deploy_target
+        shell: bash
+        run: |
+          if [[ "${GITHUB_REF_NAME}" == "main" ]]; then
+            echo "environment=production" >> "$GITHUB_OUTPUT"
+            echo "prod_flag=--prod" >> "$GITHUB_OUTPUT"
+          else
+            echo "environment=preview" >> "$GITHUB_OUTPUT"
+            echo "prod_flag=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Pull Vercel project settings
+        working-directory: web
+        env:
+          VERCEL_PROJECT_ID: ${{ steps.vercel_ids.outputs.project_id }}
+          VERCEL_ORG_ID: ${{ steps.vercel_ids.outputs.org_id }}
+        run: npx vercel pull --yes --environment=${{ steps.deploy_target.outputs.environment }} --token=${{ env.VERCEL_TOKEN }}
+
+      - name: Build Vercel prebuilt output
+        working-directory: web
+        env:
+          VERCEL_PROJECT_ID: ${{ steps.vercel_ids.outputs.project_id }}
+          VERCEL_ORG_ID: ${{ steps.vercel_ids.outputs.org_id }}
+        run: npx vercel build ${{ steps.deploy_target.outputs.prod_flag }} --token=${{ env.VERCEL_TOKEN }}
+
+      - name: Deploy to Vercel
+        id: deploy
+        working-directory: web
+        env:
+          VERCEL_PROJECT_ID: ${{ steps.vercel_ids.outputs.project_id }}
+          VERCEL_ORG_ID: ${{ steps.vercel_ids.outputs.org_id }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          DEPLOY_OUTPUT="$(npx vercel deploy --prebuilt ${{ steps.deploy_target.outputs.prod_flag }} --token=${{ env.VERCEL_TOKEN }})"
+          echo "$DEPLOY_OUTPUT"
+          DEPLOY_URL="$(echo "$DEPLOY_OUTPUT" | grep -Eo 'https://[^ ]+\.vercel\.app' | tail -1)"
+          if [[ -z "$DEPLOY_URL" ]]; then
+            echo "Failed to parse deploy URL from Vercel output"
+            exit 1
+          fi
+          echo "url=$DEPLOY_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Verify deployment responds
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL="${{ steps.deploy.outputs.url }}"
+          echo "Checking $URL"
+          ROOT_CODE="$(curl -s -o /tmp/vercel_root.html -w '%{http_code}' "$URL")"
+          TODAY_CODE="$(curl -s -o /tmp/vercel_today.html -w '%{http_code}' "$URL/games/today")"
+          echo "Root status: $ROOT_CODE"
+          echo "Today status: $TODAY_CODE"
+          if [[ "$ROOT_CODE" == "404" || "$TODAY_CODE" == "404" ]]; then
+            echo "Deployment returned 404."
+            echo "--- root body ---"
+            sed -n '1,80p' /tmp/vercel_root.html
+            echo "--- games/today body ---"
+            sed -n '1,80p' /tmp/vercel_today.html
+            exit 1
+          fi

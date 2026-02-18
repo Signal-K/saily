@@ -21,6 +21,11 @@ function getUsername(value: CommentRow["profiles"]) {
   return value.username ?? "player";
 }
 
+function truncateText(text: string, maxLength = 140) {
+  if (text.length <= maxLength) return text;
+  return `${text.slice(0, maxLength - 1)}…`;
+}
+
 export default async function Home() {
   const supabase = await createClient();
   const {
@@ -54,11 +59,11 @@ export default async function Home() {
     <section className="home-dashboard">
       <div className="hero">
         <p className="eyebrow">Daily Puzzle Hub</p>
-        <h1>{user ? "Your command center" : "One game a day. Keep your streak alive."}</h1>
+        <h1>{user ? "Your Daily Grid" : "One puzzle. Fresh every day."}</h1>
         <p>
           {user
-            ? "Track your progress, check your inventory, review recent scores, and jump straight into today's challenge."
-            : "Play daily puzzles, build streaks, and share progress with the community."}
+            ? "Check your streak, review scores, and jump in."
+            : "Play daily, build streaks, and join the conversation."}
         </p>
         <div className="cta-row">
           <Link href="/games/today" className="button button-primary">
@@ -117,10 +122,11 @@ export default async function Home() {
                 <ul className="home-list">
                   {plays.map((play) => (
                     <li key={`${play.game_date}-${play.played_at}`} className="home-list-item">
-                      <span>{play.game_date}</span>
-                      <span>{play.won ? "Won" : "Played"}</span>
-                      <span>Score {play.score}</span>
-                      <span>{play.attempts} attempts</span>
+                      <span className="home-result-date">{play.game_date}</span>
+                      <span className={`home-result-status ${play.won ? "is-win" : "is-played"}`}>{play.won ? "Won" : "Played"}</span>
+                      <span className="home-result-meta">
+                        S{play.score} · {play.attempts} tries
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -141,7 +147,7 @@ export default async function Home() {
                 <p>
                   <strong>@{getUsername(comment.profiles)}</strong> on {comment.game_date}
                 </p>
-                <p>{comment.body}</p>
+                <p>{truncateText(comment.body)}</p>
               </li>
             ))}
           </ul>

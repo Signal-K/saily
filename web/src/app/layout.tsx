@@ -6,6 +6,7 @@ import { AuthStatus } from "@/components/auth-status";
 import { HeaderSearch } from "@/components/header-search";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { BreadcrumbsNav } from "@/components/breadcrumbs-nav";
+import { PostHogRuntime } from "@/components/posthog-runtime";
 import "./globals.css";
 
 const THEME_COOKIE = "daily_grid_theme";
@@ -20,6 +21,14 @@ export const metadata: Metadata = {
   title: "Daily Grid",
   description: "NYT-style daily game hub built with Next.js + Supabase",
   manifest: "/manifest.webmanifest",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icons/icon-192.png", type: "image/png", sizes: "192x192" },
+      { url: "/icons/icon-512.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+  },
 };
 
 export default async function RootLayout({
@@ -33,6 +42,7 @@ export default async function RootLayout({
   return (
     <html lang="en" data-theme={initialTheme}>
       <body>
+        <PostHogRuntime />
         <SWRegister />
         <header className="site-header">
           <div className="container">
@@ -65,7 +75,7 @@ export default async function RootLayout({
 
               <nav className="nav-links mobile-nav" aria-label="Mobile navigation">
                 <Link href="/games/today" className="header-nav-link" data-cy="nav-today-mobile">
-                  Today&apos;s Puzzle
+                  Today
                 </Link>
                 <Link href="/calendar" className="header-nav-link" data-cy="nav-calendar-mobile">
                   Calendar

@@ -1,9 +1,10 @@
 import { DiscussForum } from "@/components/discuss-forum";
-import { getTodayAestDateKey } from "@/lib/forum";
+import { getTodayAestDateKey, normalizeDateKey } from "@/lib/forum";
 import { createClient } from "@/lib/supabase/server";
 
 type SearchParams = {
   e2eAuth?: string;
+  date?: string;
 };
 
 export default async function DiscussPage({
@@ -11,8 +12,9 @@ export default async function DiscussPage({
 }: {
   searchParams: Promise<SearchParams>;
 }) {
-  const initialDate = getTodayAestDateKey();
+  const fallbackDate = getTodayAestDateKey();
   const params = await searchParams;
+  const initialDate = normalizeDateKey(params.date) ?? fallbackDate;
   const supabase = await createClient();
   const {
     data: { user },

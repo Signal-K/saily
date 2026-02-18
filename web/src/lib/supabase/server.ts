@@ -4,7 +4,11 @@ import { cookies } from "next/headers";
 const SUPABASE_COOKIE_NAME = "sb-local-auth-token";
 
 function getServerSupabaseUrl() {
-  return process.env.SUPABASE_URL_INTERNAL ?? process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  return process.env.SUPABASE_URL_INTERNAL ?? process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL!;
+}
+
+function getServerSupabaseAnonKey() {
+  return process.env.SUPABASE_ANON ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 }
 
 export async function createClient() {
@@ -12,7 +16,7 @@ export async function createClient() {
 
   return createServerClient(
     getServerSupabaseUrl(),
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    getServerSupabaseAnonKey(),
     {
       cookieOptions: { name: SUPABASE_COOKIE_NAME },
       cookies: {

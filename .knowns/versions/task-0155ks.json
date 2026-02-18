@@ -1,0 +1,104 @@
+{
+  "taskId": "0155ks",
+  "currentVersion": 4,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "0155ks",
+      "version": 1,
+      "timestamp": "2026-02-18T14:23:59.754Z",
+      "changes": [
+        {
+          "field": "assignee",
+          "newValue": "@me"
+        }
+      ],
+      "snapshot": {
+        "title": "Fix failing tests (18/2/26)",
+        "description": "<!-- SECTION:DESCRIPTION:BEGIN -->\n<!-- SECTION:DESCRIPTION:END -->",
+        "status": "in-progress",
+        "priority": "medium",
+        "assignee": "@me",
+        "labels": [
+          "tests"
+        ],
+        "acceptanceCriteria": []
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "0155ks",
+      "version": 2,
+      "timestamp": "2026-02-18T14:24:07.370Z",
+      "changes": [
+        {
+          "field": "implementationPlan",
+          "newValue": "1. Update Cypress smoke test to assert stable hero heading content introduced by the recent UI copy update.\n2. Update game-flow return-home assertion to match current homepage heading variants.\n3. Run targeted Cypress specs (smoke + game-flow) and lint/build sanity checks to verify no regression.\n4. Append task notes with root cause/fix and keep selectors resilient to future copy churn."
+        }
+      ],
+      "snapshot": {
+        "title": "Fix failing tests (18/2/26)",
+        "description": "<!-- SECTION:DESCRIPTION:BEGIN -->",
+        "status": "in-progress",
+        "priority": "medium",
+        "assignee": "@me",
+        "labels": [
+          "tests"
+        ],
+        "acceptanceCriteria": [],
+        "implementationPlan": "1. Update Cypress smoke test to assert stable hero heading content introduced by the recent UI copy update.\n2. Update game-flow return-home assertion to match current homepage heading variants.\n3. Run targeted Cypress specs (smoke + game-flow) and lint/build sanity checks to verify no regression.\n4. Append task notes with root cause/fix and keep selectors resilient to future copy churn."
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "0155ks",
+      "version": 3,
+      "timestamp": "2026-02-18T14:25:49.205Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "newValue": "Root cause: Cypress specs asserted old home hero copy after responsive/text updates. Fix: updated smoke + game-flow heading assertions to current copy variants. Verified npm run lint + npm run build locally; Cypress binary failed to start in this env (SIGABRT), so CI run is required for E2E confirmation."
+        }
+      ],
+      "snapshot": {
+        "title": "Fix failing tests (18/2/26)",
+        "description": "<!-- SECTION:DESCRIPTION:BEGIN -->",
+        "status": "in-progress",
+        "priority": "medium",
+        "assignee": "@me",
+        "labels": [
+          "tests"
+        ],
+        "acceptanceCriteria": [],
+        "implementationPlan": "1. Update Cypress smoke test to assert stable hero heading content introduced by the recent UI copy update.\n2. Update game-flow return-home assertion to match current homepage heading variants.\n3. Run targeted Cypress specs (smoke + game-flow) and lint/build sanity checks to verify no regression.\n4. Append task notes with root cause/fix and keep selectors resilient to future copy churn.",
+        "implementationNotes": "Root cause: Cypress specs asserted old home hero copy after responsive/text updates. Fix: updated smoke + game-flow heading assertions to current copy variants. Verified npm run lint + npm run build locally; Cypress binary failed to start in this env (SIGABRT), so CI run is required for E2E confirmation."
+      }
+    },
+    {
+      "id": "v4",
+      "taskId": "0155ks",
+      "version": 4,
+      "timestamp": "2026-02-18T14:25:49.232Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        }
+      ],
+      "snapshot": {
+        "title": "Fix failing tests (18/2/26)",
+        "description": "<!-- SECTION:DESCRIPTION:BEGIN -->",
+        "status": "done",
+        "priority": "medium",
+        "assignee": "@me",
+        "labels": [
+          "tests"
+        ],
+        "acceptanceCriteria": [],
+        "implementationPlan": "1. Update Cypress smoke test to assert stable hero heading content introduced by the recent UI copy update.\n2. Update game-flow return-home assertion to match current homepage heading variants.\n3. Run targeted Cypress specs (smoke + game-flow) and lint/build sanity checks to verify no regression.\n4. Append task notes with root cause/fix and keep selectors resilient to future copy churn.",
+        "implementationNotes": "Root cause: Cypress specs asserted old home hero copy after responsive/text updates. Fix: updated smoke + game-flow heading assertions to current copy variants. Verified npm run lint + npm run build locally; Cypress binary failed to start in this env (SIGABRT), so CI run is required for E2E confirmation."
+      }
+    }
+  ]
+}

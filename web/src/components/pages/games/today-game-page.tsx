@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { queueExitSurvey } from "@/lib/posthog/exit-survey";
 
 type LightcurvePoint = {
   x: number;
@@ -21,6 +21,11 @@ type DailyAnomaly = {
   anomalyType: string | null;
   anomalySet: string | null;
   lightcurve: LightcurvePoint[];
+  sourceName?: string | null;
+  sourceUrl?: string | null;
+  sourceMission?: string | null;
+  sourceSector?: number | null;
+  isSynthetic?: boolean;
 };
 
 type Annotation = {
@@ -30,40 +35,21 @@ type Annotation = {
   confidence: number;
   tag: string;
   note?: string;
+  coordinateMode: "time" | "phase";
+  sourcePeriodDays?: number;
 };
 
-type SavedAnnotation = Omit<Annotation, "id">;
+type SavedAnnotation = Omit<Annotation, "id" | "coordinateMode" | "sourcePeriodDays"> & {
+  coordinateMode?: "time" | "phase";
+  sourcePeriodDays?: number;
+};
 type SavedHintFlags = {
   phaseFold?: boolean;
   bin?: boolean;
 };
 
-type DemoStage = {
-  id: 2 | 3;
-  title: string;
-  objective: string;
-  image: string;
-  instructions: string[];
-};
-
-const DEMO_STAGES: DemoStage[] = [
-  {
-    id: 2,
-    title: "Minigame 2 (Demo): Pattern Trace",
-    objective: "Demo mode: follow repeating structures and identify the strongest lane.",
-    image: "/puzzles/puzzle-2.svg",
-    instructions: ["Scan the full frame.", "Compare spacing consistency.", "Select the lane that repeats most clearly."],
-  },
-  {
-    id: 3,
-    title: "Minigame 3 (Demo): Final Recognition",
-    objective: "Demo mode: choose the final interpretation from your observed pattern cues.",
-    image: "/puzzles/puzzle-3.svg",
-    instructions: ["Cross-check major marks.", "Prefer coherent global patterns.", "Summarize your final reasoning briefly."],
-  },
-];
-
 const TAGS = ["Transit dip", "Periodic pattern", "Noise/uncertain", "Other"] as const;
+const STAGE_DIFFICULTIES = ["Easy", "Medium", "Hard"] as const;
 
 const TAG_COLORS: Record<string, { fill: string; stroke: string; chip: string }> = {
   "Transit dip": { fill: "rgba(14, 165, 233, 0.2)", stroke: "#0284c7", chip: "#e0f2fe" },
@@ -76,15 +62,21 @@ function clamp01(value: number) {
   return Math.max(0, Math.min(1, value));
 }
 
+const TOTAL_DAYS = 27;
+
+function normalizePeriodDays(value: number) {
+  if (!Number.isFinite(value)) return 2;
+  return Math.max(0.2, Math.min(30, value));
+}
+
 function xToSvg(x: number) {
   return 40 + clamp01(x) * 920;
 }
 
 function toDisplayPoints(base: LightcurvePoint[], opts: { phaseFold: boolean; bin: boolean; periodDays: number }) {
-  const period = Math.max(0.2, opts.periodDays);
-  const totalDays = 27;
+  const period = normalizePeriodDays(opts.periodDays);
   const withTime = base.map((point) => ({
-    time: clamp01(point.x) * totalDays,
+    time: clamp01(point.x) * TOTAL_DAYS,
     y: point.y,
   }));
 
@@ -95,7 +87,7 @@ function toDisplayPoints(base: LightcurvePoint[], opts: { phaseFold: boolean; bi
           y: point.y,
         }))
         .sort((a, b) => a.x - b.x)
-    : withTime.map((point) => ({ x: point.time / totalDays, y: point.y }));
+    : withTime.map((point) => ({ x: point.time / TOTAL_DAYS, y: point.y }));
 
   if (!opts.bin) return mapped;
 
@@ -115,11 +107,92 @@ function toDisplayPoints(base: LightcurvePoint[], opts: { phaseFold: boolean; bi
     .filter((row) => Number.isFinite(row.y));
 }
 
+function mergeSegments(input: Array<{ xStart: number; xEnd: number }>) {
+  if (input.length === 0) return [];
+  const sorted = input
+    .map((segment) => ({
+      xStart: clamp01(Math.min(segment.xStart, segment.xEnd)),
+      xEnd: clamp01(Math.max(segment.xStart, segment.xEnd)),
+    }))
+    .filter((segment) => segment.xEnd - segment.xStart > 0.00001)
+    .sort((a, b) => a.xStart - b.xStart);
+  if (sorted.length === 0) return [];
+  const merged = [sorted[0]];
+  sorted.slice(1).forEach((segment) => {
+    const last = merged[merged.length - 1];
+    if (segment.xStart <= last.xEnd + 0.00001) {
+      last.xEnd = Math.max(last.xEnd, segment.xEnd);
+      return;
+    }
+    merged.push(segment);
+  });
+  return merged;
+}
+
+function projectTimeIntervalToPhase(annotation: Annotation, periodDays: number) {
+  const period = normalizePeriodDays(periodDays);
+  const startDay = clamp01(Math.min(annotation.xStart, annotation.xEnd)) * TOTAL_DAYS;
+  const endDay = clamp01(Math.max(annotation.xStart, annotation.xEnd)) * TOTAL_DAYS;
+  if (endDay - startDay <= 0.00001) return [];
+  const startCycle = Math.floor(startDay / period);
+  const endCycle = Math.ceil(endDay / period);
+  const projected: Array<{ xStart: number; xEnd: number }> = [];
+  for (let cycle = startCycle; cycle <= endCycle; cycle += 1) {
+    const cycleStart = cycle * period;
+    const cycleEnd = (cycle + 1) * period;
+    const overlapStart = Math.max(startDay, cycleStart);
+    const overlapEnd = Math.min(endDay, cycleEnd);
+    if (overlapEnd - overlapStart <= 0.00001) continue;
+    projected.push({
+      xStart: (overlapStart - cycleStart) / period,
+      xEnd: (overlapEnd - cycleStart) / period,
+    });
+  }
+  return mergeSegments(projected);
+}
+
+function projectPhaseIntervalToTime(annotation: Annotation) {
+  const period = normalizePeriodDays(annotation.sourcePeriodDays ?? 2);
+  const phaseStart = clamp01(Math.min(annotation.xStart, annotation.xEnd));
+  const phaseEnd = clamp01(Math.max(annotation.xStart, annotation.xEnd));
+  if (phaseEnd - phaseStart <= 0.00001) return [];
+  const intervalStart = phaseStart * period;
+  const intervalEnd = phaseEnd * period;
+  const projected: Array<{ xStart: number; xEnd: number }> = [];
+  for (let cycleStart = 0; cycleStart < TOTAL_DAYS; cycleStart += period) {
+    const absStart = cycleStart + intervalStart;
+    const absEnd = cycleStart + intervalEnd;
+    if (absStart >= TOTAL_DAYS) break;
+    const clippedStart = Math.max(0, absStart);
+    const clippedEnd = Math.min(TOTAL_DAYS, absEnd);
+    if (clippedEnd - clippedStart <= 0.00001) continue;
+    projected.push({
+      xStart: clippedStart / TOTAL_DAYS,
+      xEnd: clippedEnd / TOTAL_DAYS,
+    });
+  }
+  return mergeSegments(projected);
+}
+
+function projectAnnotationToView(annotation: Annotation, opts: { phaseFold: boolean; periodDays: number }) {
+  if (opts.phaseFold) {
+    if (annotation.coordinateMode === "phase") {
+      return [{ xStart: clamp01(annotation.xStart), xEnd: clamp01(annotation.xEnd) }];
+    }
+    return projectTimeIntervalToPhase(annotation, opts.periodDays);
+  }
+
+  if (annotation.coordinateMode === "time") {
+    return [{ xStart: clamp01(annotation.xStart), xEnd: clamp01(annotation.xEnd) }];
+  }
+  return projectPhaseIntervalToTime(annotation);
+}
+
 export default function TodayGamePage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [showTutorial, setShowTutorial] = useState(false);
-  const [anomaly, setAnomaly] = useState<DailyAnomaly | null>(null);
+  const [dailyAnomalies, setDailyAnomalies] = useState<DailyAnomaly[]>([]);
   const [loading, setLoading] = useState(true);
   const [minigameIndex, setMinigameIndex] = useState(0);
   const [confidence, setConfidence] = useState(70);
@@ -145,9 +218,17 @@ export default function TodayGamePage() {
     return selectedDateParam > todayDate ? todayDate : selectedDateParam;
   }, [selectedDateParam, todayDate]);
   const isPastDay = gameDate < todayDate;
+  const stageAnomalies = useMemo(() => {
+    if (dailyAnomalies.length === 0) return [];
+    const expanded = [...dailyAnomalies];
+    while (expanded.length < 3) {
+      expanded.push(dailyAnomalies[expanded.length % dailyAnomalies.length]);
+    }
+    return expanded.slice(0, 3);
+  }, [dailyAnomalies]);
+  const anomaly = stageAnomalies[minigameIndex] ?? null;
   const draftStorageKey = useMemo(() => (anomaly ? `anomaly-draft:${gameDate}:${anomaly.id}` : null), [anomaly, gameDate]);
-  const isTransitStage = minigameIndex === 0;
-  const demoStage = !isTransitStage ? DEMO_STAGES[minigameIndex - 1] : null;
+  const stageDifficulty = STAGE_DIFFICULTIES[minigameIndex] ?? STAGE_DIFFICULTIES[STAGE_DIFFICULTIES.length - 1];
 
   useEffect(() => {
     let cancelled = false;
@@ -156,16 +237,17 @@ export default function TodayGamePage() {
       setLoading(true);
       setFeedback(null);
       const response = await fetch(`/api/game/today?date=${encodeURIComponent(gameDate)}`, { cache: "no-store" });
-      const payload = (await response.json()) as { anomaly: DailyAnomaly | null; error?: string };
+      const payload = (await response.json()) as { anomaly: DailyAnomaly | null; anomalies?: DailyAnomaly[]; error?: string };
       if (cancelled) return;
       if (!response.ok) {
         setFeedback(payload.error ?? "Could not load daily anomaly.");
-        setAnomaly(null);
+        setDailyAnomalies([]);
         setLoading(false);
         return;
       }
 
-      setAnomaly(payload.anomaly ?? null);
+      const incoming = Array.isArray(payload.anomalies) && payload.anomalies.length ? payload.anomalies : payload.anomaly ? [payload.anomaly] : [];
+      setDailyAnomalies(incoming);
       setAnnotations([]);
       setNote("");
       setPhaseFoldHint(false);
@@ -187,6 +269,13 @@ export default function TodayGamePage() {
     const currentAnomalyId = anomaly.id;
 
     async function loadSavedSubmission() {
+      setAnnotations([]);
+      setNote("");
+      setAnnotationNote("");
+      setPhaseFoldHint(false);
+      setBinHint(false);
+      setPeriodDays(2);
+
       const query = `/api/anomaly/submit?date=${encodeURIComponent(gameDate)}&anomalyId=${encodeURIComponent(currentAnomalyId)}`;
       const response = await fetch(query, { cache: "no-store" });
       if (cancelled) return;
@@ -202,6 +291,8 @@ export default function TodayGamePage() {
       };
       const saved = payload.submission;
       if (saved && Array.isArray(saved.annotations)) {
+        const defaultCoordinateMode: Annotation["coordinateMode"] = saved.hint_flags?.phaseFold ? "phase" : "time";
+        const savedPeriodDays = typeof saved.period_days === "number" && Number.isFinite(saved.period_days) ? saved.period_days : 2;
         setAnnotations(
           saved.annotations.map((item, idx) => ({
             id: `saved-${idx}-${Date.now()}`,
@@ -210,6 +301,11 @@ export default function TodayGamePage() {
             confidence: Math.max(0, Math.min(100, Math.round(Number(item.confidence)))),
             tag: String(item.tag || "Other"),
             note: typeof item.note === "string" ? item.note : undefined,
+            coordinateMode: item.coordinateMode === "phase" ? "phase" : item.coordinateMode === "time" ? "time" : defaultCoordinateMode,
+            sourcePeriodDays:
+              typeof item.sourcePeriodDays === "number" && Number.isFinite(item.sourcePeriodDays)
+                ? normalizePeriodDays(item.sourcePeriodDays)
+                : normalizePeriodDays(savedPeriodDays),
           })),
         );
         setNote(typeof saved.note === "string" ? saved.note : "");
@@ -241,6 +337,13 @@ export default function TodayGamePage() {
             confidence: Math.max(0, Math.min(100, Math.round(Number(item.confidence)))),
             tag: String(item.tag || "Other"),
             note: typeof item.note === "string" ? item.note : undefined,
+            coordinateMode: item.coordinateMode === "phase" ? "phase" : "time",
+            sourcePeriodDays:
+              typeof item.sourcePeriodDays === "number" && Number.isFinite(item.sourcePeriodDays)
+                ? normalizePeriodDays(item.sourcePeriodDays)
+                : item.coordinateMode === "phase"
+                  ? 2
+                  : undefined,
           })),
         );
       }
@@ -270,6 +373,8 @@ export default function TodayGamePage() {
       confidence: item.confidence,
       tag: item.tag,
       note: item.note,
+      coordinateMode: item.coordinateMode,
+      sourcePeriodDays: item.sourcePeriodDays,
     }));
     localStorage.setItem(
       draftStorageKey,
@@ -292,6 +397,23 @@ export default function TodayGamePage() {
           })
         : [],
     [anomaly, phaseFoldHint, binHint, periodDays],
+  );
+
+  const projectedAnnotations = useMemo(
+    () =>
+      annotations.flatMap((annotation) =>
+        projectAnnotationToView(annotation, { phaseFold: phaseFoldHint, periodDays }).map((segment, idx) => ({
+          id: `${annotation.id}:${idx}`,
+          sourceId: annotation.id,
+          xStart: segment.xStart,
+          xEnd: segment.xEnd,
+          color: TAG_COLORS[annotation.tag] ?? TAG_COLORS.Other,
+          tag: annotation.tag,
+          confidence: annotation.confidence,
+          note: annotation.note,
+        })),
+      ),
+    [annotations, phaseFoldHint, periodDays],
   );
 
   const rewardMultiplier = useMemo(() => {
@@ -335,8 +457,8 @@ export default function TodayGamePage() {
     return `${path} L 960 320 L 40 320 Z`;
   }, [path, displayPoints]);
 
-  const xAxisLabel = phaseFoldHint ? `Phase (${periodDays.toFixed(2)}d period)` : "Time (normalized 27-day segment)";
-  const xTickLabel = (xTick: number) => (phaseFoldHint ? `${(xTick * periodDays).toFixed(2)}d` : `${(xTick * 27).toFixed(1)}d`);
+  const xAxisLabel = phaseFoldHint ? `Phase (${periodDays.toFixed(2)}d period)` : `Time (normalized ${TOTAL_DAYS}-day segment)`;
+  const xTickLabel = (xTick: number) => (phaseFoldHint ? `${(xTick * periodDays).toFixed(2)}d` : `${(xTick * TOTAL_DAYS).toFixed(1)}d`);
 
   function pointerToNormalizedX(clientX: number) {
     const rect = svgRef.current?.getBoundingClientRect();
@@ -379,6 +501,8 @@ export default function TodayGamePage() {
           confidence,
           tag,
           note: annotationNote.trim() || undefined,
+          coordinateMode: phaseFoldHint ? "phase" : "time",
+          sourcePeriodDays: phaseFoldHint ? normalizePeriodDays(periodDays) : undefined,
         },
       ]);
       setAnnotationNote("");
@@ -448,22 +572,17 @@ export default function TodayGamePage() {
       localStorage.removeItem(draftStorageKey);
     }
 
-    setMinigameIndex(1);
-    setFeedback(`Evidence saved. Reward x${(payload.rewardMultiplier ?? rewardMultiplier).toFixed(2)}. Starting minigame 2.`);
-    setSubmitting(false);
-  }
-
-  async function handleAdvanceDemo() {
-    if (minigameIndex === 1) {
-      setMinigameIndex(2);
-      setFeedback("Moved to minigame 3 (demo).");
+    const nextStage = minigameIndex + 1;
+    if (nextStage < 3) {
+      setMinigameIndex(nextStage);
+      setFeedback(
+        `Evidence saved. Reward x${(payload.rewardMultiplier ?? rewardMultiplier).toFixed(2)}. Starting signal ${nextStage + 1} (${STAGE_DIFFICULTIES[nextStage]}).`,
+      );
+      setSubmitting(false);
       return;
     }
 
-    setSubmitting(true);
-    setFeedback(null);
-
-    const response = await fetch("/api/game/complete", {
+    const completeResponse = await fetch("/api/game/complete", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -474,23 +593,35 @@ export default function TodayGamePage() {
       }),
     });
 
-    const payload = (await response.json()) as {
+    const completePayload = (await completeResponse.json()) as {
       error?: string;
       score?: number;
       badgesAwarded?: number;
       xpMultiplier?: number;
+      stats?: {
+        games_played?: number;
+      } | null;
     };
 
-    if (!response.ok) {
-      setFeedback(payload.error ?? "Could not complete the daily set.");
+    if (!completeResponse.ok) {
+      setFeedback(completePayload.error ?? "Could not complete the daily set.");
       setSubmitting(false);
       return;
     }
 
     setFeedback(
-      `Daily set complete. Score ${payload.score ?? 0}${payload.xpMultiplier === 0.5 ? " (50% XP for past-day puzzle)." : ""}${payload.badgesAwarded ? ` New badges: ${payload.badgesAwarded}.` : ""}`,
+      `Daily set complete. Score ${completePayload.score ?? 0}${completePayload.xpMultiplier === 0.5 ? " (50% XP for past-day puzzle)." : ""}${completePayload.badgesAwarded ? ` New badges: ${completePayload.badgesAwarded}.` : ""}`,
     );
     setSubmitting(false);
+    const gamesPlayed = Number(completePayload.stats?.games_played ?? 0);
+    if (gamesPlayed === 1) {
+      queueExitSurvey({
+        source: "first_game_complete",
+        version: process.env.NEXT_PUBLIC_APP_VERSION?.trim() || "v1",
+        gameDate,
+        score: completePayload.score,
+      });
+    }
     router.push("/");
   }
 
@@ -498,8 +629,23 @@ export default function TodayGamePage() {
   const pendingEnd = draftStart === null || draftEnd === null ? null : Math.max(draftStart, draftEnd);
   const confidenceLevel = confidence >= 80 ? "High" : confidence >= 55 ? "Medium" : "Low";
   const confidenceLevelClass = confidenceLevel.toLowerCase();
-  const title = isTransitStage ? "Find the Transit Signal" : demoStage?.title ?? "Demo";
+  const title = "Find the Transit Signal";
   const progressLabel = `${minigameIndex + 1} / 3`;
+  const sourceViewerHref = useMemo(() => {
+    if (!anomaly?.sourceUrl) return null;
+    const params = new URLSearchParams({
+      date: gameDate,
+      anomalyId: String(anomaly.id),
+      ticId: anomaly.ticId,
+      label: anomaly.label,
+      sourceUrl: anomaly.sourceUrl,
+      sourceName: anomaly.sourceName ?? "MAST / TESS",
+      mission: anomaly.sourceMission ?? "",
+      sector: typeof anomaly.sourceSector === "number" ? String(anomaly.sourceSector) : "",
+      synthetic: anomaly.isSynthetic ? "1" : "0",
+    });
+    return `/source/lightcurve?${params.toString()}`;
+  }, [anomaly, gameDate]);
 
   return (
     <section className="puzzle-screen">
@@ -508,34 +654,20 @@ export default function TodayGamePage() {
         <div className="puzzle-header-row">
           <div>
             <h1>{title}</h1>
-            {isTransitStage ? (
-              <>
-                <p className="muted">
-                  You are checking whether this star&apos;s brightness dips in a repeatable way, which can indicate a planet passing in front of it.
-                </p>
-                <p className="muted">
-                  Puzzle date {gameDate}
-                  {isPastDay ? " • Past day (50% XP)" : ""}
-                </p>
-                {anomaly ? <p className="muted">Today&apos;s target: {anomaly.label}</p> : null}
-                <p className="puzzle-header-edu">
-                  Beginner tip: focus on short downward dips that appear at similar spacing, then recover back to the normal brightness line.
-                </p>
-                {anomaly ? (
-                  <div className="puzzle-context-row">
-                    <span className="puzzle-context-pill">TIC {anomaly.ticId}</span>
-                    <span className="puzzle-context-pill">Type {anomaly.anomalyType ?? "planet"}</span>
-                    <span className="puzzle-context-pill">Set {anomaly.anomalySet ?? "telescope-tess"}</span>
-                    <span className="puzzle-context-pill">Goal mark likely transit windows</span>
-                  </div>
-                ) : null}
-              </>
-            ) : (
-              <>
-                <p className="muted">{demoStage?.objective}</p>
-                <p className="muted">Puzzle date {gameDate}</p>
-              </>
-            )}
+            <p className="muted puzzle-header-summary">Mark intervals where dips repeat at a stable spacing.</p>
+            <div className="puzzle-context-row">
+              <span className="puzzle-context-pill">Date {gameDate}</span>
+              <span className="puzzle-context-pill">Difficulty {stageDifficulty}</span>
+              {isPastDay ? <span className="puzzle-context-pill">Past day (50% XP)</span> : null}
+              {anomaly ? <span className="puzzle-context-pill">Target {anomaly.label}</span> : null}
+              {anomaly ? <span className="puzzle-context-pill">TIC {anomaly.ticId}</span> : null}
+              {anomaly ? <span className="puzzle-context-pill">Type {anomaly.anomalyType ?? "planet"}</span> : null}
+              {anomaly?.sourceUrl && sourceViewerHref ? (
+                <a href={sourceViewerHref} target="_blank" rel="noreferrer" className="puzzle-context-pill puzzle-context-pill-link">
+                  Source curve
+                </a>
+              ) : null}
+            </div>
           </div>
           <span className="puzzle-progress">{loading ? "Loading..." : progressLabel}</span>
         </div>
@@ -543,20 +675,19 @@ export default function TodayGamePage() {
 
       <div className="puzzle-workspace">
         <article className="puzzle-canvas panel">
-          {isTransitStage ? (
-            <div className="puzzle-lightcurve-wrap">
-              {anomaly ? (
-                <svg
-                  ref={svgRef}
-                  className="puzzle-lightcurve"
-                  viewBox="0 0 1000 360"
-                  role="img"
-                  aria-label={`Lightcurve for TIC ${anomaly.ticId}`}
-                  onPointerDown={(event) => handleChartPointerDown(event.clientX)}
-                  onPointerMove={(event) => handleChartPointerMove(event.clientX)}
-                  onPointerUp={handleChartPointerUp}
-                  onPointerLeave={handleChartPointerUp}
-                >
+          <div className="puzzle-lightcurve-wrap">
+            {anomaly ? (
+              <svg
+                ref={svgRef}
+                className="puzzle-lightcurve"
+                viewBox="0 0 1000 360"
+                role="img"
+                aria-label={`Lightcurve for TIC ${anomaly.ticId}`}
+                onPointerDown={(event) => handleChartPointerDown(event.clientX)}
+                onPointerMove={(event) => handleChartPointerMove(event.clientX)}
+                onPointerUp={handleChartPointerUp}
+                onPointerLeave={handleChartPointerUp}
+              >
                   <defs>
                     <linearGradient id="curveBg" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="0%" stopColor="color-mix(in oklab, var(--surface) 90%, #dbeafe 10%)" />
@@ -589,11 +720,10 @@ export default function TodayGamePage() {
                     );
                   })}
 
-                  {annotations.map((annotation) => {
+                  {projectedAnnotations.map((annotation) => {
                     const x = xToSvg(annotation.xStart);
                     const width = Math.max(2, xToSvg(annotation.xEnd) - x);
-                    const colors = TAG_COLORS[annotation.tag] ?? TAG_COLORS.Other;
-                    return <rect key={annotation.id} x={x} y={20} width={width} height={300} fill={colors.fill} stroke={colors.stroke} strokeWidth="1" />;
+                    return <rect key={annotation.id} x={x} y={20} width={width} height={300} fill={annotation.color.fill} stroke={annotation.color.stroke} strokeWidth="1" />;
                   })}
 
                   {pendingStart !== null && pendingEnd !== null ? (
@@ -617,16 +747,11 @@ export default function TodayGamePage() {
                   <text x="10" y="24" fontSize="12" fill="var(--muted)">
                     Flux
                   </text>
-                </svg>
-              ) : (
-                <p className="muted">{loading ? "Loading daily anomaly..." : "No anomaly available for this date."}</p>
-              )}
-            </div>
-          ) : (
-            <div className="puzzle-media-wrap">
-              <Image src={demoStage?.image ?? "/puzzles/puzzle-2.svg"} alt={demoStage?.title ?? "Demo minigame"} width={1300} height={760} className="puzzle-media" priority />
-            </div>
-          )}
+              </svg>
+            ) : (
+              <p className="muted">{loading ? "Loading daily anomaly..." : "No anomaly available for this date."}</p>
+            )}
+          </div>
         </article>
 
         <aside className="puzzle-sidebar panel">
@@ -639,28 +764,17 @@ export default function TodayGamePage() {
           {showTutorial ? (
             <aside className="puzzle-help" aria-live="polite">
               <p className="puzzle-help-title">Quick Guide</p>
-              {isTransitStage ? (
-                <>
-                  <p className="puzzle-help-context">Context: real exoplanet candidates show recurring dips at a consistent period, not random one-off noise.</p>
-                  <ol className="puzzle-help-compact-list">
-                    <li>Draw suspected dip intervals.</li>
-                    <li>Tag + confidence each interval.</li>
-                    <li>Submit evidence to continue to minigame 2.</li>
-                  </ol>
-                  <p className="puzzle-help-hint">Strong evidence: repeatability, sharp dip profile, baseline recovery.</p>
-                </>
-              ) : (
-                <ol className="puzzle-help-compact-list">
-                  {(demoStage?.instructions ?? []).map((line) => (
-                    <li key={line}>{line}</li>
-                  ))}
-                </ol>
-              )}
+              <p className="puzzle-help-context">Context: real exoplanet candidates show recurring dips at a consistent period, not random one-off noise.</p>
+              <ol className="puzzle-help-compact-list">
+                <li>Draw suspected dip intervals.</li>
+                <li>Tag + confidence each interval.</li>
+                <li>Submit evidence to continue to the next signal.</li>
+              </ol>
+              <p className="puzzle-help-hint">Strong evidence: repeatability, sharp dip profile, baseline recovery.</p>
             </aside>
           ) : null}
 
-          {isTransitStage ? (
-            <section className="puzzle-controls" aria-label="Puzzle controls">
+          <section className="puzzle-controls" aria-label="Puzzle controls">
               <div className="puzzle-control-group is-compact">
                 <div className="puzzle-hints-head">
                   <p className="puzzle-control-label">Hints</p>
@@ -670,14 +784,13 @@ export default function TodayGamePage() {
                   <button
                     type="button"
                     className={`puzzle-hint-button${phaseFoldHint ? " is-active" : ""}`}
-                    onClick={() => setPhaseFoldHint(true)}
-                    disabled={phaseFoldHint}
+                    onClick={() => setPhaseFoldHint((value) => !value)}
                   >
-                    <span className="puzzle-hint-button-title">{phaseFoldHint ? "Phase Fold Enabled" : "Use Phase Fold Hint"}</span>
+                    <span className="puzzle-hint-button-title">{phaseFoldHint ? "Disable Phase Fold Hint" : "Use Phase Fold Hint"}</span>
                     <span className="puzzle-hint-button-sub">Aligns repeating dips by period • reward -20%</span>
                   </button>
-                  <button type="button" className={`puzzle-hint-button${binHint ? " is-active" : ""}`} onClick={() => setBinHint(true)} disabled={binHint}>
-                    <span className="puzzle-hint-button-title">{binHint ? "Binning Enabled" : "Use Bin Data Hint"}</span>
+                  <button type="button" className={`puzzle-hint-button${binHint ? " is-active" : ""}`} onClick={() => setBinHint((value) => !value)}>
+                    <span className="puzzle-hint-button-title">{binHint ? "Disable Bin Data Hint" : "Use Bin Data Hint"}</span>
                     <span className="puzzle-hint-button-sub">Smooths noise by averaging points • reward -15%</span>
                   </button>
                 </div>
@@ -765,22 +878,9 @@ export default function TodayGamePage() {
                   placeholder="Why this is a planet candidate..."
                 />
               </div>
-            </section>
-          ) : (
-            <section className="puzzle-controls" aria-label="Demo puzzle controls">
-              <div className="puzzle-control-group">
-                <p className="puzzle-control-label">Demo mode</p>
-                <p className="muted">
-                  Minigame {demoStage?.id} is a placeholder for now. Continue to advance through the current demo flow.
-                </p>
-                <button className="button" type="button" onClick={() => setMinigameIndex(0)}>
-                  Edit Minigame 1 Answer
-                </button>
-              </div>
-            </section>
-          )}
+          </section>
 
-          {isTransitStage && annotations.length ? (
+          {annotations.length ? (
             <div className="puzzle-annotation-list">
               {annotations.map((annotation, idx) => (
                 <div
@@ -801,34 +901,27 @@ export default function TodayGamePage() {
           ) : null}
 
           <div className="puzzle-next-row">
-            {isTransitStage ? (
-              <>
-                <button
-                  className="button puzzle-action-secondary"
-                  data-cy="puzzle-clear-draft-button"
-                  type="button"
-                  onClick={clearDraft}
-                  disabled={submitting || loading}
-                >
-                  Clear Draft
-                </button>
-                <button className="button button-primary puzzle-action-primary" type="button" onClick={() => void handleSubmitEvidenceAndContinue()} disabled={submitting || loading}>
-                  <span data-cy="puzzle-finish-button">{submitting ? "Saving..." : "Submit Evidence & Continue"}</span>
-                </button>
-              </>
-            ) : (
+            <>
+              <button
+                className="button puzzle-action-secondary"
+                data-cy="puzzle-clear-draft-button"
+                type="button"
+                onClick={clearDraft}
+                disabled={submitting || loading}
+              >
+                Clear Draft
+              </button>
               <button
                 className="button button-primary puzzle-action-primary"
-                data-cy="puzzle-demo-next-button"
                 type="button"
-                onClick={() => void handleAdvanceDemo()}
+                onClick={() => void handleSubmitEvidenceAndContinue()}
                 disabled={submitting || loading}
               >
                 <span data-cy="puzzle-finish-button">
-                  {submitting ? "Saving..." : minigameIndex === 1 ? "Continue to Minigame 3" : "Finish Daily Set"}
+                  {submitting ? "Saving..." : minigameIndex < 2 ? `Submit Evidence & Continue (${STAGE_DIFFICULTIES[minigameIndex + 1]})` : "Submit Final Evidence"}
                 </span>
               </button>
-            )}
+            </>
           </div>
 
           {feedback ? <p className="puzzle-feedback" data-cy="puzzle-feedback">{feedback}</p> : null}

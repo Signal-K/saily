@@ -6,5 +6,60 @@
       "endedAt": "2026-02-10T04:10:36.280Z",
       "duration": 1294
     }
+  ],
+  "5froqu": [
+    {
+      "id": "te-1771316567615-5froqu",
+      "startedAt": "2026-02-10T03:49:29.459Z",
+      "endedAt": "2026-02-17T08:22:47.610Z",
+      "duration": 621198
+    }
+  ],
+  "4kz8fq": [
+    {
+      "id": "te-1771316993910-4kz8fq",
+      "startedAt": "2026-02-17T08:22:59.075Z",
+      "endedAt": "2026-02-17T08:29:53.905Z",
+      "duration": 414
+    }
+  ],
+  "7q8hn2": [
+    {
+      "id": "te-1771330723722-7q8hn2",
+      "startedAt": "2026-02-17T09:30:08.177Z",
+      "endedAt": "2026-02-17T12:18:43.717Z",
+      "duration": 10115
+    },
+    {
+      "id": "te-1771330988658-7q8hn2",
+      "startedAt": "2026-02-17T12:23:04.042Z",
+      "endedAt": "2026-02-17T12:23:08.653Z",
+      "duration": 4
+    }
+  ],
+  "7x6ume": [
+    {
+      "id": "te-1771424262068-7x6ume",
+      "startedAt": "2026-02-18T14:14:15.277Z",
+      "endedAt": "2026-02-18T14:17:42.062Z",
+      "duration": 206
+    }
+  ],
+  "rnzoxy": [
+    {
+      "id": "te-1771424262087",
+      "startedAt": "2026-02-18T14:17:42.087Z",
+      "endedAt": "2026-02-18T14:32:42.087Z",
+      "duration": 900,
+      "note": "Icon generation + manifest/installability updates"
+    }
+  ],
+  "0155ks": [
+    {
+      "id": "te-1771424749200-0155ks",
+      "startedAt": "2026-02-18T14:23:59.751Z",
+      "endedAt": "2026-02-18T14:25:49.192Z",
+      "duration": 109
+    }
   ]
 }
