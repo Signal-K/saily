@@ -81,7 +81,7 @@ describe("Daily puzzle flow", () => {
     cy.get("h1")
       .invoke("text")
       .should((text) => {
-        expect(text).to.match(/One game a day\. Keep your streak alive\.|Your command center/);
+        expect(text).to.match(/One puzzle\. Fresh every day\.|Your Daily Grid/);
       });
   });
 });
