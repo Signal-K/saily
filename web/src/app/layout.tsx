@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { cookies } from "next/headers";
+import { Analytics } from "@vercel/analytics/react";
 import { SWRegister } from "@/components/sw-register";
 import { AuthStatus } from "@/components/auth-status";
 import { HeaderSearch } from "@/components/header-search";
@@ -56,6 +57,9 @@ export default async function RootLayout({
                     <Link href="/games/today" className="header-nav-link" data-cy="nav-today">
                       Today&apos;s Puzzle
                     </Link>
+                    <Link href="/games/asteroids" className="header-nav-link" data-cy="nav-asteroids">
+                      Asteroid Lab
+                    </Link>
                     <Link href="/calendar" className="header-nav-link" data-cy="nav-calendar">
                       Calendar
                     </Link>
@@ -77,6 +81,9 @@ export default async function RootLayout({
                 <Link href="/games/today" className="header-nav-link" data-cy="nav-today-mobile">
                   Today
                 </Link>
+                <Link href="/games/asteroids" className="header-nav-link" data-cy="nav-asteroids-mobile">
+                  Asteroids
+                </Link>
                 <Link href="/calendar" className="header-nav-link" data-cy="nav-calendar-mobile">
                   Calendar
                 </Link>
@@ -91,6 +98,7 @@ export default async function RootLayout({
           <BreadcrumbsNav />
           {children}
         </main>
+        <Analytics />
       </body>
     </html>
   );

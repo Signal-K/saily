@@ -69,6 +69,9 @@ export default async function Home() {
           <Link href="/games/today" className="button button-primary">
             Play Today&apos;s Game
           </Link>
+          <Link href="/games/asteroids" className="button">
+            Open Asteroid Lab
+          </Link>
           <Link href={user ? "/profile" : "/auth/sign-in"} className="button">
             {user ? "View Profile" : "Sign in"}
           </Link>

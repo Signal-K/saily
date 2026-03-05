@@ -1,0 +1,101 @@
+{
+  "taskId": "k7w1he",
+  "currentVersion": 3,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "k7w1he",
+      "version": 1,
+      "timestamp": "2026-03-06T08:42:46.620Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "oldValue": "Started: took ownership and drafted execution plan for v0 release readiness\n\nDone: added scripts/release/check_v0_readiness.sh to run lint/build + analytics wiring checks",
+          "newValue": "Started: took ownership and drafted execution plan for v0 release readiness\n\nDone: added scripts/release/check_v0_readiness.sh to run lint/build + analytics wiring checks\n\nAdded launch runbook @doc/runbooks/saily-v0-launch-and-rollback-checklist and first tester script scripts/release/first_external_tester_script.sh"
+        }
+      ],
+      "snapshot": {
+        "title": "Ecosystem v0 release readiness for Saily",
+        "description": "Define and ship a constrained v0 slice for Saily with passing release checks, analytics/feedback wiring, and an explicit launch timeline for early external feedback.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "release",
+          "v0",
+          "build",
+          "tests",
+          "analytics"
+        ],
+        "acceptanceCriteria": [],
+        "implementationPlan": "1. Audit current release blockers (tests/build/env) and confirm minimal v0 scope.\n2. Fix highest-priority blocker(s) and capture exact release command sequence.\n3. Verify analytics + feedback path is live in runtime.\n4. Document launch checklist, rollback trigger, and first-tester script.",
+        "implementationNotes": "Started: took ownership and drafted execution plan for v0 release readiness\n\nDone: added scripts/release/check_v0_readiness.sh to run lint/build + analytics wiring checks\n\nAdded launch runbook @doc/runbooks/saily-v0-launch-and-rollback-checklist and first tester script scripts/release/first_external_tester_script.sh"
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "k7w1he",
+      "version": 2,
+      "timestamp": "2026-03-06T08:43:17.463Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        },
+        {
+          "field": "implementationNotes",
+          "oldValue": "Started: took ownership and drafted execution plan for v0 release readiness\n\nDone: added scripts/release/check_v0_readiness.sh to run lint/build + analytics wiring checks\n\nAdded launch runbook @doc/runbooks/saily-v0-launch-and-rollback-checklist and first tester script scripts/release/first_external_tester_script.sh",
+          "newValue": "Started: took ownership and drafted execution plan for v0 release readiness\n\nDone: added scripts/release/check_v0_readiness.sh to run lint/build + analytics wiring checks\n\nAdded launch runbook @doc/runbooks/saily-v0-launch-and-rollback-checklist and first tester script scripts/release/first_external_tester_script.sh\n\nComplete: v0 readiness script, launch/rollback runbook, and first external tester script added; validation run."
+        }
+      ],
+      "snapshot": {
+        "title": "Ecosystem v0 release readiness for Saily",
+        "description": "Define and ship a constrained v0 slice for Saily with passing release checks, analytics/feedback wiring, and an explicit launch timeline for early external feedback.",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "release",
+          "v0",
+          "build",
+          "tests",
+          "analytics"
+        ],
+        "acceptanceCriteria": [],
+        "implementationPlan": "1. Audit current release blockers (tests/build/env) and confirm minimal v0 scope.\n2. Fix highest-priority blocker(s) and capture exact release command sequence.\n3. Verify analytics + feedback path is live in runtime.\n4. Document launch checklist, rollback trigger, and first-tester script.",
+        "implementationNotes": "Started: took ownership and drafted execution plan for v0 release readiness\n\nDone: added scripts/release/check_v0_readiness.sh to run lint/build + analytics wiring checks\n\nAdded launch runbook @doc/runbooks/saily-v0-launch-and-rollback-checklist and first tester script scripts/release/first_external_tester_script.sh\n\nComplete: v0 readiness script, launch/rollback runbook, and first external tester script added; validation run."
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "k7w1he",
+      "version": 3,
+      "timestamp": "2026-03-06T08:44:32.784Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "oldValue": "Started: took ownership and drafted execution plan for v0 release readiness\n\nDone: added scripts/release/check_v0_readiness.sh to run lint/build + analytics wiring checks\n\nAdded launch runbook @doc/runbooks/saily-v0-launch-and-rollback-checklist and first tester script scripts/release/first_external_tester_script.sh\n\nComplete: v0 readiness script, launch/rollback runbook, and first external tester script added; validation run.",
+          "newValue": "Started: took ownership and drafted execution plan for v0 release readiness\n\nDone: added scripts/release/check_v0_readiness.sh to run lint/build + analytics wiring checks\n\nAdded launch runbook @doc/runbooks/saily-v0-launch-and-rollback-checklist and first tester script scripts/release/first_external_tester_script.sh\n\nComplete: v0 readiness script, launch/rollback runbook, and first external tester script added; validation run.\n\nPost-change verification: scripts/release/check_v0_readiness.sh re-run and passed (lint warning only, build successful)."
+        }
+      ],
+      "snapshot": {
+        "title": "Ecosystem v0 release readiness for Saily",
+        "description": "Define and ship a constrained v0 slice for Saily with passing release checks, analytics/feedback wiring, and an explicit launch timeline for early external feedback.",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "release",
+          "v0",
+          "build",
+          "tests",
+          "analytics"
+        ],
+        "acceptanceCriteria": [],
+        "implementationPlan": "1. Audit current release blockers (tests/build/env) and confirm minimal v0 scope.\n2. Fix highest-priority blocker(s) and capture exact release command sequence.\n3. Verify analytics + feedback path is live in runtime.\n4. Document launch checklist, rollback trigger, and first-tester script.",
+        "implementationNotes": "Started: took ownership and drafted execution plan for v0 release readiness\n\nDone: added scripts/release/check_v0_readiness.sh to run lint/build + analytics wiring checks\n\nAdded launch runbook @doc/runbooks/saily-v0-launch-and-rollback-checklist and first tester script scripts/release/first_external_tester_script.sh\n\nComplete: v0 readiness script, launch/rollback runbook, and first external tester script added; validation run.\n\nPost-change verification: scripts/release/check_v0_readiness.sh re-run and passed (lint warning only, build successful)."
+      }
+    }
+  ]
+}

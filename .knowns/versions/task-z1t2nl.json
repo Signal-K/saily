@@ -1,0 +1,143 @@
+{
+  "taskId": "z1t2nl",
+  "currentVersion": 4,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "z1t2nl",
+      "version": 1,
+      "timestamp": "2026-03-06T02:33:35.931Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "in-progress"
+        },
+        {
+          "field": "assignee",
+          "newValue": "@me"
+        },
+        {
+          "field": "implementationPlan",
+          "newValue": "1. Review current game architecture and define extension points for secondary puzzle.\n2. Add initial data model/types for asteroid anomalies and image payload.\n3. Scaffold UI route/component to render anomaly image and annotation stub.\n4. Wire placeholder save flow for user annotations and document next increments."
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Started: took ownership and drafted setup plan for secondary game system"
+        }
+      ],
+      "snapshot": {
+        "title": "Set up secondary game system",
+        "description": "Begin the process of setting up the second puzzle. Find asteroid anomalies, and the images, and set up an infrastructure to display them and something for the user to annotate",
+        "status": "in-progress",
+        "priority": "medium",
+        "assignee": "@me",
+        "labels": [
+          "minigame",
+          "chapters",
+          "asteroids",
+          "dmp",
+          "anomalies"
+        ],
+        "acceptanceCriteria": [],
+        "implementationPlan": "1. Review current game architecture and define extension points for secondary puzzle.\n2. Add initial data model/types for asteroid anomalies and image payload.\n3. Scaffold UI route/component to render anomaly image and annotation stub.\n4. Wire placeholder save flow for user annotations and document next increments.",
+        "implementationNotes": "Started: took ownership and drafted setup plan for secondary game system"
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "z1t2nl",
+      "version": 2,
+      "timestamp": "2026-03-06T03:03:08.440Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "oldValue": "Started: took ownership and drafted setup plan for secondary game system",
+          "newValue": "Started: took ownership and drafted setup plan for secondary game system\n\nDone: scaffolded /games/asteroids with anomaly image display, click-to-annotate markers, and local draft persistence"
+        }
+      ],
+      "snapshot": {
+        "title": "Set up secondary game system",
+        "description": "Begin the process of setting up the second puzzle. Find asteroid anomalies, and the images, and set up an infrastructure to display them and something for the user to annotate",
+        "status": "in-progress",
+        "priority": "medium",
+        "assignee": "@me",
+        "labels": [
+          "minigame",
+          "chapters",
+          "asteroids",
+          "dmp",
+          "anomalies"
+        ],
+        "acceptanceCriteria": [],
+        "implementationPlan": "1. Review current game architecture and define extension points for secondary puzzle.\n2. Add initial data model/types for asteroid anomalies and image payload.\n3. Scaffold UI route/component to render anomaly image and annotation stub.\n4. Wire placeholder save flow for user annotations and document next increments.",
+        "implementationNotes": "Started: took ownership and drafted setup plan for secondary game system\n\nDone: scaffolded /games/asteroids with anomaly image display, click-to-annotate markers, and local draft persistence"
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "z1t2nl",
+      "version": 3,
+      "timestamp": "2026-03-06T08:41:18.821Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "oldValue": "Started: took ownership and drafted setup plan for secondary game system\n\nDone: scaffolded /games/asteroids with anomaly image display, click-to-annotate markers, and local draft persistence",
+          "newValue": "Started: took ownership and drafted setup plan for secondary game system\n\nDone: scaffolded /games/asteroids with anomaly image display, click-to-annotate markers, and local draft persistence\n\nDone: added server-backed asteroid annotation drafts (Supabase table + /api/asteroid/annotations GET/POST) and wired /games/asteroids to load/save drafts"
+        }
+      ],
+      "snapshot": {
+        "title": "Set up secondary game system",
+        "description": "Begin the process of setting up the second puzzle. Find asteroid anomalies, and the images, and set up an infrastructure to display them and something for the user to annotate",
+        "status": "in-progress",
+        "priority": "medium",
+        "assignee": "@me",
+        "labels": [
+          "minigame",
+          "chapters",
+          "asteroids",
+          "dmp",
+          "anomalies"
+        ],
+        "acceptanceCriteria": [],
+        "implementationPlan": "1. Review current game architecture and define extension points for secondary puzzle.\n2. Add initial data model/types for asteroid anomalies and image payload.\n3. Scaffold UI route/component to render anomaly image and annotation stub.\n4. Wire placeholder save flow for user annotations and document next increments.",
+        "implementationNotes": "Started: took ownership and drafted setup plan for secondary game system\n\nDone: scaffolded /games/asteroids with anomaly image display, click-to-annotate markers, and local draft persistence\n\nDone: added server-backed asteroid annotation drafts (Supabase table + /api/asteroid/annotations GET/POST) and wired /games/asteroids to load/save drafts"
+      }
+    },
+    {
+      "id": "v4",
+      "taskId": "z1t2nl",
+      "version": 4,
+      "timestamp": "2026-03-06T08:43:17.461Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        },
+        {
+          "field": "implementationNotes",
+          "oldValue": "Started: took ownership and drafted setup plan for secondary game system\n\nDone: scaffolded /games/asteroids with anomaly image display, click-to-annotate markers, and local draft persistence\n\nDone: added server-backed asteroid annotation drafts (Supabase table + /api/asteroid/annotations GET/POST) and wired /games/asteroids to load/save drafts",
+          "newValue": "Started: took ownership and drafted setup plan for secondary game system\n\nDone: scaffolded /games/asteroids with anomaly image display, click-to-annotate markers, and local draft persistence\n\nDone: added server-backed asteroid annotation drafts (Supabase table + /api/asteroid/annotations GET/POST) and wired /games/asteroids to load/save drafts\n\nComplete: secondary asteroid lab route scaffolded with server-backed draft persistence and annotation UI."
+        }
+      ],
+      "snapshot": {
+        "title": "Set up secondary game system",
+        "description": "Begin the process of setting up the second puzzle. Find asteroid anomalies, and the images, and set up an infrastructure to display them and something for the user to annotate",
+        "status": "done",
+        "priority": "medium",
+        "assignee": "@me",
+        "labels": [
+          "minigame",
+          "chapters",
+          "asteroids",
+          "dmp",
+          "anomalies"
+        ],
+        "acceptanceCriteria": [],
+        "implementationPlan": "1. Review current game architecture and define extension points for secondary puzzle.\n2. Add initial data model/types for asteroid anomalies and image payload.\n3. Scaffold UI route/component to render anomaly image and annotation stub.\n4. Wire placeholder save flow for user annotations and document next increments.",
+        "implementationNotes": "Started: took ownership and drafted setup plan for secondary game system\n\nDone: scaffolded /games/asteroids with anomaly image display, click-to-annotate markers, and local draft persistence\n\nDone: added server-backed asteroid annotation drafts (Supabase table + /api/asteroid/annotations GET/POST) and wired /games/asteroids to load/save drafts\n\nComplete: secondary asteroid lab route scaffolded with server-backed draft persistence and annotation UI."
+      }
+    }
+  ]
+}
