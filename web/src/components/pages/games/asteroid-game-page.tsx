@@ -45,7 +45,11 @@ function normalizeDraftAnnotations(value: unknown): AsteroidAnnotation[] {
     });
 }
 
-export default function AsteroidGamePage() {
+type AsteroidGamePageProps = {
+  onMissionComplete?: (score: number) => void;
+};
+
+export default function AsteroidGamePage({ onMissionComplete }: AsteroidGamePageProps = {}) {
   const date = getTodayKey();
   const dailyIndex = getDailyAnomalyIndex(date);
   const anomaly = ASTEROID_ANOMALIES[dailyIndex];
@@ -161,9 +165,14 @@ export default function AsteroidGamePage() {
       setSaving(false);
       return;
     }
-    setSubmitted(true);
-    setScore(payload.score ?? null);
-    setStatus(null);
+    const finalScore = payload.score ?? 0;
+    if (onMissionComplete) {
+      onMissionComplete(finalScore);
+    } else {
+      setSubmitted(true);
+      setScore(finalScore);
+      setStatus(null);
+    }
     setSaving(false);
   }
 

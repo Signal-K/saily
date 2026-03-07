@@ -14,7 +14,11 @@ function getTodayKey(): string {
   return new Date().toISOString().slice(0, 10);
 }
 
-export default function MarsGamePage() {
+type MarsGamePageProps = {
+  onMissionComplete?: (score: number) => void;
+};
+
+export default function MarsGamePage({ onMissionComplete }: MarsGamePageProps = {}) {
   const date = getTodayKey();
 
   const [images, setImages] = useState<MarsImage[]>([]);
@@ -102,9 +106,14 @@ export default function MarsGamePage() {
       setSubmitting(false);
       return;
     }
-    setSubmitted(true);
-    setScore(payload.score ?? null);
-    setStatus(null);
+    const finalScore = payload.score ?? 0;
+    if (onMissionComplete) {
+      onMissionComplete(finalScore);
+    } else {
+      setSubmitted(true);
+      setScore(finalScore);
+      setStatus(null);
+    }
     setSubmitting(false);
   }
 

@@ -1,0 +1,54 @@
+{
+  "taskId": "prmh9h",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "prmh9h",
+      "version": 1,
+      "timestamp": "2026-03-07T10:06:48.288Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "MissionFlowPage orchestrates briefing→game1→beat1→game2→beat2→game3→complete. onMissionComplete prop added to all 3 game components. /games/today now renders MissionFlowPage. Chapter progress incremented via /api/story/progress on completion. Total score = sum of all 3 game scores."
+        }
+      ],
+      "snapshot": {
+        "title": "Wire unified mission flow",
+        "description": "Connect all three minigames and narrative components into one cohesive daily mission flow. Entry point is /games/today. The page steps through: briefing → game 1 → beat → game 2 → beat → game 3 → resolution. On completion, increment the user's chapter index for today's storyline. Update routing and home page CTAs.",
+        "status": "done",
+        "priority": "high",
+        "labels": [
+          "flow",
+          "routing",
+          "narrative",
+          "integration"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Single /games/today route steps through all 3 games with narrative wrapping"
+          },
+          {
+            "completed": false,
+            "text": "Completing game 3 triggers chapter increment via /api/story/progress POST"
+          },
+          {
+            "completed": false,
+            "text": "Users who revisit after completion see a summary/resolution view, not the games again"
+          },
+          {
+            "completed": false,
+            "text": "Home page CTA reflects today's storyline and user's chapter number"
+          }
+        ],
+        "implementationNotes": "MissionFlowPage orchestrates briefing→game1→beat1→game2→beat2→game3→complete. onMissionComplete prop added to all 3 game components. /games/today now renders MissionFlowPage. Chapter progress incremented via /api/story/progress on completion. Total score = sum of all 3 game scores."
+      }
+    }
+  ]
+}

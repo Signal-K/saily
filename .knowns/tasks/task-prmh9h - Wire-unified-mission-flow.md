@@ -1,7 +1,7 @@
 ---
 id: prmh9h
 title: Wire unified mission flow
-status: todo
+status: done
 priority: high
 labels:
   - flow
@@ -9,7 +9,7 @@ labels:
   - narrative
   - integration
 createdAt: '2026-03-07T09:41:11.529Z'
-updatedAt: '2026-03-07T09:41:11.529Z'
+updatedAt: '2026-03-07T10:06:48.287Z'
 timeSpent: 0
 ---
 # Wire unified mission flow
@@ -27,4 +27,10 @@ Connect all three minigames and narrative components into one cohesive daily mis
 - [ ] #3 Users who revisit after completion see a summary/resolution view, not the games again
 - [ ] #4 Home page CTA reflects today's storyline and user's chapter number
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+MissionFlowPage orchestrates briefing→game1→beat1→game2→beat2→game3→complete. onMissionComplete prop added to all 3 game components. /games/today now renders MissionFlowPage. Chapter progress incremented via /api/story/progress on completion. Total score = sum of all 3 game scores.
+<!-- SECTION:NOTES:END -->
 

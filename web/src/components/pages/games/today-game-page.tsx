@@ -188,7 +188,11 @@ function projectAnnotationToView(annotation: Annotation, opts: { phaseFold: bool
   return projectPhaseIntervalToTime(annotation);
 }
 
-export default function TodayGamePage() {
+type TodayGamePageProps = {
+  onMissionComplete?: (score: number) => void;
+};
+
+export default function TodayGamePage({ onMissionComplete }: TodayGamePageProps = {}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [showTutorial, setShowTutorial] = useState(false);
@@ -622,7 +626,11 @@ export default function TodayGamePage() {
         score: completePayload.score,
       });
     }
-    router.push("/");
+    if (onMissionComplete) {
+      onMissionComplete(completePayload.score ?? 0);
+    } else {
+      router.push("/");
+    }
   }
 
   const pendingStart = draftStart === null || draftEnd === null ? null : Math.min(draftStart, draftEnd);
