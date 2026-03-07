@@ -1,0 +1,53 @@
+{
+  "taskId": "d3iadl",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "d3iadl",
+      "version": 1,
+      "timestamp": "2026-03-07T10:02:09.243Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Added submitted_at migration. New /api/asteroid/submit route (score=40+annotations*8). Asteroid page now shows daily-seeded single target, Submit Survey button, score on completion. Removed 'Secondary Puzzle Preview' label."
+        }
+      ],
+      "snapshot": {
+        "title": "Upgrade asteroid lab to daily scored game",
+        "description": "Game 2 is currently a preview with no daily scoring or streaks. Seed today's asteroid anomaly selection by date (same pattern as Game 1), add a submit flow that records a score, and integrate with the daily_plays table. Remove 'Secondary Puzzle Preview' label.",
+        "status": "done",
+        "priority": "high",
+        "labels": [
+          "minigame",
+          "asteroids",
+          "scoring"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Asteroid anomaly selection is deterministic by date (seeded)"
+          },
+          {
+            "completed": false,
+            "text": "Submitting annotations records a score to daily_plays"
+          },
+          {
+            "completed": false,
+            "text": "Asteroid game contributes to streak calculation"
+          },
+          {
+            "completed": false,
+            "text": "Preview label removed, game presented as a proper daily mission step"
+          }
+        ],
+        "implementationNotes": "Added submitted_at migration. New /api/asteroid/submit route (score=40+annotations*8). Asteroid page now shows daily-seeded single target, Submit Survey button, score on completion. Removed 'Secondary Puzzle Preview' label."
+      }
+    }
+  ]
+}

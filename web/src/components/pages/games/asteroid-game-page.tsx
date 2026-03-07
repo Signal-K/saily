@@ -16,6 +16,19 @@ function clamp01(value: number) {
   return Math.max(0, Math.min(1, value));
 }
 
+function getTodayKey(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function getDailyAnomalyIndex(date: string): number {
+  let hash = 0;
+  for (let i = 0; i < date.length; i++) {
+    hash = (hash << 5) - hash + date.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash) % ASTEROID_ANOMALIES.length;
+}
+
 function normalizeDraftAnnotations(value: unknown): AsteroidAnnotation[] {
   if (!Array.isArray(value)) return [];
   return value
@@ -33,18 +46,18 @@ function normalizeDraftAnnotations(value: unknown): AsteroidAnnotation[] {
 }
 
 export default function AsteroidGamePage() {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [annotationMap, setAnnotationMap] = useState<Record<string, AsteroidAnnotation[]>>({});
+  const date = getTodayKey();
+  const dailyIndex = getDailyAnomalyIndex(date);
+  const anomaly = ASTEROID_ANOMALIES[dailyIndex];
+
+  const [annotations, setAnnotations] = useState<AsteroidAnnotation[]>([]);
   const [label, setLabel] = useState("Possible anomaly");
   const [note, setNote] = useState("");
   const [status, setStatus] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [score, setScore] = useState<number | null>(null);
   const imageRef = useRef<HTMLImageElement>(null);
-
-  const anomaly = ASTEROID_ANOMALIES[selectedIndex] ?? ASTEROID_ANOMALIES[0];
-  const annotations = useMemo(() => {
-    return annotationMap[anomaly.id] ?? [];
-  }, [annotationMap, anomaly.id]);
 
   useEffect(() => {
     let cancelled = false;
@@ -54,7 +67,7 @@ export default function AsteroidGamePage() {
       const response = await fetch(`/api/asteroid/annotations?${query.toString()}`, { cache: "no-store" });
       const payload = (await response.json().catch(() => ({}))) as {
         error?: string;
-        draft?: { annotations?: unknown; note?: string | null } | null;
+        draft?: { annotations?: unknown; note?: string | null; submitted_at?: string | null } | null;
       };
 
       if (cancelled) return;
@@ -67,41 +80,35 @@ export default function AsteroidGamePage() {
         return;
       }
 
-      setAnnotationMap((current) => ({
-        ...current,
-        [anomaly.id]: normalizeDraftAnnotations(payload.draft?.annotations),
-      }));
-      if (typeof payload.draft?.note === "string") {
-        setNote(payload.draft.note);
-      } else {
-        setNote("");
+      setAnnotations(normalizeDraftAnnotations(payload.draft?.annotations));
+      if (typeof payload.draft?.note === "string") setNote(payload.draft.note);
+      if (payload.draft?.submitted_at) {
+        setSubmitted(true);
+        setStatus("You've already submitted today's asteroid survey.");
       }
-      setStatus(null);
     }
 
     void loadDraft();
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, [anomaly.id]);
 
   function handleImageClick(event: React.MouseEvent<HTMLImageElement>) {
+    if (submitted) return;
     const rect = imageRef.current?.getBoundingClientRect();
     if (!rect || rect.width <= 0 || rect.height <= 0) return;
     const x = clamp01((event.clientX - rect.left) / rect.width);
     const y = clamp01((event.clientY - rect.top) / rect.height);
 
-    const next = [
-      ...annotations,
+    setAnnotations((prev) => [
+      ...prev,
       {
-        id: `${Date.now()}-${annotations.length}`,
+        id: `${Date.now()}-${prev.length}`,
         x: Number(x.toFixed(4)),
         y: Number(y.toFixed(4)),
         label: label.trim() || "Possible anomaly",
         note: note.trim(),
       },
-    ];
-    setAnnotationMap((current) => ({ ...current, [anomaly.id]: next }));
+    ]);
     setStatus("Annotation added.");
   }
 
@@ -124,67 +131,87 @@ export default function AsteroidGamePage() {
       setSaving(false);
       return;
     }
-    setStatus(`Saved ${payload.savedCount ?? annotations.length} annotation(s) for ${anomaly.title}.`);
+    setStatus(`Saved ${payload.savedCount ?? annotations.length} annotation(s).`);
     setSaving(false);
   }
 
-  async function clearDraft() {
+  async function submitAnnotations() {
     setSaving(true);
-    setAnnotationMap((current) => ({ ...current, [anomaly.id]: [] }));
-    const response = await fetch("/api/asteroid/annotations", {
+    // Save draft first to ensure latest annotations are persisted.
+    await fetch("/api/asteroid/annotations", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         anomalyKey: anomaly.id,
         label: anomaly.title,
         imagePath: anomaly.imagePath,
-        note: "",
-        annotations: [],
+        note: note.trim(),
+        annotations,
       }),
     });
+
+    const response = await fetch("/api/asteroid/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ anomalyKey: anomaly.id, date }),
+    });
+    const payload = (await response.json().catch(() => ({}))) as { error?: string; score?: number };
     if (!response.ok) {
-      setStatus("Cleared locally, but server save failed.");
+      setStatus(payload.error ?? "Could not submit.");
       setSaving(false);
       return;
     }
-    setStatus("Draft cleared.");
+    setSubmitted(true);
+    setScore(payload.score ?? null);
+    setStatus(null);
     setSaving(false);
   }
 
   function removeAnnotation(id: string) {
-    const next = annotations.filter((annotation) => annotation.id !== id);
-    setAnnotationMap((current) => ({ ...current, [anomaly.id]: next }));
+    if (submitted) return;
+    setAnnotations((prev) => prev.filter((a) => a.id !== id));
+  }
+
+  if (submitted && score !== null) {
+    return (
+      <section className="panel">
+        <p className="eyebrow">Asteroid Survey — Complete</p>
+        <h1>Survey submitted</h1>
+        <p className="muted">
+          You mapped anomaly candidates on <strong>{anomaly.title}</strong> (TIC {anomaly.ticId}).
+          Water-ice sources confirmed for the mission route.
+        </p>
+        <div className="mission-complete-score" style={{ margin: "1.25rem 0" }}>
+          <span className="mission-complete-score-label muted">Score</span>
+          <span className="mission-complete-score-value">{score}</span>
+        </div>
+        <p className="muted">Come back tomorrow for a new survey target.</p>
+      </section>
+    );
   }
 
   return (
     <section className="panel">
       <header>
-        <p className="eyebrow">Secondary Puzzle Preview</p>
-        <h1>Asteroid Anomaly Lab</h1>
-        <p className="muted">Select a candidate image, click to mark anomaly regions, and save server-backed annotation drafts.</p>
+        <p className="eyebrow">Citizen Science · Asteroid Survey</p>
+        <h1>Water-Ice Mapping</h1>
+        <p className="muted">
+          Mark anomaly regions on today&apos;s asteroid candidate. Your annotations help identify
+          potential water-ice deposits — a critical resource for long-range missions.
+        </p>
       </header>
 
-      <div className="home-grid-two">
+      <div className="puzzle-context-row" style={{ marginTop: "0.5rem" }}>
+        <span className="puzzle-context-pill">TIC {anomaly.ticId}</span>
+        <span className="puzzle-context-pill">{anomaly.mission}</span>
+        <span className="puzzle-context-pill">{anomaly.title}</span>
+        <span className="puzzle-context-pill">{annotations.length} annotations</span>
+      </div>
+
+      <div className="home-grid-two" style={{ marginTop: "1rem" }}>
         <article className="panel">
-          <h2>Candidate Set</h2>
-          <div className="puzzle-chip-row" role="tablist" aria-label="Anomaly candidates">
-            {ASTEROID_ANOMALIES.map((item, index) => (
-              <button
-                key={item.id}
-                type="button"
-                className={`puzzle-chip${index === selectedIndex ? " is-active" : ""}`}
-                onClick={() => setSelectedIndex(index)}
-              >
-                {item.title}
-              </button>
-            ))}
-          </div>
-          <div className="puzzle-context-row">
-            <span className="puzzle-context-pill">TIC {anomaly.ticId}</span>
-            <span className="puzzle-context-pill">{anomaly.mission}</span>
-            <span className="puzzle-context-pill">{annotations.length} annotations</span>
-          </div>
-          <p className="muted">Click the image to place annotations using the current label/note.</p>
+          <h2>Today&apos;s Target</h2>
+          <p className="muted">{submitted ? "Survey submitted." : "Click the image to place annotations."}</p>
           <div style={{ position: "relative" }}>
             <Image
               ref={imageRef}
@@ -193,7 +220,12 @@ export default function AsteroidGamePage() {
               width={1200}
               height={800}
               onClick={handleImageClick}
-              style={{ width: "100%", borderRadius: "0.75rem", border: "1px solid var(--border)", cursor: "crosshair" }}
+              style={{
+                width: "100%",
+                borderRadius: "0.75rem",
+                border: "1px solid var(--border)",
+                cursor: submitted ? "default" : "crosshair",
+              }}
             />
             {annotations.map((annotation, index) => (
               <span
@@ -226,32 +258,51 @@ export default function AsteroidGamePage() {
           <h2>Annotation Input</h2>
           <label className="puzzle-control-group">
             <p className="puzzle-control-label">Label</p>
-            <input className="input" value={label} onChange={(event) => setLabel(event.target.value)} placeholder="Possible transit edge" />
+            <input
+              className="input"
+              value={label}
+              onChange={(e) => setLabel(e.target.value)}
+              placeholder="Possible water-ice region"
+              disabled={submitted}
+            />
           </label>
           <label className="puzzle-control-group">
             <p className="puzzle-control-label">Note</p>
             <textarea
               className="textarea puzzle-note"
               value={note}
-              onChange={(event) => setNote(event.target.value)}
-              placeholder="Reason this region looks unusual..."
+              onChange={(e) => setNote(e.target.value)}
+              placeholder="Why does this region look unusual?"
+              disabled={submitted}
             />
           </label>
 
-          <div className="puzzle-next-row">
-            <button type="button" className="button puzzle-action-secondary" onClick={() => void clearDraft()} disabled={saving}>
-              Clear
-            </button>
-            <button type="button" className="button button-primary" onClick={() => void saveDraft()} disabled={saving}>
-              {saving ? "Saving..." : "Save Draft"}
-            </button>
-          </div>
+          {!submitted && (
+            <div className="puzzle-next-row">
+              <button
+                type="button"
+                className="button puzzle-action-secondary"
+                onClick={() => void saveDraft()}
+                disabled={saving}
+              >
+                Save Draft
+              </button>
+              <button
+                type="button"
+                className="button button-primary"
+                onClick={() => void submitAnnotations()}
+                disabled={saving || annotations.length === 0}
+              >
+                {saving ? "Submitting..." : "Submit Survey"}
+              </button>
+            </div>
+          )}
 
           {status ? <p className="puzzle-feedback">{status}</p> : null}
 
-          <h3>Saved Markers</h3>
+          <h3>Markers {annotations.length > 0 ? `(${annotations.length})` : ""}</h3>
           {annotations.length === 0 ? (
-            <p className="muted">No markers yet.</p>
+            <p className="muted">No markers yet. Click the image to begin.</p>
           ) : (
             <ul className="home-list">
               {annotations.map((annotation) => (
@@ -259,9 +310,15 @@ export default function AsteroidGamePage() {
                   <span>
                     {annotation.label} ({annotation.x.toFixed(3)}, {annotation.y.toFixed(3)})
                   </span>
-                  <button type="button" className="button puzzle-action-secondary" onClick={() => removeAnnotation(annotation.id)}>
-                    Remove
-                  </button>
+                  {!submitted && (
+                    <button
+                      type="button"
+                      className="button puzzle-action-secondary"
+                      onClick={() => removeAnnotation(annotation.id)}
+                    >
+                      Remove
+                    </button>
+                  )}
                 </li>
               ))}
             </ul>

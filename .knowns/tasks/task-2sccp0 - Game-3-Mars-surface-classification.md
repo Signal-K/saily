@@ -1,7 +1,7 @@
 ---
 id: 2sccp0
 title: 'Game 3: Mars surface classification'
-status: todo
+status: done
 priority: high
 labels:
   - minigame
@@ -9,7 +9,7 @@ labels:
   - nasa
   - classification
 createdAt: '2026-03-07T09:40:58.384Z'
-updatedAt: '2026-03-07T09:40:58.384Z'
+updatedAt: '2026-03-07T10:02:13.923Z'
 timeSpent: 0
 ---
 # Game 3: Mars surface classification
@@ -28,4 +28,10 @@ Build the third citizen science minigame. Users classify Mars rover photos (Curi
 - [ ] #4 Classification UI: show image, 5-button category picker, confidence slider, submit
 - [ ] #5 Score recorded and integrated with mission flow
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+lib/mars-images.ts: 15 fallback NASA images + seeded daily selection. /api/mars/daily: fetches NASA Image Library (no key). /api/mars/classify: stores classifications. mars-game-page.tsx: 3-image classify flow with confidence slider. /games/mars route added.
+<!-- SECTION:NOTES:END -->
 
