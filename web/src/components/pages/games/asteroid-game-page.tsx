@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ASTEROID_ANOMALIES } from "@/lib/secondary-game";
 
 type AsteroidAnnotation = {

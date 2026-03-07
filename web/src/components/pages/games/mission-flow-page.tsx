@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getStorylineForDate, getCharacterForStoryline, getChapterForIndex, isStorylineComplete } from "@/lib/mission";
 import { MissionBriefing } from "@/components/mission/mission-briefing";
 import { NarrativeBeat } from "@/components/mission/narrative-beat";
@@ -51,17 +51,17 @@ export default function MissionFlowPage() {
   const totalChapters = storyline.chapters.length;
   const totalScore = scores.game1 + scores.game2 + scores.game3;
 
-  const handleGame1Complete = useCallback((score: number) => {
+  function handleGame1Complete(score: number) {
     setScores((prev) => ({ ...prev, game1: score }));
     setStage("beat-1");
-  }, []);
+  }
 
-  const handleGame2Complete = useCallback((score: number) => {
+  function handleGame2Complete(score: number) {
     setScores((prev) => ({ ...prev, game2: score }));
     setStage("beat-2");
-  }, []);
+  }
 
-  const handleGame3Complete = useCallback(async (score: number) => {
+  async function handleGame3Complete(score: number) {
     setScores((prev) => ({ ...prev, game3: score }));
 
     // Increment chapter progress.
@@ -76,7 +76,7 @@ export default function MissionFlowPage() {
     }
 
     setStage("complete");
-  }, [storyline.id]);
+  }
 
   if (stage === "loading") {
     return (
