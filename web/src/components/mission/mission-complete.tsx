@@ -19,7 +19,11 @@ export function MissionComplete({ character, chapter, score, isStorylineComplete
 
   return (
     <div className="mission-complete panel">
-      <p className="eyebrow">Mission Complete</p>
+      {/* Success banner */}
+      <div className="mission-complete-banner">
+        <span className="mission-complete-trophy" aria-hidden>🏆</span>
+        <p className="eyebrow">Mission Complete</p>
+      </div>
 
       <div className="mission-complete-header">
         <Image
@@ -46,7 +50,7 @@ export function MissionComplete({ character, chapter, score, isStorylineComplete
       {isStorylineComplete && (
         <div className="mission-complete-arc-done">
           <p>
-            <strong>Arc complete.</strong> {character.name}&apos;s story continues next time this storyline comes around.
+            <strong>Arc complete ✦</strong> {character.name}&apos;s story continues next time this storyline comes around.
           </p>
         </div>
       )}
@@ -56,7 +60,7 @@ export function MissionComplete({ character, chapter, score, isStorylineComplete
           Back to Home
         </Link>
         <Link href="/discuss" className="button">
-          Discuss Today&apos;s Mission
+          Discuss
         </Link>
       </div>
     </div>

@@ -68,7 +68,7 @@ export function HeaderSearch() {
     <div className="header-search-wrap" onBlur={() => window.setTimeout(() => setIsOpen(false), 120)}>
       <form className="header-search" onSubmit={onSubmit} role="search" aria-label="Site search">
         <label className="sr-only" htmlFor="header-search-input">
-          Search Daily Grid
+          Search Cosmo
         </label>
         <input
           data-cy="header-search-input"

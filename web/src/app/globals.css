@@ -1,31 +1,115 @@
 @import "tailwindcss";
 
+/* ── Chalk-pastel design tokens ──────────────────────────────────────── */
 :root {
-  --bg: #f8fafc;
+  --bg: #faf8f5;
   --surface: #ffffff;
-  --text: #0f172a;
-  --muted: #475569;
-  --border: #dce2eb;
-  --brand: #14532d;
-  --brand-soft: #e8f7ef;
-  --field-bg: #ffffff;
+  --surface-2: #f5f1eb;
+  --text: #2c2820;
+  --muted: #8b7d6e;
+  --border: #e8dfd4;
+  --brand: #6366f1;
+  --brand-soft: #eef0ff;
+  --field-bg: #f9f7f4;
   --header-action-bg: #ffffff;
-  --header-action-hover: #f1f5f9;
-  --header-shadow: 0 8px 28px rgba(15, 23, 42, 0.08);
+  --header-action-hover: #f5f1eb;
+  --header-shadow: 0 8px 32px rgba(44, 40, 32, 0.08);
+  /* Period gradient swatches — overridden per [data-period] */
+  --period-a: #c7dcf8;
+  --period-b: #b8f0dc;
 }
 
+/* Dawn 05:00–07:59 — peach & rose */
+:root[data-period="dawn"] {
+  --brand: #e06b8b;
+  --brand-soft: #fde4ee;
+  --period-a: #fddec8;
+  --period-b: #f8d4ef;
+}
+
+/* Morning 08:00–11:59 — sky & mint */
+:root[data-period="morning"] {
+  --brand: #5b7ff5;
+  --brand-soft: #eef2ff;
+  --period-a: #c7dcf8;
+  --period-b: #b8f0dc;
+}
+
+/* Afternoon 12:00–16:59 — sunshine & sage */
+:root[data-period="afternoon"] {
+  --brand: #2da673;
+  --brand-soft: #e8faf3;
+  --period-a: #fef3b0;
+  --period-b: #c0f0d4;
+}
+
+/* Evening 17:00–20:59 — lavender & coral */
+:root[data-period="evening"] {
+  --brand: #8b5cf6;
+  --brand-soft: #f3effe;
+  --period-a: #e8daff;
+  --period-b: #ffd6e8;
+}
+
+/* Night 21:00–04:59 — moonlight indigo */
+:root[data-period="night"] {
+  --brand: #6272ea;
+  --brand-soft: #eef0ff;
+  --period-a: #c8d4ff;
+  --period-b: #d4c8ff;
+}
+
+/* ── Dark mode ────────────────────────────────────────────────────────── */
 :root[data-theme="dark"] {
-  --bg: #0b1220;
-  --surface: #111a2f;
-  --text: #e2e8f0;
-  --muted: #93a5be;
-  --border: #23314a;
-  --brand: #1f7a4a;
-  --brand-soft: #16382a;
-  --field-bg: #0f172a;
-  --header-action-bg: #0f172a;
-  --header-action-hover: #1e293b;
-  --header-shadow: 0 8px 28px rgba(2, 6, 23, 0.5);
+  --bg: #0e0b08;
+  --surface: #161310;
+  --surface-2: #1e1b16;
+  --text: #ede8e2;
+  --muted: #9b8f82;
+  --border: #2e2a24;
+  --brand: #9b8df8;
+  --brand-soft: #1e1b30;
+  --field-bg: #161310;
+  --header-action-bg: #161310;
+  --header-action-hover: #1e1b16;
+  --header-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --period-a: #1a2a40;
+  --period-b: #142a20;
+}
+
+:root[data-theme="dark"][data-period="dawn"] {
+  --brand: #f07aa0;
+  --brand-soft: #2a1525;
+  --period-a: #3a2030;
+  --period-b: #2e2030;
+}
+
+:root[data-theme="dark"][data-period="morning"] {
+  --brand: #7b9ff8;
+  --brand-soft: #181b30;
+  --period-a: #1a2a40;
+  --period-b: #142a20;
+}
+
+:root[data-theme="dark"][data-period="afternoon"] {
+  --brand: #4ec99a;
+  --brand-soft: #122a20;
+  --period-a: #2a2a0e;
+  --period-b: #122818;
+}
+
+:root[data-theme="dark"][data-period="evening"] {
+  --brand: #a78bfa;
+  --brand-soft: #1e1830;
+  --period-a: #201830;
+  --period-b: #2a1825;
+}
+
+:root[data-theme="dark"][data-period="night"] {
+  --brand: #8090ee;
+  --brand-soft: #181820;
+  --period-a: #181a2e;
+  --period-b: #1e1a2e;
 }
 
 * {
@@ -36,17 +120,18 @@ body {
   margin: 0;
   min-height: 100vh;
   color: var(--text);
+  /* Background shifts automatically with --period-a / --period-b */
   background:
-    radial-gradient(circle at 10% 0%, #dbeafe 0%, transparent 45%),
-    radial-gradient(circle at 90% 10%, #dcfce7 0%, transparent 40%),
+    radial-gradient(ellipse at 0% 0%, var(--period-a) 0%, transparent 52%),
+    radial-gradient(ellipse at 100% 0%, var(--period-b) 0%, transparent 48%),
     var(--bg);
   font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
 }
 
 :root[data-theme="dark"] body {
   background:
-    radial-gradient(circle at 10% 0%, #12203e 0%, transparent 45%),
-    radial-gradient(circle at 90% 10%, #0f2a24 0%, transparent 40%),
+    radial-gradient(ellipse at 0% 0%, color-mix(in oklab, var(--period-a) 70%, transparent) 0%, transparent 52%),
+    radial-gradient(ellipse at 100% 0%, color-mix(in oklab, var(--period-b) 70%, transparent) 0%, transparent 48%),
     var(--bg);
 }
 
@@ -89,17 +174,26 @@ body {
 }
 
 .home-icon-link {
-  width: 2.15rem;
   height: 2.15rem;
   border-radius: 999px;
-  border: 1px solid var(--border);
+  border: 1px solid color-mix(in oklab, var(--brand) 30%, var(--border));
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 0.4rem;
+  padding: 0 0.65rem;
   text-decoration: none;
   color: var(--text);
-  background: var(--header-action-bg);
+  background: color-mix(in oklab, var(--brand-soft) 80%, var(--header-action-bg));
   font-size: 1rem;
+  white-space: nowrap;
+}
+
+.home-brand-label {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--brand);
 }
 
 .brand {
@@ -901,13 +995,22 @@ body {
 .hero {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 20px;
   padding: 1.4rem;
 }
 
+.hero-mission {
+  background:
+    radial-gradient(ellipse at 95% 0%, color-mix(in oklab, var(--period-b) 55%, transparent), transparent 52%),
+    radial-gradient(ellipse at 5% 100%, color-mix(in oklab, var(--period-a) 38%, transparent), transparent 48%),
+    var(--surface);
+  border: 1px solid color-mix(in oklab, var(--brand) 20%, var(--border));
+  box-shadow: 0 4px 28px color-mix(in oklab, var(--brand) 10%, transparent);
+}
+
 .hero h1 {
-  margin: 0.3rem 0 0.7rem;
-  font-size: clamp(1.8rem, 3.8vw, 2.6rem);
+  margin: 0.3rem 0 0.55rem;
+  font-size: clamp(1.55rem, 3.8vw, 2.4rem);
   line-height: 1.1;
   font-family: Georgia, "Times New Roman", serif;
 }
@@ -916,13 +1019,70 @@ body {
   margin: 0;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--muted);
-  font-size: 0.75rem;
+  color: var(--brand);
+  font-size: 0.72rem;
+  font-weight: 700;
 }
 
 .hero p {
   color: var(--muted);
   margin: 0;
+}
+
+.home-mission-desc {
+  margin: 0.45rem 0 1rem;
+  color: var(--muted);
+  font-size: 0.93rem;
+  line-height: 1.55;
+}
+
+.button-full {
+  width: 100%;
+  justify-content: center;
+  padding: 0.85rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+/* Quick-access game type cards */
+.home-games-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+}
+
+.home-game-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1rem 0.5rem;
+  text-decoration: none;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  text-align: center;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.home-game-card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in oklab, var(--brand) 35%, var(--border));
+  box-shadow: 0 8px 24px color-mix(in oklab, var(--brand) 14%, transparent);
+}
+
+.home-game-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.home-game-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
 }
 
 .cta-row {
@@ -2068,10 +2228,10 @@ body {
 }
 
 .badge {
-  border: 1px solid #bbf7d0;
+  border: 1px solid color-mix(in oklab, var(--brand) 30%, var(--border));
   border-radius: 999px;
   background: var(--brand-soft);
-  color: #166534;
+  color: var(--brand);
   padding: 0.2rem 0.55rem;
   font-size: 0.75rem;
 }
@@ -2519,27 +2679,15 @@ body {
 
 @media (max-width: 900px) {
   .header-top-row {
-    grid-template-columns: 1fr;
-    justify-items: stretch;
+    grid-template-columns: minmax(0, auto) minmax(0, 1fr) auto;
   }
 
   .header-brand-row {
-    justify-content: space-between;
     gap: 0.75rem;
   }
 
   .desktop-nav {
     display: none;
-  }
-
-  .mobile-nav {
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  .mobile-nav .header-nav-link {
-    flex: 1;
-    text-align: center;
   }
 
   .nav-links {
@@ -2548,13 +2696,13 @@ body {
   }
 
   .header-actions {
-    justify-content: space-between;
+    justify-content: flex-end;
     gap: 0.4rem;
   }
 
   .theme-switch {
     transform: scale(0.85);
-    transform-origin: left center;
+    transform-origin: right center;
   }
 
   .profile-email {
@@ -2653,16 +2801,46 @@ body {
 
   .header-shell {
     border-radius: 14px;
-    padding: 0.6rem;
+    padding: 0.55rem 0.65rem;
+  }
+
+  /* Compact single-row header on mobile: logo | search | actions */
+  .header-top-row {
+    grid-template-columns: auto 1fr auto;
+    gap: 0.5rem;
   }
 
   .header-search {
     grid-template-columns: 1fr;
   }
 
+  /* Hide search button on mobile (submit on enter) */
   .header-search button {
-    height: 2.3rem;
-    min-width: 100%;
+    display: none;
+  }
+
+  .header-search input {
+    height: 2.35rem;
+  }
+
+  /* Show bottom nav, add body padding */
+  .mobile-bottom-nav {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: color-mix(in oklab, var(--surface) 90%, transparent);
+    border-top: 1px solid var(--border);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  .page-shell {
+    padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0));
   }
 
   .breadcrumbs-shell {
@@ -2762,6 +2940,38 @@ body {
   }
 }
 
+/* ── Mobile bottom navigation ─────────────────────────────────────────── */
+
+.mobile-bottom-nav {
+  display: none;
+}
+
+.mobile-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.6rem 0.25rem;
+  text-decoration: none;
+  color: var(--muted);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: color 0.15s ease;
+}
+
+.mobile-tab-icon {
+  font-size: 1.35rem;
+  line-height: 1;
+  display: block;
+}
+
+.mobile-tab:hover,
+.mobile-tab[aria-current="page"] {
+  color: var(--brand);
+}
+
 /* ── Mission components ────────────────────────────────────────────────── */
 
 .home-mission-header {
@@ -2785,6 +2995,9 @@ body {
 .mission-briefing {
   max-width: 680px;
   margin: 0 auto;
+  background:
+    radial-gradient(ellipse at 95% 0%, color-mix(in oklab, var(--period-b) 45%, transparent), transparent 50%),
+    var(--surface);
 }
 
 .mission-briefing-header {
@@ -2830,8 +3043,10 @@ body {
 
 .mission-briefing-text {
   border-left: 3px solid var(--brand);
+  background: color-mix(in oklab, var(--brand-soft) 70%, transparent);
+  border-radius: 0 10px 10px 0;
   margin: 0 0 1.25rem;
-  padding: 0.5rem 0 0.5rem 1rem;
+  padding: 0.75rem 1rem;
   color: var(--text);
   font-style: italic;
   line-height: 1.65;
@@ -2840,7 +3055,9 @@ body {
 .mission-briefing-cta {
   width: 100%;
   justify-content: center;
-  padding: 0.75rem;
+  padding: 0.85rem;
+  font-size: 1rem;
+  font-weight: 700;
 }
 
 /* Narrative beat */
@@ -2881,8 +3098,10 @@ body {
   font-style: italic;
   line-height: 1.65;
   margin: 0 0 1.1rem;
-  border-left: 3px solid var(--border);
-  padding-left: 0.85rem;
+  border-left: 3px solid var(--brand);
+  background: color-mix(in oklab, var(--brand-soft) 60%, transparent);
+  border-radius: 0 10px 10px 0;
+  padding: 0.65rem 1rem;
 }
 
 /* Mission complete */
@@ -2944,4 +3163,80 @@ body {
   padding: 0.75rem 1rem;
   margin-bottom: 1rem;
   font-size: 0.9rem;
+}
+
+/* Chapter progress bar */
+.mission-chapter-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.mission-chapter-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--border);
+  flex-shrink: 0;
+  transition: background-color 0.2s ease;
+}
+
+.mission-chapter-dot.is-done {
+  background: color-mix(in oklab, var(--brand) 70%, var(--surface));
+}
+
+.mission-chapter-dot.is-current {
+  background: var(--brand);
+  width: 1rem;
+}
+
+/* 3-game step preview */
+.mission-games-preview {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0 0 1.25rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: color-mix(in oklab, var(--surface-2) 80%, transparent);
+  flex-wrap: wrap;
+}
+
+.mission-game-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  min-width: 3.5rem;
+  text-align: center;
+}
+
+.mission-game-step span:first-child {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.mission-game-arrow {
+  color: var(--muted);
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+/* Mission complete banner */
+.mission-complete-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.5rem;
+}
+
+.mission-complete-trophy {
+  font-size: 2rem;
+  line-height: 1;
 }

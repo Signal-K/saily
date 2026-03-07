@@ -19,23 +19,35 @@ export function MissionBriefing({ character, chapter, storylineTitle, chapterNum
 
   return (
     <div className="mission-briefing panel">
-      <p className="eyebrow">Today&apos;s Mission</p>
+      {/* Chapter progress indicator */}
+      <div className="mission-chapter-bar">
+        {Array.from({ length: totalChapters }, (_, i) => (
+          <span
+            key={i}
+            className={`mission-chapter-dot${i < chapterNumber ? " is-done" : i === chapterNumber - 1 ? " is-current" : ""}`}
+            aria-hidden
+          />
+        ))}
+        <span className="eyebrow" style={{ marginLeft: "auto" }}>
+          Chapter {chapterNumber} / {totalChapters}
+        </span>
+      </div>
+
+      <p className="eyebrow" style={{ marginTop: "0.75rem" }}>Today&apos;s Mission</p>
+      <p className="mission-briefing-arc muted">{storylineTitle}</p>
 
       <div className="mission-briefing-header">
         <Image
           src={avatarSrc}
           alt={character.name}
-          width={72}
-          height={72}
+          width={80}
+          height={80}
           unoptimized
           className="mission-briefing-avatar"
         />
         <div className="mission-briefing-meta">
           <h1 className="mission-briefing-name">{character.name}</h1>
           <p className="mission-briefing-occupation muted">{character.occupation}</p>
-          <p className="mission-briefing-arc muted">
-            {storylineTitle} &middot; Chapter {chapterNumber} of {totalChapters}
-          </p>
         </div>
       </div>
 
@@ -45,8 +57,26 @@ export function MissionBriefing({ character, chapter, storylineTitle, chapterNum
 
       <blockquote className="mission-briefing-text">{chapter.briefing}</blockquote>
 
+      {/* 3-game overview */}
+      <div className="mission-games-preview">
+        <div className="mission-game-step">
+          <span aria-hidden>🔭</span>
+          <span>Planet Hunt</span>
+        </div>
+        <span className="mission-game-arrow" aria-hidden>→</span>
+        <div className="mission-game-step">
+          <span aria-hidden>☄️</span>
+          <span>Asteroids</span>
+        </div>
+        <span className="mission-game-arrow" aria-hidden>→</span>
+        <div className="mission-game-step">
+          <span aria-hidden>🪐</span>
+          <span>Mars</span>
+        </div>
+      </div>
+
       <button type="button" className="button button-primary mission-briefing-cta" onClick={onBegin}>
-        Begin Mission
+        Begin Mission &rarr;
       </button>
     </div>
   );

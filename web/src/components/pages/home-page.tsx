@@ -24,7 +24,7 @@ function getUsername(value: CommentRow["profiles"]) {
   return value.username ?? "player";
 }
 
-function truncateText(text: string, maxLength = 140) {
+function truncateText(text: string, maxLength = 120) {
   if (text.length <= maxLength) return text;
   return `${text.slice(0, maxLength - 1)}…`;
 }
@@ -48,12 +48,12 @@ export default async function Home() {
           .select("awarded_at,badges(name,slug,description)")
           .eq("user_id", user.id)
           .order("awarded_at", { ascending: false })
-          .limit(6)
+          .limit(4)
       : Promise.resolve({ data: [] }),
     user
-      ? supabase.from("daily_plays").select("game_date,won,score,attempts,played_at").eq("user_id", user.id).order("played_at", { ascending: false }).limit(8)
+      ? supabase.from("daily_plays").select("game_date,won,score,attempts,played_at").eq("user_id", user.id).order("played_at", { ascending: false }).limit(5)
       : Promise.resolve({ data: [] }),
-    supabase.from("comments").select("id,game_date,body,created_at,profiles(username)").order("created_at", { ascending: false }).limit(8),
+    supabase.from("comments").select("id,game_date,body,created_at,profiles(username)").order("created_at", { ascending: false }).limit(5),
   ]);
 
   const stats = statsRes.data;
@@ -63,14 +63,16 @@ export default async function Home() {
 
   return (
     <section className="home-dashboard">
-      <div className="hero">
-        <p className="eyebrow">Daily Mission</p>
+
+      {/* ── Hero: Today's Mission ───────────────────────────────────── */}
+      <div className="hero hero-mission">
+        <p className="eyebrow">✦ Today&apos;s Mission</p>
         <div className="home-mission-header">
           <Image
             src={todayAvatarSrc}
             alt={todayCharacter.name}
-            width={52}
-            height={52}
+            width={56}
+            height={56}
             unoptimized
             className="home-mission-avatar"
           />
@@ -79,24 +81,42 @@ export default async function Home() {
             <p className="muted">{todayCharacter.name} &middot; {todayCharacter.occupation}</p>
           </div>
         </div>
-        <p>{todayCharacter.fleeReason}</p>
+        <p className="home-mission-desc">{todayCharacter.fleeReason}</p>
         <div className="cta-row">
-          <Link href="/games/today" className="button button-primary">
-            Start Today&apos;s Mission
+          <Link href="/games/today" className="button button-primary button-full">
+            Begin Today&apos;s Mission &rarr;
           </Link>
           <Link href={user ? "/profile" : "/auth/sign-in"} className="button">
-            {user ? "View Profile" : "Sign in"}
+            {user ? "Profile" : "Sign in"}
           </Link>
         </div>
       </div>
 
+      {/* ── Quick-access game cards ─────────────────────────────────── */}
+      <div className="home-games-row">
+        <Link href="/games/today" className="home-game-card">
+          <span className="home-game-icon" aria-hidden>🔭</span>
+          <span className="home-game-label">Planet Hunt</span>
+        </Link>
+        <Link href="/games/asteroids" className="home-game-card">
+          <span className="home-game-icon" aria-hidden>☄️</span>
+          <span className="home-game-label">Asteroids</span>
+        </Link>
+        <Link href="/games/today" className="home-game-card">
+          <span className="home-game-icon" aria-hidden>🪐</span>
+          <span className="home-game-label">Mars</span>
+        </Link>
+      </div>
+
+      {/* ── Signed-in user sections ─────────────────────────────────── */}
       {user ? (
         <>
-          <section className="home-section panel">
-            <h2>Progress + Scores</h2>
+          {/* Stats */}
+          <section className="panel home-section" aria-label="Your stats">
+            <h2>Stats</h2>
             <div className="home-stats-grid">
               <article className="card">
-                <h3>Games</h3>
+                <h3>Played</h3>
                 <p>{stats?.games_played ?? 0}</p>
               </article>
               <article className="card">
@@ -108,15 +128,16 @@ export default async function Home() {
                 <p>{stats?.current_streak ?? 0}</p>
               </article>
               <article className="card">
-                <h3>Total Score</h3>
+                <h3>Score</h3>
                 <p>{stats?.total_score ?? 0}</p>
               </article>
             </div>
           </section>
 
-          <section className="home-grid-two">
-            <article className="panel home-section">
-              <h2>Inventory</h2>
+          {/* Badges + recent results side by side */}
+          <div className="home-grid-two">
+            <article className="panel home-section" aria-label="Badges">
+              <h2>Badges</h2>
               {badges.length ? (
                 <div className="home-badge-grid">
                   {badges.map((badge) => (
@@ -127,12 +148,12 @@ export default async function Home() {
                   ))}
                 </div>
               ) : (
-                <p className="muted">No inventory items yet. Finish games and engage in discuss to unlock badges.</p>
+                <p className="muted">Complete missions to unlock badges.</p>
               )}
             </article>
 
-            <article className="panel home-section">
-              <h2>Recent Results</h2>
+            <article className="panel home-section" aria-label="Recent games">
+              <h2>Recent</h2>
               {plays.length ? (
                 <ul className="home-list">
                   {plays.map((play) => (
@@ -140,34 +161,36 @@ export default async function Home() {
                       <span className="home-result-date">{play.game_date}</span>
                       <span className={`home-result-status ${play.won ? "is-win" : "is-played"}`}>{play.won ? "Won" : "Played"}</span>
                       <span className="home-result-meta">
-                        S{play.score} · {play.attempts} tries
+                        Score {play.score} &middot; {play.attempts} tries
                       </span>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="muted">No game history yet.</p>
+                <p className="muted">No games yet.</p>
               )}
             </article>
-          </section>
+          </div>
         </>
       ) : null}
 
-      <section className="panel home-section">
-        <h2>Community Feed</h2>
+      {/* ── Community feed ──────────────────────────────────────────── */}
+      <section className="panel home-section" aria-label="Community feed">
+        <h2>Community</h2>
         {comments.length ? (
           <ul className="home-list">
             {comments.map((comment) => (
               <li key={comment.id} className="home-feed-item">
                 <p>
-                  <strong>@{getUsername(comment.profiles)}</strong> on {comment.game_date}
+                  <strong>@{getUsername(comment.profiles)}</strong>{" "}
+                  <span className="muted">on {comment.game_date}</span>
                 </p>
                 <p>{truncateText(comment.body)}</p>
               </li>
             ))}
           </ul>
         ) : (
-          <p className="muted">No feed activity yet.</p>
+          <p className="muted">No community activity yet.</p>
         )}
       </section>
     </section>

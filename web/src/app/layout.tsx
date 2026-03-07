@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { Analytics } from "@vercel/analytics/react";
@@ -10,18 +10,33 @@ import { BreadcrumbsNav } from "@/components/breadcrumbs-nav";
 import { PostHogRuntime } from "@/components/posthog-runtime";
 import "./globals.css";
 
-const THEME_COOKIE = "daily_grid_theme";
+const THEME_COOKIE = "cosmo_theme";
 
 type Theme = "light" | "dark";
+type TimePeriod = "dawn" | "morning" | "afternoon" | "evening" | "night";
 
 function normalizeTheme(value: string | undefined): Theme {
   return value === "dark" ? "dark" : "light";
 }
 
+function getTimePeriod(): TimePeriod {
+  const hour = new Date().getHours();
+  if (hour >= 5 && hour < 8) return "dawn";
+  if (hour >= 8 && hour < 12) return "morning";
+  if (hour >= 12 && hour < 17) return "afternoon";
+  if (hour >= 17 && hour < 21) return "evening";
+  return "night";
+}
+
 export const metadata: Metadata = {
-  title: "Daily Grid",
-  description: "NYT-style daily game hub built with Next.js + Supabase",
+  title: "Cosmo",
+  description: "Daily space science missions — hunt planets, survey asteroids, classify Mars",
   manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Cosmo",
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -32,6 +47,16 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#faf8f5" },
+    { media: "(prefers-color-scheme: dark)", color: "#0e0b08" },
+  ],
+};
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -39,9 +64,10 @@ export default async function RootLayout({
 }>) {
   const cookieStore = await cookies();
   const initialTheme = normalizeTheme(cookieStore.get(THEME_COOKIE)?.value);
+  const timePeriod = getTimePeriod();
 
   return (
-    <html lang="en" data-theme={initialTheme}>
+    <html lang="en" data-theme={initialTheme} data-period={timePeriod}>
       <body>
         <PostHogRuntime />
         <SWRegister />
@@ -50,12 +76,13 @@ export default async function RootLayout({
             <div className="header-shell">
               <div className="header-top-row">
                 <div className="header-brand-row">
-                  <Link href="/" className="home-icon-link" aria-label="Go home">
-                    <span aria-hidden>⌂</span>
+                  <Link href="/" className="home-icon-link" aria-label="Cosmo home">
+                    <span aria-hidden>✦</span>
+                    <span className="home-brand-label">Cosmo</span>
                   </Link>
                   <nav className="nav-links desktop-nav" aria-label="Main navigation">
                     <Link href="/games/today" className="header-nav-link" data-cy="nav-today">
-                      Today&apos;s Puzzle
+                      Today&apos;s Mission
                     </Link>
                     <Link href="/games/asteroids" className="header-nav-link" data-cy="nav-asteroids">
                       Asteroid Lab
@@ -76,24 +103,30 @@ export default async function RootLayout({
                   <AuthStatus />
                 </div>
               </div>
-
-              <nav className="nav-links mobile-nav" aria-label="Mobile navigation">
-                <Link href="/games/today" className="header-nav-link" data-cy="nav-today-mobile">
-                  Today
-                </Link>
-                <Link href="/games/asteroids" className="header-nav-link" data-cy="nav-asteroids-mobile">
-                  Asteroids
-                </Link>
-                <Link href="/calendar" className="header-nav-link" data-cy="nav-calendar-mobile">
-                  Calendar
-                </Link>
-                <Link href="/discuss" className="header-nav-link" data-cy="nav-discuss-mobile">
-                  Discuss
-                </Link>
-              </nav>
             </div>
           </div>
         </header>
+
+        {/* Fixed bottom tab bar — visible only on mobile via CSS */}
+        <nav className="mobile-bottom-nav" aria-label="Mobile navigation">
+          <Link href="/" className="mobile-tab" data-cy="nav-home-mobile">
+            <span className="mobile-tab-icon" aria-hidden>⌂</span>
+            <span>Home</span>
+          </Link>
+          <Link href="/games/today" className="mobile-tab" data-cy="nav-today-mobile">
+            <span className="mobile-tab-icon" aria-hidden>🔭</span>
+            <span>Mission</span>
+          </Link>
+          <Link href="/calendar" className="mobile-tab" data-cy="nav-calendar-mobile">
+            <span className="mobile-tab-icon" aria-hidden>📅</span>
+            <span>Calendar</span>
+          </Link>
+          <Link href="/discuss" className="mobile-tab" data-cy="nav-discuss-mobile">
+            <span className="mobile-tab-icon" aria-hidden>💬</span>
+            <span>Discuss</span>
+          </Link>
+        </nav>
+
         <main className="container page-shell">
           <BreadcrumbsNav />
           {children}

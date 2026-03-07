@@ -1,6 +1,6 @@
-# Daily Grid
+# Cosmo
 
-A NYT-style daily games app built with Next.js and Supabase.
+Daily space science missions — hunt planets, survey asteroids, classify Mars. Built with Next.js and Supabase.
 
 ## Quick Start (Docker)
 
