@@ -1,5 +1,8 @@
 import Link from "next/link";
+import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
+import { getStorylineForDate, getCharacterForStoryline } from "@/lib/mission";
+import { getRobotAvatarDataUri } from "@/lib/avatar";
 
 type BadgeRef = {
   name: string;
@@ -28,6 +31,9 @@ function truncateText(text: string, maxLength = 140) {
 
 export default async function Home() {
   const supabase = await createClient();
+  const todayStoryline = getStorylineForDate(new Date());
+  const todayCharacter = getCharacterForStoryline(todayStoryline);
+  const todayAvatarSrc = getRobotAvatarDataUri(todayCharacter.avatarSeed, 64);
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -58,19 +64,25 @@ export default async function Home() {
   return (
     <section className="home-dashboard">
       <div className="hero">
-        <p className="eyebrow">Daily Puzzle Hub</p>
-        <h1>{user ? "Your Daily Grid" : "One puzzle. Fresh every day."}</h1>
-        <p>
-          {user
-            ? "Check your streak, review scores, and jump in."
-            : "Play daily, build streaks, and join the conversation."}
-        </p>
+        <p className="eyebrow">Daily Mission</p>
+        <div className="home-mission-header">
+          <Image
+            src={todayAvatarSrc}
+            alt={todayCharacter.name}
+            width={52}
+            height={52}
+            unoptimized
+            className="home-mission-avatar"
+          />
+          <div>
+            <h1>{todayStoryline.title}</h1>
+            <p className="muted">{todayCharacter.name} &middot; {todayCharacter.occupation}</p>
+          </div>
+        </div>
+        <p>{todayCharacter.fleeReason}</p>
         <div className="cta-row">
           <Link href="/games/today" className="button button-primary">
-            Play Today&apos;s Game
-          </Link>
-          <Link href="/games/asteroids" className="button">
-            Open Asteroid Lab
+            Start Today&apos;s Mission
           </Link>
           <Link href={user ? "/profile" : "/auth/sign-in"} className="button">
             {user ? "View Profile" : "Sign in"}

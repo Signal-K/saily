@@ -2761,3 +2761,187 @@ body {
     padding: 1.7rem;
   }
 }
+
+/* ── Mission components ────────────────────────────────────────────────── */
+
+.home-mission-header {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.home-mission-header h1 {
+  margin: 0 0 0.1rem;
+}
+
+.home-mission-avatar {
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Mission briefing */
+
+.mission-briefing {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.mission-briefing-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.mission-briefing-avatar {
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.mission-briefing-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.mission-briefing-name {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.mission-briefing-occupation,
+.mission-briefing-arc {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.mission-briefing-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1rem 0;
+}
+
+.mission-briefing-chapter-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.35rem;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.mission-briefing-text {
+  border-left: 3px solid var(--brand);
+  margin: 0 0 1.25rem;
+  padding: 0.5rem 0 0.5rem 1rem;
+  color: var(--text);
+  font-style: italic;
+  line-height: 1.65;
+}
+
+.mission-briefing-cta {
+  width: 100%;
+  justify-content: center;
+  padding: 0.75rem;
+}
+
+/* Narrative beat */
+
+.narrative-beat {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.narrative-beat-header {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.85rem;
+}
+
+.narrative-beat-avatar {
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.narrative-beat-source {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.narrative-beat-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.narrative-beat-label {
+  font-size: 0.78rem;
+}
+
+.narrative-beat-text {
+  font-style: italic;
+  line-height: 1.65;
+  margin: 0 0 1.1rem;
+  border-left: 3px solid var(--border);
+  padding-left: 0.85rem;
+}
+
+/* Mission complete */
+
+.mission-complete {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.mission-complete-header {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin: 0.75rem 0 1rem;
+}
+
+.mission-complete-avatar {
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.mission-complete-title {
+  margin: 0 0 0.2rem;
+  font-size: 1.25rem;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.mission-complete-resolution {
+  border-left: 3px solid var(--brand);
+  margin: 0 0 1.25rem;
+  padding: 0.5rem 0 0.5rem 1rem;
+  font-style: italic;
+  line-height: 1.65;
+  color: var(--text);
+}
+
+.mission-complete-score {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.mission-complete-score-label {
+  font-size: 0.85rem;
+}
+
+.mission-complete-score-value {
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: Georgia, "Times New Roman", serif;
+  color: var(--brand);
+}
+
+.mission-complete-arc-done {
+  background: color-mix(in oklab, var(--brand) 8%, transparent);
+  border: 1px solid color-mix(in oklab, var(--brand) 25%, transparent);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}

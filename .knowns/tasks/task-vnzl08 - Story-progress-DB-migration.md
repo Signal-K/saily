@@ -1,14 +1,14 @@
 ---
 id: vnzl08
 title: Story progress DB migration
-status: todo
+status: done
 priority: high
 labels:
   - database
   - narrative
   - supabase
 createdAt: '2026-03-07T09:40:18.157Z'
-updatedAt: '2026-03-07T09:40:18.157Z'
+updatedAt: '2026-03-07T09:56:03.345Z'
 timeSpent: 0
 ---
 # Story progress DB migration
@@ -25,4 +25,10 @@ Add user_story_progress table to track each user's chapter index per storyline. 
 - [ ] #2 RLS policy: users can only read/write their own rows
 - [ ] #3 API route /api/story/progress GET + POST wired up
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Migration: 20260307120000_add_user_story_progress.sql. API: /api/story/progress GET (fetch chapter index) + POST action=complete-chapter (increment). RLS protects own rows only.
+<!-- SECTION:NOTES:END -->
 

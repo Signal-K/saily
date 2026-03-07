@@ -1,0 +1,49 @@
+{
+  "taskId": "vnzl08",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "vnzl08",
+      "version": 1,
+      "timestamp": "2026-03-07T09:56:03.346Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Migration: 20260307120000_add_user_story_progress.sql. API: /api/story/progress GET (fetch chapter index) + POST action=complete-chapter (increment). RLS protects own rows only."
+        }
+      ],
+      "snapshot": {
+        "title": "Story progress DB migration",
+        "description": "Add user_story_progress table to track each user's chapter index per storyline. One row per (user_id, storyline_id), incremented when a chapter is completed.",
+        "status": "done",
+        "priority": "high",
+        "labels": [
+          "database",
+          "narrative",
+          "supabase"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Migration creates user_story_progress(user_id, storyline_id, chapter_index, last_played_at)"
+          },
+          {
+            "completed": false,
+            "text": "RLS policy: users can only read/write their own rows"
+          },
+          {
+            "completed": false,
+            "text": "API route /api/story/progress GET + POST wired up"
+          }
+        ],
+        "implementationNotes": "Migration: 20260307120000_add_user_story_progress.sql. API: /api/story/progress GET (fetch chapter index) + POST action=complete-chapter (increment). RLS protects own rows only."
+      }
+    }
+  ]
+}
