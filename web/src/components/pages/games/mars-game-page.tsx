@@ -124,63 +124,59 @@ export default function MarsGamePage({ onMissionComplete }: MarsGamePageProps = 
 
   if (loading) {
     return (
-      <section className="panel">
-        <p className="eyebrow">Citizen Science · Surface Survey</p>
-        <h1>Mars Surface Classification</h1>
-        <p className="muted">Loading today&apos;s survey images…</p>
+      <section className="puzzle-screen">
+        <header className="puzzle-header panel">
+          <p className="eyebrow">Daily Mission</p>
+          <h1>Mars Surface Classification</h1>
+          <p className="muted puzzle-header-summary">Loading today&apos;s survey images...</p>
+        </header>
       </section>
     );
   }
 
   if (submitted && score !== null) {
     return (
-      <section className="panel">
-        <p className="eyebrow">Surface Survey — Complete</p>
-        <h1>Survey submitted</h1>
-        <p className="muted">
-          Your terrain classifications help build a surface map for mission planning.
-          Landing zone candidates confirmed.
-        </p>
-        <div className="mission-complete-score" style={{ margin: "1.25rem 0" }}>
-          <span className="mission-complete-score-label muted">Score</span>
-          <span className="mission-complete-score-value">{score}</span>
+      <section className="puzzle-screen">
+        <header className="puzzle-header panel">
+          <p className="eyebrow">Daily Mission</p>
+          <h1>Surface Survey Complete</h1>
+          <p className="muted puzzle-header-summary">
+            Your terrain classifications help build a surface map for mission planning.
+          </p>
+        </header>
+        <div className="panel">
+          <div className="mission-complete-score" style={{ margin: "1.25rem 0" }}>
+            <span className="mission-complete-score-label muted">Score</span>
+            <span className="mission-complete-score-value">{score}</span>
+          </div>
+          <p className="muted">Come back tomorrow for a new survey set.</p>
         </div>
-        <p className="muted">Come back tomorrow for a new survey set.</p>
       </section>
     );
   }
 
   return (
-    <section className="panel">
-      <header>
-        <p className="eyebrow">Citizen Science · Surface Survey</p>
+    <section className="puzzle-screen">
+      <header className="puzzle-header panel">
+        <p className="eyebrow">Daily Mission</p>
         <h1>Mars Surface Classification</h1>
-        <p className="muted">
-          Classify each Mars rover image by terrain type. Your data contributes to surface
-          mapping for future mission landing zone selection.
-        </p>
+        <div className="puzzle-header-row">
+          <p className="muted puzzle-header-summary">
+            Classify each rover image by terrain type to improve surface map quality.
+          </p>
+          <span className="puzzle-progress">Survey</span>
+        </div>
+        <div className="puzzle-context-row">
+          <span className="puzzle-context-pill">Date {date}</span>
+          <span className="puzzle-context-pill">
+            Classified {classifiedCount}/{images.length}
+          </span>
+        </div>
       </header>
 
-      <div className="puzzle-chip-row" style={{ marginTop: "0.75rem" }} role="tablist">
-        {images.map((img, i) => (
-          <button
-            key={img.id}
-            type="button"
-            role="tab"
-            className={`puzzle-chip${i === activeIndex ? " is-active" : ""}${entries[i]?.classification ? " is-done" : ""}`}
-            onClick={() => setActiveIndex(i)}
-          >
-            Image {i + 1}
-            {entries[i]?.classification ? " ✓" : ""}
-          </button>
-        ))}
-      </div>
-
-      {status && <p className="puzzle-feedback" style={{ marginTop: "0.5rem" }}>{status}</p>}
-
-      {activeImage && activeEntry && (
-        <div className="home-grid-two" style={{ marginTop: "1rem" }}>
-          <article className="panel">
+      <div className="puzzle-workspace">
+        {activeImage && activeEntry && (
+          <article className="puzzle-canvas panel">
             <h2>{activeImage.title}</h2>
             <p className="muted" style={{ fontSize: "0.8rem" }}>{activeImage.credit}</p>
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -196,19 +192,32 @@ export default function MarsGamePage({ onMissionComplete }: MarsGamePageProps = 
               }}
             />
           </article>
+        )}
 
-          <aside className="panel">
-            <h2>Classify This Image</h2>
-            <p className="muted" style={{ fontSize: "0.85rem" }}>
-              What best describes the terrain in this photo?
-            </p>
+        <aside className="puzzle-sidebar panel">
+          <div className="puzzle-controls">
+            <p className="puzzle-control-label">Image Set</p>
+            <div className="puzzle-chip-row" role="tablist">
+              {images.map((img, i) => (
+                <button
+                  key={img.id}
+                  type="button"
+                  role="tab"
+                  className={`puzzle-chip${i === activeIndex ? " is-active" : ""}${entries[i]?.classification ? " is-done" : ""}`}
+                  onClick={() => setActiveIndex(i)}
+                >
+                  Image {i + 1}
+                  {entries[i]?.classification ? " done" : ""}
+                </button>
+              ))}
+            </div>
 
-            <div className="mars-classification-grid" style={{ marginTop: "0.75rem" }}>
+            <div className="mars-classification-grid">
               {MARS_CLASSIFICATIONS.map((cat) => (
                 <button
                   key={cat}
                   type="button"
-                  className={`button mars-cat-btn${activeEntry.classification === cat ? " button-primary" : ""}`}
+                  className={`button mars-cat-btn${activeEntry?.classification === cat ? " button-primary" : ""}`}
                   onClick={() => setClassification(activeIndex, cat)}
                 >
                   {cat}
@@ -216,15 +225,15 @@ export default function MarsGamePage({ onMissionComplete }: MarsGamePageProps = 
               ))}
             </div>
 
-            <div className="puzzle-control-group" style={{ marginTop: "1rem" }}>
+            <div className="puzzle-control-group">
               <p className="puzzle-control-label">
-                Confidence — {activeEntry.confidence}%
+                Confidence - {activeEntry?.confidence ?? 0}%
               </p>
               <input
                 type="range"
                 min={0}
                 max={100}
-                value={activeEntry.confidence}
+                value={activeEntry?.confidence ?? 0}
                 onChange={(e) => setConfidence(activeIndex, Number(e.target.value))}
                 style={{ width: "100%" }}
               />
@@ -234,44 +243,45 @@ export default function MarsGamePage({ onMissionComplete }: MarsGamePageProps = 
                 <span>High</span>
               </div>
             </div>
+          </div>
 
+          {status ? <p className="puzzle-feedback">{status}</p> : null}
+          {activeEntry?.classification ? (
+            <p className="puzzle-feedback">
+              Classified as: <strong>{activeEntry.classification}</strong>
+            </p>
+          ) : null}
+
+          {!allClassified && !submitted && images.length > 0 ? (
+            <p className="muted" style={{ fontSize: "0.85rem" }}>
+              {classifiedCount} of {images.length} images classified.
+              {classifiedCount > 0 && classifiedCount < images.length && " You can submit with partial classifications."}
+            </p>
+          ) : null}
+
+          <div className="puzzle-next-row mission-sticky-actions">
             {activeIndex < images.length - 1 ? (
               <button
                 type="button"
-                className="button button-primary"
-                style={{ width: "100%", marginTop: "1rem" }}
+                className="button button-primary puzzle-action-primary"
                 onClick={() => setActiveIndex((i) => i + 1)}
-                disabled={!activeEntry.classification}
+                disabled={!activeEntry?.classification}
               >
-                Next Image &rarr;
+                Next Image
               </button>
             ) : (
               <button
                 type="button"
-                className="button button-primary"
-                style={{ width: "100%", marginTop: "1rem" }}
+                className="button button-primary puzzle-action-primary"
                 onClick={() => void handleSubmit()}
                 disabled={submitting || classifiedCount === 0}
               >
-                {submitting ? "Submitting…" : `Submit Survey (${classifiedCount}/${images.length})`}
+                {submitting ? "Submitting..." : `Submit Survey (${classifiedCount}/${images.length})`}
               </button>
             )}
-
-            {activeEntry.classification && (
-              <p className="puzzle-feedback" style={{ marginTop: "0.5rem" }}>
-                Classified as: <strong>{activeEntry.classification}</strong>
-              </p>
-            )}
-          </aside>
-        </div>
-      )}
-
-      {!allClassified && !submitted && images.length > 0 && (
-        <p className="muted" style={{ marginTop: "0.75rem", fontSize: "0.85rem" }}>
-          {classifiedCount} of {images.length} images classified.
-          {classifiedCount > 0 && classifiedCount < images.length && " You can submit with partial classifications."}
-        </p>
-      )}
+          </div>
+        </aside>
+      </div>
     </section>
   );
 }

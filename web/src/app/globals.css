@@ -8,8 +8,8 @@
   --text: #2c2820;
   --muted: #8b7d6e;
   --border: #e8dfd4;
-  --brand: #6366f1;
-  --brand-soft: #eef0ff;
+  --brand: #2f8f83;
+  --brand-soft: #e7f5f2;
   --field-bg: #f9f7f4;
   --header-action-bg: #ffffff;
   --header-action-hover: #f5f1eb;
@@ -29,8 +29,8 @@
 
 /* Morning 08:00–11:59 — sky & mint */
 :root[data-period="morning"] {
-  --brand: #5b7ff5;
-  --brand-soft: #eef2ff;
+  --brand: #2a93b3;
+  --brand-soft: #e7f4f9;
   --period-a: #c7dcf8;
   --period-b: #b8f0dc;
 }
@@ -45,16 +45,16 @@
 
 /* Evening 17:00–20:59 — lavender & coral */
 :root[data-period="evening"] {
-  --brand: #8b5cf6;
-  --brand-soft: #f3effe;
+  --brand: #bd6b56;
+  --brand-soft: #fbeee8;
   --period-a: #e8daff;
   --period-b: #ffd6e8;
 }
 
 /* Night 21:00–04:59 — moonlight indigo */
 :root[data-period="night"] {
-  --brand: #6272ea;
-  --brand-soft: #eef0ff;
+  --brand: #5b7da7;
+  --brand-soft: #edf2f8;
   --period-a: #c8d4ff;
   --period-b: #d4c8ff;
 }
@@ -67,8 +67,8 @@
   --text: #ede8e2;
   --muted: #9b8f82;
   --border: #2e2a24;
-  --brand: #9b8df8;
-  --brand-soft: #1e1b30;
+  --brand: #7acabd;
+  --brand-soft: #142724;
   --field-bg: #161310;
   --header-action-bg: #161310;
   --header-action-hover: #1e1b16;
@@ -85,8 +85,8 @@
 }
 
 :root[data-theme="dark"][data-period="morning"] {
-  --brand: #7b9ff8;
-  --brand-soft: #181b30;
+  --brand: #65b3ca;
+  --brand-soft: #112129;
   --period-a: #1a2a40;
   --period-b: #142a20;
 }
@@ -99,15 +99,15 @@
 }
 
 :root[data-theme="dark"][data-period="evening"] {
-  --brand: #a78bfa;
-  --brand-soft: #1e1830;
+  --brand: #d78d7b;
+  --brand-soft: #2a1b17;
   --period-a: #201830;
   --period-b: #2a1825;
 }
 
 :root[data-theme="dark"][data-period="night"] {
-  --brand: #8090ee;
-  --brand-soft: #181820;
+  --brand: #7da7cb;
+  --brand-soft: #17222e;
   --period-a: #181a2e;
   --period-b: #1e1a2e;
 }
@@ -126,6 +126,8 @@ body {
     radial-gradient(ellipse at 100% 0%, var(--period-b) 0%, transparent 48%),
     var(--bg);
   font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
 }
 
 :root[data-theme="dark"] body {
@@ -163,7 +165,7 @@ body {
   display: grid;
   align-items: center;
   gap: 0.75rem;
-  grid-template-columns: minmax(0, auto) minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, auto) minmax(360px, 1.25fr) auto;
 }
 
 .header-brand-row {
@@ -782,6 +784,8 @@ body {
 .header-search-wrap {
   position: relative;
   min-width: 0;
+  width: min(100%, 560px);
+  justify-self: stretch;
 }
 
 .header-search {
@@ -792,7 +796,7 @@ body {
 
 .header-search input {
   width: 100%;
-  height: 2.7rem;
+  height: 2.85rem;
   border: 1px solid var(--border);
   border-radius: 999px;
   padding: 0 1rem;
@@ -1359,7 +1363,7 @@ body {
   min-height: 0;
   display: flex;
   gap: 0.8rem;
-  align-items: flex-start;
+  align-items: stretch;
 }
 
 .puzzle-canvas,
@@ -1413,8 +1417,9 @@ body {
   flex: 0 0 clamp(320px, 31vw, 420px);
   display: grid;
   gap: 0.65rem;
-  grid-template-rows: auto auto minmax(0, 1fr) auto;
-  overflow: visible;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  max-height: min(72vh, 760px);
+  overflow: auto;
 }
 
 .puzzle-toolbar {
@@ -1550,7 +1555,7 @@ body {
   border-radius: 12px;
   padding: 0.62rem;
   display: grid;
-  gap: 0.5rem;
+  gap: 0.55rem;
   background: color-mix(in oklab, var(--surface) 82%, transparent);
 }
 
@@ -1838,6 +1843,66 @@ body {
   margin: 0;
   font-size: 0.9rem;
   color: var(--muted);
+}
+
+.puzzle-no-planet-banner {
+  border: 1px dashed color-mix(in oklab, var(--brand) 36%, var(--border));
+  border-radius: 12px;
+  padding: 0.55rem 0.6rem;
+  display: grid;
+  gap: 0.45rem;
+  background: color-mix(in oklab, var(--brand-soft) 60%, var(--surface));
+}
+
+.puzzle-collapsible {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.5rem 0.65rem;
+  background: color-mix(in oklab, var(--surface) 86%, transparent);
+}
+
+.puzzle-collapsible summary {
+  cursor: pointer;
+  list-style: none;
+  font-size: 0.84rem;
+  font-weight: 650;
+  color: var(--text);
+}
+
+.puzzle-collapsible summary::-webkit-details-marker {
+  display: none;
+}
+
+.puzzle-collapsible[open] summary {
+  margin-bottom: 0.45rem;
+}
+
+.mission-flow-shell {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.mission-status-banner {
+  display: grid;
+  gap: 0.6rem;
+  border-left: 4px solid color-mix(in oklab, var(--brand) 55%, var(--border));
+}
+
+.mission-status-text {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.mission-sticky-actions {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.5rem;
+  background: color-mix(in oklab, var(--surface) 90%, transparent);
+}
+
+.pwa-install-prompt {
+  display: none;
 }
 
 .forum-layout {
@@ -2679,7 +2744,7 @@ body {
 
 @media (max-width: 900px) {
   .header-top-row {
-    grid-template-columns: minmax(0, auto) minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, auto) minmax(260px, 1fr) auto;
   }
 
   .header-brand-row {
@@ -2791,10 +2856,16 @@ body {
   .puzzle-sidebar {
     flex: initial;
     grid-template-rows: auto auto auto auto;
+    max-height: none;
+    overflow: visible;
   }
 }
 
 @media (max-width: 720px) {
+  .container {
+    width: min(100%, calc(100% - 0.85rem));
+  }
+
   .site-header {
     padding-top: 0.45rem;
   }
@@ -2840,7 +2911,8 @@ body {
   }
 
   .page-shell {
-    padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0));
+    padding-top: 1rem;
+    padding-bottom: calc(7.25rem + env(safe-area-inset-bottom, 0));
   }
 
   .breadcrumbs-shell {
@@ -2882,6 +2954,13 @@ body {
 
   .puzzle-action-primary {
     min-width: 100%;
+  }
+
+  .mission-sticky-actions {
+    position: sticky;
+    bottom: calc(0.65rem + env(safe-area-inset-bottom, 0px));
+    z-index: 6;
+    box-shadow: 0 10px 22px color-mix(in oklab, var(--text) 15%, transparent);
   }
 
   .home-list-item {
@@ -2942,9 +3021,55 @@ body {
 
 /* ── Mobile bottom navigation ─────────────────────────────────────────── */
 
-.mobile-bottom-nav {
+  .mobile-bottom-nav {
   display: none;
-}
+  }
+
+  .panel {
+    border-radius: 16px;
+  }
+
+  .pwa-install-prompt {
+    display: grid;
+    position: fixed;
+    left: 0.65rem;
+    right: 0.65rem;
+    bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+    z-index: 70;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: color-mix(in oklab, var(--surface) 94%, transparent);
+    box-shadow: 0 18px 35px color-mix(in oklab, var(--text) 20%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    padding: 0.8rem;
+    gap: 0.5rem;
+  }
+
+  .pwa-install-title {
+    margin: 0;
+    font-size: 0.96rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .pwa-install-copy {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.35;
+  }
+
+  .pwa-install-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .pwa-install-actions .button {
+    min-height: 2.55rem;
+    justify-content: center;
+  }
 
 .mobile-tab {
   display: flex;
@@ -3188,44 +3313,6 @@ body {
 .mission-chapter-dot.is-current {
   background: var(--brand);
   width: 1rem;
-}
-
-/* 3-game step preview */
-.mission-games-preview {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  margin: 0 0 1.25rem;
-  padding: 0.65rem 0.85rem;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: color-mix(in oklab, var(--surface-2) 80%, transparent);
-  flex-wrap: wrap;
-}
-
-.mission-game-step {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.2rem;
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--muted);
-  min-width: 3.5rem;
-  text-align: center;
-}
-
-.mission-game-step span:first-child {
-  font-size: 1.5rem;
-  line-height: 1;
-}
-
-.mission-game-arrow {
-  color: var(--muted);
-  font-size: 1.1rem;
-  flex-shrink: 0;
 }
 
 /* Mission complete banner */

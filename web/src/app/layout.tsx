@@ -8,6 +8,7 @@ import { HeaderSearch } from "@/components/header-search";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { BreadcrumbsNav } from "@/components/breadcrumbs-nav";
 import { PostHogRuntime } from "@/components/posthog-runtime";
+import { PwaInstallPrompt } from "@/components/pwa-install-prompt";
 import "./globals.css";
 
 const THEME_COOKIE = "cosmo_theme";
@@ -52,7 +53,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#faf8f5" },
+    { media: "(prefers-color-scheme: light)", color: "#e7f5f2" },
     { media: "(prefers-color-scheme: dark)", color: "#0e0b08" },
   ],
 };
@@ -83,9 +84,6 @@ export default async function RootLayout({
                   <nav className="nav-links desktop-nav" aria-label="Main navigation">
                     <Link href="/games/today" className="header-nav-link" data-cy="nav-today">
                       Today&apos;s Mission
-                    </Link>
-                    <Link href="/games/asteroids" className="header-nav-link" data-cy="nav-asteroids">
-                      Asteroid Lab
                     </Link>
                     <Link href="/calendar" className="header-nav-link" data-cy="nav-calendar">
                       Calendar
@@ -131,6 +129,7 @@ export default async function RootLayout({
           <BreadcrumbsNav />
           {children}
         </main>
+        <PwaInstallPrompt />
         <Analytics />
       </body>
     </html>

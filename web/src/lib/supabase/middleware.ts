@@ -1,14 +1,10 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { SUPABASE_COOKIE_NAME, getServerSupabaseUrl, getSupabaseAnonKey, isLocalSupabaseUrl } from "./config";
 
-const SUPABASE_COOKIE_NAME = "sb-local-auth-token";
-
-function getServerSupabaseUrl() {
-  return process.env.SUPABASE_URL_INTERNAL ?? process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-}
-
-function getSupabaseAnonKey() {
-  return process.env.SUPABASE_ANON ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
+function shouldSkipEdgeAuthRefresh(supabaseUrl: string) {
+  if (process.env.NODE_ENV === "production") return false;
+  return isLocalSupabaseUrl(supabaseUrl);
 }
 
 export async function updateSession(request: NextRequest) {
@@ -18,6 +14,9 @@ export async function updateSession(request: NextRequest) {
 
   // Never fail the entire request pipeline if env vars are missing in edge runtime.
   if (!supabaseUrl || !supabaseAnonKey) {
+    return response;
+  }
+  if (shouldSkipEdgeAuthRefresh(supabaseUrl)) {
     return response;
   }
 

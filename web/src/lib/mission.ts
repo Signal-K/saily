@@ -1,6 +1,17 @@
 import { STORYLINES, type Chapter, type Storyline } from "./storylines";
 import { CHARACTERS, type Character } from "./characters";
 
+export type MissionGame = "planet" | "asteroid" | "mars";
+
+const GAME_ORDER_PERMUTATIONS: MissionGame[][] = [
+  ["planet", "asteroid", "mars"],
+  ["planet", "mars", "asteroid"],
+  ["asteroid", "planet", "mars"],
+  ["asteroid", "mars", "planet"],
+  ["mars", "planet", "asteroid"],
+  ["mars", "asteroid", "planet"],
+];
+
 /**
  * Returns the number of full days since Unix epoch for a given date.
  * Used to deterministically pick a storyline by calendar date.
@@ -40,4 +51,18 @@ export function getCharacterForStoryline(storyline: Storyline): Character {
  */
 export function isStorylineComplete(storyline: Storyline, chapterIndex: number): boolean {
   return chapterIndex >= storyline.chapters.length;
+}
+
+/**
+ * Returns a deterministic but chapter-varying game order for the active storyline.
+ */
+export function getMissionGameOrder(storylineId: string, chapterIndex: number): MissionGame[] {
+  const seed = `${storylineId}:${chapterIndex}`;
+  let hash = 0;
+  for (let i = 0; i < seed.length; i += 1) {
+    hash = (hash << 5) - hash + seed.charCodeAt(i);
+    hash |= 0;
+  }
+  const idx = Math.abs(hash) % GAME_ORDER_PERMUTATIONS.length;
+  return GAME_ORDER_PERMUTATIONS[idx];
 }

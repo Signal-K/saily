@@ -189,13 +189,12 @@ function projectAnnotationToView(annotation: Annotation, opts: { phaseFold: bool
 }
 
 type TodayGamePageProps = {
-  onMissionComplete?: (score: number) => void;
+  onMissionComplete?: (result: { score: number; terminatedEarly?: boolean }) => void;
 };
 
 export default function TodayGamePage({ onMissionComplete }: TodayGamePageProps = {}) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [showTutorial, setShowTutorial] = useState(false);
   const [dailyAnomalies, setDailyAnomalies] = useState<DailyAnomaly[]>([]);
   const [loading, setLoading] = useState(true);
   const [minigameIndex, setMinigameIndex] = useState(0);
@@ -535,10 +534,7 @@ export default function TodayGamePage({ onMissionComplete }: TodayGamePageProps 
       setFeedback("No anomaly loaded for this date.");
       return;
     }
-    if (annotations.length === 0) {
-      setFeedback("Add at least one annotated interval before continuing.");
-      return;
-    }
+    if (annotations.length === 0) return;
 
     setSubmitting(true);
     setFeedback(null);
@@ -627,10 +623,46 @@ export default function TodayGamePage({ onMissionComplete }: TodayGamePageProps 
       });
     }
     if (onMissionComplete) {
-      onMissionComplete(completePayload.score ?? 0);
+      onMissionComplete({ score: completePayload.score ?? 0 });
     } else {
       router.push("/");
     }
+  }
+
+  async function handleNoPlanetIdentified() {
+    if (annotations.length > 0) return;
+    setSubmitting(true);
+    setFeedback(null);
+
+    const completeResponse = await fetch("/api/game/complete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        completedPuzzles: 1,
+        confidence: 55,
+        note: "No planet identified by player",
+        date: gameDate,
+      }),
+    });
+
+    const completePayload = (await completeResponse.json()) as {
+      error?: string;
+      score?: number;
+    };
+
+    if (!completeResponse.ok) {
+      setFeedback(completePayload.error ?? "Could not submit no-planet result.");
+      setSubmitting(false);
+      return;
+    }
+
+    setFeedback("No planet identified. Mission ended for today.");
+    setSubmitting(false);
+    if (onMissionComplete) {
+      onMissionComplete({ score: completePayload.score ?? 0, terminatedEarly: true });
+      return;
+    }
+    router.push("/");
   }
 
   const pendingStart = draftStart === null || draftEnd === null ? null : Math.min(draftStart, draftEnd);
@@ -638,7 +670,7 @@ export default function TodayGamePage({ onMissionComplete }: TodayGamePageProps 
   const confidenceLevel = confidence >= 80 ? "High" : confidence >= 55 ? "Medium" : "Low";
   const confidenceLevelClass = confidenceLevel.toLowerCase();
   const title = "Find the Transit Signal";
-  const progressLabel = `${minigameIndex + 1} / 3`;
+  const progressLabel = `Signal ${minigameIndex + 1}`;
   const sourceViewerHref = useMemo(() => {
     if (!anomaly?.sourceUrl) return null;
     const params = new URLSearchParams({
@@ -658,7 +690,7 @@ export default function TodayGamePage({ onMissionComplete }: TodayGamePageProps 
   return (
     <section className="puzzle-screen">
       <header className="puzzle-header panel">
-        <p className="eyebrow">Daily Planet Hunt</p>
+        <p className="eyebrow">Daily Mission</p>
         <div className="puzzle-header-row">
           <div>
             <h1>{title}</h1>
@@ -763,13 +795,8 @@ export default function TodayGamePage({ onMissionComplete }: TodayGamePageProps 
         </article>
 
         <aside className="puzzle-sidebar panel">
-          <div className="puzzle-toolbar">
-            <button className="button puzzle-action-secondary" type="button" onClick={() => setShowTutorial((value) => !value)}>
-              <span data-cy="puzzle-help-toggle">{showTutorial ? "Hide help" : "Help / Tutorial"}</span>
-            </button>
-          </div>
-
-          {showTutorial ? (
+          <details className="puzzle-collapsible">
+            <summary data-cy="puzzle-help-toggle">Help / Tutorial</summary>
             <aside className="puzzle-help" aria-live="polite">
               <p className="puzzle-help-title">Quick Guide</p>
               <p className="puzzle-help-context">Context: real exoplanet candidates show recurring dips at a consistent period, not random one-off noise.</p>
@@ -780,10 +807,12 @@ export default function TodayGamePage({ onMissionComplete }: TodayGamePageProps 
               </ol>
               <p className="puzzle-help-hint">Strong evidence: repeatability, sharp dip profile, baseline recovery.</p>
             </aside>
-          ) : null}
+          </details>
 
           <section className="puzzle-controls" aria-label="Puzzle controls">
-              <div className="puzzle-control-group is-compact">
+              <details className="puzzle-collapsible">
+                <summary>Hints</summary>
+                <div className="puzzle-control-group is-compact">
                 <div className="puzzle-hints-head">
                   <p className="puzzle-control-label">Hints</p>
                   <span className="puzzle-hints-penalty">Reward x{rewardMultiplier.toFixed(2)}</span>
@@ -813,6 +842,7 @@ export default function TodayGamePage({ onMissionComplete }: TodayGamePageProps 
                   </select>
                 </label>
               </div>
+              </details>
 
               <div className="puzzle-controls-top">
                 <div className="puzzle-control-group is-compact">
@@ -871,25 +901,30 @@ export default function TodayGamePage({ onMissionComplete }: TodayGamePageProps 
                 </div>
               </div>
 
-              <div className="puzzle-control-group">
-                <p className="puzzle-control-label">Note (optional)</p>
-                <textarea className="textarea puzzle-note" value={annotationNote} onChange={(event) => setAnnotationNote(event.target.value)} placeholder="Quick detail for next interval..." />
-              </div>
+              <details className="puzzle-collapsible">
+                <summary>Notes</summary>
+                <div className="puzzle-control-group">
+                  <p className="puzzle-control-label">Note (optional)</p>
+                  <textarea className="textarea puzzle-note" value={annotationNote} onChange={(event) => setAnnotationNote(event.target.value)} placeholder="Quick detail for next interval..." />
+                </div>
 
-              <div className="puzzle-control-group">
-                <p className="puzzle-control-label">Final summary</p>
-                <textarea
-                  className="textarea puzzle-note"
-                  data-cy="puzzle-note"
-                  value={note}
-                  onChange={(event) => setNote(event.target.value)}
-                  placeholder="Why this is a planet candidate..."
-                />
-              </div>
+                <div className="puzzle-control-group">
+                  <p className="puzzle-control-label">Final summary</p>
+                  <textarea
+                    className="textarea puzzle-note"
+                    data-cy="puzzle-note"
+                    value={note}
+                    onChange={(event) => setNote(event.target.value)}
+                    placeholder="Why this is a planet candidate..."
+                  />
+                </div>
+              </details>
           </section>
 
           {annotations.length ? (
-            <div className="puzzle-annotation-list">
+            <details className="puzzle-collapsible">
+              <summary>Evidence Annotations ({annotations.length})</summary>
+              <div className="puzzle-annotation-list">
               {annotations.map((annotation, idx) => (
                 <div
                   key={annotation.id}
@@ -905,10 +940,25 @@ export default function TodayGamePage({ onMissionComplete }: TodayGamePageProps 
                   </button>
                 </div>
               ))}
+              </div>
+            </details>
+          ) : null}
+
+          {annotations.length === 0 ? (
+            <div className="puzzle-no-planet-banner">
+              <p className="puzzle-feedback">No planet identified yet. If this signal looks like noise, you can submit that result.</p>
+              <button
+                className="button puzzle-action-secondary"
+                type="button"
+                onClick={() => void handleNoPlanetIdentified()}
+                disabled={submitting || loading}
+              >
+                Confirm No Planet Here
+              </button>
             </div>
           ) : null}
 
-          <div className="puzzle-next-row">
+          <div className="puzzle-next-row mission-sticky-actions">
             <>
               <button
                 className="button puzzle-action-secondary"
@@ -923,7 +973,7 @@ export default function TodayGamePage({ onMissionComplete }: TodayGamePageProps 
                 className="button button-primary puzzle-action-primary"
                 type="button"
                 onClick={() => void handleSubmitEvidenceAndContinue()}
-                disabled={submitting || loading}
+                disabled={submitting || loading || annotations.length === 0}
               >
                 <span data-cy="puzzle-finish-button">
                   {submitting ? "Saving..." : minigameIndex < 2 ? `Submit Evidence & Continue (${STAGE_DIFFICULTIES[minigameIndex + 1]})` : "Submit Final Evidence"}

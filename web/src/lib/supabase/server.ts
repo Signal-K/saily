@@ -1,22 +1,13 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
-
-const SUPABASE_COOKIE_NAME = "sb-local-auth-token";
-
-function getServerSupabaseUrl() {
-  return process.env.SUPABASE_URL_INTERNAL ?? process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL!;
-}
-
-function getServerSupabaseAnonKey() {
-  return process.env.SUPABASE_ANON ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-}
+import { SUPABASE_COOKIE_NAME, getServerSupabaseUrl, getSupabaseAnonKey } from "./config";
 
 export async function createClient() {
   const cookieStore = await cookies();
 
   return createServerClient(
     getServerSupabaseUrl(),
-    getServerSupabaseAnonKey(),
+    getSupabaseAnonKey(),
     {
       cookieOptions: { name: SUPABASE_COOKIE_NAME },
       cookies: {

@@ -1,0 +1,652 @@
+{
+  "taskId": "kdwrmt",
+  "currentVersion": 12,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "kdwrmt",
+      "version": 1,
+      "timestamp": "2026-03-07T13:18:38.941Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "in-progress"
+        },
+        {
+          "field": "assignee",
+          "newValue": "@me"
+        }
+      ],
+      "snapshot": {
+        "title": "Overhaul daily mission UI for mobile-first consistency",
+        "description": "Redesign game flow to reduce scrolling, unify UI system across briefing/minigames/results, and strengthen PWA/mobile behavior. Inspiration from Murdle/NYT/Worldle patterns with mission narrative continuity.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "ui",
+          "mobile",
+          "pwa",
+          "narrative"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Mission flow uses a consistent shell/layout across briefing, all minigames, and mission complete"
+          },
+          {
+            "completed": false,
+            "text": "Primary gameplay interactions fit mobile viewport without excessive vertical scrolling"
+          },
+          {
+            "completed": false,
+            "text": "Visual system (colors, spacing, typography, controls) is unified across game pages"
+          },
+          {
+            "completed": false,
+            "text": "PWA affordances (install/offline/status feedback) are visible and mobile friendly"
+          },
+          {
+            "completed": false,
+            "text": "Existing game mechanics continue to function after redesign"
+          }
+        ]
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "kdwrmt",
+      "version": 2,
+      "timestamp": "2026-03-07T13:19:53.389Z",
+      "changes": [
+        {
+          "field": "implementationPlan",
+          "newValue": "1. Introduce a unified Mission Game Shell (single header/progress/meta/actions structure) used by all 3 minigames and narrative beats.\n2. Refactor Today/Asteroid/Mars pages to the same mobile-first two-block pattern: primary play area first, collapsible/secondary controls below, with reduced vertical stack depth.\n3. Replace ad-hoc inline styles with shared design tokens/components for buttons/chips/pills/cards to keep consistent spacing, typography, and color language inspired by Murdle/NYT style clarity.\n4. Improve mobile and PWA affordances: sticky mission action bar, offline/install status banner, and safe-area tuned spacing for bottom nav/PWA standalone mode.\n5. Validate behavior parity (submissions, scoring, progression), run build, then update task AC and notes."
+        }
+      ],
+      "snapshot": {
+        "title": "Overhaul daily mission UI for mobile-first consistency",
+        "description": "Redesign game flow to reduce scrolling, unify UI system across briefing/minigames/results, and strengthen PWA/mobile behavior. Inspiration from Murdle/NYT/Worldle patterns with mission narrative continuity.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "ui",
+          "mobile",
+          "pwa",
+          "narrative"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Mission flow uses a consistent shell/layout across briefing, all minigames, and mission complete"
+          },
+          {
+            "completed": false,
+            "text": "Primary gameplay interactions fit mobile viewport without excessive vertical scrolling"
+          },
+          {
+            "completed": false,
+            "text": "Visual system (colors, spacing, typography, controls) is unified across game pages"
+          },
+          {
+            "completed": false,
+            "text": "PWA affordances (install/offline/status feedback) are visible and mobile friendly"
+          },
+          {
+            "completed": false,
+            "text": "Existing game mechanics continue to function after redesign"
+          }
+        ],
+        "implementationPlan": "1. Introduce a unified Mission Game Shell (single header/progress/meta/actions structure) used by all 3 minigames and narrative beats.\n2. Refactor Today/Asteroid/Mars pages to the same mobile-first two-block pattern: primary play area first, collapsible/secondary controls below, with reduced vertical stack depth.\n3. Replace ad-hoc inline styles with shared design tokens/components for buttons/chips/pills/cards to keep consistent spacing, typography, and color language inspired by Murdle/NYT style clarity.\n4. Improve mobile and PWA affordances: sticky mission action bar, offline/install status banner, and safe-area tuned spacing for bottom nav/PWA standalone mode.\n5. Validate behavior parity (submissions, scoring, progression), run build, then update task AC and notes."
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "kdwrmt",
+      "version": 3,
+      "timestamp": "2026-03-07T13:20:07.299Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "newValue": "Audit: current mission uses mixed layouts (today=custom puzzle shell; asteroid/mars=home-grid-two + panels), causing inconsistent hierarchy and excess mobile scroll. Works well: strong data context pills, clear submission CTAs, narrative beats. Weak points: repeated headers/metadata, deep control stacks, non-sticky primary actions, uneven visual language, minimal in-flow offline/install cues."
+        }
+      ],
+      "snapshot": {
+        "title": "Overhaul daily mission UI for mobile-first consistency",
+        "description": "Redesign game flow to reduce scrolling, unify UI system across briefing/minigames/results, and strengthen PWA/mobile behavior. Inspiration from Murdle/NYT/Worldle patterns with mission narrative continuity.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "ui",
+          "mobile",
+          "pwa",
+          "narrative"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Mission flow uses a consistent shell/layout across briefing, all minigames, and mission complete"
+          },
+          {
+            "completed": false,
+            "text": "Primary gameplay interactions fit mobile viewport without excessive vertical scrolling"
+          },
+          {
+            "completed": false,
+            "text": "Visual system (colors, spacing, typography, controls) is unified across game pages"
+          },
+          {
+            "completed": false,
+            "text": "PWA affordances (install/offline/status feedback) are visible and mobile friendly"
+          },
+          {
+            "completed": false,
+            "text": "Existing game mechanics continue to function after redesign"
+          }
+        ],
+        "implementationPlan": "1. Introduce a unified Mission Game Shell (single header/progress/meta/actions structure) used by all 3 minigames and narrative beats.\n2. Refactor Today/Asteroid/Mars pages to the same mobile-first two-block pattern: primary play area first, collapsible/secondary controls below, with reduced vertical stack depth.\n3. Replace ad-hoc inline styles with shared design tokens/components for buttons/chips/pills/cards to keep consistent spacing, typography, and color language inspired by Murdle/NYT style clarity.\n4. Improve mobile and PWA affordances: sticky mission action bar, offline/install status banner, and safe-area tuned spacing for bottom nav/PWA standalone mode.\n5. Validate behavior parity (submissions, scoring, progression), run build, then update task AC and notes.",
+        "implementationNotes": "Audit: current mission uses mixed layouts (today=custom puzzle shell; asteroid/mars=home-grid-two + panels), causing inconsistent hierarchy and excess mobile scroll. Works well: strong data context pills, clear submission CTAs, narrative beats. Weak points: repeated headers/metadata, deep control stacks, non-sticky primary actions, uneven visual language, minimal in-flow offline/install cues."
+      }
+    },
+    {
+      "id": "v4",
+      "taskId": "kdwrmt",
+      "version": 4,
+      "timestamp": "2026-03-07T13:26:09.555Z",
+      "changes": [
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "Mission flow uses a consistent shell/layout across briefing, all minigames, and mission complete"
+            },
+            {
+              "completed": false,
+              "text": "Primary gameplay interactions fit mobile viewport without excessive vertical scrolling"
+            },
+            {
+              "completed": false,
+              "text": "Visual system (colors, spacing, typography, controls) is unified across game pages"
+            },
+            {
+              "completed": false,
+              "text": "PWA affordances (install/offline/status feedback) are visible and mobile friendly"
+            },
+            {
+              "completed": false,
+              "text": "Existing game mechanics continue to function after redesign"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "Mission flow uses a consistent shell/layout across briefing, all minigames, and mission complete"
+            },
+            {
+              "completed": true,
+              "text": "Primary gameplay interactions fit mobile viewport without excessive vertical scrolling"
+            },
+            {
+              "completed": true,
+              "text": "Visual system (colors, spacing, typography, controls) is unified across game pages"
+            },
+            {
+              "completed": true,
+              "text": "PWA affordances (install/offline/status feedback) are visible and mobile friendly"
+            },
+            {
+              "completed": true,
+              "text": "Existing game mechanics continue to function after redesign"
+            }
+          ]
+        },
+        {
+          "field": "implementationNotes",
+          "oldValue": "Audit: current mission uses mixed layouts (today=custom puzzle shell; asteroid/mars=home-grid-two + panels), causing inconsistent hierarchy and excess mobile scroll. Works well: strong data context pills, clear submission CTAs, narrative beats. Weak points: repeated headers/metadata, deep control stacks, non-sticky primary actions, uneven visual language, minimal in-flow offline/install cues.",
+          "newValue": "Audit: current mission uses mixed layouts (today=custom puzzle shell; asteroid/mars=home-grid-two + panels), causing inconsistent hierarchy and excess mobile scroll. Works well: strong data context pills, clear submission CTAs, narrative beats. Weak points: repeated headers/metadata, deep control stacks, non-sticky primary actions, uneven visual language, minimal in-flow offline/install cues.\n\nImplemented UI overhaul: added MissionStatusBanner (offline + install prompt), unified mission shell wrapper in mission-flow, and refactored Today/Asteroid/Mars into consistent puzzle-screen/header/workspace/sidebar structure. Reduced scroll depth with collapsible help/evidence sections and sticky mobile action bars. Updated design tokens/colors for cohesive, less-purple visual language and aligned PWA theme colors in manifest/layout. Validation: npm run build (web) passes; knowns validate passes with only pre-existing warnings on unrelated tasks lacking AC."
+        }
+      ],
+      "snapshot": {
+        "title": "Overhaul daily mission UI for mobile-first consistency",
+        "description": "Redesign game flow to reduce scrolling, unify UI system across briefing/minigames/results, and strengthen PWA/mobile behavior. Inspiration from Murdle/NYT/Worldle patterns with mission narrative continuity.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "ui",
+          "mobile",
+          "pwa",
+          "narrative"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Mission flow uses a consistent shell/layout across briefing, all minigames, and mission complete"
+          },
+          {
+            "completed": true,
+            "text": "Primary gameplay interactions fit mobile viewport without excessive vertical scrolling"
+          },
+          {
+            "completed": true,
+            "text": "Visual system (colors, spacing, typography, controls) is unified across game pages"
+          },
+          {
+            "completed": true,
+            "text": "PWA affordances (install/offline/status feedback) are visible and mobile friendly"
+          },
+          {
+            "completed": true,
+            "text": "Existing game mechanics continue to function after redesign"
+          }
+        ],
+        "implementationPlan": "1. Introduce a unified Mission Game Shell (single header/progress/meta/actions structure) used by all 3 minigames and narrative beats.\n2. Refactor Today/Asteroid/Mars pages to the same mobile-first two-block pattern: primary play area first, collapsible/secondary controls below, with reduced vertical stack depth.\n3. Replace ad-hoc inline styles with shared design tokens/components for buttons/chips/pills/cards to keep consistent spacing, typography, and color language inspired by Murdle/NYT style clarity.\n4. Improve mobile and PWA affordances: sticky mission action bar, offline/install status banner, and safe-area tuned spacing for bottom nav/PWA standalone mode.\n5. Validate behavior parity (submissions, scoring, progression), run build, then update task AC and notes.",
+        "implementationNotes": "Audit: current mission uses mixed layouts (today=custom puzzle shell; asteroid/mars=home-grid-two + panels), causing inconsistent hierarchy and excess mobile scroll. Works well: strong data context pills, clear submission CTAs, narrative beats. Weak points: repeated headers/metadata, deep control stacks, non-sticky primary actions, uneven visual language, minimal in-flow offline/install cues.\n\nImplemented UI overhaul: added MissionStatusBanner (offline + install prompt), unified mission shell wrapper in mission-flow, and refactored Today/Asteroid/Mars into consistent puzzle-screen/header/workspace/sidebar structure. Reduced scroll depth with collapsible help/evidence sections and sticky mobile action bars. Updated design tokens/colors for cohesive, less-purple visual language and aligned PWA theme colors in manifest/layout. Validation: npm run build (web) passes; knowns validate passes with only pre-existing warnings on unrelated tasks lacking AC."
+      }
+    },
+    {
+      "id": "v5",
+      "taskId": "kdwrmt",
+      "version": 5,
+      "timestamp": "2026-03-07T13:26:15.082Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        }
+      ],
+      "snapshot": {
+        "title": "Overhaul daily mission UI for mobile-first consistency",
+        "description": "Redesign game flow to reduce scrolling, unify UI system across briefing/minigames/results, and strengthen PWA/mobile behavior. Inspiration from Murdle/NYT/Worldle patterns with mission narrative continuity.",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "ui",
+          "mobile",
+          "pwa",
+          "narrative"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Mission flow uses a consistent shell/layout across briefing, all minigames, and mission complete"
+          },
+          {
+            "completed": true,
+            "text": "Primary gameplay interactions fit mobile viewport without excessive vertical scrolling"
+          },
+          {
+            "completed": true,
+            "text": "Visual system (colors, spacing, typography, controls) is unified across game pages"
+          },
+          {
+            "completed": true,
+            "text": "PWA affordances (install/offline/status feedback) are visible and mobile friendly"
+          },
+          {
+            "completed": true,
+            "text": "Existing game mechanics continue to function after redesign"
+          }
+        ],
+        "implementationPlan": "1. Introduce a unified Mission Game Shell (single header/progress/meta/actions structure) used by all 3 minigames and narrative beats.\n2. Refactor Today/Asteroid/Mars pages to the same mobile-first two-block pattern: primary play area first, collapsible/secondary controls below, with reduced vertical stack depth.\n3. Replace ad-hoc inline styles with shared design tokens/components for buttons/chips/pills/cards to keep consistent spacing, typography, and color language inspired by Murdle/NYT style clarity.\n4. Improve mobile and PWA affordances: sticky mission action bar, offline/install status banner, and safe-area tuned spacing for bottom nav/PWA standalone mode.\n5. Validate behavior parity (submissions, scoring, progression), run build, then update task AC and notes.",
+        "implementationNotes": "Audit: current mission uses mixed layouts (today=custom puzzle shell; asteroid/mars=home-grid-two + panels), causing inconsistent hierarchy and excess mobile scroll. Works well: strong data context pills, clear submission CTAs, narrative beats. Weak points: repeated headers/metadata, deep control stacks, non-sticky primary actions, uneven visual language, minimal in-flow offline/install cues.\n\nImplemented UI overhaul: added MissionStatusBanner (offline + install prompt), unified mission shell wrapper in mission-flow, and refactored Today/Asteroid/Mars into consistent puzzle-screen/header/workspace/sidebar structure. Reduced scroll depth with collapsible help/evidence sections and sticky mobile action bars. Updated design tokens/colors for cohesive, less-purple visual language and aligned PWA theme colors in manifest/layout. Validation: npm run build (web) passes; knowns validate passes with only pre-existing warnings on unrelated tasks lacking AC."
+      }
+    },
+    {
+      "id": "v6",
+      "taskId": "kdwrmt",
+      "version": 6,
+      "timestamp": "2026-03-08T00:29:27.182Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "done",
+          "newValue": "in-progress"
+        }
+      ],
+      "snapshot": {
+        "title": "Overhaul daily mission UI for mobile-first consistency",
+        "description": "Redesign game flow to reduce scrolling, unify UI system across briefing/minigames/results, and strengthen PWA/mobile behavior. Inspiration from Murdle/NYT/Worldle patterns with mission narrative continuity.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "ui",
+          "mobile",
+          "pwa",
+          "narrative"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Mission flow uses a consistent shell/layout across briefing, all minigames, and mission complete"
+          },
+          {
+            "completed": true,
+            "text": "Primary gameplay interactions fit mobile viewport without excessive vertical scrolling"
+          },
+          {
+            "completed": true,
+            "text": "Visual system (colors, spacing, typography, controls) is unified across game pages"
+          },
+          {
+            "completed": true,
+            "text": "PWA affordances (install/offline/status feedback) are visible and mobile friendly"
+          },
+          {
+            "completed": true,
+            "text": "Existing game mechanics continue to function after redesign"
+          }
+        ],
+        "implementationPlan": "1. Introduce a unified Mission Game Shell (single header/progress/meta/actions structure) used by all 3 minigames and narrative beats.\n2. Refactor Today/Asteroid/Mars pages to the same mobile-first two-block pattern: primary play area first, collapsible/secondary controls below, with reduced vertical stack depth.\n3. Replace ad-hoc inline styles with shared design tokens/components for buttons/chips/pills/cards to keep consistent spacing, typography, and color language inspired by Murdle/NYT style clarity.\n4. Improve mobile and PWA affordances: sticky mission action bar, offline/install status banner, and safe-area tuned spacing for bottom nav/PWA standalone mode.\n5. Validate behavior parity (submissions, scoring, progression), run build, then update task AC and notes.",
+        "implementationNotes": "Audit: current mission uses mixed layouts (today=custom puzzle shell; asteroid/mars=home-grid-two + panels), causing inconsistent hierarchy and excess mobile scroll. Works well: strong data context pills, clear submission CTAs, narrative beats. Weak points: repeated headers/metadata, deep control stacks, non-sticky primary actions, uneven visual language, minimal in-flow offline/install cues.\n\nImplemented UI overhaul: added MissionStatusBanner (offline + install prompt), unified mission shell wrapper in mission-flow, and refactored Today/Asteroid/Mars into consistent puzzle-screen/header/workspace/sidebar structure. Reduced scroll depth with collapsible help/evidence sections and sticky mobile action bars. Updated design tokens/colors for cohesive, less-purple visual language and aligned PWA theme colors in manifest/layout. Validation: npm run build (web) passes; knowns validate passes with only pre-existing warnings on unrelated tasks lacking AC."
+      }
+    },
+    {
+      "id": "v7",
+      "taskId": "kdwrmt",
+      "version": 7,
+      "timestamp": "2026-03-08T00:32:50.078Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "oldValue": "Audit: current mission uses mixed layouts (today=custom puzzle shell; asteroid/mars=home-grid-two + panels), causing inconsistent hierarchy and excess mobile scroll. Works well: strong data context pills, clear submission CTAs, narrative beats. Weak points: repeated headers/metadata, deep control stacks, non-sticky primary actions, uneven visual language, minimal in-flow offline/install cues.\n\nImplemented UI overhaul: added MissionStatusBanner (offline + install prompt), unified mission shell wrapper in mission-flow, and refactored Today/Asteroid/Mars into consistent puzzle-screen/header/workspace/sidebar structure. Reduced scroll depth with collapsible help/evidence sections and sticky mobile action bars. Updated design tokens/colors for cohesive, less-purple visual language and aligned PWA theme colors in manifest/layout. Validation: npm run build (web) passes; knowns validate passes with only pre-existing warnings on unrelated tasks lacking AC.",
+          "newValue": "Audit: current mission uses mixed layouts (today=custom puzzle shell; asteroid/mars=home-grid-two + panels), causing inconsistent hierarchy and excess mobile scroll. Works well: strong data context pills, clear submission CTAs, narrative beats. Weak points: repeated headers/metadata, deep control stacks, non-sticky primary actions, uneven visual language, minimal in-flow offline/install cues.\n\nImplemented UI overhaul: added MissionStatusBanner (offline + install prompt), unified mission shell wrapper in mission-flow, and refactored Today/Asteroid/Mars into consistent puzzle-screen/header/workspace/sidebar structure. Reduced scroll depth with collapsible help/evidence sections and sticky mobile action bars. Updated design tokens/colors for cohesive, less-purple visual language and aligned PWA theme colors in manifest/layout. Validation: npm run build (web) passes; knowns validate passes with only pre-existing warnings on unrelated tasks lacking AC.\n\nLocal runtime fixes: migrated src/middleware.ts to src/proxy.ts to remove Next 16 deprecation warning; added next.config turbopack.root=process.cwd() to stop workspace root lockfile warning; added dev-only local URL guard in lib/supabase/middleware to skip edge auth refresh against localhost/127.0.0.1 and prevent noisy fetch-failed retries in local dev. Also resolved Supabase local port conflict by stopping project-id client and restarting this project."
+        }
+      ],
+      "snapshot": {
+        "title": "Overhaul daily mission UI for mobile-first consistency",
+        "description": "Redesign game flow to reduce scrolling, unify UI system across briefing/minigames/results, and strengthen PWA/mobile behavior. Inspiration from Murdle/NYT/Worldle patterns with mission narrative continuity.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "ui",
+          "mobile",
+          "pwa",
+          "narrative"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Mission flow uses a consistent shell/layout across briefing, all minigames, and mission complete"
+          },
+          {
+            "completed": true,
+            "text": "Primary gameplay interactions fit mobile viewport without excessive vertical scrolling"
+          },
+          {
+            "completed": true,
+            "text": "Visual system (colors, spacing, typography, controls) is unified across game pages"
+          },
+          {
+            "completed": true,
+            "text": "PWA affordances (install/offline/status feedback) are visible and mobile friendly"
+          },
+          {
+            "completed": true,
+            "text": "Existing game mechanics continue to function after redesign"
+          }
+        ],
+        "implementationPlan": "1. Introduce a unified Mission Game Shell (single header/progress/meta/actions structure) used by all 3 minigames and narrative beats.\n2. Refactor Today/Asteroid/Mars pages to the same mobile-first two-block pattern: primary play area first, collapsible/secondary controls below, with reduced vertical stack depth.\n3. Replace ad-hoc inline styles with shared design tokens/components for buttons/chips/pills/cards to keep consistent spacing, typography, and color language inspired by Murdle/NYT style clarity.\n4. Improve mobile and PWA affordances: sticky mission action bar, offline/install status banner, and safe-area tuned spacing for bottom nav/PWA standalone mode.\n5. Validate behavior parity (submissions, scoring, progression), run build, then update task AC and notes.",
+        "implementationNotes": "Audit: current mission uses mixed layouts (today=custom puzzle shell; asteroid/mars=home-grid-two + panels), causing inconsistent hierarchy and excess mobile scroll. Works well: strong data context pills, clear submission CTAs, narrative beats. Weak points: repeated headers/metadata, deep control stacks, non-sticky primary actions, uneven visual language, minimal in-flow offline/install cues.\n\nImplemented UI overhaul: added MissionStatusBanner (offline + install prompt), unified mission shell wrapper in mission-flow, and refactored Today/Asteroid/Mars into consistent puzzle-screen/header/workspace/sidebar structure. Reduced scroll depth with collapsible help/evidence sections and sticky mobile action bars. Updated design tokens/colors for cohesive, less-purple visual language and aligned PWA theme colors in manifest/layout. Validation: npm run build (web) passes; knowns validate passes with only pre-existing warnings on unrelated tasks lacking AC.\n\nLocal runtime fixes: migrated src/middleware.ts to src/proxy.ts to remove Next 16 deprecation warning; added next.config turbopack.root=process.cwd() to stop workspace root lockfile warning; added dev-only local URL guard in lib/supabase/middleware to skip edge auth refresh against localhost/127.0.0.1 and prevent noisy fetch-failed retries in local dev. Also resolved Supabase local port conflict by stopping project-id client and restarting this project."
+      }
+    },
+    {
+      "id": "v8",
+      "taskId": "kdwrmt",
+      "version": 8,
+      "timestamp": "2026-03-08T00:32:55.722Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        }
+      ],
+      "snapshot": {
+        "title": "Overhaul daily mission UI for mobile-first consistency",
+        "description": "Redesign game flow to reduce scrolling, unify UI system across briefing/minigames/results, and strengthen PWA/mobile behavior. Inspiration from Murdle/NYT/Worldle patterns with mission narrative continuity.",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "ui",
+          "mobile",
+          "pwa",
+          "narrative"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Mission flow uses a consistent shell/layout across briefing, all minigames, and mission complete"
+          },
+          {
+            "completed": true,
+            "text": "Primary gameplay interactions fit mobile viewport without excessive vertical scrolling"
+          },
+          {
+            "completed": true,
+            "text": "Visual system (colors, spacing, typography, controls) is unified across game pages"
+          },
+          {
+            "completed": true,
+            "text": "PWA affordances (install/offline/status feedback) are visible and mobile friendly"
+          },
+          {
+            "completed": true,
+            "text": "Existing game mechanics continue to function after redesign"
+          }
+        ],
+        "implementationPlan": "1. Introduce a unified Mission Game Shell (single header/progress/meta/actions structure) used by all 3 minigames and narrative beats.\n2. Refactor Today/Asteroid/Mars pages to the same mobile-first two-block pattern: primary play area first, collapsible/secondary controls below, with reduced vertical stack depth.\n3. Replace ad-hoc inline styles with shared design tokens/components for buttons/chips/pills/cards to keep consistent spacing, typography, and color language inspired by Murdle/NYT style clarity.\n4. Improve mobile and PWA affordances: sticky mission action bar, offline/install status banner, and safe-area tuned spacing for bottom nav/PWA standalone mode.\n5. Validate behavior parity (submissions, scoring, progression), run build, then update task AC and notes.",
+        "implementationNotes": "Audit: current mission uses mixed layouts (today=custom puzzle shell; asteroid/mars=home-grid-two + panels), causing inconsistent hierarchy and excess mobile scroll. Works well: strong data context pills, clear submission CTAs, narrative beats. Weak points: repeated headers/metadata, deep control stacks, non-sticky primary actions, uneven visual language, minimal in-flow offline/install cues.\n\nImplemented UI overhaul: added MissionStatusBanner (offline + install prompt), unified mission shell wrapper in mission-flow, and refactored Today/Asteroid/Mars into consistent puzzle-screen/header/workspace/sidebar structure. Reduced scroll depth with collapsible help/evidence sections and sticky mobile action bars. Updated design tokens/colors for cohesive, less-purple visual language and aligned PWA theme colors in manifest/layout. Validation: npm run build (web) passes; knowns validate passes with only pre-existing warnings on unrelated tasks lacking AC.\n\nLocal runtime fixes: migrated src/middleware.ts to src/proxy.ts to remove Next 16 deprecation warning; added next.config turbopack.root=process.cwd() to stop workspace root lockfile warning; added dev-only local URL guard in lib/supabase/middleware to skip edge auth refresh against localhost/127.0.0.1 and prevent noisy fetch-failed retries in local dev. Also resolved Supabase local port conflict by stopping project-id client and restarting this project."
+      }
+    },
+    {
+      "id": "v9",
+      "taskId": "kdwrmt",
+      "version": 9,
+      "timestamp": "2026-03-08T00:38:31.134Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "done",
+          "newValue": "in-progress"
+        }
+      ],
+      "snapshot": {
+        "title": "Overhaul daily mission UI for mobile-first consistency",
+        "description": "Redesign game flow to reduce scrolling, unify UI system across briefing/minigames/results, and strengthen PWA/mobile behavior. Inspiration from Murdle/NYT/Worldle patterns with mission narrative continuity.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "ui",
+          "mobile",
+          "pwa",
+          "narrative"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Mission flow uses a consistent shell/layout across briefing, all minigames, and mission complete"
+          },
+          {
+            "completed": true,
+            "text": "Primary gameplay interactions fit mobile viewport without excessive vertical scrolling"
+          },
+          {
+            "completed": true,
+            "text": "Visual system (colors, spacing, typography, controls) is unified across game pages"
+          },
+          {
+            "completed": true,
+            "text": "PWA affordances (install/offline/status feedback) are visible and mobile friendly"
+          },
+          {
+            "completed": true,
+            "text": "Existing game mechanics continue to function after redesign"
+          }
+        ],
+        "implementationPlan": "1. Introduce a unified Mission Game Shell (single header/progress/meta/actions structure) used by all 3 minigames and narrative beats.\n2. Refactor Today/Asteroid/Mars pages to the same mobile-first two-block pattern: primary play area first, collapsible/secondary controls below, with reduced vertical stack depth.\n3. Replace ad-hoc inline styles with shared design tokens/components for buttons/chips/pills/cards to keep consistent spacing, typography, and color language inspired by Murdle/NYT style clarity.\n4. Improve mobile and PWA affordances: sticky mission action bar, offline/install status banner, and safe-area tuned spacing for bottom nav/PWA standalone mode.\n5. Validate behavior parity (submissions, scoring, progression), run build, then update task AC and notes.",
+        "implementationNotes": "Audit: current mission uses mixed layouts (today=custom puzzle shell; asteroid/mars=home-grid-two + panels), causing inconsistent hierarchy and excess mobile scroll. Works well: strong data context pills, clear submission CTAs, narrative beats. Weak points: repeated headers/metadata, deep control stacks, non-sticky primary actions, uneven visual language, minimal in-flow offline/install cues.\n\nImplemented UI overhaul: added MissionStatusBanner (offline + install prompt), unified mission shell wrapper in mission-flow, and refactored Today/Asteroid/Mars into consistent puzzle-screen/header/workspace/sidebar structure. Reduced scroll depth with collapsible help/evidence sections and sticky mobile action bars. Updated design tokens/colors for cohesive, less-purple visual language and aligned PWA theme colors in manifest/layout. Validation: npm run build (web) passes; knowns validate passes with only pre-existing warnings on unrelated tasks lacking AC.\n\nLocal runtime fixes: migrated src/middleware.ts to src/proxy.ts to remove Next 16 deprecation warning; added next.config turbopack.root=process.cwd() to stop workspace root lockfile warning; added dev-only local URL guard in lib/supabase/middleware to skip edge auth refresh against localhost/127.0.0.1 and prevent noisy fetch-failed retries in local dev. Also resolved Supabase local port conflict by stopping project-id client and restarting this project."
+      }
+    },
+    {
+      "id": "v10",
+      "taskId": "kdwrmt",
+      "version": 10,
+      "timestamp": "2026-03-08T00:40:51.006Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "oldValue": "Audit: current mission uses mixed layouts (today=custom puzzle shell; asteroid/mars=home-grid-two + panels), causing inconsistent hierarchy and excess mobile scroll. Works well: strong data context pills, clear submission CTAs, narrative beats. Weak points: repeated headers/metadata, deep control stacks, non-sticky primary actions, uneven visual language, minimal in-flow offline/install cues.\n\nImplemented UI overhaul: added MissionStatusBanner (offline + install prompt), unified mission shell wrapper in mission-flow, and refactored Today/Asteroid/Mars into consistent puzzle-screen/header/workspace/sidebar structure. Reduced scroll depth with collapsible help/evidence sections and sticky mobile action bars. Updated design tokens/colors for cohesive, less-purple visual language and aligned PWA theme colors in manifest/layout. Validation: npm run build (web) passes; knowns validate passes with only pre-existing warnings on unrelated tasks lacking AC.\n\nLocal runtime fixes: migrated src/middleware.ts to src/proxy.ts to remove Next 16 deprecation warning; added next.config turbopack.root=process.cwd() to stop workspace root lockfile warning; added dev-only local URL guard in lib/supabase/middleware to skip edge auth refresh against localhost/127.0.0.1 and prevent noisy fetch-failed retries in local dev. Also resolved Supabase local port conflict by stopping project-id client and restarting this project.",
+          "newValue": "Audit: current mission uses mixed layouts (today=custom puzzle shell; asteroid/mars=home-grid-two + panels), causing inconsistent hierarchy and excess mobile scroll. Works well: strong data context pills, clear submission CTAs, narrative beats. Weak points: repeated headers/metadata, deep control stacks, non-sticky primary actions, uneven visual language, minimal in-flow offline/install cues.\n\nImplemented UI overhaul: added MissionStatusBanner (offline + install prompt), unified mission shell wrapper in mission-flow, and refactored Today/Asteroid/Mars into consistent puzzle-screen/header/workspace/sidebar structure. Reduced scroll depth with collapsible help/evidence sections and sticky mobile action bars. Updated design tokens/colors for cohesive, less-purple visual language and aligned PWA theme colors in manifest/layout. Validation: npm run build (web) passes; knowns validate passes with only pre-existing warnings on unrelated tasks lacking AC.\n\nLocal runtime fixes: migrated src/middleware.ts to src/proxy.ts to remove Next 16 deprecation warning; added next.config turbopack.root=process.cwd() to stop workspace root lockfile warning; added dev-only local URL guard in lib/supabase/middleware to skip edge auth refresh against localhost/127.0.0.1 and prevent noisy fetch-failed retries in local dev. Also resolved Supabase local port conflict by stopping project-id client and restarting this project.\n\nFollow-up fixes from UX review: removed explicit step-order labels from game headers/beats, implemented chapter-dependent mission game sequencing via getMissionGameOrder(), removed fixed arrowed order in briefing preview, and reduced /games/today right-column scroll pressure by collapsing hints/notes + capping desktop sidebar height with internal scroll."
+        }
+      ],
+      "snapshot": {
+        "title": "Overhaul daily mission UI for mobile-first consistency",
+        "description": "Redesign game flow to reduce scrolling, unify UI system across briefing/minigames/results, and strengthen PWA/mobile behavior. Inspiration from Murdle/NYT/Worldle patterns with mission narrative continuity.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "ui",
+          "mobile",
+          "pwa",
+          "narrative"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Mission flow uses a consistent shell/layout across briefing, all minigames, and mission complete"
+          },
+          {
+            "completed": true,
+            "text": "Primary gameplay interactions fit mobile viewport without excessive vertical scrolling"
+          },
+          {
+            "completed": true,
+            "text": "Visual system (colors, spacing, typography, controls) is unified across game pages"
+          },
+          {
+            "completed": true,
+            "text": "PWA affordances (install/offline/status feedback) are visible and mobile friendly"
+          },
+          {
+            "completed": true,
+            "text": "Existing game mechanics continue to function after redesign"
+          }
+        ],
+        "implementationPlan": "1. Introduce a unified Mission Game Shell (single header/progress/meta/actions structure) used by all 3 minigames and narrative beats.\n2. Refactor Today/Asteroid/Mars pages to the same mobile-first two-block pattern: primary play area first, collapsible/secondary controls below, with reduced vertical stack depth.\n3. Replace ad-hoc inline styles with shared design tokens/components for buttons/chips/pills/cards to keep consistent spacing, typography, and color language inspired by Murdle/NYT style clarity.\n4. Improve mobile and PWA affordances: sticky mission action bar, offline/install status banner, and safe-area tuned spacing for bottom nav/PWA standalone mode.\n5. Validate behavior parity (submissions, scoring, progression), run build, then update task AC and notes.",
+        "implementationNotes": "Audit: current mission uses mixed layouts (today=custom puzzle shell; asteroid/mars=home-grid-two + panels), causing inconsistent hierarchy and excess mobile scroll. Works well: strong data context pills, clear submission CTAs, narrative beats. Weak points: repeated headers/metadata, deep control stacks, non-sticky primary actions, uneven visual language, minimal in-flow offline/install cues.\n\nImplemented UI overhaul: added MissionStatusBanner (offline + install prompt), unified mission shell wrapper in mission-flow, and refactored Today/Asteroid/Mars into consistent puzzle-screen/header/workspace/sidebar structure. Reduced scroll depth with collapsible help/evidence sections and sticky mobile action bars. Updated design tokens/colors for cohesive, less-purple visual language and aligned PWA theme colors in manifest/layout. Validation: npm run build (web) passes; knowns validate passes with only pre-existing warnings on unrelated tasks lacking AC.\n\nLocal runtime fixes: migrated src/middleware.ts to src/proxy.ts to remove Next 16 deprecation warning; added next.config turbopack.root=process.cwd() to stop workspace root lockfile warning; added dev-only local URL guard in lib/supabase/middleware to skip edge auth refresh against localhost/127.0.0.1 and prevent noisy fetch-failed retries in local dev. Also resolved Supabase local port conflict by stopping project-id client and restarting this project.\n\nFollow-up fixes from UX review: removed explicit step-order labels from game headers/beats, implemented chapter-dependent mission game sequencing via getMissionGameOrder(), removed fixed arrowed order in briefing preview, and reduced /games/today right-column scroll pressure by collapsing hints/notes + capping desktop sidebar height with internal scroll."
+      }
+    },
+    {
+      "id": "v11",
+      "taskId": "kdwrmt",
+      "version": 11,
+      "timestamp": "2026-03-08T00:41:00.730Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        }
+      ],
+      "snapshot": {
+        "title": "Overhaul daily mission UI for mobile-first consistency",
+        "description": "Redesign game flow to reduce scrolling, unify UI system across briefing/minigames/results, and strengthen PWA/mobile behavior. Inspiration from Murdle/NYT/Worldle patterns with mission narrative continuity.",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "ui",
+          "mobile",
+          "pwa",
+          "narrative"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Mission flow uses a consistent shell/layout across briefing, all minigames, and mission complete"
+          },
+          {
+            "completed": true,
+            "text": "Primary gameplay interactions fit mobile viewport without excessive vertical scrolling"
+          },
+          {
+            "completed": true,
+            "text": "Visual system (colors, spacing, typography, controls) is unified across game pages"
+          },
+          {
+            "completed": true,
+            "text": "PWA affordances (install/offline/status feedback) are visible and mobile friendly"
+          },
+          {
+            "completed": true,
+            "text": "Existing game mechanics continue to function after redesign"
+          }
+        ],
+        "implementationPlan": "1. Introduce a unified Mission Game Shell (single header/progress/meta/actions structure) used by all 3 minigames and narrative beats.\n2. Refactor Today/Asteroid/Mars pages to the same mobile-first two-block pattern: primary play area first, collapsible/secondary controls below, with reduced vertical stack depth.\n3. Replace ad-hoc inline styles with shared design tokens/components for buttons/chips/pills/cards to keep consistent spacing, typography, and color language inspired by Murdle/NYT style clarity.\n4. Improve mobile and PWA affordances: sticky mission action bar, offline/install status banner, and safe-area tuned spacing for bottom nav/PWA standalone mode.\n5. Validate behavior parity (submissions, scoring, progression), run build, then update task AC and notes.",
+        "implementationNotes": "Audit: current mission uses mixed layouts (today=custom puzzle shell; asteroid/mars=home-grid-two + panels), causing inconsistent hierarchy and excess mobile scroll. Works well: strong data context pills, clear submission CTAs, narrative beats. Weak points: repeated headers/metadata, deep control stacks, non-sticky primary actions, uneven visual language, minimal in-flow offline/install cues.\n\nImplemented UI overhaul: added MissionStatusBanner (offline + install prompt), unified mission shell wrapper in mission-flow, and refactored Today/Asteroid/Mars into consistent puzzle-screen/header/workspace/sidebar structure. Reduced scroll depth with collapsible help/evidence sections and sticky mobile action bars. Updated design tokens/colors for cohesive, less-purple visual language and aligned PWA theme colors in manifest/layout. Validation: npm run build (web) passes; knowns validate passes with only pre-existing warnings on unrelated tasks lacking AC.\n\nLocal runtime fixes: migrated src/middleware.ts to src/proxy.ts to remove Next 16 deprecation warning; added next.config turbopack.root=process.cwd() to stop workspace root lockfile warning; added dev-only local URL guard in lib/supabase/middleware to skip edge auth refresh against localhost/127.0.0.1 and prevent noisy fetch-failed retries in local dev. Also resolved Supabase local port conflict by stopping project-id client and restarting this project.\n\nFollow-up fixes from UX review: removed explicit step-order labels from game headers/beats, implemented chapter-dependent mission game sequencing via getMissionGameOrder(), removed fixed arrowed order in briefing preview, and reduced /games/today right-column scroll pressure by collapsing hints/notes + capping desktop sidebar height with internal scroll."
+      }
+    },
+    {
+      "id": "v12",
+      "taskId": "kdwrmt",
+      "version": 12,
+      "timestamp": "2026-03-08T00:48:54.542Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "oldValue": "Audit: current mission uses mixed layouts (today=custom puzzle shell; asteroid/mars=home-grid-two + panels), causing inconsistent hierarchy and excess mobile scroll. Works well: strong data context pills, clear submission CTAs, narrative beats. Weak points: repeated headers/metadata, deep control stacks, non-sticky primary actions, uneven visual language, minimal in-flow offline/install cues.\n\nImplemented UI overhaul: added MissionStatusBanner (offline + install prompt), unified mission shell wrapper in mission-flow, and refactored Today/Asteroid/Mars into consistent puzzle-screen/header/workspace/sidebar structure. Reduced scroll depth with collapsible help/evidence sections and sticky mobile action bars. Updated design tokens/colors for cohesive, less-purple visual language and aligned PWA theme colors in manifest/layout. Validation: npm run build (web) passes; knowns validate passes with only pre-existing warnings on unrelated tasks lacking AC.\n\nLocal runtime fixes: migrated src/middleware.ts to src/proxy.ts to remove Next 16 deprecation warning; added next.config turbopack.root=process.cwd() to stop workspace root lockfile warning; added dev-only local URL guard in lib/supabase/middleware to skip edge auth refresh against localhost/127.0.0.1 and prevent noisy fetch-failed retries in local dev. Also resolved Supabase local port conflict by stopping project-id client and restarting this project.\n\nFollow-up fixes from UX review: removed explicit step-order labels from game headers/beats, implemented chapter-dependent mission game sequencing via getMissionGameOrder(), removed fixed arrowed order in briefing preview, and reduced /games/today right-column scroll pressure by collapsing hints/notes + capping desktop sidebar height with internal scroll.",
+          "newValue": "Audit: current mission uses mixed layouts (today=custom puzzle shell; asteroid/mars=home-grid-two + panels), causing inconsistent hierarchy and excess mobile scroll. Works well: strong data context pills, clear submission CTAs, narrative beats. Weak points: repeated headers/metadata, deep control stacks, non-sticky primary actions, uneven visual language, minimal in-flow offline/install cues.\n\nImplemented UI overhaul: added MissionStatusBanner (offline + install prompt), unified mission shell wrapper in mission-flow, and refactored Today/Asteroid/Mars into consistent puzzle-screen/header/workspace/sidebar structure. Reduced scroll depth with collapsible help/evidence sections and sticky mobile action bars. Updated design tokens/colors for cohesive, less-purple visual language and aligned PWA theme colors in manifest/layout. Validation: npm run build (web) passes; knowns validate passes with only pre-existing warnings on unrelated tasks lacking AC.\n\nLocal runtime fixes: migrated src/middleware.ts to src/proxy.ts to remove Next 16 deprecation warning; added next.config turbopack.root=process.cwd() to stop workspace root lockfile warning; added dev-only local URL guard in lib/supabase/middleware to skip edge auth refresh against localhost/127.0.0.1 and prevent noisy fetch-failed retries in local dev. Also resolved Supabase local port conflict by stopping project-id client and restarting this project.\n\nFollow-up fixes from UX review: removed explicit step-order labels from game headers/beats, implemented chapter-dependent mission game sequencing via getMissionGameOrder(), removed fixed arrowed order in briefing preview, and reduced /games/today right-column scroll pressure by collapsing hints/notes + capping desktop sidebar height with internal scroll.\n\nUX follow-up: today-game now keeps note inputs optional behind collapsed Notes section; annotation list no longer auto-opens; added no-planet banner + Confirm No Planet Here action when no annotations exist. This submits a low-confidence completion for points and ends mission flow early for the session. MissionComplete now shows an early-end resolution message."
+        }
+      ],
+      "snapshot": {
+        "title": "Overhaul daily mission UI for mobile-first consistency",
+        "description": "Redesign game flow to reduce scrolling, unify UI system across briefing/minigames/results, and strengthen PWA/mobile behavior. Inspiration from Murdle/NYT/Worldle patterns with mission narrative continuity.",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "ui",
+          "mobile",
+          "pwa",
+          "narrative"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Mission flow uses a consistent shell/layout across briefing, all minigames, and mission complete"
+          },
+          {
+            "completed": true,
+            "text": "Primary gameplay interactions fit mobile viewport without excessive vertical scrolling"
+          },
+          {
+            "completed": true,
+            "text": "Visual system (colors, spacing, typography, controls) is unified across game pages"
+          },
+          {
+            "completed": true,
+            "text": "PWA affordances (install/offline/status feedback) are visible and mobile friendly"
+          },
+          {
+            "completed": true,
+            "text": "Existing game mechanics continue to function after redesign"
+          }
+        ],
+        "implementationPlan": "1. Introduce a unified Mission Game Shell (single header/progress/meta/actions structure) used by all 3 minigames and narrative beats.\n2. Refactor Today/Asteroid/Mars pages to the same mobile-first two-block pattern: primary play area first, collapsible/secondary controls below, with reduced vertical stack depth.\n3. Replace ad-hoc inline styles with shared design tokens/components for buttons/chips/pills/cards to keep consistent spacing, typography, and color language inspired by Murdle/NYT style clarity.\n4. Improve mobile and PWA affordances: sticky mission action bar, offline/install status banner, and safe-area tuned spacing for bottom nav/PWA standalone mode.\n5. Validate behavior parity (submissions, scoring, progression), run build, then update task AC and notes.",
+        "implementationNotes": "Audit: current mission uses mixed layouts (today=custom puzzle shell; asteroid/mars=home-grid-two + panels), causing inconsistent hierarchy and excess mobile scroll. Works well: strong data context pills, clear submission CTAs, narrative beats. Weak points: repeated headers/metadata, deep control stacks, non-sticky primary actions, uneven visual language, minimal in-flow offline/install cues.\n\nImplemented UI overhaul: added MissionStatusBanner (offline + install prompt), unified mission shell wrapper in mission-flow, and refactored Today/Asteroid/Mars into consistent puzzle-screen/header/workspace/sidebar structure. Reduced scroll depth with collapsible help/evidence sections and sticky mobile action bars. Updated design tokens/colors for cohesive, less-purple visual language and aligned PWA theme colors in manifest/layout. Validation: npm run build (web) passes; knowns validate passes with only pre-existing warnings on unrelated tasks lacking AC.\n\nLocal runtime fixes: migrated src/middleware.ts to src/proxy.ts to remove Next 16 deprecation warning; added next.config turbopack.root=process.cwd() to stop workspace root lockfile warning; added dev-only local URL guard in lib/supabase/middleware to skip edge auth refresh against localhost/127.0.0.1 and prevent noisy fetch-failed retries in local dev. Also resolved Supabase local port conflict by stopping project-id client and restarting this project.\n\nFollow-up fixes from UX review: removed explicit step-order labels from game headers/beats, implemented chapter-dependent mission game sequencing via getMissionGameOrder(), removed fixed arrowed order in briefing preview, and reduced /games/today right-column scroll pressure by collapsing hints/notes + capping desktop sidebar height with internal scroll.\n\nUX follow-up: today-game now keeps note inputs optional behind collapsed Notes section; annotation list no longer auto-opens; added no-planet banner + Confirm No Planet Here action when no annotations exist. This submits a low-confidence completion for points and ends mission flow early for the session. MissionComplete now shows an early-end resolution message."
+      }
+    }
+  ]
+}

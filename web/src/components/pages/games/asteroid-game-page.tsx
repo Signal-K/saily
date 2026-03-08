@@ -183,44 +183,50 @@ export default function AsteroidGamePage({ onMissionComplete }: AsteroidGamePage
 
   if (submitted && score !== null) {
     return (
-      <section className="panel">
-        <p className="eyebrow">Asteroid Survey — Complete</p>
-        <h1>Survey submitted</h1>
-        <p className="muted">
-          You mapped anomaly candidates on <strong>{anomaly.title}</strong> (TIC {anomaly.ticId}).
-          Water-ice sources confirmed for the mission route.
-        </p>
-        <div className="mission-complete-score" style={{ margin: "1.25rem 0" }}>
-          <span className="mission-complete-score-label muted">Score</span>
-          <span className="mission-complete-score-value">{score}</span>
+      <section className="puzzle-screen">
+        <header className="puzzle-header panel">
+          <p className="eyebrow">Daily Mission</p>
+          <h1>Asteroid Survey Complete</h1>
+          <p className="muted puzzle-header-summary">
+            You mapped anomaly candidates on <strong>{anomaly.title}</strong> (TIC {anomaly.ticId}).
+          </p>
+        </header>
+        <div className="panel">
+          <div className="mission-complete-score" style={{ margin: "1.25rem 0" }}>
+            <span className="mission-complete-score-label muted">Score</span>
+            <span className="mission-complete-score-value">{score}</span>
+          </div>
+          <p className="muted">Come back tomorrow for a new survey target.</p>
         </div>
-        <p className="muted">Come back tomorrow for a new survey target.</p>
       </section>
     );
   }
 
   return (
-    <section className="panel">
-      <header>
-        <p className="eyebrow">Citizen Science · Asteroid Survey</p>
+    <section className="puzzle-screen">
+      <header className="puzzle-header panel">
+        <p className="eyebrow">Daily Mission</p>
         <h1>Water-Ice Mapping</h1>
-        <p className="muted">
-          Mark anomaly regions on today&apos;s asteroid candidate. Your annotations help identify
-          potential water-ice deposits — a critical resource for long-range missions.
-        </p>
+        <div className="puzzle-header-row">
+          <p className="muted puzzle-header-summary">
+            Mark anomaly regions on today&apos;s asteroid candidate. Your annotations help identify
+            potential water-ice deposits.
+          </p>
+          <span className="puzzle-progress">Survey</span>
+        </div>
+        <div className="puzzle-context-row">
+          <span className="puzzle-context-pill">Date {date}</span>
+          <span className="puzzle-context-pill">TIC {anomaly.ticId}</span>
+          <span className="puzzle-context-pill">{anomaly.mission}</span>
+          <span className="puzzle-context-pill">{anomaly.title}</span>
+          <span className="puzzle-context-pill">{annotations.length} annotations</span>
+        </div>
       </header>
 
-      <div className="puzzle-context-row" style={{ marginTop: "0.5rem" }}>
-        <span className="puzzle-context-pill">TIC {anomaly.ticId}</span>
-        <span className="puzzle-context-pill">{anomaly.mission}</span>
-        <span className="puzzle-context-pill">{anomaly.title}</span>
-        <span className="puzzle-context-pill">{annotations.length} annotations</span>
-      </div>
-
-      <div className="home-grid-two" style={{ marginTop: "1rem" }}>
-        <article className="panel">
+      <div className="puzzle-workspace">
+        <article className="puzzle-canvas panel">
           <h2>Today&apos;s Target</h2>
-          <p className="muted">{submitted ? "Survey submitted." : "Click the image to place annotations."}</p>
+          <p className="muted">{submitted ? "Survey submitted." : "Tap the image to place markers."}</p>
           <div style={{ position: "relative" }}>
             <Image
               ref={imageRef}
@@ -263,31 +269,60 @@ export default function AsteroidGamePage({ onMissionComplete }: AsteroidGamePage
           </div>
         </article>
 
-        <aside className="panel">
-          <h2>Annotation Input</h2>
-          <label className="puzzle-control-group">
-            <p className="puzzle-control-label">Label</p>
-            <input
-              className="input"
-              value={label}
-              onChange={(e) => setLabel(e.target.value)}
-              placeholder="Possible water-ice region"
-              disabled={submitted}
-            />
-          </label>
-          <label className="puzzle-control-group">
-            <p className="puzzle-control-label">Note</p>
-            <textarea
-              className="textarea puzzle-note"
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-              placeholder="Why does this region look unusual?"
-              disabled={submitted}
-            />
-          </label>
+        <aside className="puzzle-sidebar panel">
+          <div className="puzzle-controls" aria-label="Asteroid survey controls">
+            <label className="puzzle-control-group">
+              <p className="puzzle-control-label">Label</p>
+              <input
+                className="input"
+                value={label}
+                onChange={(e) => setLabel(e.target.value)}
+                placeholder="Possible water-ice region"
+                disabled={submitted}
+              />
+            </label>
+            <label className="puzzle-control-group">
+              <p className="puzzle-control-label">Note</p>
+              <textarea
+                className="textarea puzzle-note"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                placeholder="Why does this region look unusual?"
+                disabled={submitted}
+              />
+            </label>
+          </div>
+
+          {status ? <p className="puzzle-feedback">{status}</p> : null}
+
+          <details className="puzzle-collapsible" open={annotations.length > 0}>
+            <summary>Markers {annotations.length > 0 ? `(${annotations.length})` : ""}</summary>
+            {annotations.length === 0 ? (
+              <p className="muted">No markers yet. Tap the image to begin.</p>
+            ) : (
+              <ul className="home-list">
+                {annotations.map((annotation) => (
+                  <li key={annotation.id} className="home-list-item">
+                    <span>
+                      {annotation.label} ({annotation.x.toFixed(3)}, {annotation.y.toFixed(3)})
+                    </span>
+                    {!submitted && (
+                      <button
+                        type="button"
+                        className="button puzzle-action-secondary"
+                        onClick={() => removeAnnotation(annotation.id)}
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </details>
 
           {!submitted && (
-            <div className="puzzle-next-row">
+            <div className="puzzle-next-row mission-sticky-actions">
               <button
                 type="button"
                 className="button puzzle-action-secondary"
@@ -298,39 +333,13 @@ export default function AsteroidGamePage({ onMissionComplete }: AsteroidGamePage
               </button>
               <button
                 type="button"
-                className="button button-primary"
+                className="button button-primary puzzle-action-primary"
                 onClick={() => void submitAnnotations()}
                 disabled={saving || annotations.length === 0}
               >
                 {saving ? "Submitting..." : "Submit Survey"}
               </button>
             </div>
-          )}
-
-          {status ? <p className="puzzle-feedback">{status}</p> : null}
-
-          <h3>Markers {annotations.length > 0 ? `(${annotations.length})` : ""}</h3>
-          {annotations.length === 0 ? (
-            <p className="muted">No markers yet. Click the image to begin.</p>
-          ) : (
-            <ul className="home-list">
-              {annotations.map((annotation) => (
-                <li key={annotation.id} className="home-list-item">
-                  <span>
-                    {annotation.label} ({annotation.x.toFixed(3)}, {annotation.y.toFixed(3)})
-                  </span>
-                  {!submitted && (
-                    <button
-                      type="button"
-                      className="button puzzle-action-secondary"
-                      onClick={() => removeAnnotation(annotation.id)}
-                    >
-                      Remove
-                    </button>
-                  )}
-                </li>
-              ))}
-            </ul>
           )}
         </aside>
       </div>

@@ -12,9 +12,10 @@ type Props = {
   score: number;
   isStorylineComplete: boolean;
   storylineTitle: string;
+  endedEarly?: boolean;
 };
 
-export function MissionComplete({ character, chapter, score, isStorylineComplete, storylineTitle }: Props) {
+export function MissionComplete({ character, chapter, score, isStorylineComplete, storylineTitle, endedEarly = false }: Props) {
   const avatarSrc = getRobotAvatarDataUri(character.avatarSeed, 72);
 
   return (
@@ -40,7 +41,11 @@ export function MissionComplete({ character, chapter, score, isStorylineComplete
         </div>
       </div>
 
-      <blockquote className="mission-complete-resolution">{chapter.resolution}</blockquote>
+      <blockquote className="mission-complete-resolution">
+        {endedEarly
+          ? "You reported no confirmed planet signal today. Mission operations ended early, and your report has been logged."
+          : chapter.resolution}
+      </blockquote>
 
       <div className="mission-complete-score">
         <span className="mission-complete-score-label muted">Today&apos;s score</span>

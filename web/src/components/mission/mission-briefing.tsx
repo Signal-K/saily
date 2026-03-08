@@ -57,24 +57,6 @@ export function MissionBriefing({ character, chapter, storylineTitle, chapterNum
 
       <blockquote className="mission-briefing-text">{chapter.briefing}</blockquote>
 
-      {/* 3-game overview */}
-      <div className="mission-games-preview">
-        <div className="mission-game-step">
-          <span aria-hidden>🔭</span>
-          <span>Planet Hunt</span>
-        </div>
-        <span className="mission-game-arrow" aria-hidden>→</span>
-        <div className="mission-game-step">
-          <span aria-hidden>☄️</span>
-          <span>Asteroids</span>
-        </div>
-        <span className="mission-game-arrow" aria-hidden>→</span>
-        <div className="mission-game-step">
-          <span aria-hidden>🪐</span>
-          <span>Mars</span>
-        </div>
-      </div>
-
       <button type="button" className="button button-primary mission-briefing-cta" onClick={onBegin}>
         Begin Mission &rarr;
       </button>
