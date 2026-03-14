@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { queueExitSurvey } from "@/lib/posthog/exit-survey";
+import { queueSurveyTrigger } from "@/lib/posthog/survey-queue";
+import { trackGameplayEvent } from "@/lib/analytics/events";
 
 type LightcurvePoint = {
   x: number;
@@ -613,15 +614,19 @@ export default function TodayGamePage({ onMissionComplete }: TodayGamePageProps 
       `Daily set complete. Score ${completePayload.score ?? 0}${completePayload.xpMultiplier === 0.5 ? " (50% XP for past-day puzzle)." : ""}${completePayload.badgesAwarded ? ` New badges: ${completePayload.badgesAwarded}.` : ""}`,
     );
     setSubmitting(false);
-    const gamesPlayed = Number(completePayload.stats?.games_played ?? 0);
-    if (gamesPlayed === 1) {
-      queueExitSurvey({
-        source: "first_game_complete",
-        version: process.env.NEXT_PUBLIC_APP_VERSION?.trim() || "v1",
-        gameDate,
-        score: completePayload.score,
-      });
-    }
+    queueSurveyTrigger({
+      source: "planet_transit",
+      version: process.env.NEXT_PUBLIC_APP_VERSION?.trim() || "v1",
+      gameDate,
+      score: completePayload.score,
+    });
+    trackGameplayEvent("planet_transit_completed", {
+      game_date: gameDate,
+      score: completePayload.score ?? 0,
+      used_phase_hint: phaseFoldHint,
+      used_bin_hint: binHint,
+      annotations_count: annotations.length,
+    });
     if (onMissionComplete) {
       onMissionComplete({ score: completePayload.score ?? 0 });
     } else {
@@ -658,6 +663,16 @@ export default function TodayGamePage({ onMissionComplete }: TodayGamePageProps 
 
     setFeedback("No planet identified. Mission ended for today.");
     setSubmitting(false);
+    queueSurveyTrigger({
+      source: "planet_no_detection",
+      version: process.env.NEXT_PUBLIC_APP_VERSION?.trim() || "v1",
+      gameDate,
+      score: completePayload.score,
+    });
+    trackGameplayEvent("planet_no_detection_confirmed", {
+      game_date: gameDate,
+      score: completePayload.score ?? 0,
+    });
     if (onMissionComplete) {
       onMissionComplete({ score: completePayload.score ?? 0, terminatedEarly: true });
       return;

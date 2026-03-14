@@ -3327,3 +3327,14 @@ body {
   font-size: 2rem;
   line-height: 1;
 }
+
+/* PostHog survey theming */
+body [class*="ph-survey"],
+body [class*="PostHogSurvey"] {
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif !important;
+}
+
+body [class*="ph-survey"] button,
+body [class*="PostHogSurvey"] button {
+  border-radius: 999px !important;
+}

@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { ASTEROID_ANOMALIES } from "@/lib/secondary-game";
+import { queueSurveyTrigger } from "@/lib/posthog/survey-queue";
+import { trackGameplayEvent } from "@/lib/analytics/events";
 
 type AsteroidAnnotation = {
   id: string;
@@ -166,6 +168,17 @@ export default function AsteroidGamePage({ onMissionComplete }: AsteroidGamePage
       return;
     }
     const finalScore = payload.score ?? 0;
+    queueSurveyTrigger({
+      source: "asteroid_mapping",
+      version: process.env.NEXT_PUBLIC_APP_VERSION?.trim() || "v1",
+      gameDate: date,
+      score: finalScore,
+    });
+    trackGameplayEvent("asteroid_mapping_completed", {
+      game_date: date,
+      score: finalScore,
+      annotations_count: annotations.length,
+    });
     if (onMissionComplete) {
       onMissionComplete(finalScore);
     } else {

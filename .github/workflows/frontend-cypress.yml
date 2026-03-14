@@ -45,9 +45,9 @@ jobs:
         run: |
           set -euo pipefail
           supabase status -o env > /tmp/supabase.env
-          API_URL="$(grep '^API_URL=' /tmp/supabase.env | cut -d= -f2-)"
-          ANON_KEY="$(grep '^ANON_KEY=' /tmp/supabase.env | cut -d= -f2-)"
-          SERVICE_ROLE_KEY="$(grep '^SERVICE_ROLE_KEY=' /tmp/supabase.env | cut -d= -f2-)"
+          API_URL="$(grep '^API_URL=' /tmp/supabase.env | cut -d= -f2- | sed 's/^\"//;s/\"$//')"
+          ANON_KEY="$(grep '^ANON_KEY=' /tmp/supabase.env | cut -d= -f2- | sed 's/^\"//;s/\"$//')"
+          SERVICE_ROLE_KEY="$(grep '^SERVICE_ROLE_KEY=' /tmp/supabase.env | cut -d= -f2- | sed 's/^\"//;s/\"$//')"
 
           if [[ -z "${API_URL}" || -z "${ANON_KEY}" || -z "${SERVICE_ROLE_KEY}" ]]; then
             echo "Missing required Supabase local env values from supabase status output."

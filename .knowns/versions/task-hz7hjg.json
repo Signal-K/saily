@@ -1,0 +1,119 @@
+{
+  "taskId": "hz7hjg",
+  "currentVersion": 2,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "hz7hjg",
+      "version": 1,
+      "timestamp": "2026-03-08T04:56:24.286Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "in-progress"
+        },
+        {
+          "field": "assignee",
+          "newValue": "@me"
+        }
+      ],
+      "snapshot": {
+        "title": "Add/verify Vercel Analytics instrumentation across web app",
+        "description": "Ensure Vercel Analytics is correctly integrated in the web app, verify event coverage for key product mechanics/minigames, and document what is captured.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "analytics",
+          "vercel",
+          "web"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Vercel Analytics runtime is present and active in app layout"
+          },
+          {
+            "completed": false,
+            "text": "Key gameplay actions emit analytics events"
+          },
+          {
+            "completed": false,
+            "text": "Implementation notes include tracked events and where they fire"
+          }
+        ]
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "hz7hjg",
+      "version": 2,
+      "timestamp": "2026-03-08T05:09:23.748Z",
+      "changes": [
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "Vercel Analytics runtime is present and active in app layout"
+            },
+            {
+              "completed": false,
+              "text": "Key gameplay actions emit analytics events"
+            },
+            {
+              "completed": false,
+              "text": "Implementation notes include tracked events and where they fire"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "Vercel Analytics runtime is present and active in app layout"
+            },
+            {
+              "completed": true,
+              "text": "Key gameplay actions emit analytics events"
+            },
+            {
+              "completed": true,
+              "text": "Implementation notes include tracked events and where they fire"
+            }
+          ]
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Verified Vercel Analytics runtime in app layout via @vercel/analytics React component. Added explicit gameplay analytics event tracking utility and instrumented key actions: planet_transit_completed, planet_no_detection_confirmed, asteroid_mapping_completed, mars_classification_completed, narrative_flow_completed. Added event properties for score/date/hint usage/annotation count/classified count/storyline/chapter where applicable."
+        }
+      ],
+      "snapshot": {
+        "title": "Add/verify Vercel Analytics instrumentation across web app",
+        "description": "Ensure Vercel Analytics is correctly integrated in the web app, verify event coverage for key product mechanics/minigames, and document what is captured.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "analytics",
+          "vercel",
+          "web"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Vercel Analytics runtime is present and active in app layout"
+          },
+          {
+            "completed": true,
+            "text": "Key gameplay actions emit analytics events"
+          },
+          {
+            "completed": true,
+            "text": "Implementation notes include tracked events and where they fire"
+          }
+        ],
+        "implementationNotes": "Verified Vercel Analytics runtime in app layout via @vercel/analytics React component. Added explicit gameplay analytics event tracking utility and instrumented key actions: planet_transit_completed, planet_no_detection_confirmed, asteroid_mapping_completed, mars_classification_completed, narrative_flow_completed. Added event properties for score/date/hint usage/annotation count/classified count/storyline/chapter where applicable."
+      }
+    }
+  ]
+}

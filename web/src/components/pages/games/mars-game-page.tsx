@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { MARS_CLASSIFICATIONS, type MarsImage, type MarsClassification } from "@/lib/mars-images";
+import { queueSurveyTrigger } from "@/lib/posthog/survey-queue";
+import { trackGameplayEvent } from "@/lib/analytics/events";
 
 type ClassificationEntry = {
   imageId: string;
@@ -107,6 +109,17 @@ export default function MarsGamePage({ onMissionComplete }: MarsGamePageProps = 
       return;
     }
     const finalScore = payload.score ?? 0;
+    queueSurveyTrigger({
+      source: "mars_classification",
+      version: process.env.NEXT_PUBLIC_APP_VERSION?.trim() || "v1",
+      gameDate: date,
+      score: finalScore,
+    });
+    trackGameplayEvent("mars_classification_completed", {
+      game_date: date,
+      score: finalScore,
+      classified_count: complete.length,
+    });
     if (onMissionComplete) {
       onMissionComplete(finalScore);
     } else {

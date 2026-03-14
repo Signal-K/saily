@@ -1,0 +1,239 @@
+{
+  "taskId": "mdt9ls",
+  "currentVersion": 5,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "mdt9ls",
+      "version": 1,
+      "timestamp": "2026-03-08T02:39:01.310Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "in-progress"
+        },
+        {
+          "field": "assignee",
+          "newValue": "@me"
+        }
+      ],
+      "snapshot": {
+        "title": "Fix local CI Supabase env quoting and cleanup resilience",
+        "description": "Ensure frontend-cypress workflow works with local Supabase only: strip quoted env values, avoid secret dependency assumptions, and make e2e cleanup tolerant when test user was not created.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "ci",
+          "e2e",
+          "supabase"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "e2e user create handles quoted/local URL values"
+          },
+          {
+            "completed": false,
+            "text": "workflow exports local Supabase vars without invalid quotes"
+          },
+          {
+            "completed": false,
+            "text": "cleanup step does not fail pipeline when TEST_USER_ID is absent"
+          }
+        ]
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "mdt9ls",
+      "version": 2,
+      "timestamp": "2026-03-08T02:39:21.815Z",
+      "changes": [
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "e2e user create handles quoted/local URL values"
+            },
+            {
+              "completed": false,
+              "text": "workflow exports local Supabase vars without invalid quotes"
+            },
+            {
+              "completed": false,
+              "text": "cleanup step does not fail pipeline when TEST_USER_ID is absent"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "e2e user create handles quoted/local URL values"
+            },
+            {
+              "completed": true,
+              "text": "workflow exports local Supabase vars without invalid quotes"
+            },
+            {
+              "completed": true,
+              "text": "cleanup step does not fail pipeline when TEST_USER_ID is absent"
+            }
+          ]
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Fixed CI local Supabase env quoting issue by stripping surrounding quotes in workflow export step (API_URL/ANON_KEY/SERVICE_ROLE_KEY). Hardened e2e create/cleanup scripts with env sanitization and SUPABASE_SERVICE_ROLE_KEY fallback. Added default local URL fallback (127.0.0.1:54321). Cleanup now exits successfully when TEST_USER_ID is absent, preventing false-fail after create step errors."
+        }
+      ],
+      "snapshot": {
+        "title": "Fix local CI Supabase env quoting and cleanup resilience",
+        "description": "Ensure frontend-cypress workflow works with local Supabase only: strip quoted env values, avoid secret dependency assumptions, and make e2e cleanup tolerant when test user was not created.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "ci",
+          "e2e",
+          "supabase"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "e2e user create handles quoted/local URL values"
+          },
+          {
+            "completed": true,
+            "text": "workflow exports local Supabase vars without invalid quotes"
+          },
+          {
+            "completed": true,
+            "text": "cleanup step does not fail pipeline when TEST_USER_ID is absent"
+          }
+        ],
+        "implementationNotes": "Fixed CI local Supabase env quoting issue by stripping surrounding quotes in workflow export step (API_URL/ANON_KEY/SERVICE_ROLE_KEY). Hardened e2e create/cleanup scripts with env sanitization and SUPABASE_SERVICE_ROLE_KEY fallback. Added default local URL fallback (127.0.0.1:54321). Cleanup now exits successfully when TEST_USER_ID is absent, preventing false-fail after create step errors."
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "mdt9ls",
+      "version": 3,
+      "timestamp": "2026-03-08T02:39:21.849Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        }
+      ],
+      "snapshot": {
+        "title": "Fix local CI Supabase env quoting and cleanup resilience",
+        "description": "Ensure frontend-cypress workflow works with local Supabase only: strip quoted env values, avoid secret dependency assumptions, and make e2e cleanup tolerant when test user was not created.",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "ci",
+          "e2e",
+          "supabase"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "e2e user create handles quoted/local URL values"
+          },
+          {
+            "completed": true,
+            "text": "workflow exports local Supabase vars without invalid quotes"
+          },
+          {
+            "completed": true,
+            "text": "cleanup step does not fail pipeline when TEST_USER_ID is absent"
+          }
+        ],
+        "implementationNotes": "Fixed CI local Supabase env quoting issue by stripping surrounding quotes in workflow export step (API_URL/ANON_KEY/SERVICE_ROLE_KEY). Hardened e2e create/cleanup scripts with env sanitization and SUPABASE_SERVICE_ROLE_KEY fallback. Added default local URL fallback (127.0.0.1:54321). Cleanup now exits successfully when TEST_USER_ID is absent, preventing false-fail after create step errors."
+      }
+    },
+    {
+      "id": "v4",
+      "taskId": "mdt9ls",
+      "version": 4,
+      "timestamp": "2026-03-08T04:57:34.527Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "oldValue": "Fixed CI local Supabase env quoting issue by stripping surrounding quotes in workflow export step (API_URL/ANON_KEY/SERVICE_ROLE_KEY). Hardened e2e create/cleanup scripts with env sanitization and SUPABASE_SERVICE_ROLE_KEY fallback. Added default local URL fallback (127.0.0.1:54321). Cleanup now exits successfully when TEST_USER_ID is absent, preventing false-fail after create step errors.",
+          "newValue": "Fixed CI local Supabase env quoting issue by stripping surrounding quotes in workflow export step (API_URL/ANON_KEY/SERVICE_ROLE_KEY). Hardened e2e create/cleanup scripts with env sanitization and SUPABASE_SERVICE_ROLE_KEY fallback. Added default local URL fallback (127.0.0.1:54321). Cleanup now exits successfully when TEST_USER_ID is absent, preventing false-fail after create step errors.\n\nFollow-up patch: strip surrounding quotes in workflow export values to prevent Invalid URL in e2e create script. Added env sanitization + local defaults in create/cleanup scripts; cleanup now skips cleanly when TEST_USER_ID is absent."
+        }
+      ],
+      "snapshot": {
+        "title": "Fix local CI Supabase env quoting and cleanup resilience",
+        "description": "Ensure frontend-cypress workflow works with local Supabase only: strip quoted env values, avoid secret dependency assumptions, and make e2e cleanup tolerant when test user was not created.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "ci",
+          "e2e",
+          "supabase"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "e2e user create handles quoted/local URL values"
+          },
+          {
+            "completed": true,
+            "text": "workflow exports local Supabase vars without invalid quotes"
+          },
+          {
+            "completed": true,
+            "text": "cleanup step does not fail pipeline when TEST_USER_ID is absent"
+          }
+        ],
+        "implementationNotes": "Fixed CI local Supabase env quoting issue by stripping surrounding quotes in workflow export step (API_URL/ANON_KEY/SERVICE_ROLE_KEY). Hardened e2e create/cleanup scripts with env sanitization and SUPABASE_SERVICE_ROLE_KEY fallback. Added default local URL fallback (127.0.0.1:54321). Cleanup now exits successfully when TEST_USER_ID is absent, preventing false-fail after create step errors.\n\nFollow-up patch: strip surrounding quotes in workflow export values to prevent Invalid URL in e2e create script. Added env sanitization + local defaults in create/cleanup scripts; cleanup now skips cleanly when TEST_USER_ID is absent."
+      }
+    },
+    {
+      "id": "v5",
+      "taskId": "mdt9ls",
+      "version": 5,
+      "timestamp": "2026-03-08T04:57:36.739Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        }
+      ],
+      "snapshot": {
+        "title": "Fix local CI Supabase env quoting and cleanup resilience",
+        "description": "Ensure frontend-cypress workflow works with local Supabase only: strip quoted env values, avoid secret dependency assumptions, and make e2e cleanup tolerant when test user was not created.",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "ci",
+          "e2e",
+          "supabase"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "e2e user create handles quoted/local URL values"
+          },
+          {
+            "completed": true,
+            "text": "workflow exports local Supabase vars without invalid quotes"
+          },
+          {
+            "completed": true,
+            "text": "cleanup step does not fail pipeline when TEST_USER_ID is absent"
+          }
+        ],
+        "implementationNotes": "Fixed CI local Supabase env quoting issue by stripping surrounding quotes in workflow export step (API_URL/ANON_KEY/SERVICE_ROLE_KEY). Hardened e2e create/cleanup scripts with env sanitization and SUPABASE_SERVICE_ROLE_KEY fallback. Added default local URL fallback (127.0.0.1:54321). Cleanup now exits successfully when TEST_USER_ID is absent, preventing false-fail after create step errors.\n\nFollow-up patch: strip surrounding quotes in workflow export values to prevent Invalid URL in e2e create script. Added env sanitization + local defaults in create/cleanup scripts; cleanup now skips cleanly when TEST_USER_ID is absent."
+      }
+    }
+  ]
+}

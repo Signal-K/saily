@@ -9,6 +9,8 @@ import { MissionStatusBanner } from "@/components/mission/mission-status-banner"
 import TodayGamePage from "@/components/pages/games/today-game-page";
 import AsteroidGamePage from "@/components/pages/games/asteroid-game-page";
 import MarsGamePage from "@/components/pages/games/mars-game-page";
+import { queueSurveyTrigger } from "@/lib/posthog/survey-queue";
+import { trackGameplayEvent } from "@/lib/analytics/events";
 
 type Stage = "loading" | "briefing" | "game" | "beat" | "complete";
 
@@ -71,6 +73,16 @@ export default function MissionFlowPage() {
       // Non-fatal — progress still shows complete UI.
     }
 
+    queueSurveyTrigger({
+      source: "narrative_flow",
+      version: process.env.NEXT_PUBLIC_APP_VERSION?.trim() || "v1",
+      score,
+    });
+    trackGameplayEvent("narrative_flow_completed", {
+      storyline_id: storyline.id,
+      chapter_index: chapterIndex,
+      score,
+    });
     setStage("complete");
   }
 

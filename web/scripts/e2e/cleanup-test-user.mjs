@@ -1,10 +1,18 @@
-const url = process.env.SUPABASE_URL;
-const serviceRole = process.env.SUPABASE_SERVICE_ROLE;
-const userId = process.env.TEST_USER_ID;
+function cleanEnv(value) {
+  return (value ?? "").trim().replace(/^"+|"+$/g, "");
+}
 
-if (!url || !serviceRole || !userId) {
-  console.error("Missing SUPABASE_URL, SUPABASE_SERVICE_ROLE, or TEST_USER_ID");
+const url = cleanEnv(process.env.SUPABASE_URL) || "http://127.0.0.1:54321";
+const serviceRole = cleanEnv(process.env.SUPABASE_SERVICE_ROLE) || cleanEnv(process.env.SUPABASE_SERVICE_ROLE_KEY);
+const userId = cleanEnv(process.env.TEST_USER_ID);
+
+if (!url || !serviceRole) {
+  console.error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE");
   process.exit(1);
+}
+if (!userId) {
+  console.log("No TEST_USER_ID found. Skipping cleanup.");
+  process.exit(0);
 }
 const baseUrl = url.replace(/\/$/, "");
 

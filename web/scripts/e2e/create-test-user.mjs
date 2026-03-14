@@ -1,7 +1,11 @@
 import { appendFileSync } from "node:fs";
 
-const url = process.env.SUPABASE_URL;
-const serviceRole = process.env.SUPABASE_SERVICE_ROLE;
+function cleanEnv(value) {
+  return (value ?? "").trim().replace(/^"+|"+$/g, "");
+}
+
+const url = cleanEnv(process.env.SUPABASE_URL) || "http://127.0.0.1:54321";
+const serviceRole = cleanEnv(process.env.SUPABASE_SERVICE_ROLE) || cleanEnv(process.env.SUPABASE_SERVICE_ROLE_KEY);
 
 if (!url || !serviceRole) {
   console.error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE");
