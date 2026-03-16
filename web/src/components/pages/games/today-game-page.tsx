@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { queueSurveyTrigger } from "@/lib/posthog/survey-queue";
 import { trackGameplayEvent } from "@/lib/analytics/events";
+import { StreakRepairPrompt } from "@/components/streak-repair-prompt";
 
 type LightcurvePoint = {
   x: number;
@@ -199,6 +200,7 @@ export default function TodayGamePage({ onMissionComplete }: TodayGamePageProps 
   const [dailyAnomalies, setDailyAnomalies] = useState<DailyAnomaly[]>([]);
   const [loading, setLoading] = useState(true);
   const [minigameIndex, setMinigameIndex] = useState(0);
+  const [userId, setUserId] = useState<string | null>(null);
   const [confidence, setConfidence] = useState(70);
   const [tag, setTag] = useState<(typeof TAGS)[number]>(TAGS[0]);
   const [periodDays, setPeriodDays] = useState(2);
@@ -234,38 +236,51 @@ export default function TodayGamePage({ onMissionComplete }: TodayGamePageProps 
   const draftStorageKey = useMemo(() => (anomaly ? `anomaly-draft:${gameDate}:${anomaly.id}` : null), [anomaly, gameDate]);
   const stageDifficulty = STAGE_DIFFICULTIES[minigameIndex] ?? STAGE_DIFFICULTIES[STAGE_DIFFICULTIES.length - 1];
 
-  useEffect(() => {
-    let cancelled = false;
+  const loadToday = useCallback(async () => {
+    setLoading(true);
+    setFeedback(null);
+    const response = await fetch(`/api/game/today?date=${encodeURIComponent(gameDate)}`, { cache: "no-store" });
+    const payload = (await response.json()) as {
+      anomaly: DailyAnomaly | null;
+      anomalies?: DailyAnomaly[];
+      user?: { id: string } | null;
+      error?: string;
+    };
 
-    async function loadToday() {
-      setLoading(true);
-      setFeedback(null);
-      const response = await fetch(`/api/game/today?date=${encodeURIComponent(gameDate)}`, { cache: "no-store" });
-      const payload = (await response.json()) as { anomaly: DailyAnomaly | null; anomalies?: DailyAnomaly[]; error?: string };
-      if (cancelled) return;
-      if (!response.ok) {
-        setFeedback(payload.error ?? "Could not load daily anomaly.");
-        setDailyAnomalies([]);
-        setLoading(false);
-        return;
-      }
-
-      const incoming = Array.isArray(payload.anomalies) && payload.anomalies.length ? payload.anomalies : payload.anomaly ? [payload.anomaly] : [];
-      setDailyAnomalies(incoming);
-      setAnnotations([]);
-      setNote("");
-      setPhaseFoldHint(false);
-      setBinHint(false);
-      setPeriodDays(2);
-      setMinigameIndex(0);
+    if (!response.ok) {
+      setFeedback(payload.error ?? "Could not load daily anomaly.");
+      setDailyAnomalies([]);
       setLoading(false);
+      return;
     }
 
+    if (payload.user?.id) {
+      setUserId(payload.user.id);
+    }
+
+    const incoming =
+      Array.isArray(payload.anomalies) && payload.anomalies.length
+        ? payload.anomalies
+        : payload.anomaly
+          ? [payload.anomaly]
+          : [];
+    setDailyAnomalies(incoming);
+    setAnnotations([]);
+    setNote("");
+    setPhaseFoldHint(false);
+    setBinHint(false);
+    setPeriodDays(2);
+    setMinigameIndex(0);
+    setLoading(false);
+  }, [gameDate]);
+
+  useEffect(() => {
+    let cancelled = false;
     void loadToday();
     return () => {
       cancelled = true;
     };
-  }, [gameDate]);
+  }, [loadToday]);
 
   useEffect(() => {
     if (!anomaly) return;
@@ -704,6 +719,7 @@ export default function TodayGamePage({ onMissionComplete }: TodayGamePageProps 
 
   return (
     <section className="puzzle-screen">
+      {userId ? <StreakRepairPrompt userId={userId} gameDate={gameDate} onRepairComplete={loadToday} /> : null}
       <header className="puzzle-header panel">
         <p className="eyebrow">Daily Mission</p>
         <div className="puzzle-header-row">

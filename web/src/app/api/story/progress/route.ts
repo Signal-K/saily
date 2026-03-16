@@ -97,9 +97,39 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 
+  const isComplete = data.chapter_index >= maxChapter;
+  let awardedChips = 0;
+  let referralCode = null;
+
+  if (isComplete) {
+    // Check if this storyline was already completed before to avoid double-rewarding
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("completed_storylines, referral_code")
+      .eq("id", user.id)
+      .single();
+    
+    referralCode = profile?.referral_code;
+
+    if (profile && !profile.completed_storylines.includes(storylineId)) {
+      awardedChips = 2;
+      const newCompleted = [...profile.completed_storylines, storylineId];
+      
+      await supabase
+        .from("profiles")
+        .update({ 
+          completed_storylines: newCompleted,
+          data_chips: (profile as any).data_chips + awardedChips
+        })
+        .eq("id", user.id);
+    }
+  }
+
   return NextResponse.json({
     ok: true,
     chapterIndex: data.chapter_index,
-    isComplete: data.chapter_index >= maxChapter,
+    isComplete,
+    awardedChips,
+    referralCode,
   });
 }

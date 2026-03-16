@@ -6,6 +6,7 @@ import { MissionBriefing } from "@/components/mission/mission-briefing";
 import { NarrativeBeat } from "@/components/mission/narrative-beat";
 import { MissionComplete } from "@/components/mission/mission-complete";
 import { MissionStatusBanner } from "@/components/mission/mission-status-banner";
+import { MissionAmbience } from "@/components/mission/mission-ambience";
 import TodayGamePage from "@/components/pages/games/today-game-page";
 import AsteroidGamePage from "@/components/pages/games/asteroid-game-page";
 import MarsGamePage from "@/components/pages/games/mars-game-page";
@@ -27,6 +28,8 @@ export default function MissionFlowPage() {
     mars: 0,
   });
   const [endedEarly, setEndedEarly] = useState(false);
+  const [awardedChips, setAwardedChips] = useState(0);
+  const [referralCode, setReferralCode] = useState<string | null>(null);
 
   // Fetch user's current chapter for this storyline.
   useEffect(() => {
@@ -64,11 +67,16 @@ export default function MissionFlowPage() {
     }
 
     try {
-      await fetch("/api/story/progress", {
+      const res = await fetch("/api/story/progress", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ storylineId: storyline.id, action: "complete-chapter" }),
       });
+      if (res.ok) {
+        const payload = (await res.json()) as { awardedChips?: number; referralCode?: string };
+        setAwardedChips(payload.awardedChips ?? 0);
+        setReferralCode(payload.referralCode ?? null);
+      }
     } catch {
       // Non-fatal — progress still shows complete UI.
     }
@@ -142,6 +150,7 @@ export default function MissionFlowPage() {
       <NarrativeBeat
         character={character}
         text={chapter.beat1}
+        expression={chapter.beat1Expression}
         onContinue={() => {
           setGameCursor(1);
           setStage("game");
@@ -153,6 +162,7 @@ export default function MissionFlowPage() {
       <NarrativeBeat
         character={character}
         text={chapter.beat2}
+        expression={chapter.beat2Expression}
         onContinue={() => {
           setGameCursor(2);
           setStage("game");
@@ -168,6 +178,8 @@ export default function MissionFlowPage() {
         isStorylineComplete={isStorylineComplete(storyline, chapterIndex + 1)}
         storylineTitle={storyline.title}
         endedEarly={endedEarly}
+        awardedChips={awardedChips}
+        referralCode={referralCode}
       />
     );
   }
@@ -175,6 +187,7 @@ export default function MissionFlowPage() {
   return (
     <div className="mission-flow-shell">
       <MissionStatusBanner />
+      <MissionAmbience type={chapter.ambience ?? "none"} />
       {content}
     </div>
   );

@@ -1,15 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { MARS_CLASSIFICATIONS, type MarsImage, type MarsClassification } from "@/lib/mars-images";
+import { useEffect, useState, useRef, useCallback } from "react";
+import { type MarsImage } from "@/lib/mars-images";
+import { MARS_TEMPLATE_DICTIONARY, type MarsTemplate } from "@/lib/mars-dictionary";
 import { queueSurveyTrigger } from "@/lib/posthog/survey-queue";
 import { trackGameplayEvent } from "@/lib/analytics/events";
+import { StreakRepairPrompt } from "@/components/streak-repair-prompt";
+
+type MarsAnnotation = {
+  id: string;
+  x: number; // 0-1 normalized
+  y: number; // 0-1 normalized
+  type: string;
+  label: string;
+};
 
 type ClassificationEntry = {
   imageId: string;
   imageUrl: string;
-  classification: MarsClassification | "";
+  annotations: MarsAnnotation[];
   confidence: number;
+  note: string;
 };
 
 function getTodayKey(): string {
@@ -25,42 +36,52 @@ export default function MarsGamePage({ onMissionComplete }: MarsGamePageProps = 
 
   const [images, setImages] = useState<MarsImage[]>([]);
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState<string | null>(null);
   const [entries, setEntries] = useState<ClassificationEntry[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [selectedTemplate, setSelectedTemplate] = useState<MarsTemplate>(MARS_TEMPLATE_DICTIONARY[0]);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState<number | null>(null);
   const [status, setStatus] = useState<string | null>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
+
+  const loadImages = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/mars/daily?date=${date}`, { cache: "no-store" });
+      const payload = (await res.json().catch(() => ({}))) as {
+        images?: MarsImage[];
+        user?: { id: string };
+        error?: string;
+      };
+      
+      if (payload.user?.id) {
+        setUserId(payload.user.id);
+      }
+
+      if (!res.ok || !Array.isArray(payload.images)) {
+        setStatus(payload.error ?? "Could not load today's images.");
+        setLoading(false);
+        return;
+      }
+      setImages(payload.images);
+      setEntries(
+        payload.images.map((img) => ({
+          imageId: img.id,
+          imageUrl: img.url,
+          annotations: [],
+          confidence: 70,
+          note: "",
+        })),
+      );
+    } catch {
+      setStatus("Could not load today's images.");
+    }
+    setLoading(false);
+  }, [date]);
 
   useEffect(() => {
-    async function loadImages() {
-      setLoading(true);
-      try {
-        const res = await fetch(`/api/mars/daily?date=${date}`, { cache: "no-store" });
-        const payload = (await res.json().catch(() => ({}))) as {
-          images?: MarsImage[];
-          error?: string;
-        };
-        if (!res.ok || !Array.isArray(payload.images)) {
-          setStatus(payload.error ?? "Could not load today's images.");
-          setLoading(false);
-          return;
-        }
-        setImages(payload.images);
-        setEntries(
-          payload.images.map((img) => ({
-            imageId: img.id,
-            imageUrl: img.url,
-            classification: "",
-            confidence: 70,
-          })),
-        );
-      } catch {
-        setStatus("Could not load today's images.");
-      }
-      setLoading(false);
-    }
-
     // Check if already submitted today.
     async function checkExisting() {
       const res = await fetch(`/api/mars/classify?date=${date}`, { cache: "no-store" });
@@ -76,13 +97,41 @@ export default function MarsGamePage({ onMissionComplete }: MarsGamePageProps = 
 
     void loadImages();
     void checkExisting();
-  }, [date]);
+  }, [date, loadImages]);
 
-  function setClassification(index: number, value: MarsClassification) {
+  const handleImageClick = (e: React.MouseEvent<HTMLImageElement>) => {
+    if (!imageRef.current || submitted) return;
+    
+    const rect = imageRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+
+    const newAnnotation: MarsAnnotation = {
+      id: Date.now().toString(),
+      x,
+      y,
+      type: selectedTemplate.id,
+      label: selectedTemplate.label,
+    };
+
     setEntries((prev) =>
-      prev.map((e, i) => (i === index ? { ...e, classification: value } : e)),
+      prev.map((entry, i) =>
+        i === activeIndex
+          ? { ...entry, annotations: [...entry.annotations, newAnnotation] }
+          : entry
+      )
     );
-  }
+  };
+
+  const removeAnnotation = (id: string) => {
+    setEntries((prev) =>
+      prev.map((entry, i) =>
+        i === activeIndex
+          ? { ...entry, annotations: entry.annotations.filter((a) => a.id !== id) }
+          : entry
+      )
+    );
+  };
 
   function setConfidence(index: number, value: number) {
     setEntries((prev) =>
@@ -91,9 +140,9 @@ export default function MarsGamePage({ onMissionComplete }: MarsGamePageProps = 
   }
 
   async function handleSubmit() {
-    const complete = entries.filter((e) => e.classification !== "");
+    const complete = entries.filter((e) => e.annotations.length > 0);
     if (complete.length === 0) {
-      setStatus("Classify at least one image before submitting.");
+      setStatus("Add at least one annotation before submitting.");
       return;
     }
     setSubmitting(true);
@@ -132,8 +181,7 @@ export default function MarsGamePage({ onMissionComplete }: MarsGamePageProps = 
 
   const activeEntry = entries[activeIndex];
   const activeImage = images[activeIndex];
-  const allClassified = entries.length > 0 && entries.every((e) => e.classification !== "");
-  const classifiedCount = entries.filter((e) => e.classification !== "").length;
+  const annotatedCount = entries.filter((e) => e.annotations.length > 0).length;
 
   if (loading) {
     return (
@@ -170,70 +218,121 @@ export default function MarsGamePage({ onMissionComplete }: MarsGamePageProps = 
 
   return (
     <section className="puzzle-screen">
+      {userId ? (
+        <StreakRepairPrompt 
+          userId={userId} 
+          gameDate={date} 
+          onRepairComplete={() => void loadImages()} 
+        />
+      ) : null}
       <header className="puzzle-header panel">
         <p className="eyebrow">Daily Mission</p>
         <h1>Mars Surface Classification</h1>
         <div className="puzzle-header-row">
           <p className="muted puzzle-header-summary">
-            Classify each rover image by terrain type to improve surface map quality.
+            Identify and tag geological features. Tap the image to place a marker.
           </p>
           <span className="puzzle-progress">Survey</span>
         </div>
         <div className="puzzle-context-row">
           <span className="puzzle-context-pill">Date {date}</span>
           <span className="puzzle-context-pill">
-            Classified {classifiedCount}/{images.length}
+            Images tagged {annotatedCount}/{images.length}
           </span>
         </div>
       </header>
 
       <div className="puzzle-workspace">
         {activeImage && activeEntry && (
-          <article className="puzzle-canvas panel">
-            <h2>{activeImage.title}</h2>
-            <p className="muted" style={{ fontSize: "0.8rem" }}>{activeImage.credit}</p>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={activeImage.url}
-              alt={activeImage.title}
-              style={{
-                width: "100%",
-                borderRadius: "0.75rem",
-                border: "1px solid var(--border)",
-                marginTop: "0.5rem",
-                display: "block",
-              }}
-            />
+          <article className="puzzle-canvas panel mars-canvas-wrap">
+            <div className="mars-image-container" style={{ position: "relative" }}>
+              <h2>{activeImage.title}</h2>
+              <p className="muted" style={{ fontSize: "0.8rem", marginBottom: "0.5rem" }}>{activeImage.credit}</p>
+              
+              <div className="mars-annotation-wrapper" style={{ position: "relative", cursor: "crosshair" }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  ref={imageRef}
+                  src={activeImage.url}
+                  alt={activeImage.title}
+                  onClick={handleImageClick}
+                  style={{
+                    width: "100%",
+                    borderRadius: "0.75rem",
+                    border: "1px solid var(--border)",
+                    display: "block",
+                  }}
+                />
+                {activeEntry.annotations.map((a) => (
+                  <div
+                    key={a.id}
+                    className="mars-marker"
+                    title={a.label}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeAnnotation(a.id);
+                    }}
+                    style={{
+                      position: "absolute",
+                      left: `${a.x * 100}%`,
+                      top: `${a.y * 100}%`,
+                      width: "24px",
+                      height: "24px",
+                      background: "rgba(255, 0, 0, 0.6)",
+                      border: "2px solid white",
+                      borderRadius: "50%",
+                      transform: "translate(-50%, -50%)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "white",
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                      cursor: "pointer",
+                      boxShadow: "0 0 4px rgba(0,0,0,0.5)",
+                    }}
+                  >
+                    ×
+                  </div>
+                ))}
+              </div>
+            </div>
           </article>
         )}
 
         <aside className="puzzle-sidebar panel">
           <div className="puzzle-controls">
-            <p className="puzzle-control-label">Image Set</p>
+            <p className="puzzle-control-label">Template Dictionary</p>
+            <div className="mars-template-grid">
+              {MARS_TEMPLATE_DICTIONARY.map((template) => (
+                <button
+                  key={template.id}
+                  type="button"
+                  className={`mars-template-card${selectedTemplate.id === template.id ? " is-selected" : ""}`}
+                  onClick={() => setSelectedTemplate(template)}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={template.imageUrl} alt={template.label} />
+                  <div className="mars-template-info">
+                    <strong>{template.label}</strong>
+                    <p>{template.description}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+
+            <p className="puzzle-control-label" style={{ marginTop: "1.5rem" }}>Image Set</p>
             <div className="puzzle-chip-row" role="tablist">
               {images.map((img, i) => (
                 <button
                   key={img.id}
                   type="button"
                   role="tab"
-                  className={`puzzle-chip${i === activeIndex ? " is-active" : ""}${entries[i]?.classification ? " is-done" : ""}`}
+                  className={`puzzle-chip${i === activeIndex ? " is-active" : ""}${entries[i]?.annotations.length > 0 ? " is-done" : ""}`}
                   onClick={() => setActiveIndex(i)}
                 >
                   Image {i + 1}
-                  {entries[i]?.classification ? " done" : ""}
-                </button>
-              ))}
-            </div>
-
-            <div className="mars-classification-grid">
-              {MARS_CLASSIFICATIONS.map((cat) => (
-                <button
-                  key={cat}
-                  type="button"
-                  className={`button mars-cat-btn${activeEntry?.classification === cat ? " button-primary" : ""}`}
-                  onClick={() => setClassification(activeIndex, cat)}
-                >
-                  {cat}
+                  {entries[i]?.annotations.length > 0 ? ` (${entries[i].annotations.length})` : ""}
                 </button>
               ))}
             </div>
@@ -250,26 +349,22 @@ export default function MarsGamePage({ onMissionComplete }: MarsGamePageProps = 
                 onChange={(e) => setConfidence(activeIndex, Number(e.target.value))}
                 style={{ width: "100%" }}
               />
-              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.75rem", color: "var(--muted)" }}>
-                <span>Low</span>
-                <span>Medium</span>
-                <span>High</span>
-              </div>
             </div>
           </div>
 
           {status ? <p className="puzzle-feedback">{status}</p> : null}
-          {activeEntry?.classification ? (
-            <p className="puzzle-feedback">
-              Classified as: <strong>{activeEntry.classification}</strong>
-            </p>
-          ) : null}
-
-          {!allClassified && !submitted && images.length > 0 ? (
-            <p className="muted" style={{ fontSize: "0.85rem" }}>
-              {classifiedCount} of {images.length} images classified.
-              {classifiedCount > 0 && classifiedCount < images.length && " You can submit with partial classifications."}
-            </p>
+          
+          {activeEntry?.annotations.length > 0 ? (
+            <div className="puzzle-annotation-list" style={{ marginTop: "1rem" }}>
+              <p className="muted" style={{ fontSize: "0.85rem", marginBottom: "0.5rem" }}>Annotations ({activeEntry.annotations.length}):</p>
+              <div className="chip-list">
+                {activeEntry.annotations.map(a => (
+                  <span key={a.id} className="puzzle-context-pill">
+                    {a.label} <button onClick={() => removeAnnotation(a.id)} style={{ border: "none", background: "none", cursor: "pointer", marginLeft: "4px" }}>×</button>
+                  </span>
+                ))}
+              </div>
+            </div>
           ) : null}
 
           <div className="puzzle-next-row mission-sticky-actions">
@@ -278,7 +373,6 @@ export default function MarsGamePage({ onMissionComplete }: MarsGamePageProps = 
                 type="button"
                 className="button button-primary puzzle-action-primary"
                 onClick={() => setActiveIndex((i) => i + 1)}
-                disabled={!activeEntry?.classification}
               >
                 Next Image
               </button>
@@ -287,14 +381,62 @@ export default function MarsGamePage({ onMissionComplete }: MarsGamePageProps = 
                 type="button"
                 className="button button-primary puzzle-action-primary"
                 onClick={() => void handleSubmit()}
-                disabled={submitting || classifiedCount === 0}
+                disabled={submitting || annotatedCount === 0}
               >
-                {submitting ? "Submitting..." : `Submit Survey (${classifiedCount}/${images.length})`}
+                {submitting ? "Submitting..." : `Submit Survey (${annotatedCount}/${images.length})`}
               </button>
             )}
           </div>
         </aside>
       </div>
+      <style jsx>{`
+        .mars-template-grid {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          max-height: 300px;
+          overflow-y: auto;
+          padding-right: 4px;
+        }
+        .mars-template-card {
+          display: flex;
+          gap: 0.75rem;
+          padding: 0.5rem;
+          border: 1px solid var(--border);
+          border-radius: 0.5rem;
+          background: var(--surface);
+          text-align: left;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+        .mars-template-card.is-selected {
+          border-color: var(--brand);
+          background: color-mix(in oklab, var(--brand) 10%, var(--surface));
+          box-shadow: 0 0 0 1px var(--brand);
+        }
+        .mars-template-card img {
+          width: 60px;
+          height: 60px;
+          border-radius: 0.25rem;
+          object-fit: cover;
+        }
+        .mars-template-info strong {
+          display: block;
+          font-size: 0.9rem;
+          margin-bottom: 0.125rem;
+        }
+        .mars-template-info p {
+          margin: 0;
+          font-size: 0.75rem;
+          color: var(--muted);
+          line-height: 1.2;
+        }
+        .chip-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 4px;
+        }
+      `}</style>
     </section>
   );
 }

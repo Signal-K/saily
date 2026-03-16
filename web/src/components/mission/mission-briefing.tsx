@@ -15,7 +15,7 @@ type Props = {
 };
 
 export function MissionBriefing({ character, chapter, storylineTitle, chapterNumber, totalChapters, onBegin }: Props) {
-  const avatarSrc = getRobotAvatarDataUri(character.avatarSeed, 96);
+  const avatarSrc = getRobotAvatarDataUri(character.avatarSeed, 96, chapter.briefingExpression);
 
   return (
     <div className="mission-briefing panel">

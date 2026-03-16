@@ -5,10 +5,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import { getRobotAvatarDataUri } from "@/lib/avatar";
+import { getDataChipsBalance } from "@/lib/economy";
 
 type AuthState = {
+  id: string;
   email: string;
   avatarUrl: string;
+  chips: number;
 } | null;
 
 export function AuthStatus() {
@@ -34,7 +37,14 @@ export function AuthStatus() {
         return;
       }
 
-      setAuth({ email: user.email, avatarUrl: getRobotAvatarDataUri(user.email, 48) });
+      const chips = await getDataChipsBalance(user.id);
+
+      setAuth({
+        id: user.id,
+        email: user.email,
+        avatarUrl: getRobotAvatarDataUri(user.email, 48),
+        chips,
+      });
       setLoading(false);
     }
 
@@ -42,14 +52,20 @@ export function AuthStatus() {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      const email = session?.user?.email;
-      if (!email) {
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      const user = session?.user;
+      if (!user?.email) {
         setAuth(null);
         return;
       }
 
-      setAuth({ email, avatarUrl: getRobotAvatarDataUri(email, 48) });
+      const chips = await getDataChipsBalance(user.id);
+      setAuth({
+        id: user.id,
+        email: user.email,
+        avatarUrl: getRobotAvatarDataUri(user.email, 48),
+        chips,
+      });
     });
 
     return () => {
@@ -97,11 +113,16 @@ export function AuthStatus() {
 
       {menuOpen ? (
         <div className="profile-dropdown" role="menu" data-cy="profile-dropdown">
+          <div className="profile-menu-header" role="none">
+            <span className="profile-chips" title="Data Chips">
+              <span aria-hidden>💾</span> {auth.chips} Chips
+            </span>
+          </div>
           <Link href="/profile" role="menuitem" data-cy="profile-menu-profile" onClick={() => setMenuOpen(false)}>
             Profile
           </Link>
           <Link href="/games/today" role="menuitem" data-cy="profile-menu-today" onClick={() => setMenuOpen(false)}>
-            Today&apos;s game
+            Today&apos;s mission
           </Link>
           <form action="/auth/sign-out" method="post">
             <button type="submit" role="menuitem" data-cy="profile-menu-signout">

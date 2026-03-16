@@ -1,0 +1,35 @@
+{
+  "taskId": "1mh9uo",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "1mh9uo",
+      "version": 1,
+      "timestamp": "2026-03-19T02:28:52.554Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Implemented Chip/Postcard rewards on storyline completion."
+        }
+      ],
+      "snapshot": {
+        "title": "Implement Narrative Rewards & Postcards",
+        "description": "Award Chips and Postcards (referrals) on storyline completion.",
+        "status": "done",
+        "priority": "medium",
+        "labels": [
+          "narrative",
+          "rewards"
+        ],
+        "acceptanceCriteria": [],
+        "implementationNotes": "Implemented Chip/Postcard rewards on storyline completion."
+      }
+    }
+  ]
+}

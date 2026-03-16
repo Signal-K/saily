@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { resolveGameDate } from "@/lib/game";
 import { getDailyMarsImages, MARS_FALLBACK_IMAGES, type MarsImage } from "@/lib/mars-images";
+import { createClient } from "@/lib/supabase/server";
 
 // ---------------------------------------------------------------------------
 // Fetches today's Mars images from the NASA Image Library (no API key needed)
@@ -52,6 +53,10 @@ async function fetchNasaImages(page: number): Promise<MarsImage[]> {
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const date = resolveGameDate(url.searchParams.get("date"));
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   // Pick a page number seeded by date (pages 1–8 of NASA results).
   let hash = 0;
@@ -74,5 +79,10 @@ export async function GET(request: Request) {
 
   const images = getDailyMarsImages(date, pool);
 
-  return NextResponse.json({ ok: true, date, images });
+  return NextResponse.json({
+    ok: true,
+    date,
+    images,
+    user: user ? { id: user.id, email: user.email } : null,
+  });
 }

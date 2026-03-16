@@ -38,7 +38,10 @@ export default async function Home() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const [statsRes, badgesRes, playsRes, commentsRes] = await Promise.all([
+  const [profileRes, statsRes, badgesRes, playsRes, commentsRes] = await Promise.all([
+    user
+      ? supabase.from("profiles").select("data_chips").eq("id", user.id).maybeSingle()
+      : Promise.resolve({ data: null }),
     user
       ? supabase.from("user_stats").select("games_played,wins,current_streak,best_streak,total_score").eq("user_id", user.id).maybeSingle()
       : Promise.resolve({ data: null }),
@@ -56,6 +59,7 @@ export default async function Home() {
     supabase.from("comments").select("id,game_date,body,created_at,profiles(username)").order("created_at", { ascending: false }).limit(5),
   ]);
 
+  const profile = profileRes.data;
   const stats = statsRes.data;
   const badges = (badgesRes.data ?? []).map((row) => (Array.isArray(row.badges) ? row.badges[0] : row.badges)).filter(Boolean) as BadgeRef[];
   const plays = playsRes.data ?? [];
@@ -81,7 +85,7 @@ export default async function Home() {
             <p className="muted">{todayCharacter.name} &middot; {todayCharacter.occupation}</p>
           </div>
         </div>
-        <p className="home-mission-desc">{todayCharacter.fleeReason}</p>
+        <p className="home-mission-desc">Help {todayCharacter.name} solve today&apos;s mystery by classifying real space data.</p>
         <div className="cta-row">
           <Link href="/games/today" className="button button-primary button-full">
             Begin Today&apos;s Mission &rarr;
@@ -116,12 +120,8 @@ export default async function Home() {
             <h2>Stats</h2>
             <div className="home-stats-grid">
               <article className="card">
-                <h3>Played</h3>
-                <p>{stats?.games_played ?? 0}</p>
-              </article>
-              <article className="card">
-                <h3>Wins</h3>
-                <p>{stats?.wins ?? 0}</p>
+                <h3>Chips</h3>
+                <p>{profile?.data_chips ?? 0}</p>
               </article>
               <article className="card">
                 <h3>Streak</h3>
@@ -130,6 +130,10 @@ export default async function Home() {
               <article className="card">
                 <h3>Score</h3>
                 <p>{stats?.total_score ?? 0}</p>
+              </article>
+              <article className="card">
+                <h3>Wins</h3>
+                <p>{stats?.wins ?? 0}</p>
               </article>
             </div>
           </section>

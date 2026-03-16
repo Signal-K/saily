@@ -1,10 +1,17 @@
+import type { AvatarExpression } from "./avatar";
+
 export type Chapter = {
   index: number;
   title: string;
   briefing: string;
+  briefingExpression?: AvatarExpression;
   beat1: string;
+  beat1Expression?: AvatarExpression;
   beat2: string;
+  beat2Expression?: AvatarExpression;
   resolution: string;
+  resolutionExpression?: AvatarExpression;
+  ambience?: "wind" | "ship" | "lab" | "none";
 };
 
 export type Storyline = {
@@ -24,12 +31,17 @@ const MARA_CHAPTERS: Chapter[] = [
     title: "Forty-Eight Hours",
     briefing:
       "I'm a scientist. I deal in evidence, and right now the evidence says I have maybe two days before they find this terminal. Three weeks ago I flagged something in the TESS pipeline — a signal that shouldn't exist in the data. I reported it up the chain. Forty-eight hours later my clearance was revoked and someone had been through my flat. I don't know who else saw what I saw. I don't know if I'm the first. What I know is I need a planet — somewhere outside the mapped routes, somewhere quiet. The transit data is right in front of us. Help me find it.",
+    briefingExpression: "serious",
     beat1:
       "That dip is real. I've been reading light curves for ten years and that's not instrument noise. We have a candidate. Now I need fuel for the trip — there's an asteroid cluster on this heading. Let's see what's actually out there.",
+    beat1Expression: "surprised",
     beat2:
       "Water-ice confirmed. I heard a name once, through a mutual contact — Torres. Someone else who got too close to something. I don't know if he made it out. I'm going to assume he did. Now let's look at what we're actually landing on.",
+    beat2Expression: "serious",
     resolution:
       "A viable surface. I'm going to sit here for a moment and just look at that image. An actual place. I've been running for so long I forgot I was running toward something. Thank you. Genuinely. I'll make contact again when I'm down.",
+    resolutionExpression: "happy",
+    ambience: "ship",
   },
   {
     index: 1,

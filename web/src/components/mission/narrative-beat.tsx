@@ -1,17 +1,18 @@
 "use client";
 
 import Image from "next/image";
-import { getRobotAvatarDataUri } from "@/lib/avatar";
+import { getRobotAvatarDataUri, type AvatarExpression } from "@/lib/avatar";
 import type { Character } from "@/lib/characters";
 
 type Props = {
   character: Character;
   text: string;
+  expression?: AvatarExpression;
   onContinue: () => void;
 };
 
-export function NarrativeBeat({ character, text, onContinue }: Props) {
-  const avatarSrc = getRobotAvatarDataUri(character.avatarSeed, 48);
+export function NarrativeBeat({ character, text, expression, onContinue }: Props) {
+  const avatarSrc = getRobotAvatarDataUri(character.avatarSeed, 48, expression);
 
   return (
     <div className="narrative-beat panel">

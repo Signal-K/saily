@@ -10,8 +10,9 @@ type ClassifyBody = {
   classifications?: Array<{
     imageId: string;
     imageUrl: string;
-    classification: string;
+    annotations?: any[];
     confidence: number;
+    note?: string;
   }>;
 };
 
@@ -37,7 +38,6 @@ export async function POST(request: Request) {
     .filter((c) => {
       if (!c.imageId || typeof c.imageId !== "string") return false;
       if (!c.imageUrl || typeof c.imageUrl !== "string") return false;
-      if (!VALID_CLASSIFICATIONS.has(c.classification)) return false;
       return true;
     })
     .map((c) => ({
@@ -45,8 +45,9 @@ export async function POST(request: Request) {
       game_date: date,
       image_id: c.imageId.slice(0, 80),
       image_url: c.imageUrl.slice(0, 500),
-      classification: c.classification,
+      annotations: Array.isArray(c.annotations) ? c.annotations : [],
       confidence: Math.max(0, Math.min(100, Math.round(Number(c.confidence) || 70))),
+      note: c.note ? c.note.slice(0, 1000) : null,
     }));
 
   if (rows.length === 0) {
@@ -63,7 +64,10 @@ export async function POST(request: Request) {
 
   const avgConfidence =
     rows.reduce((sum, r) => sum + r.confidence, 0) / rows.length;
-  const score = Math.round(40 + (rows.length / 3) * 40 + avgConfidence * 0.2);
+  const totalAnnotations = rows.reduce((sum, r) => sum + r.annotations.length, 0);
+  
+  // Base 40 + points for images + points for annotations + confidence bonus
+  const score = Math.round(40 + (rows.length * 10) + (totalAnnotations * 5) + (avgConfidence * 0.2));
 
   return NextResponse.json({ ok: true, classified: rows.length, score });
 }
@@ -83,7 +87,7 @@ export async function GET(request: Request) {
 
   const { data, error } = await supabase
     .from("mars_classifications")
-    .select("image_id,classification,confidence,created_at")
+    .select("image_id,classification,confidence,annotations,note,created_at")
     .eq("user_id", user.id)
     .eq("game_date", date);
 
