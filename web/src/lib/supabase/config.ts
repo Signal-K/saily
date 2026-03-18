@@ -10,12 +10,19 @@ export function getSupabaseAnonKey() {
 
 export function resolveBrowserSupabaseUrl() {
   const configuredUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-  if (configuredUrl.includes("host.docker.internal")) {
-    return configuredUrl.replace("host.docker.internal", "localhost");
+
+  if (typeof window === "undefined" || !configuredUrl.includes("host.docker.internal")) {
+    return configuredUrl;
   }
+
+  const browserHost = window.location.hostname;
+  if (browserHost === "localhost" || browserHost === "127.0.0.1") {
+    return configuredUrl.replace("host.docker.internal", browserHost);
+  }
+
   return configuredUrl;
 }
 
 export function isLocalSupabaseUrl(url: string) {
-  return url.includes("127.0.0.1") || url.includes("localhost");
+  return url.includes("127.0.0.1") || url.includes("localhost") || url.includes("host.docker.internal");
 }

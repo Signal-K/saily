@@ -19,6 +19,7 @@ export function AuthStatus() {
   const [auth, setAuth] = useState<AuthState>(null);
   const [loading, setLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -89,6 +90,14 @@ export function AuthStatus() {
     return () => document.removeEventListener("click", onDocumentClick);
   }, []);
 
+  async function handleSignOut() {
+    setSigningOut(true);
+    setMenuOpen(false);
+
+    await supabase.auth.signOut();
+    window.location.assign("/auth/sign-in?status=signed-out");
+  }
+
   if (loading) {
     return <div className="profile-skeleton" aria-hidden />;
   }
@@ -128,11 +137,9 @@ export function AuthStatus() {
           <Link href="/games/today" role="menuitem" data-cy="profile-menu-today" onClick={() => setMenuOpen(false)}>
             Today&apos;s mission
           </Link>
-          <form action="/auth/sign-out" method="post">
-            <button type="submit" role="menuitem" data-cy="profile-menu-signout">
-              Sign out
-            </button>
-          </form>
+          <button type="button" role="menuitem" data-cy="profile-menu-signout" onClick={() => void handleSignOut()} disabled={signingOut}>
+            Sign out
+          </button>
         </div>
       ) : null}
     </div>
