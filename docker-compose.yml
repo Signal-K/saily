@@ -1,20 +1,4 @@
 services:
-  supabase:
-    image: node:20-alpine
-    working_dir: /workspace
-    volumes:
-      - ./:/workspace
-      - /var/run/docker.sock:/var/run/docker.sock
-      - supabase-cli-cache:/root/.npm
-    environment:
-      DOCKER_HOST: unix:///var/run/docker.sock
-    command: >
-      sh -lc "
-      apk add --no-cache docker-cli >/dev/null &&
-      npx --yes supabase@2 start --workdir /workspace &&
-      tail -f /dev/null
-      "
-
   web:
     build:
       context: ./web
@@ -33,9 +17,29 @@ services:
       WATCHPACK_POLLING: "true"
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+
+  cypress:
+    image: cypress/included:15.10.0
+    working_dir: /e2e
+    volumes:
+      - ./web:/e2e
+      - web_node_modules:/e2e/node_modules
+    environment:
+      CYPRESS_baseUrl: http://web:3000
+      CYPRESS_E2E_TEST_EMAIL: ${E2E_TEST_EMAIL}
+      CYPRESS_E2E_TEST_PASSWORD: ${E2E_TEST_PASSWORD}
+      CYPRESS_E2E_TEST_RUN_TAG: ${E2E_TEST_RUN_TAG:-e2e-run}
     depends_on:
-      - supabase
+      web:
+        condition: service_healthy
+    profiles:
+      - test
 
 volumes:
   web_node_modules:
-  supabase-cli-cache:

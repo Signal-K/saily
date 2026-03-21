@@ -8,10 +8,11 @@ type Props = {
   character: Character;
   text: string;
   expression?: AvatarExpression;
+  continueLabel?: string;
   onContinue: () => void;
 };
 
-export function NarrativeBeat({ character, text, expression, onContinue }: Props) {
+export function NarrativeBeat({ character, text, expression, continueLabel, onContinue }: Props) {
   const avatarSrc = getRobotAvatarDataUri(character.avatarSeed, 48, expression);
 
   return (
@@ -34,7 +35,7 @@ export function NarrativeBeat({ character, text, expression, onContinue }: Props
       <p className="narrative-beat-text">{text}</p>
 
       <button type="button" className="button button-primary" onClick={onContinue}>
-        Continue Mission &rarr;
+        {continueLabel ?? "Continue Mission"} &rarr;
       </button>
     </div>
   );

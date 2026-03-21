@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { getStorylineForDate, getCharacterForStoryline, getChapterForIndex, getMissionGameOrder, isStorylineComplete, type MissionGame } from "@/lib/mission";
 import { MissionBriefing } from "@/components/mission/mission-briefing";
 import { NarrativeBeat } from "@/components/mission/narrative-beat";
@@ -18,6 +19,7 @@ type Stage = "loading" | "briefing" | "game" | "beat" | "complete";
 export default function MissionFlowPage() {
   const storyline = getStorylineForDate(new Date());
   const character = getCharacterForStoryline(storyline);
+  const searchParams = useSearchParams();
 
   const [stage, setStage] = useState<Stage>("loading");
   const [chapterIndex, setChapterIndex] = useState(0);
@@ -53,7 +55,12 @@ export default function MissionFlowPage() {
   const chapter = getChapterForIndex(storyline, chapterIndex);
   const chapterNumber = Math.min(chapterIndex + 1, storyline.chapters.length);
   const totalChapters = storyline.chapters.length;
-  const gameOrder = getMissionGameOrder(storyline.id, chapterIndex);
+  const baseGameOrder = getMissionGameOrder(storyline.id, chapterIndex);
+  // Allow e2e tests to pin the first game via ?firstGame=planet|asteroid|mars
+  const firstGameOverride = searchParams.get("firstGame") as MissionGame | null;
+  const gameOrder: MissionGame[] = firstGameOverride
+    ? [firstGameOverride, ...baseGameOrder.filter((g) => g !== firstGameOverride)]
+    : baseGameOrder;
   const activeGame = gameOrder[gameCursor];
   const totalScore = Object.values(scores).reduce((sum, value) => sum + value, 0);
 
@@ -151,6 +158,7 @@ export default function MissionFlowPage() {
         character={character}
         text={chapter.beat1}
         expression={chapter.beat1Expression}
+        continueLabel="Continue to Asteroid Survey"
         onContinue={() => {
           setGameCursor(1);
           setStage("game");

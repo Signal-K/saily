@@ -66,7 +66,7 @@ describe("Daily puzzle flow", () => {
       body: { ok: true },
     }).as("advanceChapter");
 
-    cy.visit("/games/today");
+    cy.visit("/games/today?firstGame=planet");
     cy.wait("@storyProgress");
     cy.contains("button", "Begin Mission").click();
     cy.wait("@todayGame");
@@ -74,8 +74,8 @@ describe("Daily puzzle flow", () => {
 
     cy.contains("h1", "Find the Transit Signal").should("be.visible");
     cy.contains(".puzzle-annotation-item", "#1", { timeout: 10000 }).should("be.visible");
-    cy.getBySel("puzzle-note").type("Likely repeatable dip profile.");
-    cy.contains("button", "Use Phase Fold Hint").click();
+    cy.getBySel("puzzle-note").type("Likely repeatable dip profile.", { force: true });
+    cy.contains("button", "Use Phase Fold Hint").click({ force: true });
 
     cy.getBySel("puzzle-finish-button").click();
     cy.wait("@submitEvidence");

@@ -1,3 +1,5 @@
+// @doc/specs/characters-storylines — character definitions reference
+
 export type Character = {
   id: string;
   name: string;
@@ -8,36 +10,36 @@ export type Character = {
 };
 
 export const CHARACTERS: Record<string, Character> = {
-  "mara-chen": {
-    id: "mara-chen",
-    name: "Dr. Mara Chen",
-    occupation: "Exobiologist",
-    fleeReason: "Discovered evidence of extraterrestrial contact buried in classified telescope data — now being hunted by those who want it buried.",
-    avatarSeed: "mara-chen-sci",
-    tone: "thriller",
+  "zix": {
+    id: "zix",
+    name: "Zix",
+    occupation: "Tourist",
+    fleeReason: "Booked a holiday to Verdant Paradise and got dropped off in the wrong star system.",
+    avatarSeed: "zix-tourist",
+    tone: "warm",
   },
-  "kai-voss": {
-    id: "kai-voss",
-    name: "Kai Voss",
-    occupation: "Student",
-    fleeReason: "His late mother left him coordinates to something extraordinary — a corporation wants them back.",
-    avatarSeed: "kai-voss-heir",
-    tone: "mystery",
-  },
-  "atlas-torres": {
-    id: "atlas-torres",
-    name: "Commander Atlas Torres",
-    occupation: "Former Military",
-    fleeReason: "Walked away after discovering the war he fought was manufactured for corporate resource rights. Now officially a deserter.",
-    avatarSeed: "atlas-torres-cmd",
+  "brix": {
+    id: "brix",
+    name: "Commander Brix",
+    occupation: "Supply Corps",
+    fleeReason: "Surveying planets for future supply depots across the outer rim.",
+    avatarSeed: "brix-corps",
     tone: "serious",
   },
-  "yara-osei": {
-    id: "yara-osei",
-    name: "Dr. Yara Osei",
-    occupation: "Botanist & Conservationist",
-    fleeReason: "Carrying 17,000 seed species to a new world before Earth loses them forever.",
-    avatarSeed: "yara-osei-bot",
+  "pip": {
+    id: "pip",
+    name: "Pip",
+    occupation: "Navigation Cadet",
+    fleeReason: "On their first solo certification mission — needs to find a planet with water.",
+    avatarSeed: "pip-cadet",
     tone: "warm",
+  },
+  "carta": {
+    id: "carta",
+    name: "The Cartographer",
+    occupation: "Cartographer",
+    fleeReason: "Mapping an entire sector listed on existing charts as 'probably fine.'",
+    avatarSeed: "carta-map",
+    tone: "serious",
   },
 };

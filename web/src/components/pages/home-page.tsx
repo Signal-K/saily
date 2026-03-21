@@ -88,7 +88,7 @@ export default async function Home() {
         <p className="home-mission-desc">Help {todayCharacter.name} solve today&apos;s mystery by classifying real space data.</p>
         <div className="cta-row">
           <Link href="/games/today" className="button button-primary button-full">
-            Begin Today&apos;s Mission &rarr;
+            Start Today&apos;s Mission &rarr;
           </Link>
           <Link href={user ? "/profile" : "/auth/sign-in"} className="button">
             {user ? "Profile" : "Sign in"}

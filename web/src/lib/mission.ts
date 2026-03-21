@@ -1,3 +1,5 @@
+// @doc/specs/characters-storylines — rotation and chapter selection logic
+
 import { STORYLINES, type Chapter, type Storyline } from "./storylines";
 import { CHARACTERS, type Character } from "./characters";
 

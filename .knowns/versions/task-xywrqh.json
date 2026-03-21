@@ -1,0 +1,56 @@
+{
+  "taskId": "xywrqh",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "xywrqh",
+      "version": 1,
+      "timestamp": "2026-03-21T01:53:28.218Z",
+      "changes": [
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [],
+          "newValue": [
+            {
+              "text": "All 20 chapters have an explicit briefingExpression (not relying on undefined → neutral fallback)",
+              "completed": false
+            },
+            {
+              "text": "Expressions are consistent with each character's tone (warm vs serious)",
+              "completed": false
+            },
+            {
+              "text": "Doc @doc/specs/characters-storylines updated if expression table is added",
+              "completed": false
+            }
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Add missing briefingExpression to all chapters",
+        "description": "Several chapters in lib/storylines.ts have no briefingExpression set, so the avatar defaults to 'neutral' for every briefing. Each chapter should have an intentional expression. Related: @doc/specs/characters-storylines",
+        "status": "todo",
+        "priority": "low",
+        "labels": [
+          "narrative",
+          "polish"
+        ],
+        "acceptanceCriteria": [
+          {
+            "text": "All 20 chapters have an explicit briefingExpression (not relying on undefined → neutral fallback)",
+            "completed": false
+          },
+          {
+            "text": "Expressions are consistent with each character's tone (warm vs serious)",
+            "completed": false
+          },
+          {
+            "text": "Doc @doc/specs/characters-storylines updated if expression table is added",
+            "completed": false
+          }
+        ]
+      }
+    }
+  ]
+}

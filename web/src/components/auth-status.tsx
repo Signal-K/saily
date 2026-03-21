@@ -25,24 +25,28 @@ export function AuthStatus() {
     let mounted = true;
 
     async function loadUser() {
+      // Use getSession() first (no lock needed) for fast initial render,
+      // then validate with getUser() in the background.
       const {
-        data: { user },
-      } = await supabase.auth.getUser();
+        data: { session },
+      } = await supabase.auth.getSession();
 
       if (!mounted) return;
 
-      if (!user?.email) {
+      if (!session?.user?.email) {
         setAuth(null);
         setLoading(false);
         return;
       }
 
-      const chips = await getDataChipsBalance(user.id);
+      const chips = await getDataChipsBalance(session.user.id);
+
+      if (!mounted) return;
 
       setAuth({
-        id: user.id,
-        email: user.email,
-        avatarUrl: getRobotAvatarDataUri(user.email, 48),
+        id: session.user.id,
+        email: session.user.email,
+        avatarUrl: getRobotAvatarDataUri(session.user.email, 48),
         chips,
       });
       setLoading(false);

@@ -1,0 +1,65 @@
+{
+  "taskId": "gbfmyc",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "gbfmyc",
+      "version": 1,
+      "timestamp": "2026-03-21T01:53:20.005Z",
+      "changes": [
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [],
+          "newValue": [
+            {
+              "text": "isStorylineComplete() is called after chapter resolution is shown",
+              "completed": false
+            },
+            {
+              "text": "Data Chip awarded on arc completion",
+              "completed": false
+            },
+            {
+              "text": "Postcard awarded on arc completion",
+              "completed": false
+            },
+            {
+              "text": "Reward is idempotent — replaying the final chapter does not re-award",
+              "completed": false
+            }
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Add arc-completion reward trigger for each character storyline",
+        "description": "When a user finishes chapter 5 (index 4) of any storyline, they should receive a Data Chip and a Postcard. Currently isStorylineComplete() exists in lib/mission.ts but there is no reward dispatch connected to it. Related: @doc/specs/characters-storylines @doc/specs/saily-product-spec",
+        "status": "todo",
+        "priority": "medium",
+        "labels": [
+          "narrative",
+          "economy",
+          "rewards"
+        ],
+        "acceptanceCriteria": [
+          {
+            "text": "isStorylineComplete() is called after chapter resolution is shown",
+            "completed": false
+          },
+          {
+            "text": "Data Chip awarded on arc completion",
+            "completed": false
+          },
+          {
+            "text": "Postcard awarded on arc completion",
+            "completed": false
+          },
+          {
+            "text": "Reward is idempotent — replaying the final chapter does not re-award",
+            "completed": false
+          }
+        ]
+      }
+    }
+  ]
+}

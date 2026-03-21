@@ -1,3 +1,5 @@
+// @doc/specs/characters-storylines — storyline and chapter content reference
+
 import type { AvatarExpression } from "./avatar";
 
 export type Chapter = {
@@ -22,275 +24,298 @@ export type Storyline = {
 };
 
 // ---------------------------------------------------------------------------
-// Storyline A — Dr. Mara Chen (thriller)
+// Storyline A — Zix (alien tourist)
 // ---------------------------------------------------------------------------
 
-const MARA_CHAPTERS: Chapter[] = [
+const ZIX_CHAPTERS: Chapter[] = [
   {
     index: 0,
-    title: "Forty-Eight Hours",
+    title: "The Brochure Was Misleading",
     briefing:
-      "I'm a scientist. I deal in evidence, and right now the evidence says I have maybe two days before they find this terminal. Three weeks ago I flagged something in the TESS pipeline — a signal that shouldn't exist in the data. I reported it up the chain. Forty-eight hours later my clearance was revoked and someone had been through my flat. I don't know who else saw what I saw. I don't know if I'm the first. What I know is I need a planet — somewhere outside the mapped routes, somewhere quiet. The transit data is right in front of us. Help me find it.",
+      "Hello. I am Zix. I booked a holiday package to a planet called 'Verdant Paradise' and the ship dropped me off in completely the wrong star system. The travel agent is not responding to my messages. I have snacks for approximately nine days and a strong desire to find somewhere with a breathable atmosphere and, ideally, a beach. I am told your species is quite good at reading light curves. I would very much appreciate your help finding a suitable planet.",
     briefingExpression: "serious",
     beat1:
-      "That dip is real. I've been reading light curves for ten years and that's not instrument noise. We have a candidate. Now I need fuel for the trip — there's an asteroid cluster on this heading. Let's see what's actually out there.",
-    beat1Expression: "surprised",
+      "Oh! That transit dip is very promising. You found something. I have updated my itinerary. Now I need to check whether there is water nearby — my species requires it for both drinking and recreational splashing.",
+    beat1Expression: "happy",
     beat2:
-      "Water-ice confirmed. I heard a name once, through a mutual contact — Torres. Someone else who got too close to something. I don't know if he made it out. I'm going to assume he did. Now let's look at what we're actually landing on.",
-    beat2Expression: "serious",
+      "Water confirmed. Excellent. I have already mentally named the beach. Now I need to see what the surface actually looks like before I commit to landing. Last time I trusted a brochure I ended up on a sulphur moon.",
+    beat2Expression: "surprised",
     resolution:
-      "A viable surface. I'm going to sit here for a moment and just look at that image. An actual place. I've been running for so long I forgot I was running toward something. Thank you. Genuinely. I'll make contact again when I'm down.",
+      "That surface looks perfectly acceptable. Possibly even nice. I am going to land, set up my portable shelter, and send a very strongly worded review to the travel agency. Thank you for your assistance. You are much more helpful than the travel agent.",
     resolutionExpression: "happy",
     ambience: "ship",
   },
   {
     index: 1,
-    title: "Closer Than I Thought",
+    title: "The Shelter Situation",
     briefing:
-      "They found my last terminal. Not the data — I moved that — but they found the physical location within six hours of my last session. That's faster than I expected. Someone in the network is feeding them information. I'm routing through a different relay now. I still have the candidate planet but I need to verify the approach corridor. There may be interference on the route I was planning. I need fresh transit data — something I haven't had eyes on yet. Can you help me look?",
+      "I have landed. The beach is real and it is excellent. However, I have discovered that my portable shelter has a hole in it, which means I need to find a more permanent location. I have identified three candidate planets from the local star charts but I need someone to check the transit data — my navigation system is still set to the wrong star system and I do not trust it.",
     beat1:
-      "Clean signal. The approach corridor looks viable. I've been going over the manifest I found before all of this started — the one that triggered everything. There are other names on it. I'm not sure what to do with that yet. First things first. Asteroid cluster — let's check the water situation on the new heading.",
+      "Good signal. That is a real planet. I am beginning to think your star system has quite a lot of planets in it, which is convenient for me. Water check next — the hole in my shelter is letting in wind and I would prefer somewhere calmer.",
     beat2:
-      "There's enough out here. More than enough. I keep thinking about the other names on that manifest. One of them was a botanist — Osei, I think. I wonder if she knows what she's sitting on. I wonder if she's safe. Surface scan next.",
+      "Plenty of water. I have started a list of requirements for the new location: water, stable atmosphere, no sulphur, ideally some shade. The surface scan will tell me about the shade situation.",
     resolution:
-      "Every scan I see, I believe in this a little more. I'm still scared — I'm not going to pretend otherwise — but the fear is starting to feel like something I can use rather than something that's using me. One more day closer.",
+      "That looks like it has shade. I am very pleased. I have packed up the leaky shelter and I am ready to move. You are becoming quite essential to my holiday. I hope you are enjoying this as much as I am.",
   },
   {
     index: 2,
-    title: "The Manifest",
+    title: "The Food Problem",
     briefing:
-      "I've had time to go through the full document now. It's worse than I thought — and I thought it was bad. What I found in the TESS data isn't just a signal. It's a response. Something answered a deep-field probe that went out eleven years ago and the people running this programme knew about it and buried it completely. The planet I'm heading to is in the same region. I don't think that's a coincidence anymore. I need to know more about what's out there before I arrive. Fresh transit data, fresh eyes. Are you with me?",
+      "Good news: the new location has excellent shade. Bad news: I have eaten all my snacks. I need to find a planet with something edible growing on it, which means I need stable light levels, liquid water, and a surface that is not entirely rock. I have been studying your species' approach to this problem and I believe the answer involves looking at light curves again. I am ready.",
     beat1:
-      "There's something structured about the way these signals cluster. I keep telling myself I'm pattern-matching on nothing, that scientists do this — see what they want to see. But I've run the analysis three times. Something is happening out there. Let's find water and then I want to look at that surface very carefully.",
+      "That orbital period is very stable. Consistent light, reasonable distance from the star — things could grow there. I am cautiously optimistic. Now let us check the water situation, because things that grow need water and so do I.",
     beat2:
-      "The asteroid data feels almost routine now. We've gotten good at this. I want to tell someone what I've found. I keep stopping myself. Not yet. Surface scan first. I want to see it with fresh data.",
+      "Good water. I have been thinking about what I would most like to eat right now and the answer is something crunchy. I do not know if this planet has anything crunchy on it. The surface scan may give me clues.",
     resolution:
-      "I'm looking at the surface image alongside the signal analysis. I don't have proof yet — I need to be on the ground for proof. But I think whatever answered that probe eleven years ago is still there. And I'm the only person currently flying toward it who isn't trying to suppress it. That's either very exciting or very dangerous. Probably both.",
+      "Mineral-rich surface. Things will definitely grow there. I am going to land and begin an exploratory food survey. If I find something crunchy I will send you a sample. Thank you again. You are very good at this.",
   },
   {
     index: 3,
-    title: "Four Days Out",
+    title: "The Navigation Update",
     briefing:
-      "Four days out from the target. The people looking for me have broadened the search — I've seen fragments of comms traffic suggesting they've widened to a sector-level sweep. They still don't know exactly where I'm going, but the window is narrowing. I need everything I can get on the approach — alternative transit routes, fuel stops, anything. I can't afford a wrong turn at this point. The data will tell us if there's a cleaner path in. I'm trusting you with this.",
+      "My navigation system has finally updated. It turns out I am in entirely the right star system — the travel agent just labelled the map wrong. This means Verdant Paradise is actually reachable from here. I need to plot the correct route, which requires checking the transit data for the approach corridor. I am very excited. I have been on this unplanned holiday for three weeks and I am ready for the planned one.",
     beat1:
-      "That's a safer corridor. Longer but safer — I'll take it. I've been thinking about what happens when I arrive. I have evidence. I have a location. What I don't have is anyone who will listen. Yet. Asteroid — let's keep moving.",
+      "Clear approach. I can see the route now. I have been thinking about what I will do when I arrive at Verdant Paradise and the answer is: lie down for a very long time. But first, asteroid check — I need to confirm the fuel situation.",
     beat2:
-      "I've been awake for thirty-one hours. The asteroid data helps somehow — there's something grounding about looking at real physical things when everything else feels abstract and enormous. Surface next, and then I need to sleep.",
+      "Fuel confirmed. I have repacked my bag. I have thrown away the leaky shelter. I have eaten the last of the emergency rations I found in a compartment I forgot about. Surface scan — one more look at where I have been.",
     resolution:
-      "That surface is beautiful. I don't say that about data usually. I say it about results, about elegant proofs. But that image — whatever is out there — it's beautiful. Three more days. I'm going to sleep now. For the first time in weeks, I think I actually can.",
+      "A good surface. I will miss it, actually. It was not what I planned but it was quite good. Right. Verdant Paradise, here I come. Thank you for everything. I will leave you a review. Five stars.",
   },
   {
     index: 4,
-    title: "Landing",
+    title: "Verdant Paradise",
     briefing:
-      "I'm in the final approach window. This is the last session before I go dark for the landing sequence — the communications array has to come offline during descent. I've been thinking about what I want to say. The honest answer is: I'm not sure I'd have made it here without someone on the other end of this terminal. The galaxy is very large and I was very scared. Finding that planet, the water, verifying the surface — it sounds like data work, and it is, but it's also something else. It's the reason I'm still going. One last look before I land. I want to see it clearly.",
+      "I am almost there. The approach corridor is clear and the navigation system is, for once, showing me something that matches what I can see out the window. I want to do one final data check before I land — I have learned, on this trip, that checking the data is always worth doing. It has saved me from a sulphur moon, a waterless rock, and at least two very bad decisions. One last look.",
     beat1:
-      "Still there. Still real. I keep checking like it might have disappeared. It hasn't. The asteroid data feels like an old friend now — I know what I'm looking at, I know what's worth stopping for. Let's do the surface one last time.",
+      "Still there. Still real. I keep checking because I still do not entirely trust the navigation system, but the data agrees with it, which is reassuring. Asteroid check — last one.",
     beat2:
-      "Last surface scan before descent. I want to remember this — the moment before you arrive somewhere, when it's still possibility rather than fact. Although I suppose what I found in that signal makes it something more than possibility already.",
+      "Everything confirmed. I am going to land. I am going to find the beach. I am going to lie down. Surface — one final look at where I am going.",
     resolution:
-      "That's the whole picture. I'm going in. If anyone ever reads the research I'm about to do down there — if it ever gets out — just know it started here, in a borrowed terminal, with someone helping me find a patch of sky worth flying toward. Wish me luck. I think I'll be okay.",
+      "That is a beach. That is an actual beach. I can see it in the surface data. I am going in. Thank you. Genuinely, sincerely, from the bottom of my three hearts — thank you.",
+    resolutionExpression: "happy",
+    ambience: "ship",
   },
 ];
 
 // ---------------------------------------------------------------------------
-// Storyline B — Kai Voss (mystery / lighter)
+// Storyline B — Commander Brix (alien supply run)
 // ---------------------------------------------------------------------------
 
-const KAI_CHAPTERS: Chapter[] = [
+const BRIX_CHAPTERS: Chapter[] = [
   {
     index: 0,
-    title: "Mum's Coordinates",
+    title: "The Supply List",
     briefing:
-      "Okay so. My mum was an astronomer — kind of obsessed, honestly, in the best possible way. She died in October. I'm still figuring out how to exist around that. In her will, between the flat and the car and a truly embarrassing number of sticky notes, she left me a set of coordinates and a note that says 'find it before they do.' Classic Mum. Very dramatic, zero explanation. A woman from a company called Vela showed up three days later asking very politely whether I had any of her research files. I told her no. I lied. So now I'm here, looking at light curve data and trying to understand what she spent twenty years looking at. I think she'd find this funny. Will you help me figure out what she found?",
+      "I am Commander Brix of the Outer Rim Supply Corps. My job is to find planets with water, minerals, and stable atmospheres and log them for future supply depots. It is not glamorous work but someone has to do it and that someone is me. I have a list of twelve candidate systems and not enough fuel to check all of them, so I need to be efficient. Your light curve analysis will help me narrow the list. Shall we begin?",
+    briefingExpression: "serious",
     beat1:
-      "Oh. Oh, that's actually there. Mum, you absolute — okay. Right. There's something at those coordinates. I need to figure out how to reach it without dying, which apparently starts with finding water. She had notes about asteroids too — I thought they were just doodles.",
+      "Confirmed transit signal. That goes on the list. The Supply Corps will be pleased — they have been asking for new candidates in this sector for months. Now I need to check the asteroid field for water ice. Water is always the first question.",
+    beat1Expression: "neutral",
     beat2:
-      "She wasn't doodling. She was mapping water sources along a route. She planned this. She actually planned this whole thing and left me the pieces. I'm going to have to have a fairly significant emotion about that at some point but right now let's look at the surface.",
+      "Water confirmed. Good. I have logged it. The surface scan will tell me about mineral content — the Corps needs both water and building materials for a proper depot.",
+    beat2Expression: "serious",
     resolution:
-      "That's real. That's a real place with a real surface and my mum spent twenty years pointing at it from our back garden. I'm going to go there. I have no idea what I'm doing but I'm going to figure it out. She believed I could. That has to count for something.",
+      "Solid mineral readings. This is a viable depot site. I am filing the report now. Thank you for your assistance — the Corps does not usually have access to this quality of transit data. I will note your contribution in the log.",
+    resolutionExpression: "neutral",
+    ambience: "ship",
   },
   {
     index: 1,
-    title: "Vela",
+    title: "Candidate Seven",
     briefing:
-      "The woman from Vela came back. This time with a colleague and a document that uses the phrase 'intellectual property' about forty times. They want Mum's research. I said I'd think about it. I'm thinking: absolutely not, but I need more time before I can actually do anything about that. I've been going through her files properly now. She cross-referenced her coordinates with transit data from a Dr. Chen — I don't know who that is, but Mum flagged her work about six months before she died. Someone else was looking at the same region of sky. That makes me feel less like I've imagined all of this. Can we keep looking?",
+      "Candidate seven on the list. The previous six were either too hot, too cold, or had atmospheres that would dissolve the depot walls, which is not ideal. I am cautiously optimistic about this one based on the star type. The transit data will tell us if there is actually a planet there or if the charts are wrong again. The charts are wrong surprisingly often.",
     beat1:
-      "There's definitely something systematic about what she was tracking. This wasn't idle curiosity — she was building a map. The asteroid data is next. She had specific ones annotated. I want to know why those ones.",
+      "The charts were not wrong this time. Good planet signal. I have updated the log. The asteroid field on this heading has been flagged by a previous survey as potentially water-rich — let us verify.",
     beat2:
-      "Those specific asteroids are on the direct route to the coordinates. She was planning a path. She was planning to go herself, I think. And then she didn't. Surface data — let's see what she was planning to land on.",
+      "Verified. I have now found water on four of the seven candidates, which is above average for this sector. The surface scan is the final check — I need to know if the terrain is buildable.",
     resolution:
-      "I've been sitting here looking at this surface image and thinking about the last time I talked to her. We argued about something completely stupid. I can't even remember what. I wish I could tell her I found it. I think she knew I would.",
+      "Buildable terrain. Candidate seven is approved. I am beginning to think this sector is better than its reputation. I will recommend a full survey team. Good work today.",
   },
   {
     index: 2,
-    title: "The Route",
+    title: "The Detour",
     briefing:
-      "I've figured out how to access the archive Mum left. It was password-protected with my birthday — of course it was — and it's enormous. Years of observation logs, annotation sets, correspondence with other scientists. One correspondent is listed as 'A.T.' — I have no idea who that is yet. Another reference matches the Chen work I found before. Mum wasn't working alone. She was building something. I need to understand the route better before I can follow it. The transit data she flagged most recently is the place to start.",
+      "I have been asked to check a system that is not on my original list. Apparently someone in the Corps flagged it based on old data and wants a current reading. I do not know why this system was flagged or what they expect to find — the request just says 'verify and report.' I am verifying and reporting. Transit data first.",
     beat1:
-      "She was right about this corridor. All her annotations check out. I've started thinking of the data sessions as — I don't know, like she's still here somehow? Teaching me. That probably sounds weird. Asteroid check next.",
+      "There is definitely something there. The old data was right. I am now curious about why this system was flagged specifically — the signal has an unusual profile. But curiosity is not in the job description. Asteroid check.",
     beat2:
-      "Her asteroid notes are incredibly detailed. She had fuel calculations done. She thought about everything. The surface is what she was most excited about, based on the logs — there's a whole folder just for surface speculation.",
+      "Water present. The system is viable. I have sent the preliminary report and received back a message that just says 'confirmed, thank you.' Very informative. Surface scan, and then I am back to the original list.",
     resolution:
-      "I found her surface notes. She wrote: 'if it looks like I think it does, it will be the most important discovery since we first looked up.' She was never understated. But looking at this data — looking at this actual surface — I think she might have been right.",
+      "Good surface. Whatever they wanted to know about this system, the answer is: it is fine, it has water, the terrain is reasonable. I have filed the report. On to candidate eight.",
   },
   {
     index: 3,
-    title: "A.T.",
+    title: "Candidate Ten",
     briefing:
-      "I found out who A.T. is. Commander Atlas Torres — or he was a Commander until about eight months ago. There are fragments online, heavily redacted, about some kind of disciplinary incident. Military. Mum was in contact with him in the last year of her life. I don't know what to make of that. What I do know is that Vela has escalated — they've sent a legal notice to the estate and my aunt is asking questions I don't know how to answer. I need to move faster. The data will help me plan the actual departure.",
+      "Candidate ten. I am making good progress through the list. The fuel situation is better than expected — the asteroid fields in this sector have been generous with water ice, which I have been converting as I go. I need to check this candidate carefully because the star type is unusual and the Corps has specific requirements for depot stability. Transit data will tell us if the orbital mechanics are sound.",
     beat1:
-      "If Torres is out there somewhere following the same route, I might not be as alone as I thought. That's a strange comfort given that I've never met him. Asteroid next — I need to finalise the fuel stop.",
+      "Sound orbital mechanics. The star type is unusual but the planet's position compensates for it — stable light levels, reasonable temperature range. I am impressed. Asteroid check for the fuel situation.",
     beat2:
-      "Fuel stop confirmed. I've packed what I can. I've told my aunt I'm going travelling. She'll worry. She'll be fine eventually. I can't explain this to her right now. Surface scan — one more look at where I'm going.",
+      "Fuel situation: excellent. I have enough to complete the list and return with margin to spare. Surface scan — I want to see the terrain before I make the final recommendation.",
     resolution:
-      "I keep looking at that surface and thinking: that's where Mum wanted to go. And now I'm going instead. For her, but also — I'm realising — for myself. Because she taught me to look up, and once you do that, you can't really stop.",
+      "Excellent terrain. Candidate ten is the best site I have found on this run. I am flagging it as priority one for the next depot build. This has been a productive survey. Thank you for the data support.",
   },
   {
     index: 4,
-    title: "Departure",
+    title: "Final Report",
     briefing:
-      "I'm leaving tonight. I've got Mum's route, her fuel calculations, her observation logs, and the coordinates she spent twenty years refining. I also have absolutely no formal training in space travel, a second-hand navigation system, and the knowledge that at least two other people are probably heading to the same place for completely different reasons. Mum's note said 'find it before they do.' I've been thinking about who 'they' is. I don't think she meant Vela. I think she meant: find it before fear finds you. One last data check before I go. I want to do it properly.",
+      "Last candidate on the list. I have found viable sites at candidates four, seven, and ten. The Corps will be pleased. This final check is due diligence — I want to be thorough before I file the complete report. Transit data, asteroid check, surface scan. Same as always. Let us finish properly.",
     beat1:
-      "That signal is still there. Still steady. Whatever it is, it's patient. So am I — I'm my mother's child. The asteroid — one more time.",
+      "Good signal. I appreciate consistency. The asteroid field here is the last one I need to check — if it has water, I will have a complete data set for the full list.",
     beat2:
-      "Everything checks out. I've run these numbers so many times they feel like breathing now. Surface one more time, and then I'm going.",
+      "Complete data set achieved. I have everything I need. Surface scan — final entry in the log.",
     resolution:
-      "That surface. I'm going to land there and somewhere in what I find is going to be the thing my mum spent her whole career reaching toward. I'm terrified. I'm absolutely going. Those two things turn out to be very compatible. See you on the other side.",
+      "Good surface. The report is complete. Twelve candidates surveyed, four viable depot sites identified, fuel reserves adequate for return. A successful run. I will see you on the next one.",
+    resolutionExpression: "neutral",
+    ambience: "ship",
   },
 ];
 
 // ---------------------------------------------------------------------------
-// Storyline C — Commander Atlas Torres (serious / dry)
+// Storyline C — Pip (young alien, first solo mission)
 // ---------------------------------------------------------------------------
 
-const ATLAS_CHAPTERS: Chapter[] = [
+const PIP_CHAPTERS: Chapter[] = [
   {
     index: 0,
-    title: "Clean Break",
+    title: "First Solo",
     briefing:
-      "I'm not going to give you context. What I'll tell you is this: I have a ship with a fuel leak, six days of rations, and the kind of trouble behind me that doesn't negotiate. I've been watching TESS data on this terminal for three weeks because the routes I know are watched and I need somewhere new. There's a signal in the data that keeps coming back to me — someone flagged something similar about six months ago, a researcher named Chen. I don't know what happened to her. Either way her instincts look right to me. I need to know if this planet is real before I burn my last fuel heading toward it.",
+      "Hi! I'm Pip. This is my first solo navigation mission — my instructor said I was ready and I think she was right, mostly. I need to find a planet with liquid water for my certification exam. The exam board requires photographic evidence of a transit signal, a water source, and a surface scan. I have the equipment, I have the checklist, and I have a lot of enthusiasm. Let's find a planet!",
+    briefingExpression: "happy",
     beat1:
-      "Real. The signal is real. I've spent long enough reading terrain to know when something's actually there. Fuel is the problem now — I've got a heading but not enough to reach it clean. Asteroid cluster on the approach. Let's see what we're working with.",
+      "I found one! I actually found one! Okay, staying calm, staying professional. The transit dip is clear and the signal is strong. I am logging this very carefully because the exam board is very particular about documentation. Water check next — this is the part I was most nervous about.",
+    beat1Expression: "surprised",
     beat2:
-      "That'll do. A good fuel stop is the difference between a plan and a wish. Surface next. I need to know what I'm landing on before I commit.",
+      "Water! There is water! I have been practising the asteroid annotation technique for weeks and it worked exactly like the training said it would. I am so relieved. Surface scan is the last step. I can do this.",
+    beat2Expression: "happy",
     resolution:
-      "Solid ground. Actual solid ground I can put boots on. I've been sleeping in a cockpit for eleven days. I'm going to sit with that image for a moment. Then I'm going to fix the fuel leak and go.",
+      "Surface scan complete. I have all three pieces of evidence. I am going to submit this to the exam board right now before anything goes wrong. Thank you so much for helping me — I was a bit nervous at the start but this went really well. I think I passed!",
+    resolutionExpression: "happy",
+    ambience: "lab",
   },
   {
     index: 1,
-    title: "Contact",
+    title: "The Second One",
     briefing:
-      "The people looking for me have a name for what I did. Desertion. I prefer to think of it as a unilateral reassessment of the mission parameters. Six years of service, three tours, two commendations. Then I saw the manifest. Then I saw what the whole thing was actually for. I walked. I'd walk again. What I need now is a route that doesn't intersect with any jurisdiction that has a reason to know my name. The transit data will tell us if this corridor is clear. Keep it practical. I prefer practical.",
+      "I passed! The exam board gave me a distinction, which my instructor said was unusual for a first attempt. She has now given me a second assignment: find a planet suitable for a research outpost. This means I need stable light, water, and a surface that is not too rocky for building. It is more specific than the first assignment but I feel much more confident now. Let's go.",
     beat1:
-      "Clear corridor. We're looking at this methodically and it's paying off. I've heard there's someone else going off-grid in this direction — a scientist of some kind. I'm not inclined to make contact but it's useful to know I'm not the only person who's decided the mapped routes aren't worth the cost. Asteroid check.",
+      "Good transit signal. The orbital period looks stable — consistent light levels, which is what the outpost needs. I am getting better at reading these curves. Water next.",
     beat2:
-      "Every fuel stop confirmed makes this more real. I've been in situations where the plan looks good until it doesn't. This one keeps looking good. Surface.",
+      "Water confirmed. I have been taking notes on the asteroid annotation process because I want to get faster at it. The surface scan will tell me about the terrain — I need to know if it is buildable.",
     resolution:
-      "I've landed on worse. I've landed on better. What this has is distance, and right now distance is everything. Eleven days and I'm there. I can fix the leak properly and then figure out what comes next.",
+      "Buildable terrain. I am filing the report. My instructor is going to be pleased. I am already thinking about the third assignment. I wonder what it will be.",
   },
   {
     index: 2,
-    title: "The Manifest",
+    title: "The Tricky One",
     briefing:
-      "I've been carrying a copy of the document that ended my career. I've read it so many times I could recite it. Three resource companies, two government departments, one very expensive and very secret extraction contract for asteroid belt mining rights. The war I fought in. The people I served with. All of it manufactured, top to bottom, to create legal justification for a land grab most people will never hear about. I'm not angry anymore. I was, for a while. Now I'm just very clear about what kind of people are behind me. Which means I need to be very clear about what's ahead. Transit data. Let's make sure the heading is still good.",
+      "My instructor has given me what she calls 'a tricky one.' The star in this system is variable, which means the light curve is noisier than usual and the transit signal will be harder to pick out. She says this is good practice. I have been studying variable star patterns all week. I am ready. Probably.",
     beat1:
-      "Still good. I've been thinking about the other people on this route. The scientist — Chen, if it's who I think it is — she found something in the data that connects to all of this. I don't know what. I'm not sure I want to. I just want to find somewhere they don't have jurisdiction. Asteroid.",
+      "I found it. It took longer than usual but I found it. The signal was there underneath the noise — you just have to know what to look for. My instructor was right, this is good practice. Water check — I am hoping the asteroid field is straightforward.",
     beat2:
-      "Clean water source confirmed. I keep the manifest because I think it matters that someone knows. Even just one person, out past the mapped routes, who knows what actually happened. Surface check.",
+      "The asteroid field was straightforward. I needed that after the tricky light curve. Surface scan — let's see what we are dealing with.",
     resolution:
-      "A good surface. Not too much radiation, decent gravity signature, no obvious extraction value — the last one is important, believe me. If it looks boring to a mining survey, it looks perfect to me.",
+      "Interesting surface. Lots of variation in the terrain — my instructor will probably ask me to write a report on what caused it. I am already thinking about the answer. This is the part of the job I like most.",
   },
   {
     index: 3,
-    title: "Eleven Days",
+    title: "Teaching Someone Else",
     briefing:
-      "Eleven days out. The fuel leak is worse than I thought — I've patched it twice but the hull stress means I can't fully seal it without proper equipment. I'm losing fuel at about four percent per day. The math works out, barely. There's no margin for a detour. I need the direct route confirmed and I need the fuel stop locked in. I'm going to need precise data. If the asteroid check comes up short, I'm in trouble. Let's do this carefully.",
+      "My instructor has asked me to help train a new student. I am going to demonstrate the full survey process — transit data, asteroid check, surface scan — while explaining what I am doing and why. The new student is watching. I want to do this well. Here we go.",
     beat1:
-      "The route holds. I've been careful my whole career. Careful kept me alive in places where careless people died. Careful is why I saw the manifest before I followed the orders it was based on. Careful is, apparently, also what I'm doing now in deep space with a leaking fuel tank. Asteroid. Let's be careful.",
+      "Transit signal confirmed. I explained the dip shape and what it tells us about the planet's size and orbital period. The new student asked a good question about noise filtering. I think they are going to be fine. Water next.",
     beat2:
-      "Margin confirmed — just. I'll take it. Surface check, and then I'm going to sleep for eight hours and wake up four days closer to the end of all this.",
+      "Water confirmed. I showed the new student how to read the asteroid annotation results and what the different ice signatures mean. They took notes. I remember taking notes like that. Surface scan — last demonstration.",
     resolution:
-      "Every surface check makes the landing feel more real. I've been trying not to think about what I actually do when I get there. Survive, I suppose. Figure out the rest after. I've always been better at the immediate problem. Right now the immediate problem is almost solved.",
+      "Surface scan complete. The new student said the process made more sense watching it live than reading about it. I told them that is how I felt too. My instructor is smiling. I think that means I did well.",
   },
   {
     index: 4,
-    title: "Arrival",
+    title: "The Real Thing",
     briefing:
-      "Four days out. The leak is stable — I think. The rations are down to two days' worth but I'll land before they run out. I've been thinking about what I'm going to do when I get there. In the service, everything had a next step — orders, objectives, chains of command. Out here it's just me and a destination and the reasons I'm going to it. That's a strange kind of freedom. I'm not sure I'd have used that word six months ago. One last data check before descent. I want to make sure I have everything I need.",
+      "My instructor has given me my first real assignment — not a training exercise, not an exam. An actual survey request from an actual client who needs an actual planet. I have done this many times in training. This is the same process. I am telling myself that because I am a little nervous. Let's do the survey.",
     beat1:
-      "Everything checks out. I've been going back through the transit data from the first session. I don't know if Chen made it. I don't know if the botanist did — the one broadcasting plant taxonomy from somewhere in this sector. But I think they did. I think people who pay this much attention to the data tend to get where they're going. Asteroid — last check.",
+      "Real transit signal for a real client. I am logging everything very carefully. The client needs this data for a settlement feasibility study, which means the stakes are higher than a training exercise. Water check.",
     beat2:
-      "All confirmed. Four days is a long time to think. I've been thinking that if I get to the surface and find something unexpected, I'm going to write it down. Everything I know. All of it. Leave it somewhere. Just in case. Surface.",
+      "Water confirmed. I have been thinking about the people who might eventually live on this planet, if the feasibility study goes well. That is a strange thing to think about while doing an asteroid survey. Surface scan.",
     resolution:
-      "There it is. That's where I'm going. After everything. After the tour and the manifest and eleven days in a leaking ship — there it is. I'll tell you this for free: it looks worth it. It looks completely worth it.",
+      "Good surface. The report is complete. I am sending it to the client now. My instructor says this is what the job actually is — careful work that other people rely on. I think I understand that now. I am glad I started with the training.",
+    resolutionExpression: "happy",
+    ambience: "lab",
   },
 ];
 
 // ---------------------------------------------------------------------------
-// Storyline D — Dr. Yara Osei (warm / purposeful)
+// Storyline D — The Cartographer (alien mapping expedition)
 // ---------------------------------------------------------------------------
 
-const YARA_CHAPTERS: Chapter[] = [
+const CARTA_CHAPTERS: Chapter[] = [
   {
     index: 0,
-    title: "Seventeen Thousand",
+    title: "Blank Space",
     briefing:
-      "In the cargo bay behind me there are 17,412 seed species, 6,000 fungal cultures, and enough frozen genetic material to restart most of what makes Earth worth living on. I've been collecting for thirty years. My colleagues think I've gone too far. Perhaps they're right. But I watched the last wild Wollemia nobilis die in a heatwave last spring and I thought: not again. Not one more. So yes, I'm leaving. I need somewhere with stable light, liquid water, and a growing season of reasonable length. That isn't much to ask from a universe this large. The transit data will show us what's out there. Shall we look?",
+      "I map things. That is my entire job and I find it deeply satisfying. This sector of your galaxy is listed on our charts as 'unmapped' with a small note that says 'probably fine.' I am here to replace 'probably fine' with actual data. I have a blank chart, a full fuel tank, and a methodical approach to everything. We will start with transit data — I want to know what planets are actually here.",
+    briefingExpression: "serious",
     beat1:
-      "Oh, that's a lovely orbital period. Stable star, reasonable distance — the light levels should be workable for most of what I've brought. Now water. I'm not going all this way to find out the asteroid field is dry rock.",
+      "First entry on the chart. I have given it a preliminary designation and noted the transit parameters. The asteroid field will give me the water data — water sources are important for the chart because travellers need to know where to refuel.",
+    beat1Expression: "neutral",
     beat2:
-      "More than enough water. I've started germination tests on the hardiest specimens — I want to know what I'm working with before I land. Surface next. I want to see the terrain.",
+      "Water source logged. I have marked it on the chart with the standard refuelling symbol. Surface data is the final entry for this location — terrain type, mineral content, habitability rating.",
+    beat2Expression: "serious",
     resolution:
-      "Good drainage. I can work with that. I've been talking to the seeds — I know that sounds eccentric, but the research on plant response to sound is quite solid. I've been telling them where we're going. I think they're ready.",
+      "First location complete. The chart is no longer blank in this corner. I find this very satisfying. On to the next one.",
+    resolutionExpression: "neutral",
+    ambience: "lab",
   },
   {
     index: 1,
-    title: "Something Unexpected",
+    title: "The Cluster",
     briefing:
-      "I picked up a signal three days into the journey. Faint, structured — not natural interference. Someone else is out here, or was recently. I've been tracking it passively and trying not to read too much into it. One of my research contacts mentioned, before I left, that a scientist named Chen had gone missing after flagging something unusual in TESS data. I don't know if there's a connection. I'm choosing not to worry about it and instead to focus on what I can actually do, which is navigate carefully and check the data. The transit information will help me verify I'm still on the right route.",
+      "There is a cluster of signals in this part of the sector that the old charts marked as 'interference, ignore.' I do not ignore things. I investigate them. The transit data will tell me whether these are real planets or whether the old charts were right about the interference. I am prepared for either outcome.",
     beat1:
-      "Still on course. The signal has faded — whatever it was, it's moved on or gone quiet. I've been repotting some of the more anxious specimens. There's a Corpse Flower in bay three that I think is responding to the vibration of the engines. It's bloomed twice. I've taken it as a good sign. Asteroid check next.",
+      "Real planets. The old charts were wrong. I am adding a note to the chart that says 'previous survey incorrect — see current data.' I do this more often than you might expect. Water check for this location.",
     beat2:
-      "Plenty of water. The Corpse Flower is definitely blooming in response to something. I've decided to call it a good omen. Surface — let's see what kind of soil we're dealing with.",
+      "Water present. The cluster is genuinely interesting — multiple viable locations in close proximity. This is going to be a useful section of the chart. Surface scan.",
     resolution:
-      "Mineral-rich. I'm practically euphoric. Do you know how long it's been since I've seen data like this? The pH will need adjusting for some of the more particular species but the baseline is extraordinary. I'm going to have so much work to do when I land. I cannot wait.",
+      "Good surface data. I have updated the chart for this location and flagged the cluster for a follow-up survey. Someone will want to know about this. The chart is getting less blank.",
   },
   {
     index: 2,
-    title: "The Broadcast",
+    title: "The Edge",
     briefing:
-      "I've been broadcasting. I know that might seem reckless given the signals I've picked up, but I've been transmitting plant taxonomy data on a low frequency — partly as a beacon for other travellers, partly because the act of naming things clearly helps me think. My old professor used to say that taxonomy is an act of love: to see something precisely enough to name it is to take responsibility for it. I've named 17,412 things. That feels like enough responsibility to be getting on with. Transit data today — I want to verify the secondary approach corridor.",
+      "I am at the edge of the mapped region. Beyond this point the chart is completely empty. I find this exciting rather than alarming, which my colleagues say is unusual. The transit data here will be the first data anyone has collected in this part of the sector. I am going to be very careful and very thorough.",
     beat1:
-      "The secondary corridor is clear. I received a fragment of a response to my broadcast — just static with a structure to it, might be nothing, might be someone else being careful about what they transmit. I understand that impulse. I've sent the moss taxonomy in response. If they're a scientist, they'll find it soothing. Asteroid next.",
+      "First signal beyond the edge. I have marked it on the chart with a small star to indicate it is a new discovery. The asteroid field here is uncharted too — I will be the first to log its water content.",
     beat2:
-      "All the water I'll need, and then some. I've been thinking about the response signal. It felt deliberate. Like someone who wanted to acknowledge they'd heard without giving away their position. Surface scan.",
+      "First water source beyond the edge. I have given it a proper designation and noted the ice composition. Surface scan — first surface data from this region.",
     resolution:
-      "I want to show this surface to every person who told me this was too far, too much, too late. Look at it. There it is. Waiting. All it needed was someone to show up.",
+      "First surface data logged. The chart now extends further than it did this morning. I am going to sit here for a moment and appreciate that. Then I am going to keep going.",
   },
   {
     index: 3,
-    title: "Forty Days",
+    title: "Corrections",
     briefing:
-      "Forty days of travel. The seeds are doing remarkably well — I've had germination tests running the whole time, trying to identify which species will need the most acclimatisation. The answer is: all of them, but gradually, with patience. I've been thinking that the work on the surface will take years before I see anything like the ecosystems I left behind. That's fine. I brought enough to work with for decades. What I need now is to make sure I'm landing in the right place. The transit data will confirm the final approach.",
+      "I have found three errors in the existing charts today. This is not unusual — old charts are often based on incomplete data or outdated instruments. My job is not just to add new information but to correct what is wrong. The transit data for this location will either confirm the existing chart entry or replace it. I am ready for either.",
     beat1:
-      "Confirmed. I've been thinking about the other travellers out there — the structured signals, the fragments of broadcast. I hope they're all right. I hope they find what they're looking for. There's room out there for all of us. That's the whole point of having a universe this size. Asteroid — last water check.",
+      "The existing entry was wrong. The planet is there but the orbital parameters are significantly different from what was recorded. I have corrected the chart and noted the discrepancy. Water check — let us see if the old data got this right.",
     beat2:
-      "More than enough. I've started laying out the landing plan — bay sequence, deployment order, initial soil preparation. I've done this in my head a hundred times. It's almost strange to be doing it for real. Surface — one last look.",
+      "The water data was also wrong. The old survey missed a significant ice deposit in the asteroid field. I have updated the chart. Surface scan — I want to see if the terrain matches the old description.",
     resolution:
-      "I've been looking at that surface for forty days in my imagination. The real data is better. That's not always true of things you've imagined for a long time, but it's true here. I'm going to land, and I'm going to start with the mosses, and I'm going to name everything I find.",
+      "Terrain does not match the old description either. Three corrections for one location. I have flagged this for a full re-survey recommendation. The chart is more accurate than it was. That is the job.",
   },
   {
     index: 4,
-    title: "First Landing",
+    title: "The Last Blank",
     briefing:
-      "Tomorrow. I land tomorrow. The cargo manifest is finalised — loading order, quarantine protocols, initial deployment sequence. I've checked it four times and I'm going to check it twice more because that's who I am. The seeds are in their final pre-landing dormancy. The fungi are stable. I've written letters to my colleagues, the ones who thought this was too far — not accusatory, just descriptive. This is what I found. This is where I'm going. I thought you should know. One last full data check before descent. I want to do it with proper attention.",
+      "I have reached the last unmapped section of this survey area. After this, the chart will be complete — at least for this expedition. I have been working on this sector for a long time and I am looking forward to filing the final report. One last full survey. Let us do it properly.",
     beat1:
-      "I want to remember this signal. This specific configuration of transit data that says: here, this one, this is the one. Twenty years ago I would have filed this and moved on to the next survey. Now it means I know where home is going to be. Asteroid — last time.",
+      "Last transit signal of the expedition. I have logged it carefully. The asteroid field here is the last one I need to check — after this, the water data for the entire sector will be complete.",
     beat2:
-      "The last water check before landing. I've been doing these every session for months now and they never stop feeling important. Every resource confirmed is another thing the seeds will have when they need it. Surface — one final look.",
+      "Last water source logged. The chart is almost complete. Surface scan — final entry.",
     resolution:
-      "There it is. Tomorrow I'll be standing on it. I'll take a soil sample first — I always take soil samples first, it's a reflex — and then I'll stand up and look around and try to understand what I'm seeing. And then I'll get to work. I've been waiting to get to work for thirty years. I can't wait for tomorrow.",
+      "Final entry complete. The chart is done. 'Probably fine' has been replaced with actual data — planet locations, water sources, surface terrain, habitability ratings. I am going to file this report and then take a very long rest. Thank you for your help with the data. The chart is better for it.",
+    resolutionExpression: "happy",
+    ambience: "lab",
   },
 ];
 
@@ -300,27 +325,27 @@ const YARA_CHAPTERS: Chapter[] = [
 
 export const STORYLINES: Storyline[] = [
   {
-    id: "mara-chen",
-    characterId: "mara-chen",
-    title: "The Last Signal",
-    chapters: MARA_CHAPTERS,
+    id: "zix",
+    characterId: "zix",
+    title: "Wrong Star System",
+    chapters: ZIX_CHAPTERS,
   },
   {
-    id: "kai-voss",
-    characterId: "kai-voss",
-    title: "Inheritance",
-    chapters: KAI_CHAPTERS,
+    id: "brix",
+    characterId: "brix",
+    title: "Supply Run",
+    chapters: BRIX_CHAPTERS,
   },
   {
-    id: "atlas-torres",
-    characterId: "atlas-torres",
-    title: "Clean Break",
-    chapters: ATLAS_CHAPTERS,
+    id: "pip",
+    characterId: "pip",
+    title: "First Solo",
+    chapters: PIP_CHAPTERS,
   },
   {
-    id: "yara-osei",
-    characterId: "yara-osei",
-    title: "Seventeen Thousand",
-    chapters: YARA_CHAPTERS,
+    id: "carta",
+    characterId: "carta",
+    title: "Blank Space",
+    chapters: CARTA_CHAPTERS,
   },
 ];
