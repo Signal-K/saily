@@ -1,3 +1,11 @@
 {
-  "active": []
+  "active": [
+    {
+      "taskId": "ihefd7",
+      "taskTitle": "Integrate InSight into daily mission flow and add test coverage",
+      "startedAt": "2026-03-26T00:30:19.203Z",
+      "pausedAt": null,
+      "totalPausedMs": 0
+    }
+  ]
 }

@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { getDayAccessForUser } from "@/lib/day-access";
+import { isPastGameDate } from "@/lib/game";
 import { createClient } from "@/lib/supabase/server";
 import { resolveGameDate } from "@/lib/game";
 
@@ -21,6 +23,11 @@ export async function POST(request: Request) {
   const anomalyKey =
     typeof payload.anomalyKey === "string" ? payload.anomalyKey.trim().slice(0, 80) : "";
   const date = resolveGameDate(payload.date);
+  const access = await getDayAccessForUser(supabase, user.id, date);
+
+  if (!access.allowed) {
+    return NextResponse.json({ error: "Unlock this archived mission before submitting it." }, { status: 403 });
+  }
 
   if (!anomalyKey) {
     return NextResponse.json({ error: "Invalid anomalyKey" }, { status: 400 });
@@ -42,6 +49,10 @@ export async function POST(request: Request) {
 
   const annotations = Array.isArray(draft?.annotations) ? draft.annotations.length : 0;
   const score = scoreAnnotations(annotations);
+
+  if (isPastGameDate(date)) {
+    return NextResponse.json({ ok: true, score: 0, archiveMode: true });
+  }
 
   const { error } = await supabase
     .from("asteroid_annotation_drafts")

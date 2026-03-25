@@ -110,6 +110,26 @@ create_survey "narrative_flow" "Cosmo Feedback: Mission Story Flow" \
   "\"Great pacing\", \"Okay\", \"Too repetitive\"" \
   "What would make the narrative flow more engaging?"
 
+create_survey "archive_unlock" "Cosmo Feedback: Archive Unlocks" \
+  "Was unlocking a past mission worth the chip cost?" \
+  "\"Yes\", \"Maybe\", \"No\"" \
+  "What would make archive missions more useful?"
+
+create_survey "discussion_flow" "Cosmo Feedback: Discussion Flow" \
+  "How useful did the discussion area feel after playing?" \
+  "\"Very useful\", \"Somewhat\", \"Not useful\"" \
+  "What would make the discussion space more worth using?"
+
+create_survey "streak_repair" "Cosmo Feedback: Streak Repair" \
+  "Did the streak repair option feel fair?" \
+  "\"Fair\", \"Borderline\", \"Not fair\"" \
+  "What would make streak repair clearer or better?"
+
+create_survey "insight_weather" "Cosmo Feedback: InSight Weather Desk" \
+  "How clear was the weather anomaly puzzle?" \
+  "\"Very clear\", \"Mostly clear\", \"Confusing\"" \
+  "What would improve the InSight weather desk?"
+
 echo
 echo "Set these env vars in web runtime:"
 echo "NEXT_PUBLIC_POSTHOG_SURVEY_PLANET_ID=<planet_transit id>"
@@ -117,3 +137,7 @@ echo "NEXT_PUBLIC_POSTHOG_SURVEY_NO_PLANET_ID=<planet_no_detection id>"
 echo "NEXT_PUBLIC_POSTHOG_SURVEY_ASTEROID_ID=<asteroid_mapping id>"
 echo "NEXT_PUBLIC_POSTHOG_SURVEY_MARS_ID=<mars_classification id>"
 echo "NEXT_PUBLIC_POSTHOG_SURVEY_NARRATIVE_ID=<narrative_flow id>"
+echo "NEXT_PUBLIC_POSTHOG_SURVEY_ARCHIVE_ID=<archive_unlock id>"
+echo "NEXT_PUBLIC_POSTHOG_SURVEY_DISCUSS_ID=<discussion_flow id>"
+echo "NEXT_PUBLIC_POSTHOG_SURVEY_STREAK_ID=<streak_repair id>"
+echo "NEXT_PUBLIC_POSTHOG_SURVEY_INSIGHT_ID=<insight_weather id>"

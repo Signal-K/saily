@@ -1,0 +1,130 @@
+{
+  "taskId": "8rv9kf",
+  "currentVersion": 3,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "8rv9kf",
+      "version": 1,
+      "timestamp": "2026-03-25T20:33:23.031Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "newValue": "Derived from /Users/scroobz/Navigation/Native/planet-hunters-experiment-1/.knowns/docs/dev/creative-sprint-writing-design-tasks.md. Adapted the milestone-celebration task pattern into Saily's storyline-complete and reward surfaces, with emphasis on restrained puzzle-app presentation rather than a full game cutscene."
+        }
+      ],
+      "snapshot": {
+        "title": "Design arc-complete celebration beat for storyline milestones",
+        "description": "Derived from the external creative sprint doc: define the visual treatment, timing, and final copy for storyline-complete and reward moments so they feel meaningful without becoming a full game cutscene.",
+        "status": "todo",
+        "priority": "medium",
+        "labels": [
+          "creative",
+          "design",
+          "narrative",
+          "rewards"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Spec includes headline, supporting line, timing, and visual sequence"
+          },
+          {
+            "completed": false,
+            "text": "Direction fits Saily's restrained puzzle-console aesthetic"
+          },
+          {
+            "completed": false,
+            "text": "Spec explicitly maps to existing mission complete / reward surfaces"
+          }
+        ],
+        "implementationNotes": "Derived from /Users/scroobz/Navigation/Native/planet-hunters-experiment-1/.knowns/docs/dev/creative-sprint-writing-design-tasks.md. Adapted the milestone-celebration task pattern into Saily's storyline-complete and reward surfaces, with emphasis on restrained puzzle-app presentation rather than a full game cutscene."
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "8rv9kf",
+      "version": 2,
+      "timestamp": "2026-03-26T00:24:11.748Z",
+      "changes": [
+        {
+          "field": "title",
+          "oldValue": "Design arc-complete celebration beat for storyline milestones",
+          "newValue": "Design the arc-complete reward moment for storyline milestones"
+        },
+        {
+          "field": "description",
+          "oldValue": "Derived from the external creative sprint doc: define the visual treatment, timing, and final copy for storyline-complete and reward moments so they feel meaningful without becoming a full game cutscene.",
+          "newValue": "Define the visual treatment, timing, and copy for the screen a player sees when they finish a character arc. Should feel meaningful without being excessive. Fits Saily's restrained puzzle-console aesthetic — think NYT Games end-of-day, not a full cutscene."
+        }
+      ],
+      "snapshot": {
+        "title": "Design the arc-complete reward moment for storyline milestones",
+        "description": "Define the visual treatment, timing, and copy for the screen a player sees when they finish a character arc. Should feel meaningful without being excessive. Fits Saily's restrained puzzle-console aesthetic — think NYT Games end-of-day, not a full cutscene.",
+        "status": "todo",
+        "priority": "medium",
+        "labels": [
+          "creative",
+          "design",
+          "narrative",
+          "rewards"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Spec includes headline, supporting line, timing, and visual sequence"
+          },
+          {
+            "completed": false,
+            "text": "Direction fits Saily's restrained puzzle-console aesthetic"
+          },
+          {
+            "completed": false,
+            "text": "Spec explicitly maps to existing mission complete / reward surfaces"
+          }
+        ],
+        "implementationNotes": "Derived from /Users/scroobz/Navigation/Native/planet-hunters-experiment-1/.knowns/docs/dev/creative-sprint-writing-design-tasks.md. Adapted the milestone-celebration task pattern into Saily's storyline-complete and reward surfaces, with emphasis on restrained puzzle-app presentation rather than a full game cutscene."
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "8rv9kf",
+      "version": 3,
+      "timestamp": "2026-03-28T04:15:52.124Z",
+      "changes": [
+        {
+          "field": "assignee",
+          "newValue": "@Liam"
+        }
+      ],
+      "snapshot": {
+        "title": "Design the arc-complete reward moment for storyline milestones",
+        "description": "Define the visual treatment, timing, and copy for the screen a player sees when they finish a character arc. Should feel meaningful without being excessive. Fits Saily's restrained puzzle-console aesthetic — think NYT Games end-of-day, not a full cutscene.",
+        "status": "todo",
+        "priority": "medium",
+        "assignee": "@Liam",
+        "labels": [
+          "creative",
+          "design",
+          "narrative",
+          "rewards"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Spec includes headline, supporting line, timing, and visual sequence"
+          },
+          {
+            "completed": false,
+            "text": "Direction fits Saily's restrained puzzle-console aesthetic"
+          },
+          {
+            "completed": false,
+            "text": "Spec explicitly maps to existing mission complete / reward surfaces"
+          }
+        ],
+        "implementationNotes": "Derived from /Users/scroobz/Navigation/Native/planet-hunters-experiment-1/.knowns/docs/dev/creative-sprint-writing-design-tasks.md. Adapted the milestone-celebration task pattern into Saily's storyline-complete and reward surfaces, with emphasis on restrained puzzle-app presentation rather than a full game cutscene."
+      }
+    }
+  ]
+}

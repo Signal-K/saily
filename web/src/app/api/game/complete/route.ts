@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { isPastGameDate, resolveGameDate } from "@/lib/game";
+import { getDayAccessForUser } from "@/lib/day-access";
 import { createClient } from "@/lib/supabase/server";
 
 type CompleteBody = {
@@ -29,11 +30,30 @@ export async function POST(request: Request) {
   const completedPuzzles = normalizeNumber(payload.completedPuzzles, 3, 1, 3);
   const confidence = normalizeNumber(payload.confidence, 70, 0, 100);
   const date = resolveGameDate(payload.date);
-  const xpMultiplier = isPastGameDate(date) ? 0.5 : 1;
+  const access = await getDayAccessForUser(supabase, user.id, date);
+
+  if (!access.allowed) {
+    return NextResponse.json({ error: "Unlock this archived mission before playing it." }, { status: 403 });
+  }
+
+  const isArchiveRun = isPastGameDate(date);
+  const xpMultiplier = isArchiveRun ? 0 : 1;
 
   const attempts = Math.max(1, 4 - completedPuzzles);
   const baseScore = Math.round((completedPuzzles / 3) * (60 + confidence * 0.4));
   const score = Math.max(1, Math.round(baseScore * xpMultiplier));
+
+  if (isArchiveRun) {
+    return NextResponse.json({
+      ok: true,
+      stats: null,
+      badgesAwarded: 0,
+      score: 0,
+      xpMultiplier,
+      gameDate: date,
+      archiveMode: true,
+    });
+  }
 
   const { data, error } = await supabase.rpc("submit_daily_result", {
     p_game_date: date,

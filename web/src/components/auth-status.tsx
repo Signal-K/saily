@@ -128,7 +128,8 @@ export function AuthStatus() {
         <div className="profile-dropdown" role="menu" data-cy="profile-dropdown">
           <div className="profile-menu-header" role="none">
             <span className="profile-chips" title="Data Chips">
-              <span aria-hidden>💾</span> {auth.chips} Chips
+              <Image src="/assets/data-chip.svg" alt="" width={16} height={16} />
+              <span>{auth.chips} Chips</span>
             </span>
           </div>
           <Link href="/profile" role="menuitem" data-cy="profile-menu-profile" onClick={() => setMenuOpen(false)}>

@@ -1,6 +1,6 @@
 {
   "taskId": "3d8wgx",
-  "currentVersion": 3,
+  "currentVersion": 4,
   "versions": [
     {
       "id": "v1",
@@ -138,6 +138,51 @@
       "taskId": "3d8wgx",
       "version": 3,
       "timestamp": "2026-03-08T05:09:32.287Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        }
+      ],
+      "snapshot": {
+        "title": "Create lightweight PostHog surveys for core product mechanics",
+        "description": "Create minimally intrusive surveys (max 2 questions each) targeting minigames/features/mechanics, with user-id-aware targeting and app-consistent UX delivery triggers.",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "analytics",
+          "posthog",
+          "surveys",
+          "feedback"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "At least one survey exists for each major gameplay area"
+          },
+          {
+            "completed": true,
+            "text": "Each survey has no more than two questions"
+          },
+          {
+            "completed": true,
+            "text": "Survey triggers are scoped to relevant in-app events/properties including user id context"
+          },
+          {
+            "completed": true,
+            "text": "Survey setup scripts/config are committed for repeatable creation"
+          }
+        ],
+        "implementationNotes": "Implemented PostHog survey queue + runtime display system for mechanic_feedback_triggered events with cooldown/sampling for non-obtrusive behavior. Added user-aware tracking via posthog.identify(user.id,email) and user_id property on survey-trigger events. Created reusable survey creation script scripts/posthog/create_mechanic_surveys.sh and successfully created 5 surveys in project 199773 (US): planet_transit=019ccbd6-f1dc-0000-e6e6-caacce63cd34, planet_no_detection=019ccbd6-f751-0000-16f9-763d27b53ae1, asteroid_mapping=019ccbd6-fd2d-0000-c370-82976b2d473c, mars_classification=019ccbd7-0233-0000-be5a-20d67c00f106, narrative_flow=019ccbd7-07a0-0000-00f3-bfd70228d93f. Updated .env.local/.env.example with corresponding NEXT_PUBLIC_POSTHOG_SURVEY_* ids and PostHog key/host. Added lightweight CSS overrides for survey widget to better align with app styling."
+      }
+    },
+    {
+      "id": "v4",
+      "taskId": "3d8wgx",
+      "version": 4,
+      "timestamp": "2026-03-28T04:18:00.104Z",
       "changes": [
         {
           "field": "status",

@@ -12,6 +12,8 @@ type Props = {
   score: number;
   isStorylineComplete: boolean;
   storylineTitle: string;
+  postcardTitle?: string;
+  postcardMessage?: string;
   endedEarly?: boolean;
   awardedChips?: number;
   referralCode?: string | null;
@@ -22,7 +24,9 @@ export function MissionComplete({
   chapter, 
   score, 
   isStorylineComplete, 
-  storylineTitle, 
+  storylineTitle,
+  postcardTitle = "Sailor's Postcard",
+  postcardMessage = "You've completed this arc! Share your discovery with others.",
   endedEarly = false,
   awardedChips = 0,
   referralCode = null
@@ -67,7 +71,8 @@ export function MissionComplete({
         
         {awardedChips > 0 && (
           <div className="mission-complete-reward-pill">
-            <span aria-hidden>💾</span> +{awardedChips} Data Chips
+            <Image src="/assets/data-chip.svg" alt="" width={20} height={20} className="reward-chip-icon" />
+            <span>+{awardedChips} Data Chips</span>
           </div>
         )}
       </div>
@@ -75,10 +80,12 @@ export function MissionComplete({
       {isStorylineComplete && (
         <div className="mission-complete-postcard">
           <div className="postcard-header">
-            <span className="postcard-stamp">✦</span>
-            <h3>Sailor&apos;s Postcard</h3>
+            <div className="postcard-icon-wrap">
+              <Image src="/assets/postcard.svg" alt="" width={32} height={24} />
+            </div>
+            <h3>{postcardTitle}</h3>
           </div>
-          <p className="muted">You&apos;ve completed this arc! Share your discovery with others.</p>
+          <p className="postcard-msg">{postcardMessage}</p>
           <div className="postcard-referral">
             <span className="referral-label">Your Referral Code:</span>
             <code className="referral-code">{referralCode ?? "SAILY-CODE"}</code>
@@ -128,6 +135,12 @@ export function MissionComplete({
           border-radius: 2rem;
           font-weight: 600;
           color: var(--brand);
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+        .reward-chip-icon {
+          filter: drop-shadow(0 0 4px color-mix(in oklab, var(--brand) 30%, transparent));
         }
         .mission-complete-postcard {
           background: #fff9f2;
@@ -148,16 +161,24 @@ export function MissionComplete({
         .postcard-header {
           display: flex;
           align-items: center;
-          gap: 0.5rem;
+          gap: 0.75rem;
           margin-bottom: 0.5rem;
         }
-        .postcard-stamp {
-          font-size: 1.5rem;
+        .postcard-icon-wrap {
+          flex-shrink: 0;
+          filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.1));
         }
         .postcard-header h3 {
           margin: 0;
           font-family: var(--font-brand);
           font-size: 1.25rem;
+        }
+        .postcard-msg {
+          margin: 0.5rem 0 1rem 0;
+          font-family: var(--font-handwritten, cursive);
+          font-size: 1.1rem;
+          line-height: 1.4;
+          opacity: 0.9;
         }
         .postcard-referral {
           background: rgba(0,0,0,0.05);

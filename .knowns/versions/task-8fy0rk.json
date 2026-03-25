@@ -1,0 +1,45 @@
+{
+  "taskId": "8fy0rk",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "8fy0rk",
+      "version": 1,
+      "timestamp": "2026-03-28T04:15:52.099Z",
+      "changes": [
+        {
+          "field": "assignee",
+          "newValue": "@Liam"
+        }
+      ],
+      "snapshot": {
+        "title": "Design InSight Weather Desk explanation and result copy",
+        "description": "Write the concise explainer, helper text, and result-state copy that clarifies what InSight data the player is reviewing, what counts as an anomaly, and why the anomaly flag matters scientifically and in the Star Sailors fiction. Should fit the restrained Saily console aesthetic and plug into the Weather Desk mission surface.",
+        "status": "todo",
+        "priority": "medium",
+        "assignee": "@Liam",
+        "labels": [
+          "creative",
+          "ux-copy",
+          "science",
+          "insight"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Includes pre-play explainer, action hint, and post-submit result copy"
+          },
+          {
+            "completed": false,
+            "text": "Explains the scientific value of anomaly flagging without overstating certainty"
+          },
+          {
+            "completed": false,
+            "text": "Maps copy targets to the existing InSight mission UI components"
+          }
+        ]
+      }
+    }
+  ]
+}

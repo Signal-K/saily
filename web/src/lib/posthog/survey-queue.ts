@@ -6,7 +6,11 @@ export type SurveyTriggerSource =
   | "planet_no_detection"
   | "asteroid_mapping"
   | "mars_classification"
-  | "narrative_flow";
+  | "narrative_flow"
+  | "archive_unlock"
+  | "discussion_flow"
+  | "streak_repair"
+  | "insight_weather";
 
 export type SurveyTriggerPayload = {
   source: SurveyTriggerSource;

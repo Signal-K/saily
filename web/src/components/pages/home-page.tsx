@@ -29,6 +29,12 @@ function truncateText(text: string, maxLength = 120) {
   return `${text.slice(0, maxLength - 1)}…`;
 }
 
+function getMissionStatusLabel(streak: number | null | undefined, chips: number | null | undefined) {
+  if ((streak ?? 0) >= 7) return "Stable";
+  if ((chips ?? 0) > 0) return "Ready";
+  return "Standby";
+}
+
 export default async function Home() {
   const supabase = await createClient();
   const todayStoryline = getStorylineForDate(new Date());
@@ -64,51 +70,108 @@ export default async function Home() {
   const badges = (badgesRes.data ?? []).map((row) => (Array.isArray(row.badges) ? row.badges[0] : row.badges)).filter(Boolean) as BadgeRef[];
   const plays = playsRes.data ?? [];
   const comments = (commentsRes.data ?? []) as CommentRow[];
+  const missionStatus = getMissionStatusLabel(stats?.current_streak, profile?.data_chips);
+  const missionBars = [stats?.current_streak ?? 0, profile?.data_chips ?? 0, stats?.wins ?? 0, badges.length];
 
   return (
     <section className="home-dashboard">
+      <section className="home-console-shell hero hero-mission">
+        <div className="home-console-grid">
+          <div className="home-console-primary">
+            <div className="home-console-kicker-row">
+              <p className="eyebrow">Orbital Console</p>
+              <span className={`home-console-status is-${missionStatus.toLowerCase()}`}>{missionStatus}</span>
+            </div>
+            <div className="home-mission-header">
+              <Image
+                src={todayAvatarSrc}
+                alt={todayCharacter.name}
+                width={56}
+                height={56}
+                unoptimized
+                className="home-mission-avatar"
+              />
+              <div>
+                <h1>{todayStoryline.title}</h1>
+                <p className="muted">{todayCharacter.name} &middot; {todayCharacter.occupation}</p>
+              </div>
+            </div>
+            <p className="home-mission-desc">Help {todayCharacter.name} solve today&apos;s mystery by classifying real space data.</p>
+            <div className="cta-row">
+              <Link href="/games/today" className="button button-primary button-full">
+                Start Today&apos;s Mission
+              </Link>
+              <Link href="/calendar" className="button">
+                Archive
+              </Link>
+              <Link href="/discuss" className="button">
+                Discuss
+              </Link>
+            </div>
+          </div>
 
-      {/* ── Hero: Today's Mission ───────────────────────────────────── */}
-      <div className="hero hero-mission">
-        <p className="eyebrow">✦ Today&apos;s Mission</p>
-        <div className="home-mission-header">
-          <Image
-            src={todayAvatarSrc}
-            alt={todayCharacter.name}
-            width={56}
-            height={56}
-            unoptimized
-            className="home-mission-avatar"
-          />
-          <div>
-            <h1>{todayStoryline.title}</h1>
-            <p className="muted">{todayCharacter.name} &middot; {todayCharacter.occupation}</p>
+          <div className="home-console-side">
+            <div className="home-console-panel">
+              <div className="home-console-panel-head">
+                <span>Signal Board</span>
+                <small>live</small>
+              </div>
+              <div className="home-signal-bars" aria-hidden>
+                {missionBars.map((value, idx) => (
+                  <span key={`${value}-${idx}`} style={{ height: `${24 + Math.min(44, value * 6)}px` }} />
+                ))}
+              </div>
+              <div className="home-console-readout">
+                <span>Streak {stats?.current_streak ?? 0}</span>
+                <span className="home-readout-chips">
+                  <Image src="/assets/data-chip.svg" alt="" width={16} height={16} />
+                  <span>Chips {profile?.data_chips ?? 0}</span>
+                </span>
+              </div>
+            </div>
+            <div className="home-console-panel">
+              <div className="home-console-panel-head">
+                <span>Mission Links</span>
+                <small>quick</small>
+              </div>
+              <div className="home-console-links">
+                <Link href={user ? "/profile" : "/auth/sign-in"} className="home-console-link">
+                  {user ? "Profile" : "Sign in"}
+                </Link>
+                <Link href="/search" className="home-console-link">
+                  Search
+                </Link>
+                <Link href="/games/asteroids" className="home-console-link">
+                  Asteroids
+                </Link>
+                <Link href="/games/mars" className="home-console-link">
+                  Mars
+                </Link>
+                <Link href="/games/insight" className="home-console-link">
+                  Weather Desk
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
-        <p className="home-mission-desc">Help {todayCharacter.name} solve today&apos;s mystery by classifying real space data.</p>
-        <div className="cta-row">
-          <Link href="/games/today" className="button button-primary button-full">
-            Start Today&apos;s Mission &rarr;
-          </Link>
-          <Link href={user ? "/profile" : "/auth/sign-in"} className="button">
-            {user ? "Profile" : "Sign in"}
-          </Link>
-        </div>
-      </div>
+      </section>
 
-      {/* ── Quick-access game cards ─────────────────────────────────── */}
       <div className="home-games-row">
         <Link href="/games/today" className="home-game-card">
-          <span className="home-game-icon" aria-hidden>🔭</span>
-          <span className="home-game-label">Planet Hunt</span>
+          <span className="home-game-icon" aria-hidden>◌</span>
+          <span className="home-game-label">Transit Scan</span>
         </Link>
         <Link href="/games/asteroids" className="home-game-card">
-          <span className="home-game-icon" aria-hidden>☄️</span>
-          <span className="home-game-label">Asteroids</span>
+          <span className="home-game-icon" aria-hidden>◫</span>
+          <span className="home-game-label">Ice Mapping</span>
         </Link>
-        <Link href="/games/today" className="home-game-card">
-          <span className="home-game-icon" aria-hidden>🪐</span>
-          <span className="home-game-label">Mars</span>
+        <Link href="/games/mars" className="home-game-card">
+          <span className="home-game-icon" aria-hidden>◎</span>
+          <span className="home-game-label">Surface Tags</span>
+        </Link>
+        <Link href="/games/insight" className="home-game-card">
+          <span className="home-game-icon" aria-hidden>≋</span>
+          <span className="home-game-label">Weather Desk</span>
         </Link>
       </div>
 

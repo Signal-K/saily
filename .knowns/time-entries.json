@@ -163,5 +163,22 @@
       "endedAt": "2026-03-08T05:09:32.276Z",
       "duration": 618
     }
+  ],
+  "4im1ld": [
+    {
+      "id": "te-1774433121332",
+      "startedAt": "2026-03-25T10:05:21.332Z",
+      "endedAt": "2026-03-25T10:25:21.332Z",
+      "duration": 1200,
+      "note": "Home hub console polish + PostHog survey expansion"
+    }
+  ],
+  "rvs14k": [
+    {
+      "id": "te-1774470874976-rvs14k",
+      "startedAt": "2026-03-25T20:27:26.724Z",
+      "endedAt": "2026-03-25T20:34:34.953Z",
+      "duration": 428
+    }
   ]
 }

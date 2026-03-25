@@ -1,0 +1,165 @@
+{
+  "taskId": "v00q8u",
+  "currentVersion": 3,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "v00q8u",
+      "version": 1,
+      "timestamp": "2026-03-25T09:20:57.357Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "in-progress"
+        },
+        {
+          "field": "implementationPlan",
+          "newValue": "1. Unify game/forum/archive date utilities around Melbourne midnight and audit current callers.\n2. Add archive access checks so past-day mission entry requires unlock or existing completion.\n3. Prevent archive runs from mutating live storyline progression or daily scoring.\n4. Gate forum thread visibility/posting by completed-or-unlocked access for the selected day.\n5. Validate with targeted tests/build and append implementation notes."
+        }
+      ],
+      "snapshot": {
+        "title": "Fix archive date handling and discussion gating",
+        "description": "Correct Melbourne-midnight date handling, separate archive play from live mission progression, and gate discuss access by completion/unlock. Related: @doc/specs/saily-product-spec @doc/specs/saily-system-spec",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "archive",
+          "dates",
+          "forum",
+          "gameplay"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Historical puzzle selection uses Melbourne-date semantics consistently"
+          },
+          {
+            "completed": false,
+            "text": "Archive play requires unlock for past days and does not advance live storyline progress"
+          },
+          {
+            "completed": false,
+            "text": "Discussion threads are locked until the user completed or unlocked that day"
+          }
+        ],
+        "implementationPlan": "1. Unify game/forum/archive date utilities around Melbourne midnight and audit current callers.\n2. Add archive access checks so past-day mission entry requires unlock or existing completion.\n3. Prevent archive runs from mutating live storyline progression or daily scoring.\n4. Gate forum thread visibility/posting by completed-or-unlocked access for the selected day.\n5. Validate with targeted tests/build and append implementation notes."
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "v00q8u",
+      "version": 2,
+      "timestamp": "2026-03-25T10:03:40.621Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "newValue": "Done: added shared Melbourne date utility; archive access gating in mission + forum APIs; archive runs no longer award score/streak or advance storyline; selected mission date now flows into all 3 puzzle surfaces; added archive unlock trigger survey."
+        }
+      ],
+      "snapshot": {
+        "title": "Fix archive date handling and discussion gating",
+        "description": "Correct Melbourne-midnight date handling, separate archive play from live mission progression, and gate discuss access by completion/unlock. Related: @doc/specs/saily-product-spec @doc/specs/saily-system-spec",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "archive",
+          "dates",
+          "forum",
+          "gameplay"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Historical puzzle selection uses Melbourne-date semantics consistently"
+          },
+          {
+            "completed": false,
+            "text": "Archive play requires unlock for past days and does not advance live storyline progress"
+          },
+          {
+            "completed": false,
+            "text": "Discussion threads are locked until the user completed or unlocked that day"
+          }
+        ],
+        "implementationPlan": "1. Unify game/forum/archive date utilities around Melbourne midnight and audit current callers.\n2. Add archive access checks so past-day mission entry requires unlock or existing completion.\n3. Prevent archive runs from mutating live storyline progression or daily scoring.\n4. Gate forum thread visibility/posting by completed-or-unlocked access for the selected day.\n5. Validate with targeted tests/build and append implementation notes.",
+        "implementationNotes": "Done: added shared Melbourne date utility; archive access gating in mission + forum APIs; archive runs no longer award score/streak or advance storyline; selected mission date now flows into all 3 puzzle surfaces; added archive unlock trigger survey."
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "v00q8u",
+      "version": 3,
+      "timestamp": "2026-03-25T10:05:21.339Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "Historical puzzle selection uses Melbourne-date semantics consistently"
+            },
+            {
+              "completed": false,
+              "text": "Archive play requires unlock for past days and does not advance live storyline progress"
+            },
+            {
+              "completed": false,
+              "text": "Discussion threads are locked until the user completed or unlocked that day"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "Historical puzzle selection uses Melbourne-date semantics consistently"
+            },
+            {
+              "completed": true,
+              "text": "Archive play requires unlock for past days and does not advance live storyline progress"
+            },
+            {
+              "completed": true,
+              "text": "Discussion threads are locked until the user completed or unlocked that day"
+            }
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Fix archive date handling and discussion gating",
+        "description": "Correct Melbourne-midnight date handling, separate archive play from live mission progression, and gate discuss access by completion/unlock. Related: @doc/specs/saily-product-spec @doc/specs/saily-system-spec",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "archive",
+          "dates",
+          "forum",
+          "gameplay"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Historical puzzle selection uses Melbourne-date semantics consistently"
+          },
+          {
+            "completed": true,
+            "text": "Archive play requires unlock for past days and does not advance live storyline progress"
+          },
+          {
+            "completed": true,
+            "text": "Discussion threads are locked until the user completed or unlocked that day"
+          }
+        ],
+        "implementationPlan": "1. Unify game/forum/archive date utilities around Melbourne midnight and audit current callers.\n2. Add archive access checks so past-day mission entry requires unlock or existing completion.\n3. Prevent archive runs from mutating live storyline progression or daily scoring.\n4. Gate forum thread visibility/posting by completed-or-unlocked access for the selected day.\n5. Validate with targeted tests/build and append implementation notes.",
+        "implementationNotes": "Done: added shared Melbourne date utility; archive access gating in mission + forum APIs; archive runs no longer award score/streak or advance storyline; selected mission date now flows into all 3 puzzle surfaces; added archive unlock trigger survey."
+      }
+    }
+  ]
+}

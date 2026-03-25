@@ -1,7 +1,7 @@
 ---
 id: 3d8wgx
 title: Create lightweight PostHog surveys for core product mechanics
-status: in-progress
+status: done
 priority: high
 labels:
   - analytics
@@ -9,7 +9,7 @@ labels:
   - surveys
   - feedback
 createdAt: '2026-03-08T04:56:10.145Z'
-updatedAt: '2026-03-08T05:09:32.288Z'
+updatedAt: '2026-03-28T04:18:00.104Z'
 timeSpent: 618
 assignee: '@me'
 ---

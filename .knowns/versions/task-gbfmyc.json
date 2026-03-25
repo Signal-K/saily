@@ -1,6 +1,6 @@
 {
   "taskId": "gbfmyc",
-  "currentVersion": 1,
+  "currentVersion": 2,
   "versions": [
     {
       "id": "v1",
@@ -59,6 +59,92 @@
             "completed": false
           }
         ]
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "gbfmyc",
+      "version": 2,
+      "timestamp": "2026-03-28T04:26:21.062Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "isStorylineComplete() is called after chapter resolution is shown"
+            },
+            {
+              "completed": false,
+              "text": "Data Chip awarded on arc completion"
+            },
+            {
+              "completed": false,
+              "text": "Postcard awarded on arc completion"
+            },
+            {
+              "completed": false,
+              "text": "Reward is idempotent — replaying the final chapter does not re-award"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "isStorylineComplete() is called after chapter resolution is shown"
+            },
+            {
+              "completed": true,
+              "text": "Data Chip awarded on arc completion"
+            },
+            {
+              "completed": true,
+              "text": "Postcard awarded on arc completion"
+            },
+            {
+              "completed": true,
+              "text": "Reward is idempotent — replaying the final chapter does not re-award"
+            }
+          ]
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Already implemented: story/progress POST calls isStorylineComplete (chapter_index >= maxChapter), awards 2 data_chips idempotently via completed_storylines check. Postcard shown in MissionComplete when isStorylineComplete=true; postcard content from storyline.postcardTitle/postcardMessage."
+        }
+      ],
+      "snapshot": {
+        "title": "Add arc-completion reward trigger for each character storyline",
+        "description": "When a user finishes chapter 5 (index 4) of any storyline, they should receive a Data Chip and a Postcard. Currently isStorylineComplete() exists in lib/mission.ts but there is no reward dispatch connected to it. Related: @doc/specs/characters-storylines @doc/specs/saily-product-spec",
+        "status": "done",
+        "priority": "medium",
+        "labels": [
+          "narrative",
+          "economy",
+          "rewards"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "isStorylineComplete() is called after chapter resolution is shown"
+          },
+          {
+            "completed": true,
+            "text": "Data Chip awarded on arc completion"
+          },
+          {
+            "completed": true,
+            "text": "Postcard awarded on arc completion"
+          },
+          {
+            "completed": true,
+            "text": "Reward is idempotent — replaying the final chapter does not re-award"
+          }
+        ],
+        "implementationNotes": "Already implemented: story/progress POST calls isStorylineComplete (chapter_index >= maxChapter), awards 2 data_chips idempotently via completed_storylines check. Postcard shown in MissionComplete when isStorylineComplete=true; postcard content from storyline.postcardTitle/postcardMessage."
       }
     }
   ]

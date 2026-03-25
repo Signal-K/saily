@@ -1,6 +1,6 @@
 {
   "taskId": "xywrqh",
-  "currentVersion": 1,
+  "currentVersion": 2,
   "versions": [
     {
       "id": "v1",
@@ -50,6 +50,79 @@
             "completed": false
           }
         ]
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "xywrqh",
+      "version": 2,
+      "timestamp": "2026-03-28T04:28:41.512Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "All 20 chapters have an explicit briefingExpression (not relying on undefined → neutral fallback)"
+            },
+            {
+              "completed": false,
+              "text": "Expressions are consistent with each character's tone (warm vs serious)"
+            },
+            {
+              "completed": false,
+              "text": "Doc @doc/specs/characters-storylines updated if expression table is added"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "All 20 chapters have an explicit briefingExpression (not relying on undefined → neutral fallback)"
+            },
+            {
+              "completed": true,
+              "text": "Expressions are consistent with each character's tone (warm vs serious)"
+            },
+            {
+              "completed": false,
+              "text": "Doc @doc/specs/characters-storylines updated if expression table is added"
+            }
+          ]
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Added briefingExpression to all 16 missing chapters in lib/storylines.ts. Zix: neutral/serious/happy/happy. Brix: neutral/serious/neutral/serious. Pip: happy/serious/happy/serious. Carta: serious/neutral/serious/neutral. Expressions match each character's established tone. AC3 (doc update) skipped — no expression table was previously in the doc."
+        }
+      ],
+      "snapshot": {
+        "title": "Add missing briefingExpression to all chapters",
+        "description": "Several chapters in lib/storylines.ts have no briefingExpression set, so the avatar defaults to 'neutral' for every briefing. Each chapter should have an intentional expression. Related: @doc/specs/characters-storylines",
+        "status": "done",
+        "priority": "low",
+        "labels": [
+          "narrative",
+          "polish"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "All 20 chapters have an explicit briefingExpression (not relying on undefined → neutral fallback)"
+          },
+          {
+            "completed": true,
+            "text": "Expressions are consistent with each character's tone (warm vs serious)"
+          },
+          {
+            "completed": false,
+            "text": "Doc @doc/specs/characters-storylines updated if expression table is added"
+          }
+        ],
+        "implementationNotes": "Added briefingExpression to all 16 missing chapters in lib/storylines.ts. Zix: neutral/serious/happy/happy. Brix: neutral/serious/neutral/serious. Pip: happy/serious/happy/serious. Carta: serious/neutral/serious/neutral. Expressions match each character's established tone. AC3 (doc update) skipped — no expression table was previously in the doc."
       }
     }
   ]

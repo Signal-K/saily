@@ -1,16 +1,15 @@
 import { NextResponse } from "next/server";
+import { getDayAccessForUser } from "@/lib/day-access";
+import { isPastGameDate } from "@/lib/game";
 import { createClient } from "@/lib/supabase/server";
 import { resolveGameDate } from "@/lib/game";
-import { MARS_CLASSIFICATIONS } from "@/lib/mars-images";
-
-const VALID_CLASSIFICATIONS = new Set<string>(MARS_CLASSIFICATIONS);
 
 type ClassifyBody = {
   date?: string;
   classifications?: Array<{
     imageId: string;
     imageUrl: string;
-    annotations?: any[];
+    annotations?: unknown[];
     confidence: number;
     note?: string;
   }>;
@@ -28,6 +27,10 @@ export async function POST(request: Request) {
 
   const payload = (await request.json().catch(() => ({}))) as ClassifyBody;
   const date = resolveGameDate(payload.date);
+  const access = await getDayAccessForUser(supabase, user.id, date);
+  if (!access.allowed) {
+    return NextResponse.json({ error: "Unlock this archived mission before submitting it." }, { status: 403 });
+  }
   const classifications = Array.isArray(payload.classifications) ? payload.classifications : [];
 
   if (classifications.length === 0) {
@@ -69,7 +72,7 @@ export async function POST(request: Request) {
   // Base 40 + points for images + points for annotations + confidence bonus
   const score = Math.round(40 + (rows.length * 10) + (totalAnnotations * 5) + (avgConfidence * 0.2));
 
-  return NextResponse.json({ ok: true, classified: rows.length, score });
+  return NextResponse.json({ ok: true, classified: rows.length, score: isPastGameDate(date) ? 0 : score, archiveMode: isPastGameDate(date) });
 }
 
 export async function GET(request: Request) {
@@ -84,6 +87,10 @@ export async function GET(request: Request) {
 
   const url = new URL(request.url);
   const date = resolveGameDate(url.searchParams.get("date"));
+  const access = await getDayAccessForUser(supabase, user.id, date);
+  if (!access.allowed) {
+    return NextResponse.json({ error: "Unlock this archived mission before viewing it." }, { status: 403 });
+  }
 
   const { data, error } = await supabase
     .from("mars_classifications")

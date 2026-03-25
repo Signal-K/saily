@@ -1,0 +1,85 @@
+{
+  "taskId": "rsf3f3",
+  "currentVersion": 2,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "rsf3f3",
+      "version": 1,
+      "timestamp": "2026-03-26T09:17:05.526Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "newValue": "kanban: kw8lqs"
+        }
+      ],
+      "snapshot": {
+        "title": "Write arc 2–4 completion screen copy for all characters",
+        "description": "Each character arc ends with a reward/completion screen. Write the copy for arcs 2, 3, and 4 for all 4 characters — headline, result summary, and transition prompt.",
+        "status": "todo",
+        "priority": "medium",
+        "labels": [
+          "writing",
+          "narrative"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Completion screen copy written for arcs 2–4, all 4 characters"
+          }
+        ],
+        "implementationNotes": "kanban: kw8lqs"
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "rsf3f3",
+      "version": 2,
+      "timestamp": "2026-03-28T04:29:56.959Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "Completion screen copy written for arcs 2–4, all 4 characters"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "Completion screen copy written for arcs 2–4, all 4 characters"
+            }
+          ]
+        },
+        {
+          "field": "implementationNotes",
+          "oldValue": "kanban: kw8lqs",
+          "newValue": "kanban: kw8lqs\n\n## Arc 2–4 completion screen copy (all 4 characters)\n\nCopy follows the same structure as arc 1: headline / outcome (2–3 lines) / unlock hook.\n\n---\n\n### ZIX\n\n**Arc 2 — Settling In**\n> Headline: \"Verdant Paradise: Fully Explored\"\n> Outcome: \"Zix has finished cataloguing every beach, cove, and suspiciously named coastal formation on the planet. She has filed a formal correction with the travel agency. They have not responded.\"\n> Hook: \"Arc 3 unlocks: Zix gets a message. Someone needs her help finding *their* Verdant Paradise.\"\n\n**Arc 3 — The Guide**\n> Headline: \"Expert Traveller, Unofficial Guide\"\n> Outcome: \"Three other lost tourists have now found their destinations thanks to Zix's navigational notes. She is still waiting for the travel agency to respond.\"\n> Hook: \"Arc 4 unlocks: The travel agency has finally replied. It is not what Zix expected.\"\n\n**Arc 4 — Full Circle**\n> Headline: \"Greetings from Everywhere\"\n> Outcome: \"Zix has been back to the wrong star system twice — intentionally, this time. She says the sulphur moon has grown on her. The brochure, she has decided, was not entirely wrong.\"\n> Hook: \"Zix's full journey is now complete. Thank you for getting her there.\"\n\n---\n\n### BRIX\n\n**Arc 2 — Second Run**\n> Headline: \"Supply Run Two: Filed and Approved\"\n> Outcome: \"Seventeen new depot candidates identified across two sectors. The Corps has promoted Brix to Survey Lead. She is treating this as a logistics problem to be solved efficiently.\"\n> Hook: \"Arc 3 unlocks: The Corps has a harder assignment. Three depots are missing.\"\n\n**Arc 3 — Recovery Mission**\n> Headline: \"Three Depots Located\"\n> Outcome: \"The missing depots were not missing — they were misfiled. Brix has corrected the records and submitted a proposal for a standardised filing system. It has been noted.\"\n> Hook: \"Arc 4 unlocks: The final survey. Brix's last run before rotation.\"\n\n**Arc 4 — Final Run**\n> Headline: \"Supply Corps Survey: Complete\"\n> Outcome: \"Brix's final survey log has been filed. Forty-two depot sites, six sectors, zero unsolved queries. She has already requested her next assignment.\"\n> Hook: \"Commander Brix's full log is complete. The Corps thanks you.\"\n\n---\n\n### PIP\n\n**Arc 2 — Building a Practice**\n> Headline: \"Third Client. Third Distinction.\"\n> Outcome: \"Pip's survey reports are being shared between clients without her asking. She has started charging for rush jobs. Her instructor says this is progress.\"\n> Hook: \"Arc 3 unlocks: A difficult client. Pip's first complaint.\"\n\n**Arc 3 — The Hard One**\n> Headline: \"Complaint Resolved, Reputation Intact\"\n> Outcome: \"The client's complaint was about a planet that turned out to be exactly as Pip described — they had misread the report. Pip wrote a guide for clients on how to read survey reports. Her instructor filed it as required reading.\"\n> Hook: \"Arc 4 unlocks: Pip's instructor has a retirement gift for her.\"\n\n**Arc 4 — The Handoff**\n> Headline: \"Fully Qualified. Fully Independent.\"\n> Outcome: \"Pip's instructor has retired. Her last act was to refer her own remaining clients to Pip. The exam board has asked Pip to help write the new certification criteria.\"\n> Hook: \"Pip's full arc is complete. She started nervous. She ended qualified.\"\n\n---\n\n### CARTA\n\n**Arc 2 — New Sector**\n> Headline: \"Sector Two: Charted\"\n> Outcome: \"The second sector is mapped. It had more errors in the existing charts than the first. The Cartographer has begun keeping a running tally. It is currently at eleven.\"\n> Hook: \"Arc 3 unlocks: A major discrepancy. The Cartographer's own earlier chart is wrong.\"\n\n**Arc 3 — Self-Correction**\n> Headline: \"Chart Corrected. Error Logged.\"\n> Outcome: \"The Cartographer found an error in her own early work — a planet's orbital parameters recorded incorrectly. She corrected it, logged the error, and updated the standard. This is, she notes, exactly what the correction process is for.\"\n> Hook: \"Arc 4 unlocks: The final unmapped region. The chart is almost complete.\"\n\n**Arc 4 — The Complete Chart**\n> Headline: \"Sector Survey: Complete\"\n> Outcome: \"The last blank space has been replaced with data. The chart now covers the full survey region — verified, corrected, and filed. 'Probably fine' appears nowhere in it.\"\n> Hook: \"The Cartographer's full chart is complete. Every blank filled. Every correction logged.\""
+        }
+      ],
+      "snapshot": {
+        "title": "Write arc 2–4 completion screen copy for all characters",
+        "description": "Each character arc ends with a reward/completion screen. Write the copy for arcs 2, 3, and 4 for all 4 characters — headline, result summary, and transition prompt.",
+        "status": "done",
+        "priority": "medium",
+        "labels": [
+          "writing",
+          "narrative"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Completion screen copy written for arcs 2–4, all 4 characters"
+          }
+        ],
+        "implementationNotes": "kanban: kw8lqs\n\n## Arc 2–4 completion screen copy (all 4 characters)\n\nCopy follows the same structure as arc 1: headline / outcome (2–3 lines) / unlock hook.\n\n---\n\n### ZIX\n\n**Arc 2 — Settling In**\n> Headline: \"Verdant Paradise: Fully Explored\"\n> Outcome: \"Zix has finished cataloguing every beach, cove, and suspiciously named coastal formation on the planet. She has filed a formal correction with the travel agency. They have not responded.\"\n> Hook: \"Arc 3 unlocks: Zix gets a message. Someone needs her help finding *their* Verdant Paradise.\"\n\n**Arc 3 — The Guide**\n> Headline: \"Expert Traveller, Unofficial Guide\"\n> Outcome: \"Three other lost tourists have now found their destinations thanks to Zix's navigational notes. She is still waiting for the travel agency to respond.\"\n> Hook: \"Arc 4 unlocks: The travel agency has finally replied. It is not what Zix expected.\"\n\n**Arc 4 — Full Circle**\n> Headline: \"Greetings from Everywhere\"\n> Outcome: \"Zix has been back to the wrong star system twice — intentionally, this time. She says the sulphur moon has grown on her. The brochure, she has decided, was not entirely wrong.\"\n> Hook: \"Zix's full journey is now complete. Thank you for getting her there.\"\n\n---\n\n### BRIX\n\n**Arc 2 — Second Run**\n> Headline: \"Supply Run Two: Filed and Approved\"\n> Outcome: \"Seventeen new depot candidates identified across two sectors. The Corps has promoted Brix to Survey Lead. She is treating this as a logistics problem to be solved efficiently.\"\n> Hook: \"Arc 3 unlocks: The Corps has a harder assignment. Three depots are missing.\"\n\n**Arc 3 — Recovery Mission**\n> Headline: \"Three Depots Located\"\n> Outcome: \"The missing depots were not missing — they were misfiled. Brix has corrected the records and submitted a proposal for a standardised filing system. It has been noted.\"\n> Hook: \"Arc 4 unlocks: The final survey. Brix's last run before rotation.\"\n\n**Arc 4 — Final Run**\n> Headline: \"Supply Corps Survey: Complete\"\n> Outcome: \"Brix's final survey log has been filed. Forty-two depot sites, six sectors, zero unsolved queries. She has already requested her next assignment.\"\n> Hook: \"Commander Brix's full log is complete. The Corps thanks you.\"\n\n---\n\n### PIP\n\n**Arc 2 — Building a Practice**\n> Headline: \"Third Client. Third Distinction.\"\n> Outcome: \"Pip's survey reports are being shared between clients without her asking. She has started charging for rush jobs. Her instructor says this is progress.\"\n> Hook: \"Arc 3 unlocks: A difficult client. Pip's first complaint.\"\n\n**Arc 3 — The Hard One**\n> Headline: \"Complaint Resolved, Reputation Intact\"\n> Outcome: \"The client's complaint was about a planet that turned out to be exactly as Pip described — they had misread the report. Pip wrote a guide for clients on how to read survey reports. Her instructor filed it as required reading.\"\n> Hook: \"Arc 4 unlocks: Pip's instructor has a retirement gift for her.\"\n\n**Arc 4 — The Handoff**\n> Headline: \"Fully Qualified. Fully Independent.\"\n> Outcome: \"Pip's instructor has retired. Her last act was to refer her own remaining clients to Pip. The exam board has asked Pip to help write the new certification criteria.\"\n> Hook: \"Pip's full arc is complete. She started nervous. She ended qualified.\"\n\n---\n\n### CARTA\n\n**Arc 2 — New Sector**\n> Headline: \"Sector Two: Charted\"\n> Outcome: \"The second sector is mapped. It had more errors in the existing charts than the first. The Cartographer has begun keeping a running tally. It is currently at eleven.\"\n> Hook: \"Arc 3 unlocks: A major discrepancy. The Cartographer's own earlier chart is wrong.\"\n\n**Arc 3 — Self-Correction**\n> Headline: \"Chart Corrected. Error Logged.\"\n> Outcome: \"The Cartographer found an error in her own early work — a planet's orbital parameters recorded incorrectly. She corrected it, logged the error, and updated the standard. This is, she notes, exactly what the correction process is for.\"\n> Hook: \"Arc 4 unlocks: The final unmapped region. The chart is almost complete.\"\n\n**Arc 4 — The Complete Chart**\n> Headline: \"Sector Survey: Complete\"\n> Outcome: \"The last blank space has been replaced with data. The chart now covers the full survey region — verified, corrected, and filed. 'Probably fine' appears nowhere in it.\"\n> Hook: \"The Cartographer's full chart is complete. Every blank filled. Every correction logged.\""
+      }
+    }
+  ]
+}

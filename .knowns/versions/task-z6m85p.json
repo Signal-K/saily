@@ -1,6 +1,6 @@
 {
   "taskId": "z6m85p",
-  "currentVersion": 1,
+  "currentVersion": 3,
   "versions": [
     {
       "id": "v1",
@@ -83,6 +83,188 @@
             "completed": false
           }
         ]
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "z6m85p",
+      "version": 2,
+      "timestamp": "2026-03-28T04:30:16.770Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "in-progress"
+        },
+        {
+          "field": "assignee",
+          "newValue": "@me"
+        }
+      ],
+      "snapshot": {
+        "title": "Add second story arc (chapters 6–10) for all 4 characters",
+        "description": "Each character currently has 5 chapters. Once a user completes all 5, the storyline clamps to the last chapter. This task adds a second 5-chapter arc for each character, continuing their story. Related: @doc/specs/characters-storylines",
+        "status": "in-progress",
+        "priority": "medium",
+        "assignee": "@me",
+        "labels": [
+          "narrative",
+          "characters",
+          "storylines"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Zix arc 2 written (5 chapters continuing from Verdant Paradise arrival)"
+          },
+          {
+            "completed": false,
+            "text": "Brix arc 2 written (5 chapters continuing from completed supply run)"
+          },
+          {
+            "completed": false,
+            "text": "Pip arc 2 written (5 chapters continuing from first real client assignment)"
+          },
+          {
+            "completed": false,
+            "text": "Carta arc 2 written (5 chapters continuing from completed sector chart)"
+          },
+          {
+            "completed": false,
+            "text": "STORYLINES array updated with new chapters in lib/storylines.ts"
+          },
+          {
+            "completed": false,
+            "text": "getChapterForIndex handles chapter indices 5–9 correctly"
+          },
+          {
+            "completed": false,
+            "text": "Doc @doc/specs/characters-storylines updated with arc 2 summaries"
+          }
+        ]
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "z6m85p",
+      "version": 3,
+      "timestamp": "2026-03-28T04:33:09.588Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "Zix arc 2 written (5 chapters continuing from Verdant Paradise arrival)"
+            },
+            {
+              "completed": false,
+              "text": "Brix arc 2 written (5 chapters continuing from completed supply run)"
+            },
+            {
+              "completed": false,
+              "text": "Pip arc 2 written (5 chapters continuing from first real client assignment)"
+            },
+            {
+              "completed": false,
+              "text": "Carta arc 2 written (5 chapters continuing from completed sector chart)"
+            },
+            {
+              "completed": false,
+              "text": "STORYLINES array updated with new chapters in lib/storylines.ts"
+            },
+            {
+              "completed": false,
+              "text": "getChapterForIndex handles chapter indices 5–9 correctly"
+            },
+            {
+              "completed": false,
+              "text": "Doc @doc/specs/characters-storylines updated with arc 2 summaries"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "Zix arc 2 written (5 chapters continuing from Verdant Paradise arrival)"
+            },
+            {
+              "completed": true,
+              "text": "Brix arc 2 written (5 chapters continuing from completed supply run)"
+            },
+            {
+              "completed": true,
+              "text": "Pip arc 2 written (5 chapters continuing from first real client assignment)"
+            },
+            {
+              "completed": true,
+              "text": "Carta arc 2 written (5 chapters continuing from completed sector chart)"
+            },
+            {
+              "completed": true,
+              "text": "STORYLINES array updated with new chapters in lib/storylines.ts"
+            },
+            {
+              "completed": true,
+              "text": "getChapterForIndex handles chapter indices 5–9 correctly"
+            },
+            {
+              "completed": false,
+              "text": "Doc @doc/specs/characters-storylines updated with arc 2 summaries"
+            }
+          ]
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Added ZIX_ARC2_CHAPTERS, BRIX_ARC2_CHAPTERS, PIP_ARC2_CHAPTERS, CARTA_ARC2_CHAPTERS (5 chapters each, indices 5–9) to lib/storylines.ts. STORYLINES array updated to spread arc 2 arrays onto each character. getChapterForIndex already handles indices 5–9 correctly via bounds clamping (now clamps at 9). isStorylineComplete now requires chapterIndex >= 10. TypeScript and unit tests pass."
+        }
+      ],
+      "snapshot": {
+        "title": "Add second story arc (chapters 6–10) for all 4 characters",
+        "description": "Each character currently has 5 chapters. Once a user completes all 5, the storyline clamps to the last chapter. This task adds a second 5-chapter arc for each character, continuing their story. Related: @doc/specs/characters-storylines",
+        "status": "done",
+        "priority": "medium",
+        "assignee": "@me",
+        "labels": [
+          "narrative",
+          "characters",
+          "storylines"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Zix arc 2 written (5 chapters continuing from Verdant Paradise arrival)"
+          },
+          {
+            "completed": true,
+            "text": "Brix arc 2 written (5 chapters continuing from completed supply run)"
+          },
+          {
+            "completed": true,
+            "text": "Pip arc 2 written (5 chapters continuing from first real client assignment)"
+          },
+          {
+            "completed": true,
+            "text": "Carta arc 2 written (5 chapters continuing from completed sector chart)"
+          },
+          {
+            "completed": true,
+            "text": "STORYLINES array updated with new chapters in lib/storylines.ts"
+          },
+          {
+            "completed": true,
+            "text": "getChapterForIndex handles chapter indices 5–9 correctly"
+          },
+          {
+            "completed": false,
+            "text": "Doc @doc/specs/characters-storylines updated with arc 2 summaries"
+          }
+        ],
+        "implementationNotes": "Added ZIX_ARC2_CHAPTERS, BRIX_ARC2_CHAPTERS, PIP_ARC2_CHAPTERS, CARTA_ARC2_CHAPTERS (5 chapters each, indices 5–9) to lib/storylines.ts. STORYLINES array updated to spread arc 2 arrays onto each character. getChapterForIndex already handles indices 5–9 correctly via bounds clamping (now clamps at 9). isStorylineComplete now requires chapterIndex >= 10. TypeScript and unit tests pass."
       }
     }
   ]

@@ -1,0 +1,26 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Bandage body -->
+  <rect x="8" y="24" width="48" height="16" rx="8" fill="#fef3b0" stroke="#e8dfd4" stroke-width="1" />
+  
+  <!-- Center pad -->
+  <rect x="24" y="24" width="16" height="16" fill="#fff9f2" />
+  <rect x="24" y="24" width="16" height="16" stroke="#e8dfd4" stroke-width="0.5" />
+  
+  <!-- Cross icon -->
+  <rect x="31" y="28" width="2" height="8" rx="0.5" fill="#2da673" fill-opacity="0.6" />
+  <rect x="28" y="31" width="8" height="2" rx="0.5" fill="#2da673" fill-opacity="0.6" />
+  
+  <!-- Pulse line -->
+  <path d="M12 32 H22 L24 28 L28 36 L30 32 H52" stroke="#2da673" stroke-opacity="0.3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Tiny holes -->
+  <circle cx="14" cy="28" r="0.5" fill="#8b7d6e" fill-opacity="0.2" />
+  <circle cx="18" cy="28" r="0.5" fill="#8b7d6e" fill-opacity="0.2" />
+  <circle cx="14" cy="36" r="0.5" fill="#8b7d6e" fill-opacity="0.2" />
+  <circle cx="18" cy="36" r="0.5" fill="#8b7d6e" fill-opacity="0.2" />
+  
+  <circle cx="46" cy="28" r="0.5" fill="#8b7d6e" fill-opacity="0.2" />
+  <circle cx="50" cy="28" r="0.5" fill="#8b7d6e" fill-opacity="0.2" />
+  <circle cx="46" cy="36" r="0.5" fill="#8b7d6e" fill-opacity="0.2" />
+  <circle cx="50" cy="36" r="0.5" fill="#8b7d6e" fill-opacity="0.2" />
+</svg>

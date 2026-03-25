@@ -1012,6 +1012,154 @@ body {
   box-shadow: 0 4px 28px color-mix(in oklab, var(--brand) 10%, transparent);
 }
 
+.home-console-shell {
+  position: relative;
+  overflow: hidden;
+}
+
+.home-console-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, color-mix(in oklab, var(--brand) 10%, transparent) 1px, transparent 1px),
+    linear-gradient(color-mix(in oklab, var(--brand) 8%, transparent) 1px, transparent 1px);
+  background-size: 22px 22px;
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+.home-console-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(280px, 0.95fr);
+  gap: 0.9rem;
+  align-items: stretch;
+}
+
+.home-console-primary,
+.home-console-side {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.home-console-kicker-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.home-console-status {
+  border: 1px solid color-mix(in oklab, var(--brand) 35%, var(--border));
+  border-radius: 999px;
+  padding: 0.28rem 0.62rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: color-mix(in oklab, var(--surface) 85%, transparent);
+}
+
+.home-console-status.is-stable {
+  color: #14532d;
+  border-color: color-mix(in oklab, #14532d 45%, var(--border));
+}
+
+.home-console-status.is-ready {
+  color: #0f766e;
+  border-color: color-mix(in oklab, #0f766e 40%, var(--border));
+}
+
+.home-console-status.is-standby {
+  color: #9a3412;
+  border-color: color-mix(in oklab, #9a3412 40%, var(--border));
+}
+
+.home-console-panel {
+  border: 1px solid color-mix(in oklab, var(--brand) 18%, var(--border));
+  border-radius: 16px;
+  padding: 0.85rem;
+  background:
+    linear-gradient(180deg, color-mix(in oklab, var(--surface) 88%, white 12%), var(--surface));
+  box-shadow: inset 0 1px 0 color-mix(in oklab, white 50%, transparent);
+}
+
+.home-console-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.home-signal-bars {
+  min-height: 78px;
+  display: flex;
+  align-items: end;
+  gap: 0.45rem;
+}
+
+.home-signal-bars span {
+  flex: 1;
+  border-radius: 999px 999px 8px 8px;
+  background: linear-gradient(180deg, #fb923c 0%, #facc15 52%, #22c55e 100%);
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--brand) 18%, transparent);
+  opacity: 0.88;
+}
+
+.home-console-readout {
+  margin-top: 0.7rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.84rem;
+  color: var(--text);
+}
+
+.home-readout-chips {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.profile-chips {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+  color: var(--brand);
+}
+
+.home-console-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.home-console-link {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.7rem 0.75rem;
+  text-decoration: none;
+  color: var(--text);
+  background: color-mix(in oklab, var(--surface) 92%, transparent);
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.home-console-link:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in oklab, var(--brand) 35%, var(--border));
+  box-shadow: 0 8px 20px color-mix(in oklab, var(--brand) 10%, transparent);
+}
+
 .hero h1 {
   margin: 0.3rem 0 0.55rem;
   font-size: clamp(1.55rem, 3.8vw, 2.4rem);
@@ -1051,13 +1199,14 @@ body {
 /* Quick-access game type cards */
 .home-games-row {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.6rem;
 }
 
 .home-game-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background:
+    linear-gradient(180deg, color-mix(in oklab, var(--surface) 90%, white 10%), var(--surface));
+  border: 1px solid color-mix(in oklab, var(--brand) 14%, var(--border));
   border-radius: 16px;
   padding: 1rem 0.5rem;
   text-decoration: none;
@@ -1077,8 +1226,10 @@ body {
 }
 
 .home-game-icon {
-  font-size: 2rem;
+  font-size: 1.6rem;
   line-height: 1;
+  font-weight: 800;
+  color: var(--brand);
 }
 
 .home-game-label {
@@ -1195,6 +1346,7 @@ body {
   gap: 0.4rem 0.55rem;
   align-items: center;
   font-size: 0.84rem;
+  background: color-mix(in oklab, var(--surface) 94%, transparent);
 }
 
 .home-feed-item {
@@ -1203,10 +1355,107 @@ body {
   padding: 0.5rem 0.6rem;
   display: grid;
   gap: 0.28rem;
+  background: color-mix(in oklab, var(--surface) 94%, transparent);
 }
 
 .home-feed-item p {
   margin: 0;
+}
+
+.insight-intro {
+  margin-bottom: 1rem;
+}
+
+.insight-intro h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.1rem;
+}
+
+.insight-sol-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+}
+
+.insight-sol-card {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 0.9rem;
+  background: color-mix(in oklab, var(--surface) 94%, transparent);
+  color: var(--text);
+  text-align: left;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.insight-sol-card:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in oklab, var(--brand) 35%, var(--border));
+  box-shadow: 0 10px 24px color-mix(in oklab, var(--brand) 10%, transparent);
+}
+
+.insight-sol-card.is-selected {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 1px var(--brand);
+}
+
+.insight-sol-card.is-answer {
+  background: color-mix(in oklab, #14532d 10%, var(--surface));
+}
+
+.insight-sol-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.82rem;
+}
+
+.insight-sol-head span {
+  color: var(--muted);
+  text-transform: capitalize;
+}
+
+.insight-primary-reading {
+  display: grid;
+  gap: 0.2rem;
+  margin-bottom: 0.8rem;
+}
+
+.insight-reading-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.insight-reading-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.insight-reading-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.insight-reading-grid dt {
+  margin: 0 0 0.15rem;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.insight-reading-grid dd {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.insight-result-panel h3 {
+  margin: 0.25rem 0 0.45rem;
 }
 
 .home-result-date {
@@ -2837,7 +3086,19 @@ body {
     grid-template-columns: 1fr;
   }
 
+  .home-console-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-console-links {
+    grid-template-columns: 1fr 1fr;
+  }
+
   .home-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home-games-row {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 

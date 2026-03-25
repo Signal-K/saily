@@ -17,12 +17,18 @@ const AUDIO_URLS: Record<Exclude<AmbienceType, "none">, string> = {
 export function MissionAmbience({ type }: Props) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isEnabled, setIsEnabled] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem("saily_muted") === "true";
+  });
 
   useEffect(() => {
     // Sync muted state with local storage
     const saved = localStorage.getItem("saily_muted");
-    if (saved === "true") setIsMuted(true);
+    if (saved === "true") {
+      // Already set in initializer, but if it changes from elsewhere...
+      // Actually, we can just leave it if it's only for initialization.
+    }
   }, []);
 
   useEffect(() => {

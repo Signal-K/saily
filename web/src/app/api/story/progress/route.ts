@@ -105,7 +105,7 @@ export async function POST(request: Request) {
     // Check if this storyline was already completed before to avoid double-rewarding
     const { data: profile } = await supabase
       .from("profiles")
-      .select("completed_storylines, referral_code")
+      .select("completed_storylines, referral_code, data_chips")
       .eq("id", user.id)
       .single();
     
@@ -119,7 +119,7 @@ export async function POST(request: Request) {
         .from("profiles")
         .update({ 
           completed_storylines: newCompleted,
-          data_chips: (profile as any).data_chips + awardedChips
+          data_chips: profile.data_chips + awardedChips
         })
         .eq("id", user.id);
     }

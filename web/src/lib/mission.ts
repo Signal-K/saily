@@ -2,17 +2,28 @@
 
 import { STORYLINES, type Chapter, type Storyline } from "./storylines";
 import { CHARACTERS, type Character } from "./characters";
+import { getMelbourneDayIndex } from "./melbourne-date";
 
-export type MissionGame = "planet" | "asteroid" | "mars";
+export type MissionGame = "planet" | "asteroid" | "mars" | "insight";
 
-const GAME_ORDER_PERMUTATIONS: MissionGame[][] = [
-  ["planet", "asteroid", "mars"],
-  ["planet", "mars", "asteroid"],
-  ["asteroid", "planet", "mars"],
-  ["asteroid", "mars", "planet"],
-  ["mars", "planet", "asteroid"],
-  ["mars", "asteroid", "planet"],
-];
+const MISSION_GAMES: MissionGame[] = ["planet", "asteroid", "mars", "insight"];
+const MISSION_GAME_COUNT = 3;
+
+function buildMissionGamePermutations() {
+  const permutations: MissionGame[][] = [];
+  MISSION_GAMES.forEach((first) => {
+    MISSION_GAMES.forEach((second) => {
+      if (second === first) return;
+      MISSION_GAMES.forEach((third) => {
+        if (third === first || third === second) return;
+        permutations.push([first, second, third]);
+      });
+    });
+  });
+  return permutations;
+}
+
+const GAME_ORDER_PERMUTATIONS = buildMissionGamePermutations();
 
 /**
  * Returns the number of full days since Unix epoch for a given date in Melbourne time (AEST/AEDT).
@@ -20,30 +31,7 @@ const GAME_ORDER_PERMUTATIONS: MissionGame[][] = [
  * Melbourne is UTC+10 (AEST) or UTC+11 (AEDT).
  */
 function dayIndex(date: Date): number {
-  // Offset to Melbourne time. Using Intl for reliability.
-  const melbourneDate = new Intl.DateTimeFormat("en-AU", {
-    timeZone: "Australia/Melbourne",
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-  }).format(date);
-  
-  // We can just use the absolute day since a fixed point in Melbourne time.
-  // A simpler way is to offset the UTC time by 10/11 hours.
-  // But let's be precise: Melbourne midnight is the reset.
-  const formatter = new Intl.DateTimeFormat('en-CA', { // yyyy-mm-dd
-    timeZone: 'Australia/Melbourne',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit'
-  });
-  const parts = formatter.formatToParts(date);
-  const y = parseInt(parts.find(p => p.type === 'year')!.value);
-  const m = parseInt(parts.find(p => p.type === 'month')!.value) - 1;
-  const d = parseInt(parts.find(p => p.type === 'day')!.value);
-  
-  const localMidnight = new Date(Date.UTC(y, m, d));
-  return Math.floor(localMidnight.getTime() / (1000 * 60 * 60 * 24));
+  return getMelbourneDayIndex(date);
 }
 
 /**
@@ -90,5 +78,5 @@ export function getMissionGameOrder(storylineId: string, chapterIndex: number): 
     hash |= 0;
   }
   const idx = Math.abs(hash) % GAME_ORDER_PERMUTATIONS.length;
-  return GAME_ORDER_PERMUTATIONS[idx];
+  return GAME_ORDER_PERMUTATIONS[idx].slice(0, MISSION_GAME_COUNT);
 }

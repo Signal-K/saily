@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { queueSurveyTrigger } from "@/lib/posthog/survey-queue";
 import { trackGameplayEvent } from "@/lib/analytics/events";
 import { StreakRepairPrompt } from "@/components/streak-repair-prompt";
+import { getMelbourneDateKey, resolveMelbourneDateKey } from "@/lib/melbourne-date";
 
 type LightcurvePoint = {
   x: number;
@@ -192,9 +193,10 @@ function projectAnnotationToView(annotation: Annotation, opts: { phaseFold: bool
 
 type TodayGamePageProps = {
   onMissionComplete?: (result: { score: number; terminatedEarly?: boolean }) => void;
+  gameDate?: string;
 };
 
-export default function TodayGamePage({ onMissionComplete }: TodayGamePageProps = {}) {
+export default function TodayGamePage({ onMissionComplete, gameDate: gameDateProp }: TodayGamePageProps = {}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [dailyAnomalies, setDailyAnomalies] = useState<DailyAnomaly[]>([]);
@@ -217,12 +219,12 @@ export default function TodayGamePage({ onMissionComplete }: TodayGamePageProps 
   const svgRef = useRef<SVGSVGElement>(null);
 
   const selectedDateParam = searchParams.get("date");
-  const todayDate = useMemo(() => new Date().toISOString().slice(0, 10), []);
+  const todayDate = useMemo(() => getMelbourneDateKey(), []);
   const gameDate = useMemo(() => {
+    if (gameDateProp) return resolveMelbourneDateKey(gameDateProp);
     if (!selectedDateParam) return todayDate;
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(selectedDateParam)) return todayDate;
-    return selectedDateParam > todayDate ? todayDate : selectedDateParam;
-  }, [selectedDateParam, todayDate]);
+    return resolveMelbourneDateKey(selectedDateParam);
+  }, [gameDateProp, selectedDateParam, todayDate]);
   const isPastDay = gameDate < todayDate;
   const stageAnomalies = useMemo(() => {
     if (dailyAnomalies.length === 0) return [];
@@ -237,6 +239,8 @@ export default function TodayGamePage({ onMissionComplete }: TodayGamePageProps 
   const stageDifficulty = STAGE_DIFFICULTIES[minigameIndex] ?? STAGE_DIFFICULTIES[STAGE_DIFFICULTIES.length - 1];
 
   const loadToday = useCallback(async () => {
+    // Avoid synchronous setState in effect
+    await Promise.resolve();
     setLoading(true);
     setFeedback(null);
     const response = await fetch(`/api/game/today?date=${encodeURIComponent(gameDate)}`, { cache: "no-store" });
@@ -276,7 +280,11 @@ export default function TodayGamePage({ onMissionComplete }: TodayGamePageProps 
 
   useEffect(() => {
     let cancelled = false;
-    void loadToday();
+    const fetchData = async () => {
+      if (cancelled) return;
+      await loadToday();
+    };
+    void fetchData();
     return () => {
       cancelled = true;
     };
@@ -626,7 +634,7 @@ export default function TodayGamePage({ onMissionComplete }: TodayGamePageProps 
     }
 
     setFeedback(
-      `Daily set complete. Score ${completePayload.score ?? 0}${completePayload.xpMultiplier === 0.5 ? " (50% XP for past-day puzzle)." : ""}${completePayload.badgesAwarded ? ` New badges: ${completePayload.badgesAwarded}.` : ""}`,
+      `Daily set complete. Score ${completePayload.score ?? 0}${completePayload.xpMultiplier === 0 ? " (archive run: no score/streak awarded)." : ""}${completePayload.xpMultiplier === 0.5 ? " (50% XP for past-day puzzle)." : ""}${completePayload.badgesAwarded ? ` New badges: ${completePayload.badgesAwarded}.` : ""}`,
     );
     setSubmitting(false);
     queueSurveyTrigger({
@@ -719,7 +727,7 @@ export default function TodayGamePage({ onMissionComplete }: TodayGamePageProps 
 
   return (
     <section className="puzzle-screen">
-      {userId ? <StreakRepairPrompt userId={userId} gameDate={gameDate} onRepairComplete={loadToday} /> : null}
+      {userId && !isPastDay ? <StreakRepairPrompt userId={userId} gameDate={gameDate} onRepairComplete={loadToday} /> : null}
       <header className="puzzle-header panel">
         <p className="eyebrow">Daily Mission</p>
         <div className="puzzle-header-row">
@@ -729,7 +737,7 @@ export default function TodayGamePage({ onMissionComplete }: TodayGamePageProps 
             <div className="puzzle-context-row">
               <span className="puzzle-context-pill">Date {gameDate}</span>
               <span className="puzzle-context-pill">Difficulty {stageDifficulty}</span>
-              {isPastDay ? <span className="puzzle-context-pill">Past day (50% XP)</span> : null}
+              {isPastDay ? <span className="puzzle-context-pill">Archive day (no score/streak)</span> : null}
               {anomaly ? <span className="puzzle-context-pill">Target {anomaly.label}</span> : null}
               {anomaly ? <span className="puzzle-context-pill">TIC {anomaly.ticId}</span> : null}
               {anomaly ? <span className="puzzle-context-pill">Type {anomaly.anomalyType ?? "planet"}</span> : null}

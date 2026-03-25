@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { ASTEROID_ANOMALIES } from "@/lib/secondary-game";
 import { queueSurveyTrigger } from "@/lib/posthog/survey-queue";
 import { trackGameplayEvent } from "@/lib/analytics/events";
+import { getMelbourneDateKey, resolveMelbourneDateKey } from "@/lib/melbourne-date";
 
 type AsteroidAnnotation = {
   id: string;
@@ -16,10 +17,6 @@ type AsteroidAnnotation = {
 
 function clamp01(value: number) {
   return Math.max(0, Math.min(1, value));
-}
-
-function getTodayKey(): string {
-  return new Date().toISOString().slice(0, 10);
 }
 
 function getDailyAnomalyIndex(date: string): number {
@@ -49,10 +46,12 @@ function normalizeDraftAnnotations(value: unknown): AsteroidAnnotation[] {
 
 type AsteroidGamePageProps = {
   onMissionComplete?: (score: number) => void;
+  gameDate?: string;
 };
 
-export default function AsteroidGamePage({ onMissionComplete }: AsteroidGamePageProps = {}) {
-  const date = getTodayKey();
+export default function AsteroidGamePage({ onMissionComplete, gameDate }: AsteroidGamePageProps = {}) {
+  const date = resolveMelbourneDateKey(gameDate ?? getMelbourneDateKey());
+  const isArchiveDay = date < getMelbourneDateKey();
   const dailyIndex = getDailyAnomalyIndex(date);
   const anomaly = ASTEROID_ANOMALIES[dailyIndex];
 
@@ -229,6 +228,7 @@ export default function AsteroidGamePage({ onMissionComplete }: AsteroidGamePage
         </div>
         <div className="puzzle-context-row">
           <span className="puzzle-context-pill">Date {date}</span>
+          {isArchiveDay ? <span className="puzzle-context-pill">Archive day (no score/streak)</span> : null}
           <span className="puzzle-context-pill">TIC {anomaly.ticId}</span>
           <span className="puzzle-context-pill">{anomaly.mission}</span>
           <span className="puzzle-context-pill">{anomaly.title}</span>

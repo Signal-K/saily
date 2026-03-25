@@ -21,6 +21,6 @@ Implement Data Chips consumable for streak repair and archive access.
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
-Implemented schema, repair_streak RPC, and frontend prompt component.
+Implemented schema, repair_streak RPC, and refined frontend prompt component with better feedback, skip options, and zero-balance handling.
 <!-- SECTION:NOTES:END -->
 

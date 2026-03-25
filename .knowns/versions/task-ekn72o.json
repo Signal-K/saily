@@ -1,0 +1,54 @@
+{
+  "taskId": "ekn72o",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "ekn72o",
+      "version": 1,
+      "timestamp": "2026-03-28T04:29:05.581Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "Helper copy written for all 3 puzzle types"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "Helper copy written for all 3 puzzle types"
+            }
+          ]
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "## Helper copy — all 3 puzzle types\n\n**Planet Transit (Wordle-style)**\n- Hint button: \"Narrow the window — costs one point but gets you closer.\"\n- Submit: \"Lock in your transit call. You can't revise after this.\"\n- No detection: \"Nothing found? That's a valid result. Scientists need negatives too.\"\n- Progress pill (1 of 5): \"Candidate %n of 5 — keep scanning.\"\n\n**Asteroid Survey**\n- Annotation tool: \"Click a cluster to mark it. Look for brightness spikes — those are ice-rich patches.\"\n- Submit: \"File your survey. Your annotations go to the science log.\"\n- Skip: \"No clear signal today? Flag it as inconclusive — that's real data.\"\n\n**InSight Weather Desk**\n- Sol card: \"Tap a Sol to select it as your anomaly call.\"\n- Submit: \"Submit your anomaly pick. The model will compare it against the median.\"\n- Context pill (source): \"Live = fresh NASA feed. Cached = fallback data from a known-good period.\""
+        }
+      ],
+      "snapshot": {
+        "title": "Write mission control helper copy for puzzle actions",
+        "description": "The mission control panel has helper text for each puzzle action. Write the copy — short, contextual, action-oriented. Covers asteroid, InSight, and Wordle-style puzzles.",
+        "status": "done",
+        "priority": "medium",
+        "labels": [
+          "writing"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Helper copy written for all 3 puzzle types"
+          }
+        ],
+        "implementationNotes": "## Helper copy — all 3 puzzle types\n\n**Planet Transit (Wordle-style)**\n- Hint button: \"Narrow the window — costs one point but gets you closer.\"\n- Submit: \"Lock in your transit call. You can't revise after this.\"\n- No detection: \"Nothing found? That's a valid result. Scientists need negatives too.\"\n- Progress pill (1 of 5): \"Candidate %n of 5 — keep scanning.\"\n\n**Asteroid Survey**\n- Annotation tool: \"Click a cluster to mark it. Look for brightness spikes — those are ice-rich patches.\"\n- Submit: \"File your survey. Your annotations go to the science log.\"\n- Skip: \"No clear signal today? Flag it as inconclusive — that's real data.\"\n\n**InSight Weather Desk**\n- Sol card: \"Tap a Sol to select it as your anomaly call.\"\n- Submit: \"Submit your anomaly pick. The model will compare it against the median.\"\n- Context pill (source): \"Live = fresh NASA feed. Cached = fallback data from a known-good period.\""
+      }
+    }
+  ]
+}

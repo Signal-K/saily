@@ -6,6 +6,7 @@ import { MARS_TEMPLATE_DICTIONARY, type MarsTemplate } from "@/lib/mars-dictiona
 import { queueSurveyTrigger } from "@/lib/posthog/survey-queue";
 import { trackGameplayEvent } from "@/lib/analytics/events";
 import { StreakRepairPrompt } from "@/components/streak-repair-prompt";
+import { getMelbourneDateKey, resolveMelbourneDateKey } from "@/lib/melbourne-date";
 
 type MarsAnnotation = {
   id: string;
@@ -23,16 +24,14 @@ type ClassificationEntry = {
   note: string;
 };
 
-function getTodayKey(): string {
-  return new Date().toISOString().slice(0, 10);
-}
-
 type MarsGamePageProps = {
   onMissionComplete?: (score: number) => void;
+  gameDate?: string;
 };
 
-export default function MarsGamePage({ onMissionComplete }: MarsGamePageProps = {}) {
-  const date = getTodayKey();
+export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePageProps = {}) {
+  const date = resolveMelbourneDateKey(gameDate ?? getMelbourneDateKey());
+  const isArchiveDay = date < getMelbourneDateKey();
 
   const [images, setImages] = useState<MarsImage[]>([]);
   const [loading, setLoading] = useState(true);
@@ -47,6 +46,8 @@ export default function MarsGamePage({ onMissionComplete }: MarsGamePageProps = 
   const imageRef = useRef<HTMLImageElement>(null);
 
   const loadImages = useCallback(async () => {
+    // Avoid synchronous setState in effect
+    await Promise.resolve();
     setLoading(true);
     try {
       const res = await fetch(`/api/mars/daily?date=${date}`, { cache: "no-store" });
@@ -82,12 +83,15 @@ export default function MarsGamePage({ onMissionComplete }: MarsGamePageProps = 
   }, [date]);
 
   useEffect(() => {
+    let cancelled = false;
+
     // Check if already submitted today.
     async function checkExisting() {
       const res = await fetch(`/api/mars/classify?date=${date}`, { cache: "no-store" });
       const payload = (await res.json().catch(() => ({}))) as {
         classifications?: Array<{ image_id: string; classification: string; confidence: number }>;
       };
+      if (cancelled) return;
       if (res.ok && Array.isArray(payload.classifications) && payload.classifications.length > 0) {
         setSubmitted(true);
         const avg = payload.classifications.reduce((s, c) => s + c.confidence, 0) / payload.classifications.length;
@@ -95,8 +99,18 @@ export default function MarsGamePage({ onMissionComplete }: MarsGamePageProps = 
       }
     }
 
-    void loadImages();
-    void checkExisting();
+    const fetchData = async () => {
+      if (cancelled) return;
+      await loadImages();
+      if (cancelled) return;
+      await checkExisting();
+    };
+
+    void fetchData();
+
+    return () => {
+      cancelled = true;
+    };
   }, [date, loadImages]);
 
   const handleImageClick = (e: React.MouseEvent<HTMLImageElement>) => {
@@ -218,7 +232,7 @@ export default function MarsGamePage({ onMissionComplete }: MarsGamePageProps = 
 
   return (
     <section className="puzzle-screen">
-      {userId ? (
+      {userId && !isArchiveDay ? (
         <StreakRepairPrompt 
           userId={userId} 
           gameDate={date} 
@@ -236,6 +250,7 @@ export default function MarsGamePage({ onMissionComplete }: MarsGamePageProps = 
         </div>
         <div className="puzzle-context-row">
           <span className="puzzle-context-pill">Date {date}</span>
+          {isArchiveDay ? <span className="puzzle-context-pill">Archive day (no score/streak)</span> : null}
           <span className="puzzle-context-pill">
             Images tagged {annotatedCount}/{images.length}
           </span>

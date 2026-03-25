@@ -1,0 +1,160 @@
+{
+  "taskId": "4im1ld",
+  "currentVersion": 3,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "4im1ld",
+      "version": 1,
+      "timestamp": "2026-03-25T09:20:57.528Z",
+      "changes": [
+        {
+          "field": "implementationPlan",
+          "newValue": "1. Audit the existing home hub information architecture and identify low-noise console visual affordances.\n2. Implement restrained console-inspired styling and clearer hub actions without turning the app into a full game UI.\n3. Audit current PostHog survey coverage and add at least three missing mechanic/surface surveys plus trigger definitions.\n4. Validate visual readability and build output, then append notes."
+        }
+      ],
+      "snapshot": {
+        "title": "Polish home hub console UI and expand PostHog mechanic surveys",
+        "description": "Refresh the home page into a restrained sci-fi console hub while preserving puzzle-app clarity, and add more lightweight PostHog surveys for key product surfaces. Related: @doc/specs/saily-product-spec",
+        "status": "todo",
+        "priority": "medium",
+        "assignee": "@me",
+        "labels": [
+          "home",
+          "ui",
+          "analytics",
+          "posthog"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Home page gains a subtle console-style visual treatment without hurting readability"
+          },
+          {
+            "completed": false,
+            "text": "Hub surfaces clearer mission/archive/community actions"
+          },
+          {
+            "completed": false,
+            "text": "At least 3 additional 1-2 question PostHog surveys are defined for uncovered mechanics"
+          }
+        ],
+        "implementationPlan": "1. Audit the existing home hub information architecture and identify low-noise console visual affordances.\n2. Implement restrained console-inspired styling and clearer hub actions without turning the app into a full game UI.\n3. Audit current PostHog survey coverage and add at least three missing mechanic/surface surveys plus trigger definitions.\n4. Validate visual readability and build output, then append notes."
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "4im1ld",
+      "version": 2,
+      "timestamp": "2026-03-25T10:03:40.621Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "newValue": "Done: refreshed home page into a restrained console-style hub with mission/status/readout panels and clearer archive/discuss/profile links. Added three new PostHog survey definitions + runtime triggers for archive unlock, discussion flow, and streak repair; updated env example and survey creation script."
+        }
+      ],
+      "snapshot": {
+        "title": "Polish home hub console UI and expand PostHog mechanic surveys",
+        "description": "Refresh the home page into a restrained sci-fi console hub while preserving puzzle-app clarity, and add more lightweight PostHog surveys for key product surfaces. Related: @doc/specs/saily-product-spec",
+        "status": "todo",
+        "priority": "medium",
+        "assignee": "@me",
+        "labels": [
+          "home",
+          "ui",
+          "analytics",
+          "posthog"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Home page gains a subtle console-style visual treatment without hurting readability"
+          },
+          {
+            "completed": false,
+            "text": "Hub surfaces clearer mission/archive/community actions"
+          },
+          {
+            "completed": false,
+            "text": "At least 3 additional 1-2 question PostHog surveys are defined for uncovered mechanics"
+          }
+        ],
+        "implementationPlan": "1. Audit the existing home hub information architecture and identify low-noise console visual affordances.\n2. Implement restrained console-inspired styling and clearer hub actions without turning the app into a full game UI.\n3. Audit current PostHog survey coverage and add at least three missing mechanic/surface surveys plus trigger definitions.\n4. Validate visual readability and build output, then append notes.",
+        "implementationNotes": "Done: refreshed home page into a restrained console-style hub with mission/status/readout panels and clearer archive/discuss/profile links. Added three new PostHog survey definitions + runtime triggers for archive unlock, discussion flow, and streak repair; updated env example and survey creation script."
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "4im1ld",
+      "version": 3,
+      "timestamp": "2026-03-25T11:24:35.786Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "Home page gains a subtle console-style visual treatment without hurting readability"
+            },
+            {
+              "completed": false,
+              "text": "Hub surfaces clearer mission/archive/community actions"
+            },
+            {
+              "completed": false,
+              "text": "At least 3 additional 1-2 question PostHog surveys are defined for uncovered mechanics"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "Home page gains a subtle console-style visual treatment without hurting readability"
+            },
+            {
+              "completed": true,
+              "text": "Hub surfaces clearer mission/archive/community actions"
+            },
+            {
+              "completed": true,
+              "text": "At least 3 additional 1-2 question PostHog surveys are defined for uncovered mechanics"
+            }
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Polish home hub console UI and expand PostHog mechanic surveys",
+        "description": "Refresh the home page into a restrained sci-fi console hub while preserving puzzle-app clarity, and add more lightweight PostHog surveys for key product surfaces. Related: @doc/specs/saily-product-spec",
+        "status": "done",
+        "priority": "medium",
+        "assignee": "@me",
+        "labels": [
+          "home",
+          "ui",
+          "analytics",
+          "posthog"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Home page gains a subtle console-style visual treatment without hurting readability"
+          },
+          {
+            "completed": true,
+            "text": "Hub surfaces clearer mission/archive/community actions"
+          },
+          {
+            "completed": true,
+            "text": "At least 3 additional 1-2 question PostHog surveys are defined for uncovered mechanics"
+          }
+        ],
+        "implementationPlan": "1. Audit the existing home hub information architecture and identify low-noise console visual affordances.\n2. Implement restrained console-inspired styling and clearer hub actions without turning the app into a full game UI.\n3. Audit current PostHog survey coverage and add at least three missing mechanic/surface surveys plus trigger definitions.\n4. Validate visual readability and build output, then append notes.",
+        "implementationNotes": "Done: refreshed home page into a restrained console-style hub with mission/status/readout panels and clearer archive/discuss/profile links. Added three new PostHog survey definitions + runtime triggers for archive unlock, discussion flow, and streak repair; updated env example and survey creation script."
+      }
+    }
+  ]
+}

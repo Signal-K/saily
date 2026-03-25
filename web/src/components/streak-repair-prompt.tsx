@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { repairStreak, getDataChipsBalance } from "@/lib/economy";
+import { shiftDateKey } from "@/lib/melbourne-date";
+import { queueSurveyTrigger } from "@/lib/posthog/survey-queue";
+import Image from "next/image";
 
 type StreakRepairPromptProps = {
   userId: string;
@@ -16,6 +19,7 @@ export function StreakRepairPrompt({ userId, gameDate, onRepairComplete }: Strea
   const [loading, setLoading] = useState(true);
   const [chips, setChips] = useState(0);
   const [repairing, setRepairing] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -24,17 +28,8 @@ export function StreakRepairPrompt({ userId, gameDate, onRepairComplete }: Strea
     async function checkRepairStatus() {
       const supabase = createClient();
       
-      // Calculate dates
-      // TODO: Ensure this matches the global "Melbourne Midnight" logic if needed. 
-      // For now, assuming gameDate is YYYY-MM-DD.
-      const today = new Date(gameDate);
-      const yesterday = new Date(today);
-      yesterday.setDate(yesterday.getDate() - 1);
-      const dayBefore = new Date(today);
-      dayBefore.setDate(dayBefore.getDate() - 2);
-
-      const yesterdayStr = yesterday.toISOString().slice(0, 10);
-      const dayBeforeStr = dayBefore.toISOString().slice(0, 10);
+      const yesterdayStr = shiftDateKey(gameDate, -1);
+      const dayBeforeStr = shiftDateKey(gameDate, -2);
 
       // Fetch plays
       const { data: plays, error: playsError } = await supabase
@@ -61,16 +56,14 @@ export function StreakRepairPrompt({ userId, gameDate, onRepairComplete }: Strea
         return;
       }
 
-      // If missed yesterday BUT played day before, we can repair yesterday
+      // If missed yesterday BUT played day before, we can offer to repair yesterday
       if (playedDayBefore) {
         // Check chips
         const balance = await getDataChipsBalance(userId);
         if (mounted) {
           setChips(balance);
-          if (balance > 0) {
-            setCanRepair(true);
-            setRepairDate(yesterdayStr);
-          }
+          setCanRepair(true);
+          setRepairDate(yesterdayStr);
         }
       }
       
@@ -85,11 +78,16 @@ export function StreakRepairPrompt({ userId, gameDate, onRepairComplete }: Strea
   }, [userId, gameDate]);
 
   async function handleRepair() {
-    if (!repairDate) return;
+    if (!repairDate || chips < 1) return;
     setRepairing(true);
     setError(null);
     try {
       await repairStreak(repairDate);
+      queueSurveyTrigger({
+        source: "streak_repair",
+        version: process.env.NEXT_PUBLIC_APP_VERSION?.trim() || "v1",
+        gameDate,
+      });
       onRepairComplete();
       setCanRepair(false); // Hide prompt
     } catch (err: unknown) {
@@ -100,31 +98,53 @@ export function StreakRepairPrompt({ userId, gameDate, onRepairComplete }: Strea
     }
   }
 
-  if (loading || !canRepair || !repairDate) return null;
+  if (loading || !canRepair || !repairDate || dismissed) return null;
+
+  const hasChips = chips > 0;
 
   return (
     <div className="panel streak-repair-prompt">
       <div className="streak-repair-content">
         <div className="streak-repair-icon">
-          <span aria-hidden>🩹</span>
+          {hasChips ? (
+            <Image src="/assets/streak-repair.svg" alt="" width={48} height={48} />
+          ) : (
+            <span aria-hidden>⚠️</span>
+          )}
         </div>
         <div className="streak-repair-text">
           <h3>Streak Broken!</h3>
-          <p>You missed yesterday's mission. Use a Data Chip to repair your streak?</p>
-          <p className="streak-repair-balance">
-            Balance: {chips} Chip{chips !== 1 ? "s" : ""}
-          </p>
+          {hasChips ? (
+            <>
+              <p>You missed yesterday&apos;s mission. Use a Data Chip to repair your streak?</p>
+              <div className="streak-repair-balance">
+                <Image src="/assets/data-chip.svg" alt="" width={16} height={16} />
+                <span>Balance: {chips} Chip{chips !== 1 ? "s" : ""}</span>
+              </div>
+            </>
+          ) : (
+            <p>You missed yesterday&apos;s mission. You need 1 Data Chip to repair your streak, but you have 0. Complete a storyline to earn more!</p>
+          )}
         </div>
       </div>
       <div className="streak-repair-actions">
         {error ? <p className="error-message">{error}</p> : null}
         <button 
-          className="button button-primary"
-          onClick={() => void handleRepair()}
+          className="button"
+          onClick={() => setDismissed(true)}
           disabled={repairing}
         >
-          {repairing ? "Repairing..." : "Repair Streak (-1 Chip)"}
+          Skip
         </button>
+        {hasChips && (
+          <button 
+            className="button button-primary"
+            onClick={() => void handleRepair()}
+            disabled={repairing}
+          >
+            {repairing ? "Repairing..." : "Repair Streak (-1 Chip)"}
+          </button>
+        )}
       </div>
       <style jsx>{`
         .streak-repair-prompt {
@@ -159,6 +179,9 @@ export function StreakRepairPrompt({ userId, gameDate, onRepairComplete }: Strea
           margin-top: 0.25rem !important;
           font-weight: 500;
           color: var(--text);
+          display: flex;
+          align-items: center;
+          gap: 0.4rem;
         }
         .streak-repair-actions {
           display: flex;

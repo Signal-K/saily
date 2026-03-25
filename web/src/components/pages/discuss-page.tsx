@@ -1,5 +1,6 @@
 import { DiscussForum } from "@/components/discuss-forum";
-import { getTodayAestDateKey, normalizeDateKey } from "@/lib/forum";
+import { getTodayAestDateKey } from "@/lib/forum";
+import { normalizeDateKey } from "@/lib/melbourne-date";
 import { createClient } from "@/lib/supabase/server";
 
 type SearchParams = {

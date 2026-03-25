@@ -1,0 +1,45 @@
+{
+  "taskId": "94d73g",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "94d73g",
+      "version": 1,
+      "timestamp": "2026-03-28T04:15:52.147Z",
+      "changes": [
+        {
+          "field": "assignee",
+          "newValue": "@Liam"
+        }
+      ],
+      "snapshot": {
+        "title": "Write science-value framing for each mission type",
+        "description": "Define, in a simple repeated format, what real dataset the player is seeing, what action they take, what structured output Saily captures, what real scientific value that output has, and how that output becomes in-universe Star Sailors narrative material. Covers Planet/TESS, Asteroid, Mars, and InSight. Inspired by the Planet Hunters framing used in product discussions.",
+        "status": "todo",
+        "priority": "medium",
+        "assignee": "@Liam",
+        "labels": [
+          "creative",
+          "product-copy",
+          "science",
+          "narrative"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Spec covers all current mission types in a consistent format"
+          },
+          {
+            "completed": false,
+            "text": "Each mission type has dataset, player action, scientific output/benefit, and narrative output sections"
+          },
+          {
+            "completed": false,
+            "text": "Language is plain enough to reuse in onboarding, home hub, and puzzle helper copy"
+          }
+        ]
+      }
+    }
+  ]
+}

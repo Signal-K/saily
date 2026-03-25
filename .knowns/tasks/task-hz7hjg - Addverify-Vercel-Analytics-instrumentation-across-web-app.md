@@ -1,14 +1,14 @@
 ---
 id: hz7hjg
 title: Add/verify Vercel Analytics instrumentation across web app
-status: in-progress
+status: done
 priority: high
 labels:
   - analytics
   - vercel
   - web
 createdAt: '2026-03-08T04:56:10.145Z'
-updatedAt: '2026-03-08T05:09:23.748Z'
+updatedAt: '2026-03-28T04:18:00.627Z'
 timeSpent: 58
 assignee: '@me'
 ---

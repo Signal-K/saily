@@ -66,7 +66,7 @@ describe("Daily puzzle flow", () => {
       body: { ok: true },
     }).as("advanceChapter");
 
-    cy.visit("/games/today?firstGame=planet");
+    cy.visit("/games/today?gameOrder=planet,asteroid,mars");
     cy.wait("@storyProgress");
     cy.contains("button", "Begin Mission").click();
     cy.wait("@todayGame");

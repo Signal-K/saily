@@ -1,6 +1,6 @@
 {
   "taskId": "hz7hjg",
-  "currentVersion": 2,
+  "currentVersion": 3,
   "versions": [
     {
       "id": "v1",
@@ -91,6 +91,46 @@
         "title": "Add/verify Vercel Analytics instrumentation across web app",
         "description": "Ensure Vercel Analytics is correctly integrated in the web app, verify event coverage for key product mechanics/minigames, and document what is captured.",
         "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "analytics",
+          "vercel",
+          "web"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Vercel Analytics runtime is present and active in app layout"
+          },
+          {
+            "completed": true,
+            "text": "Key gameplay actions emit analytics events"
+          },
+          {
+            "completed": true,
+            "text": "Implementation notes include tracked events and where they fire"
+          }
+        ],
+        "implementationNotes": "Verified Vercel Analytics runtime in app layout via @vercel/analytics React component. Added explicit gameplay analytics event tracking utility and instrumented key actions: planet_transit_completed, planet_no_detection_confirmed, asteroid_mapping_completed, mars_classification_completed, narrative_flow_completed. Added event properties for score/date/hint usage/annotation count/classified count/storyline/chapter where applicable."
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "hz7hjg",
+      "version": 3,
+      "timestamp": "2026-03-28T04:18:00.627Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        }
+      ],
+      "snapshot": {
+        "title": "Add/verify Vercel Analytics instrumentation across web app",
+        "description": "Ensure Vercel Analytics is correctly integrated in the web app, verify event coverage for key product mechanics/minigames, and document what is captured.",
+        "status": "done",
         "priority": "high",
         "assignee": "@me",
         "labels": [

@@ -21,6 +21,6 @@ Award Chips and Postcards (referrals) on storyline completion.
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
-Implemented Chip/Postcard rewards on storyline completion.
+Implemented Chip/Postcard rewards on storyline completion. Added functional referral system that links new users and awards bonus chips to both referrer and referred. Added storyline-specific postcard content and improved celebratory UI.
 <!-- SECTION:NOTES:END -->
 
