@@ -8,8 +8,8 @@ labels:
   - testing
   - insight
 createdAt: '2026-03-26T00:30:02.564Z'
-updatedAt: '2026-03-28T04:25:29.798Z'
-timeSpent: 0
+updatedAt: '2026-03-28T05:24:57.075Z'
+timeSpent: 190477
 assignee: '@me'
 ---
 # Integrate InSight into daily mission flow and add test coverage

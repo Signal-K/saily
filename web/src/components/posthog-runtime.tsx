@@ -74,25 +74,30 @@ export function PostHogRuntime() {
     const queued = dequeueSurveyTrigger();
     if (!queued) return;
 
-    const properties = {
-      source: queued.source,
-      app_version: queued.version,
-      game_date: queued.gameDate,
-      score: queued.score,
-      user_id: posthog.get_distinct_id(),
-    };
+    const supabase = createSupabaseClient();
+    void supabase.auth.getUser().then(({ data }) => {
+      if (!data.user) return;
 
-    posthog.capture("mechanic_feedback_triggered", properties);
-    const surveyId = surveyIdForSource(queued.source);
-    if (!surveyId) return;
+      const properties = {
+        source: queued.source,
+        app_version: queued.version,
+        game_date: queued.gameDate,
+        score: queued.score,
+        user_id: posthog.get_distinct_id(),
+      };
 
-    posthog.surveys.displaySurvey(surveyId, {
-      displayType: DisplaySurveyType.Popover,
-      ignoreConditions: false,
-      ignoreDelay: false,
-      properties,
+      posthog.capture("mechanic_feedback_triggered", properties);
+      const surveyId = surveyIdForSource(queued.source);
+      if (!surveyId) return;
+
+      posthog.surveys.displaySurvey(surveyId, {
+        displayType: DisplaySurveyType.Popover,
+        ignoreConditions: false,
+        ignoreDelay: false,
+        properties,
+      });
+      markSurveyShown(queued.source);
     });
-    markSurveyShown(queued.source);
   }, [pathname]);
 
   return null;

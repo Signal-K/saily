@@ -271,8 +271,18 @@ export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePa
                   src={activeImage.url}
                   alt={activeImage.title}
                   onClick={handleImageClick}
+                  onError={(e) => {
+                    const img = e.currentTarget;
+                    const thumbUrl = img.src.replace("~medium.jpg", "~thumb.jpg");
+                    if (thumbUrl !== img.src) {
+                      img.onerror = null;
+                      img.src = thumbUrl;
+                    }
+                  }}
                   style={{
                     width: "100%",
+                    maxHeight: "min(48vh, 420px)",
+                    objectFit: "cover",
                     borderRadius: "0.75rem",
                     border: "1px solid var(--border)",
                     display: "block",
