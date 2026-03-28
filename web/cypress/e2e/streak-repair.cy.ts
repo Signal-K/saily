@@ -21,19 +21,24 @@ describe("Streak Repair", () => {
       }
     }).as("todayGame");
 
+    cy.intercept("GET", "/api/story/progress*", {
+      statusCode: 200,
+      body: { chapterIndex: 0 },
+    }).as("storyProgress");
+
     // Mock daily_plays to show missed yesterday but played day before
     cy.intercept("GET", "**/rest/v1/daily_plays*", {
       statusCode: 200,
       body: [{ game_date: dayBeforeStr }]
     }).as("fetchPlays");
 
-    // Mock profiles to show chip balance
+    // Mock profiles to show chip balance (single object, not array, because getDataChipsBalance uses .single())
     cy.intercept("GET", "**/rest/v1/profiles*", {
       statusCode: 200,
-      body: [{ data_chips: 5 }]
+      body: { data_chips: 5 }
     }).as("fetchProfile");
 
-    cy.visit(`/games/today?date=${todayStr}`);
+    cy.visit(`/games/today?date=${todayStr}&gameOrder=planet,asteroid,mars`);
     cy.wait("@todayGame");
     cy.contains("button", "Begin Mission").click();
 
@@ -57,7 +62,22 @@ describe("Streak Repair", () => {
         }
       }).as("todayGameDismiss");
 
-    cy.visit(`/games/today?date=${todayStr}`);
+    cy.intercept("GET", "/api/story/progress*", {
+      statusCode: 200,
+      body: { chapterIndex: 0 },
+    }).as("storyProgressDismiss");
+
+    cy.intercept("GET", "**/rest/v1/daily_plays*", {
+      statusCode: 200,
+      body: [{ game_date: dayBeforeStr }]
+    }).as("fetchPlaysDismiss");
+
+    cy.intercept("GET", "**/rest/v1/profiles*", {
+      statusCode: 200,
+      body: { data_chips: 3 }
+    }).as("fetchProfileDismiss");
+
+    cy.visit(`/games/today?date=${todayStr}&gameOrder=planet,asteroid,mars`);
     cy.wait("@todayGameDismiss");
     cy.contains("button", "Begin Mission").click();
     cy.contains("button", "Skip", { timeout: 10000 }).click();
@@ -76,12 +96,22 @@ describe("Streak Repair", () => {
         }
       }).as("todayGameEmpty");
 
+    cy.intercept("GET", "/api/story/progress*", {
+      statusCode: 200,
+      body: { chapterIndex: 0 },
+    }).as("storyProgressEmpty");
+
+    cy.intercept("GET", "**/rest/v1/daily_plays*", {
+      statusCode: 200,
+      body: [{ game_date: dayBeforeStr }]
+    }).as("fetchPlaysEmpty");
+
     cy.intercept("GET", "**/rest/v1/profiles*", {
       statusCode: 200,
-      body: [{ data_chips: 0 }]
+      body: { data_chips: 0 }
     }).as("fetchProfileEmpty");
 
-    cy.visit(`/games/today?date=${todayStr}`);
+    cy.visit(`/games/today?date=${todayStr}&gameOrder=planet,asteroid,mars`);
     cy.wait("@todayGameEmpty");
     cy.contains("button", "Begin Mission").click();
 
