@@ -1,0 +1,35 @@
+{
+  "taskId": "zn0xhv",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "zn0xhv",
+      "version": 1,
+      "timestamp": "2026-03-19T02:28:51.955Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Implemented schema, repair_streak RPC, and frontend prompt component."
+        }
+      ],
+      "snapshot": {
+        "title": "Implement Data Chips & Streak Repair Logic",
+        "description": "Implement Data Chips consumable for streak repair and archive access.",
+        "status": "done",
+        "priority": "high",
+        "labels": [
+          "economy",
+          "streaks"
+        ],
+        "acceptanceCriteria": [],
+        "implementationNotes": "Implemented schema, repair_streak RPC, and frontend prompt component."
+      }
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "taskId": "cj4q0b",
+  "currentVersion": 3,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "cj4q0b",
+      "version": 1,
+      "timestamp": "2026-03-25T09:20:57.529Z",
+      "changes": [
+        {
+          "field": "implementationPlan",
+          "newValue": "1. Research official/primary-source citizen-science datasets and APIs suitable for lightweight classification puzzles.\n2. Compare access model, licensing, rate limits, data shape, and puzzle-fit for Saily.\n3. Capture recommendations in a Knowns doc with concrete import paths and next steps."
+        }
+      ],
+      "snapshot": {
+        "title": "Research importable citizen-science datasets and APIs for new puzzles",
+        "description": "Survey current official or primary-source citizen-science datasets/APIs that could feed additional classification puzzles tied to Saily's science fantasy framing. Produce a concise recommendation doc with integration notes, limits, and candidate puzzle ideas.",
+        "status": "todo",
+        "priority": "medium",
+        "assignee": "@me",
+        "labels": [
+          "research",
+          "data",
+          "apis",
+          "puzzles"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "At least 5 viable sources are researched from current primary sources"
+          },
+          {
+            "completed": false,
+            "text": "Each source includes access method, constraints, and puzzle-fit notes"
+          },
+          {
+            "completed": false,
+            "text": "A Knowns doc captures recommendations and next steps"
+          }
+        ],
+        "implementationPlan": "1. Research official/primary-source citizen-science datasets and APIs suitable for lightweight classification puzzles.\n2. Compare access model, licensing, rate limits, data shape, and puzzle-fit for Saily.\n3. Capture recommendations in a Knowns doc with concrete import paths and next steps."
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "cj4q0b",
+      "version": 2,
+      "timestamp": "2026-03-25T10:03:40.621Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "newValue": "Done: researched current official sources and wrote @doc/research/importable-science-feeds covering TESScut, MAST API, Exoplanet Archive, PDS Search API, InSight Weather API, and Zooniverse/Panoptes with fit/constraints/next steps."
+        }
+      ],
+      "snapshot": {
+        "title": "Research importable citizen-science datasets and APIs for new puzzles",
+        "description": "Survey current official or primary-source citizen-science datasets/APIs that could feed additional classification puzzles tied to Saily's science fantasy framing. Produce a concise recommendation doc with integration notes, limits, and candidate puzzle ideas.",
+        "status": "todo",
+        "priority": "medium",
+        "assignee": "@me",
+        "labels": [
+          "research",
+          "data",
+          "apis",
+          "puzzles"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "At least 5 viable sources are researched from current primary sources"
+          },
+          {
+            "completed": false,
+            "text": "Each source includes access method, constraints, and puzzle-fit notes"
+          },
+          {
+            "completed": false,
+            "text": "A Knowns doc captures recommendations and next steps"
+          }
+        ],
+        "implementationPlan": "1. Research official/primary-source citizen-science datasets and APIs suitable for lightweight classification puzzles.\n2. Compare access model, licensing, rate limits, data shape, and puzzle-fit for Saily.\n3. Capture recommendations in a Knowns doc with concrete import paths and next steps.",
+        "implementationNotes": "Done: researched current official sources and wrote @doc/research/importable-science-feeds covering TESScut, MAST API, Exoplanet Archive, PDS Search API, InSight Weather API, and Zooniverse/Panoptes with fit/constraints/next steps."
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "cj4q0b",
+      "version": 3,
+      "timestamp": "2026-03-25T11:24:35.791Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "At least 5 viable sources are researched from current primary sources"
+            },
+            {
+              "completed": false,
+              "text": "Each source includes access method, constraints, and puzzle-fit notes"
+            },
+            {
+              "completed": false,
+              "text": "A Knowns doc captures recommendations and next steps"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "At least 5 viable sources are researched from current primary sources"
+            },
+            {
+              "completed": true,
+              "text": "Each source includes access method, constraints, and puzzle-fit notes"
+            },
+            {
+              "completed": true,
+              "text": "A Knowns doc captures recommendations and next steps"
+            }
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Research importable citizen-science datasets and APIs for new puzzles",
+        "description": "Survey current official or primary-source citizen-science datasets/APIs that could feed additional classification puzzles tied to Saily's science fantasy framing. Produce a concise recommendation doc with integration notes, limits, and candidate puzzle ideas.",
+        "status": "done",
+        "priority": "medium",
+        "assignee": "@me",
+        "labels": [
+          "research",
+          "data",
+          "apis",
+          "puzzles"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "At least 5 viable sources are researched from current primary sources"
+          },
+          {
+            "completed": true,
+            "text": "Each source includes access method, constraints, and puzzle-fit notes"
+          },
+          {
+            "completed": true,
+            "text": "A Knowns doc captures recommendations and next steps"
+          }
+        ],
+        "implementationPlan": "1. Research official/primary-source citizen-science datasets and APIs suitable for lightweight classification puzzles.\n2. Compare access model, licensing, rate limits, data shape, and puzzle-fit for Saily.\n3. Capture recommendations in a Knowns doc with concrete import paths and next steps.",
+        "implementationNotes": "Done: researched current official sources and wrote @doc/research/importable-science-feeds covering TESScut, MAST API, Exoplanet Archive, PDS Search API, InSight Weather API, and Zooniverse/Panoptes with fit/constraints/next steps."
+      }
+    }
+  ]
+}

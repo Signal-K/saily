@@ -1,0 +1,165 @@
+{
+  "taskId": "rvs14k",
+  "currentVersion": 3,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "rvs14k",
+      "version": 1,
+      "timestamp": "2026-03-25T20:27:26.727Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "in-progress"
+        },
+        {
+          "field": "implementationPlan",
+          "newValue": "1. Add a small InSight data layer with official-feed fetch + committed fallback payloads seeded by date.\n2. Build a mobile-first weather anomaly puzzle route/API using the existing puzzle shell style.\n3. Link the new game from the home hub and wire analytics/surveys.\n4. Add Knowns docs for the source/integration details and validate with lint/build."
+        }
+      ],
+      "snapshot": {
+        "title": "Build InSight weather anomaly puzzle",
+        "description": "Add an InSight-based weather anomaly game using NASA's official Mars weather feed with cached fallback data, mobile-first UI, and analytics. Tie it into Saily's science-survey framing and document the data source in Knowns. Related: @doc/specs/saily-product-spec @doc/specs/saily-system-spec @doc/research/importable-science-feeds",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "insight",
+          "weather",
+          "puzzle",
+          "nasa"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Daily InSight puzzle fetches official weather data or falls back to a committed dataset"
+          },
+          {
+            "completed": false,
+            "text": "Players can inspect recent Sol readings and identify an anomalous Sol with score submission"
+          },
+          {
+            "completed": false,
+            "text": "The new puzzle is linked from the hub and documented in Knowns"
+          }
+        ],
+        "implementationPlan": "1. Add a small InSight data layer with official-feed fetch + committed fallback payloads seeded by date.\n2. Build a mobile-first weather anomaly puzzle route/API using the existing puzzle shell style.\n3. Link the new game from the home hub and wire analytics/surveys.\n4. Add Knowns docs for the source/integration details and validate with lint/build."
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "rvs14k",
+      "version": 2,
+      "timestamp": "2026-03-25T20:34:34.935Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "newValue": "Done: added InSight weather data layer + committed fallback Sol dataset, built /api/insight/daily and /api/insight/submit, added standalone /games/insight weather anomaly puzzle, linked it from the home hub, added PostHog survey support for insight_weather, and documented the feature in @doc/guides/insight-weather-desk."
+        }
+      ],
+      "snapshot": {
+        "title": "Build InSight weather anomaly puzzle",
+        "description": "Add an InSight-based weather anomaly game using NASA's official Mars weather feed with cached fallback data, mobile-first UI, and analytics. Tie it into Saily's science-survey framing and document the data source in Knowns. Related: @doc/specs/saily-product-spec @doc/specs/saily-system-spec @doc/research/importable-science-feeds",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "insight",
+          "weather",
+          "puzzle",
+          "nasa"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Daily InSight puzzle fetches official weather data or falls back to a committed dataset"
+          },
+          {
+            "completed": false,
+            "text": "Players can inspect recent Sol readings and identify an anomalous Sol with score submission"
+          },
+          {
+            "completed": false,
+            "text": "The new puzzle is linked from the hub and documented in Knowns"
+          }
+        ],
+        "implementationPlan": "1. Add a small InSight data layer with official-feed fetch + committed fallback payloads seeded by date.\n2. Build a mobile-first weather anomaly puzzle route/API using the existing puzzle shell style.\n3. Link the new game from the home hub and wire analytics/surveys.\n4. Add Knowns docs for the source/integration details and validate with lint/build.",
+        "implementationNotes": "Done: added InSight weather data layer + committed fallback Sol dataset, built /api/insight/daily and /api/insight/submit, added standalone /games/insight weather anomaly puzzle, linked it from the home hub, added PostHog survey support for insight_weather, and documented the feature in @doc/guides/insight-weather-desk."
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "rvs14k",
+      "version": 3,
+      "timestamp": "2026-03-25T20:34:34.984Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "Daily InSight puzzle fetches official weather data or falls back to a committed dataset"
+            },
+            {
+              "completed": false,
+              "text": "Players can inspect recent Sol readings and identify an anomalous Sol with score submission"
+            },
+            {
+              "completed": false,
+              "text": "The new puzzle is linked from the hub and documented in Knowns"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "Daily InSight puzzle fetches official weather data or falls back to a committed dataset"
+            },
+            {
+              "completed": true,
+              "text": "Players can inspect recent Sol readings and identify an anomalous Sol with score submission"
+            },
+            {
+              "completed": true,
+              "text": "The new puzzle is linked from the hub and documented in Knowns"
+            }
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Build InSight weather anomaly puzzle",
+        "description": "Add an InSight-based weather anomaly game using NASA's official Mars weather feed with cached fallback data, mobile-first UI, and analytics. Tie it into Saily's science-survey framing and document the data source in Knowns. Related: @doc/specs/saily-product-spec @doc/specs/saily-system-spec @doc/research/importable-science-feeds",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "insight",
+          "weather",
+          "puzzle",
+          "nasa"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Daily InSight puzzle fetches official weather data or falls back to a committed dataset"
+          },
+          {
+            "completed": true,
+            "text": "Players can inspect recent Sol readings and identify an anomalous Sol with score submission"
+          },
+          {
+            "completed": true,
+            "text": "The new puzzle is linked from the hub and documented in Knowns"
+          }
+        ],
+        "implementationPlan": "1. Add a small InSight data layer with official-feed fetch + committed fallback payloads seeded by date.\n2. Build a mobile-first weather anomaly puzzle route/API using the existing puzzle shell style.\n3. Link the new game from the home hub and wire analytics/surveys.\n4. Add Knowns docs for the source/integration details and validate with lint/build.",
+        "implementationNotes": "Done: added InSight weather data layer + committed fallback Sol dataset, built /api/insight/daily and /api/insight/submit, added standalone /games/insight weather anomaly puzzle, linked it from the home hub, added PostHog survey support for insight_weather, and documented the feature in @doc/guides/insight-weather-desk."
+      }
+    }
+  ]
+}

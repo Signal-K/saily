@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
-import { isDailyLiveThreadLocked, normalizeDateKey } from "@/lib/forum";
+import { getDayAccessForUser } from "@/lib/day-access";
+import { isDailyLiveThreadLocked } from "@/lib/forum";
+import { normalizeDateKey } from "@/lib/melbourne-date";
 import { createClient } from "@/lib/supabase/server";
 
 type ThreadRow = {
@@ -19,6 +21,10 @@ export async function GET(request: Request) {
   }
 
   const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const access = await getDayAccessForUser(supabase, user?.id, date);
   const { data, error } = await supabase.rpc("ensure_forum_threads", {
     p_puzzle_date: date,
   });
@@ -37,7 +43,8 @@ export async function GET(request: Request) {
 
   return NextResponse.json({
     date,
+    access,
     threads: rows,
-    defaultThreadId: dailyLive && !dailyLive.is_locked ? dailyLive.id : ongoing?.id ?? rows[0]?.id ?? null,
+    defaultThreadId: access.allowed ? (dailyLive && !dailyLive.is_locked ? dailyLive.id : ongoing?.id ?? rows[0]?.id ?? null) : null,
   });
 }

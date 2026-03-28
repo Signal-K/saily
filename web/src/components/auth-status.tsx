@@ -5,10 +5,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import { getRobotAvatarDataUri } from "@/lib/avatar";
+import { getDataChipsBalance } from "@/lib/economy";
 
 type AuthState = {
+  id: string;
   email: string;
   avatarUrl: string;
+  chips: number;
 } | null;
 
 export function AuthStatus() {
@@ -16,25 +19,37 @@ export function AuthStatus() {
   const [auth, setAuth] = useState<AuthState>(null);
   const [loading, setLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     let mounted = true;
 
     async function loadUser() {
+      // Use getSession() first (no lock needed) for fast initial render,
+      // then validate with getUser() in the background.
       const {
-        data: { user },
-      } = await supabase.auth.getUser();
+        data: { session },
+      } = await supabase.auth.getSession();
 
       if (!mounted) return;
 
-      if (!user?.email) {
+      if (!session?.user?.email) {
         setAuth(null);
         setLoading(false);
         return;
       }
 
-      setAuth({ email: user.email, avatarUrl: getRobotAvatarDataUri(user.email, 48) });
+      const chips = await getDataChipsBalance(session.user.id);
+
+      if (!mounted) return;
+
+      setAuth({
+        id: session.user.id,
+        email: session.user.email,
+        avatarUrl: getRobotAvatarDataUri(session.user.email, 48),
+        chips,
+      });
       setLoading(false);
     }
 
@@ -42,14 +57,20 @@ export function AuthStatus() {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      const email = session?.user?.email;
-      if (!email) {
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      const user = session?.user;
+      if (!user?.email) {
         setAuth(null);
         return;
       }
 
-      setAuth({ email, avatarUrl: getRobotAvatarDataUri(email, 48) });
+      const chips = await getDataChipsBalance(user.id);
+      setAuth({
+        id: user.id,
+        email: user.email,
+        avatarUrl: getRobotAvatarDataUri(user.email, 48),
+        chips,
+      });
     });
 
     return () => {
@@ -68,6 +89,14 @@ export function AuthStatus() {
     document.addEventListener("click", onDocumentClick);
     return () => document.removeEventListener("click", onDocumentClick);
   }, []);
+
+  async function handleSignOut() {
+    setSigningOut(true);
+    setMenuOpen(false);
+
+    await supabase.auth.signOut();
+    window.location.assign("/auth/sign-in?status=signed-out");
+  }
 
   if (loading) {
     return <div className="profile-skeleton" aria-hidden />;
@@ -97,17 +126,21 @@ export function AuthStatus() {
 
       {menuOpen ? (
         <div className="profile-dropdown" role="menu" data-cy="profile-dropdown">
+          <div className="profile-menu-header" role="none">
+            <span className="profile-chips" title="Data Chips">
+              <Image src="/assets/data-chip.svg" alt="" width={16} height={16} />
+              <span>{auth.chips} Chips</span>
+            </span>
+          </div>
           <Link href="/profile" role="menuitem" data-cy="profile-menu-profile" onClick={() => setMenuOpen(false)}>
             Profile
           </Link>
           <Link href="/games/today" role="menuitem" data-cy="profile-menu-today" onClick={() => setMenuOpen(false)}>
-            Today&apos;s game
+            Today&apos;s mission
           </Link>
-          <form action="/auth/sign-out" method="post">
-            <button type="submit" role="menuitem" data-cy="profile-menu-signout">
-              Sign out
-            </button>
-          </form>
+          <button type="button" role="menuitem" data-cy="profile-menu-signout" onClick={() => void handleSignOut()} disabled={signingOut}>
+            Sign out
+          </button>
         </div>
       ) : null}
     </div>

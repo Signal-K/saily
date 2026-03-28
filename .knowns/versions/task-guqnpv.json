@@ -1,0 +1,35 @@
+{
+  "taskId": "guqnpv",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "guqnpv",
+      "version": 1,
+      "timestamp": "2026-03-19T02:28:52.248Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Overhauled UI to support point-based tagging and template dictionary."
+        }
+      ],
+      "snapshot": {
+        "title": "Build Mars Classification UI & Template Dictionary",
+        "description": "Overhaul Mars UI with point-based tagging and a template reference dictionary.",
+        "status": "done",
+        "priority": "high",
+        "labels": [
+          "puzzle",
+          "mars"
+        ],
+        "acceptanceCriteria": [],
+        "implementationNotes": "Overhauled UI to support point-based tagging and template dictionary."
+      }
+    }
+  ]
+}

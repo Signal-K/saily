@@ -1,26 +1,11 @@
-# Daily Grid
+# Saily
 
-A NYT-style daily games app built with Next.js and Supabase.
+Grounded daily citizen science puzzles — hunt planets, survey asteroids, classify Mars. Built with Next.js and Supabase.
+
+Saily is a Wordle-style daily app where you help characters in simple, multi-chapter stories solve real-world scientific mysteries by classifying actual astronomical and planetary data.
 
 ## Quick Start (Docker)
-
-**Prerequisites:** Docker Desktop must be running
-
-```bash
-# Start everything (web app + Supabase)
-make up
-
-# View logs
-make logs
-
-# Stop everything  
-make down
-```
-
-The app will be available at http://localhost:3000
-
-## Commands
-
+...
 | Command | Description |
 |---------|-------------|
 | `make up` | Start all services in Docker containers |
@@ -28,6 +13,15 @@ The app will be available at http://localhost:3000
 | `make logs` | View logs from all services |
 | `make lint` | Run linter in container |
 | `make build` | Build Next.js app in container |
+
+## Saily Core Concepts
+
+- **Real Science:** Every puzzle uses actual data from TESS or Mars surface imagery. No procedural generation.
+- **Daily Mission:** One mission per day, resetting at Melbourne/AEST Midnight.
+- **Story Chapters:** Follow 4 characters through 5-chapter story arcs.
+- **Data Chips:** Earn consumables to repair streaks and unlock the archive.
+- **Bulk Discovery:** Your classifications contribute to a global consensus submitted to scientific bodies.
+
 
 ## Architecture
 

@@ -1,0 +1,130 @@
+{
+  "taskId": "ihefd7",
+  "currentVersion": 2,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "ihefd7",
+      "version": 1,
+      "timestamp": "2026-03-26T00:30:19.200Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "in-progress"
+        },
+        {
+          "field": "assignee",
+          "newValue": "@me"
+        },
+        {
+          "field": "implementationPlan",
+          "newValue": "1. Inspect current mission sequencing and identify the cleanest place to add InSight as a mission step.\n2. Implement InSight integration in the daily mission flow without regressing archive or story progression rules.\n3. Add automated coverage: unit tests for InSight puzzle logic or submission validation, and e2e coverage for the mission path.\n4. Run build, lint, and targeted tests; update task notes and completion state."
+        }
+      ],
+      "snapshot": {
+        "title": "Integrate InSight into daily mission flow and add test coverage",
+        "description": "Fold the InSight Weather Desk into the main mission loop, preserve archive/story rules, and add unit/e2e coverage for mission selection and submission behavior. Related: @doc/guides/insight-weather-desk",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "feature",
+          "testing",
+          "insight"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Daily mission flow can serve InSight as a mission game without breaking archive/story progression"
+          },
+          {
+            "completed": false,
+            "text": "Unit tests cover InSight puzzle generation or submission logic"
+          },
+          {
+            "completed": false,
+            "text": "E2E tests cover the player path for InSight in the daily mission flow"
+          }
+        ],
+        "implementationPlan": "1. Inspect current mission sequencing and identify the cleanest place to add InSight as a mission step.\n2. Implement InSight integration in the daily mission flow without regressing archive or story progression rules.\n3. Add automated coverage: unit tests for InSight puzzle logic or submission validation, and e2e coverage for the mission path.\n4. Run build, lint, and targeted tests; update task notes and completion state."
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "ihefd7",
+      "version": 2,
+      "timestamp": "2026-03-28T04:25:29.798Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "Daily mission flow can serve InSight as a mission game without breaking archive/story progression"
+            },
+            {
+              "completed": false,
+              "text": "Unit tests cover InSight puzzle generation or submission logic"
+            },
+            {
+              "completed": false,
+              "text": "E2E tests cover the player path for InSight in the daily mission flow"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "Daily mission flow can serve InSight as a mission game without breaking archive/story progression"
+            },
+            {
+              "completed": true,
+              "text": "Unit tests cover InSight puzzle generation or submission logic"
+            },
+            {
+              "completed": true,
+              "text": "E2E tests cover the player path for InSight in the daily mission flow"
+            }
+          ]
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "InSight fully integrated: insight in MISSION_GAMES, rendered in renderActiveGame(), API routes at /api/insight/daily+submit with day-access guard. Unit tests (insight.test.ts, mission.test.ts) and e2e (insight-mission-flow.cy.ts) all pass. Added vitest.config.ts with @/ alias so unit tests resolve correctly."
+        }
+      ],
+      "snapshot": {
+        "title": "Integrate InSight into daily mission flow and add test coverage",
+        "description": "Fold the InSight Weather Desk into the main mission loop, preserve archive/story rules, and add unit/e2e coverage for mission selection and submission behavior. Related: @doc/guides/insight-weather-desk",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "feature",
+          "testing",
+          "insight"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Daily mission flow can serve InSight as a mission game without breaking archive/story progression"
+          },
+          {
+            "completed": true,
+            "text": "Unit tests cover InSight puzzle generation or submission logic"
+          },
+          {
+            "completed": true,
+            "text": "E2E tests cover the player path for InSight in the daily mission flow"
+          }
+        ],
+        "implementationPlan": "1. Inspect current mission sequencing and identify the cleanest place to add InSight as a mission step.\n2. Implement InSight integration in the daily mission flow without regressing archive or story progression rules.\n3. Add automated coverage: unit tests for InSight puzzle logic or submission validation, and e2e coverage for the mission path.\n4. Run build, lint, and targeted tests; update task notes and completion state.",
+        "implementationNotes": "InSight fully integrated: insight in MISSION_GAMES, rendered in renderActiveGame(), API routes at /api/insight/daily+submit with day-access guard. Unit tests (insight.test.ts, mission.test.ts) and e2e (insight-mission-flow.cy.ts) all pass. Added vitest.config.ts with @/ alias so unit tests resolve correctly."
+      }
+    }
+  ]
+}

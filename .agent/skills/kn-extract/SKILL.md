@@ -20,7 +20,7 @@ Look for: patterns, problems solved, decisions made, lessons learned.
 ## Step 2: Search for Existing Docs
 
 ```json
-mcp__knowns__search_docs({ "query": "<pattern/topic>" })
+mcp__knowns__search({ "query": "<pattern/topic>", "type": "doc" })
 ```
 
 **Don't duplicate.** Update existing docs when possible.
@@ -64,7 +64,7 @@ mcp__knowns__update_doc({
 **CRITICAL:** After creating doc/template, validate to catch broken refs:
 
 ```json
-mcp__knowns__validate({})
+mcp__knowns__validate({ "entity": "patterns/<name>" })
 ```
 
 If errors found, fix before continuing.

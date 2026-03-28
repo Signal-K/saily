@@ -1,3 +1,5 @@
+import { getMelbourneDateKey, isPastMelbourneDateKey, normalizeDateKey, resolveMelbourneDateKey } from "@/lib/melbourne-date";
+
 const WORD_BANK = [
   "crown",
   "pilot",
@@ -29,28 +31,19 @@ export type DailyPuzzle = {
 };
 
 export function getDateKey(date: Date = new Date()): string {
-  return date.toISOString().slice(0, 10);
+  return getMelbourneDateKey(date);
 }
 
 export function normalizeGameDateParam(value: string | null | undefined): string | null {
-  if (!value) return null;
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
-  const parsed = new Date(`${value}T00:00:00.000Z`);
-  if (Number.isNaN(parsed.getTime())) return null;
-  return value;
+  return normalizeDateKey(value);
 }
 
 export function resolveGameDate(value: string | null | undefined): string {
-  const today = getDateKey();
-  const normalized = normalizeGameDateParam(value);
-  if (!normalized) return today;
-  // Do not allow future puzzles; cap future requests to today's puzzle.
-  if (normalized > today) return today;
-  return normalized;
+  return resolveMelbourneDateKey(value);
 }
 
 export function isPastGameDate(dateKey: string): boolean {
-  return dateKey < getDateKey();
+  return isPastMelbourneDateKey(dateKey);
 }
 
 function hashString(input: string): number {

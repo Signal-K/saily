@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getDayAccessForUser } from "@/lib/day-access";
 import { isDailyLiveThreadLocked } from "@/lib/forum";
 import { createClient } from "@/lib/supabase/server";
 
@@ -56,6 +57,11 @@ export async function POST(request: Request) {
 
   if (metaError || !meta) {
     return NextResponse.json({ error: "Post not found" }, { status: 404 });
+  }
+
+  const access = await getDayAccessForUser(supabase, user.id, meta.puzzle_date);
+  if (!access.allowed) {
+    return NextResponse.json({ error: "Complete or unlock this day before interacting.", access }, { status: 403 });
   }
 
   if (meta.kind === "daily_live" && isDailyLiveThreadLocked(meta.puzzle_date)) {

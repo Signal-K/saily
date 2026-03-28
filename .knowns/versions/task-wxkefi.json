@@ -1,0 +1,49 @@
+{
+  "taskId": "wxkefi",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "wxkefi",
+      "version": 1,
+      "timestamp": "2026-03-07T09:52:19.113Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Implemented lib/characters.ts (4 characters), lib/storylines.ts (4 storylines × 5 chapters), lib/mission.ts (rotation + chapter logic)"
+        }
+      ],
+      "snapshot": {
+        "title": "Character & storyline data layer",
+        "description": "Define all static data: 4 characters with DiceBear seeds, 4 storylines × 5 chapters each, and the mission resolution logic (date → storyline, user progress → chapter). No DB changes yet — pure TypeScript constants in lib/.",
+        "status": "done",
+        "priority": "high",
+        "labels": [
+          "narrative",
+          "characters",
+          "storylines"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "lib/characters.ts exports 4 characters with name, seed, occupation, and flee reason"
+          },
+          {
+            "completed": false,
+            "text": "lib/storylines.ts exports 4 storylines, each with 5 chapters containing briefing, two narrative beats, and resolution text"
+          },
+          {
+            "completed": false,
+            "text": "lib/mission.ts exports getStorylineForDate(date) and getUserChapter(userId, storylineId)"
+          }
+        ],
+        "implementationNotes": "Implemented lib/characters.ts (4 characters), lib/storylines.ts (4 storylines × 5 chapters), lib/mission.ts (rotation + chapter logic)"
+      }
+    }
+  ]
+}

@@ -501,26 +501,24 @@ export default async function SearchPage({
         <p className="muted">Ranked by text relevance and date relevance across profiles, comments, forum, game history, badges, stats, and anomaly entries.</p>
       </header>
 
-      {hasResults ? (
-        <div className="search-meta-row">
-          <div className="search-meta-pill">
-            <span>Total matches</span>
-            <strong>{totalMatches}</strong>
-          </div>
-          <div className="search-meta-pill">
-            <span>Forum</span>
-            <strong>{threadRows.length + forumPosts.length + commentRows.length}</strong>
-          </div>
-          <div className="search-meta-pill">
-            <span>Puzzle history</span>
-            <strong>{gameRows.length + playRows.length}</strong>
-          </div>
-          <div className="search-meta-pill">
-            <span>Profiles + badges</span>
-            <strong>{profileRows.length + badgeRows.length + myBadgeRows.length}</strong>
-          </div>
+      <div className="search-meta-row">
+        <div className="search-meta-pill">
+          <span>Total matches</span>
+          <strong>{totalMatches}</strong>
         </div>
-      ) : null}
+        <div className="search-meta-pill">
+          <span>Forum</span>
+          <strong>{threadRows.length + forumPosts.length + commentRows.length}</strong>
+        </div>
+        <div className="search-meta-pill">
+          <span>Puzzle history</span>
+          <strong>{gameRows.length + playRows.length}</strong>
+        </div>
+        <div className="search-meta-pill">
+          <span>Profiles + badges</span>
+          <strong>{profileRows.length + badgeRows.length + myBadgeRows.length}</strong>
+        </div>
+      </div>
 
       {errorMessages.length > 0 ? (
         <article className="panel search-error-panel">

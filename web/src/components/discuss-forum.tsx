@@ -3,7 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
-import { normalizeDateKey } from "@/lib/forum";
+import { normalizeDateKey } from "@/lib/melbourne-date";
+import { queueSurveyTrigger } from "@/lib/posthog/survey-queue";
 
 type Thread = {
   id: number;
@@ -12,6 +13,15 @@ type Thread = {
   title: string;
   continue_thread_id: number | null;
   is_locked: boolean;
+};
+
+type DayAccess = {
+  date: string;
+  allowed: boolean;
+  signInRequired: boolean;
+  requiresUnlock: boolean;
+  completed: boolean;
+  unlocked: boolean;
 };
 
 type Post = {
@@ -188,12 +198,13 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
   const [replyBodyByPost, setReplyBodyByPost] = useState<Record<number, string>>({});
   const [replyOpenByPost, setReplyOpenByPost] = useState<Record<number, boolean>>({});
   const [feedback, setFeedback] = useState<string | null>(null);
+  const [dayAccess, setDayAccess] = useState<DayAccess | null>(null);
 
   const selectedThread = useMemo(
     () => threads.find((thread) => thread.id === selectedThreadId) ?? null,
     [threads, selectedThreadId],
   );
-  const interactionLocked = Boolean(selectedThread?.is_locked) || !isAuthenticated;
+  const interactionLocked = Boolean(selectedThread?.is_locked) || !isAuthenticated || (dayAccess ? !dayAccess.allowed : false);
   const tree = useMemo(() => buildTree(posts), [posts]);
   const sharePreviewAnswers = useMemo(
     () =>
@@ -220,11 +231,13 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
       error?: string;
       threads?: Thread[];
       defaultThreadId?: number | null;
+      access?: DayAccess;
     };
+    setDayAccess(payload.access ?? null);
 
     const threadsData = payload.threads ?? [];
 
-    if (!response.ok || threadsData.length === 0) {
+    if (!response.ok || (threadsData.length === 0 && (payload.access?.allowed ?? true))) {
       setThreads([]);
       setSelectedThreadId(null);
       setFeedback(payload.error ?? "Could not load threads.");
@@ -241,7 +254,10 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
   const loadPosts = useCallback(async (threadId: number) => {
     setLoadingPosts(true);
     const response = await fetch(`/api/forum/posts?threadId=${threadId}`, { cache: "no-store" });
-    const payload = (await response.json()) as { error?: string; posts?: Post[] };
+    const payload = (await response.json()) as { error?: string; posts?: Post[]; access?: DayAccess };
+    if (payload.access) {
+      setDayAccess(payload.access);
+    }
 
     if (!response.ok || !payload.posts) {
       setPosts([]);
@@ -266,11 +282,12 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
 
   useEffect(() => {
     if (!selectedThreadId) return;
+    if (dayAccess && !dayAccess.allowed) return;
     const handle = window.setTimeout(() => {
       void loadPosts(selectedThreadId);
     }, 0);
     return () => window.clearTimeout(handle);
-  }, [selectedThreadId, loadPosts]);
+  }, [selectedThreadId, loadPosts, dayAccess]);
 
   async function createPost(parentPostId: number | null) {
     if (!isAuthenticated) {
@@ -344,6 +361,11 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
     setSharedAnnotations([]);
     setSharedHintSummary("");
     setShowShareDetails(false);
+    queueSurveyTrigger({
+      source: "discussion_flow",
+      version: process.env.NEXT_PUBLIC_APP_VERSION?.trim() || "v1",
+      gameDate: date,
+    });
   }
 
   async function preloadSharedResult() {
@@ -691,6 +713,31 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
             ))
           : null}
       </div>
+
+      {dayAccess && !dayAccess.allowed ? (
+        <div className="panel forum-feedback">
+          <p>
+            {dayAccess.signInRequired
+              ? "Sign in and unlock this archive day before opening the discussion."
+              : "Complete or unlock this day before opening the discussion."}
+          </p>
+          <div className="forum-lock-actions">
+            <Link
+              className="button button-primary"
+              href={
+                dayAccess.signInRequired
+                  ? `/auth/sign-in?next=${encodeURIComponent(`/discuss?date=${date}`)}`
+                  : `/games/today?date=${date}&returnTo=${encodeURIComponent(`/discuss?date=${date}`)}`
+              }
+            >
+              {dayAccess.signInRequired ? "Sign in" : "Open Mission"}
+            </Link>
+            <Link className="button" href="/calendar">
+              Calendar
+            </Link>
+          </div>
+        </div>
+      ) : null}
 
       {!isAuthenticated ? (
         <div className="panel forum-auth-banner">

@@ -1,0 +1,58 @@
+{
+  "taskId": "2sccp0",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "2sccp0",
+      "version": 1,
+      "timestamp": "2026-03-07T10:02:13.924Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "lib/mars-images.ts: 15 fallback NASA images + seeded daily selection. /api/mars/daily: fetches NASA Image Library (no key). /api/mars/classify: stores classifications. mars-game-page.tsx: 3-image classify flow with confidence slider. /games/mars route added."
+        }
+      ],
+      "snapshot": {
+        "title": "Game 3: Mars surface classification",
+        "description": "Build the third citizen science minigame. Users classify Mars rover photos (Curiosity/Perseverance) by terrain type. Use NASA Mars Rover Photos API with DEMO_KEY placeholder for dev; hardcode 15 reference images as fallback. Classification categories: Rock field, Sand/dust, Crater, Equipment/rover, Sky/horizon. Narrative framing: scouting the landing zone on the target planet.",
+        "status": "done",
+        "priority": "high",
+        "labels": [
+          "minigame",
+          "mars",
+          "nasa",
+          "classification"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "15 reference Mars rover images hardcoded as static fallback (public domain NASA images)"
+          },
+          {
+            "completed": false,
+            "text": "NASA API integration with NASA_MARS_API_KEY env var, falls back to static set if unset"
+          },
+          {
+            "completed": false,
+            "text": "Daily image selection seeded by date (consistent for all users)"
+          },
+          {
+            "completed": false,
+            "text": "Classification UI: show image, 5-button category picker, confidence slider, submit"
+          },
+          {
+            "completed": false,
+            "text": "Score recorded and integrated with mission flow"
+          }
+        ],
+        "implementationNotes": "lib/mars-images.ts: 15 fallback NASA images + seeded daily selection. /api/mars/daily: fetches NASA Image Library (no key). /api/mars/classify: stores classifications. mars-game-page.tsx: 3-image classify flow with confidence slider. /games/mars route added."
+      }
+    }
+  ]
+}

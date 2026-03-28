@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getDayAccessForUser } from "@/lib/day-access";
 import { resolveGameDate } from "@/lib/game";
 import { createClient } from "@/lib/supabase/server";
 
@@ -80,6 +81,10 @@ export async function POST(request: Request) {
 
   const payload = (await request.json().catch(() => ({}))) as SubmitBody;
   const date = resolveGameDate(payload.date);
+  const access = await getDayAccessForUser(supabase, user.id, date);
+  if (!access.allowed) {
+    return NextResponse.json({ error: "Unlock this archived mission before saving evidence." }, { status: 403 });
+  }
   const anomalyId = Number(payload.anomalyId);
   const ticId = (payload.ticId ?? "").replace(/^TIC\s*/i, "").trim();
   const note = (payload.note ?? "").trim().slice(0, 2000);
@@ -156,6 +161,10 @@ export async function GET(request: Request) {
 
   const requestUrl = new URL(request.url);
   const date = resolveGameDate(requestUrl.searchParams.get("date"));
+  const access = await getDayAccessForUser(supabase, user.id, date);
+  if (!access.allowed) {
+    return NextResponse.json({ error: "Unlock this archived mission before viewing evidence." }, { status: 403 });
+  }
   const anomalyId = Number(requestUrl.searchParams.get("anomalyId"));
 
   if (!Number.isFinite(anomalyId) || anomalyId <= 0) {

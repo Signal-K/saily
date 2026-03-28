@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getDayAccessForUser } from "@/lib/day-access";
 import { isDailyLiveThreadLocked } from "@/lib/forum";
 import { createClient } from "@/lib/supabase/server";
 
@@ -32,6 +33,9 @@ export async function GET(request: Request) {
   }
 
   const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   const { data: threadMeta, error: threadError } = await getThreadMeta(supabase, threadId);
 
@@ -39,11 +43,12 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: threadError?.message ?? "Thread not found" }, { status: 404 });
   }
 
-  const isLocked = threadMeta.kind === "daily_live" ? isDailyLiveThreadLocked(threadMeta.puzzle_date) : false;
+  const access = await getDayAccessForUser(supabase, user?.id, threadMeta.puzzle_date);
+  if (!access.allowed) {
+    return NextResponse.json({ error: "Complete or unlock this day before opening the discussion.", access }, { status: 403 });
+  }
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const isLocked = threadMeta.kind === "daily_live" ? isDailyLiveThreadLocked(threadMeta.puzzle_date) : false;
 
   const { data: posts, error: postsError } = await supabase
     .from("forum_posts")
@@ -147,6 +152,11 @@ export async function POST(request: Request) {
 
   if (threadError || !threadMeta) {
     return NextResponse.json({ error: threadError?.message ?? "Thread not found" }, { status: 404 });
+  }
+
+  const access = await getDayAccessForUser(supabase, user.id, threadMeta.puzzle_date);
+  if (!access.allowed) {
+    return NextResponse.json({ error: "Complete or unlock this day before posting.", access }, { status: 403 });
   }
 
   const isLocked = threadMeta.kind === "daily_live" ? isDailyLiveThreadLocked(threadMeta.puzzle_date) : false;

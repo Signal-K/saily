@@ -12,14 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:
-      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-      SUPABASE_URL_INTERNAL: ${{ secrets.SUPABASE_URL }}
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_PUBLISHABLE || secrets.SUPABASE_ANON }}
       NEXT_PUBLIC_AUTH_GOOGLE_ENABLED: false
       NEXT_PUBLIC_E2E_AUTH_BYPASS: true
-      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-      SUPABASE_SERVICE_ROLE: ${{ secrets.SUPABASE_SERVICE_ROLE }}
-      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE }}
 
     steps:
       - name: Checkout
@@ -29,39 +23,86 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
-          cache-dependency-path: web/package-lock.json
+          cache: yarn
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: 2.75.0
 
       - name: Install dependencies
         working-directory: web
-        run: npm ci
+        run: yarn install --frozen-lockfile
+
+      - name: Start local Supabase
+        run: supabase start
+
+      - name: Reset local DB (migrations + seed)
+        run: supabase db reset --local
+
+      - name: Export local Supabase env
+        shell: bash
+        run: |
+          set -euo pipefail
+          supabase status -o env > /tmp/supabase.env
+          API_URL="$(grep '^API_URL=' /tmp/supabase.env | cut -d= -f2- | sed 's/^\"//;s/\"$//')"
+          ANON_KEY="$(grep '^ANON_KEY=' /tmp/supabase.env | cut -d= -f2- | sed 's/^\"//;s/\"$//')"
+          SERVICE_ROLE_KEY="$(grep '^SERVICE_ROLE_KEY=' /tmp/supabase.env | cut -d= -f2- | sed 's/^\"//;s/\"$//')"
+
+          if [[ -z "${API_URL}" || -z "${ANON_KEY}" || -z "${SERVICE_ROLE_KEY}" ]]; then
+            echo "Missing required Supabase local env values from supabase status output."
+            cat /tmp/supabase.env
+            exit 1
+          fi
+
+          {
+            echo "NEXT_PUBLIC_SUPABASE_URL=${API_URL}"
+            echo "SUPABASE_URL_INTERNAL=${API_URL}"
+            echo "SUPABASE_URL=${API_URL}"
+            echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=${ANON_KEY}"
+            echo "SUPABASE_SERVICE_ROLE=${SERVICE_ROLE_KEY}"
+            echo "SUPABASE_SERVICE_ROLE_KEY=${SERVICE_ROLE_KEY}"
+          } >> "$GITHUB_ENV"
 
       - name: Lint
         working-directory: web
-        run: npm run lint
+        run: yarn lint
 
       - name: Build
         working-directory: web
-        run: npm run build
+        run: yarn build
 
       - name: Create E2E user
         working-directory: web
-        run: npm run e2e:user:create
+        run: yarn e2e:user:create
 
       - name: Run Cypress E2E
         uses: cypress-io/github-action@v6
         with:
           working-directory: web
           install: false
-          start: npm run dev
+          start: yarn dev
           wait-on: "http://localhost:3000"
           wait-on-timeout: 120
-          command: npm run cypress:run:all
+          command: yarn cypress:run:all
+
+      - name: Ensure dependencies available for cleanup
+        if: always()
+        working-directory: web
+        shell: bash
+        run: |
+          if [[ ! -d "node_modules/@supabase/supabase-js" ]]; then
+            yarn install --frozen-lockfile
+          fi
 
       - name: Cleanup E2E user + data
         if: always()
         working-directory: web
-        run: npm run e2e:user:cleanup
+        run: yarn e2e:user:cleanup
+
+      - name: Stop local Supabase
+        if: always()
+        run: supabase stop
 
   deploy-vercel:
     name: Deploy to Vercel
@@ -87,12 +128,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
-          cache-dependency-path: web/package-lock.json
+          cache: yarn
 
       - name: Install dependencies
         working-directory: web
-        run: npm ci
+        run: yarn install --frozen-lockfile
 
       - name: Resolve Vercel project/org ids
         id: vercel_ids

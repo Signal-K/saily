@@ -56,14 +56,26 @@ describe("Daily puzzle flow", () => {
       },
     }).as("completeDailySet");
 
-    cy.visit("/games/today");
+    cy.intercept("GET", "/api/story/progress*", {
+      statusCode: 200,
+      body: { chapterIndex: 0 },
+    }).as("storyProgress");
+
+    cy.intercept("POST", "/api/story/progress", {
+      statusCode: 200,
+      body: { ok: true },
+    }).as("advanceChapter");
+
+    cy.visit("/games/today?gameOrder=planet,asteroid,mars");
+    cy.wait("@storyProgress");
+    cy.contains("button", "Begin Mission").click();
     cy.wait("@todayGame");
     cy.wait("@loadSavedSubmission");
 
     cy.contains("h1", "Find the Transit Signal").should("be.visible");
     cy.contains(".puzzle-annotation-item", "#1", { timeout: 10000 }).should("be.visible");
-    cy.getBySel("puzzle-note").type("Likely repeatable dip profile.");
-    cy.contains("button", "Use Phase Fold Hint").click();
+    cy.getBySel("puzzle-note").type("Likely repeatable dip profile.", { force: true });
+    cy.contains("button", "Use Phase Fold Hint").click({ force: true });
 
     cy.getBySel("puzzle-finish-button").click();
     cy.wait("@submitEvidence");
@@ -77,11 +89,9 @@ describe("Daily puzzle flow", () => {
     cy.getBySel("puzzle-finish-button").click();
     cy.wait("@submitEvidence");
     cy.wait("@completeDailySet");
-    cy.location("pathname").should("eq", "/");
-    cy.get("h1")
-      .invoke("text")
-      .should((text) => {
-        expect(text).to.match(/One puzzle\. Fresh every day\.|Your Daily Grid/);
-      });
+    // After completing all 3 transit signals, the mission flow advances to the
+    // narrative beat between game 1 and game 2 (still on /games/today).
+    cy.location("pathname").should("eq", "/games/today");
+    cy.contains("button", "Continue to Asteroid Survey").should("be.visible");
   });
 });

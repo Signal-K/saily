@@ -1,0 +1,159 @@
+{
+  "taskId": "tef5rs",
+  "currentVersion": 3,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "tef5rs",
+      "version": 1,
+      "timestamp": "2026-03-08T00:50:42.331Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "in-progress"
+        },
+        {
+          "field": "assignee",
+          "newValue": "@me"
+        }
+      ],
+      "snapshot": {
+        "title": "Remove Asteroid Lab nav and fix header search clipping",
+        "description": "Remove Asteroid Lab from primary navigation and adjust header/search layout so the search input is larger and not visually clipped on common desktop widths.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "ui",
+          "nav",
+          "header"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Asteroid Lab link is removed from header navigation"
+          },
+          {
+            "completed": false,
+            "text": "Header search input is wider and no longer clipped"
+          },
+          {
+            "completed": false,
+            "text": "Layout remains usable on desktop and mobile"
+          }
+        ]
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "tef5rs",
+      "version": 2,
+      "timestamp": "2026-03-08T00:51:21.256Z",
+      "changes": [
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "Asteroid Lab link is removed from header navigation"
+            },
+            {
+              "completed": false,
+              "text": "Header search input is wider and no longer clipped"
+            },
+            {
+              "completed": false,
+              "text": "Layout remains usable on desktop and mobile"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "Asteroid Lab link is removed from header navigation"
+            },
+            {
+              "completed": true,
+              "text": "Header search input is wider and no longer clipped"
+            },
+            {
+              "completed": true,
+              "text": "Layout remains usable on desktop and mobile"
+            }
+          ]
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Removed Asteroid Lab link from desktop header nav. Increased header search prominence and reduced clipping risk by widening middle grid column, giving search wrapper explicit max width/justify stretch, increasing input height, and adjusting <=900px header grid widths."
+        }
+      ],
+      "snapshot": {
+        "title": "Remove Asteroid Lab nav and fix header search clipping",
+        "description": "Remove Asteroid Lab from primary navigation and adjust header/search layout so the search input is larger and not visually clipped on common desktop widths.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "ui",
+          "nav",
+          "header"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Asteroid Lab link is removed from header navigation"
+          },
+          {
+            "completed": true,
+            "text": "Header search input is wider and no longer clipped"
+          },
+          {
+            "completed": true,
+            "text": "Layout remains usable on desktop and mobile"
+          }
+        ],
+        "implementationNotes": "Removed Asteroid Lab link from desktop header nav. Increased header search prominence and reduced clipping risk by widening middle grid column, giving search wrapper explicit max width/justify stretch, increasing input height, and adjusting <=900px header grid widths."
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "tef5rs",
+      "version": 3,
+      "timestamp": "2026-03-08T00:51:28.437Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        }
+      ],
+      "snapshot": {
+        "title": "Remove Asteroid Lab nav and fix header search clipping",
+        "description": "Remove Asteroid Lab from primary navigation and adjust header/search layout so the search input is larger and not visually clipped on common desktop widths.",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "ui",
+          "nav",
+          "header"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Asteroid Lab link is removed from header navigation"
+          },
+          {
+            "completed": true,
+            "text": "Header search input is wider and no longer clipped"
+          },
+          {
+            "completed": true,
+            "text": "Layout remains usable on desktop and mobile"
+          }
+        ],
+        "implementationNotes": "Removed Asteroid Lab link from desktop header nav. Increased header search prominence and reduced clipping risk by widening middle grid column, giving search wrapper explicit max width/justify stretch, increasing input height, and adjusting <=900px header grid widths."
+      }
+    }
+  ]
+}

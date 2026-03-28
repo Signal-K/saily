@@ -5,7 +5,7 @@ import * as Switch from "@radix-ui/react-switch";
 
 type Theme = "light" | "dark";
 
-const THEME_COOKIE = "daily_grid_theme";
+const THEME_COOKIE = "cosmo_theme";
 const COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 365;
 
 function applyTheme(theme: Theme) {

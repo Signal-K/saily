@@ -2,17 +2,17 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Daily Grid",
-    short_name: "DailyGrid",
-    description: "Daily NYT-style game hub",
+    name: "Cosmo",
+    short_name: "Cosmo",
+    description: "Daily space science missions — hunt planets, survey asteroids, classify Mars",
     id: "/",
     scope: "/",
     start_url: "/",
     display: "standalone",
     display_override: ["window-controls-overlay", "standalone"],
     orientation: "portrait",
-    background_color: "#f8fafc",
-    theme_color: "#14532d",
+    background_color: "#faf8f5",
+    theme_color: "#2f8f83",
     icons: [
       {
         src: "/icons/icon-192.png",

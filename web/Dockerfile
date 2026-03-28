@@ -4,7 +4,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 
 FROM base AS deps
 COPY package*.json ./
-RUN npm ci
+RUN if [ ! -f package-lock.json ]; then npm install --package-lock-only; fi && npm ci
 
 FROM deps AS dev
 ENV NODE_ENV=development

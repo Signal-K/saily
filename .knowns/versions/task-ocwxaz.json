@@ -1,0 +1,36 @@
+{
+  "taskId": "ocwxaz",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "ocwxaz",
+      "version": 1,
+      "timestamp": "2026-03-19T02:28:52.859Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Added Avatar expressions and background audio system."
+        }
+      ],
+      "snapshot": {
+        "title": "Implement Reacting Avatars and Ambient Soundscapes",
+        "description": "Add character expressions and ambient audio to the mission flow.",
+        "status": "done",
+        "priority": "medium",
+        "labels": [
+          "ui",
+          "audio",
+          "narrative"
+        ],
+        "acceptanceCriteria": [],
+        "implementationNotes": "Added Avatar expressions and background audio system."
+      }
+    }
+  ]
+}

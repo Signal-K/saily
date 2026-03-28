@@ -2,7 +2,10 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { queueExitSurvey } from "@/lib/posthog/exit-survey";
+import { queueSurveyTrigger } from "@/lib/posthog/survey-queue";
+import { trackGameplayEvent } from "@/lib/analytics/events";
+import { StreakRepairPrompt } from "@/components/streak-repair-prompt";
+import { getMelbourneDateKey, resolveMelbourneDateKey } from "@/lib/melbourne-date";
 
 type LightcurvePoint = {
   x: number;
@@ -188,13 +191,18 @@ function projectAnnotationToView(annotation: Annotation, opts: { phaseFold: bool
   return projectPhaseIntervalToTime(annotation);
 }
 
-export default function TodayGamePage() {
+type TodayGamePageProps = {
+  onMissionComplete?: (result: { score: number; terminatedEarly?: boolean }) => void;
+  gameDate?: string;
+};
+
+export default function TodayGamePage({ onMissionComplete, gameDate: gameDateProp }: TodayGamePageProps = {}) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [showTutorial, setShowTutorial] = useState(false);
   const [dailyAnomalies, setDailyAnomalies] = useState<DailyAnomaly[]>([]);
   const [loading, setLoading] = useState(true);
   const [minigameIndex, setMinigameIndex] = useState(0);
+  const [userId, setUserId] = useState<string | null>(null);
   const [confidence, setConfidence] = useState(70);
   const [tag, setTag] = useState<(typeof TAGS)[number]>(TAGS[0]);
   const [periodDays, setPeriodDays] = useState(2);
@@ -211,12 +219,12 @@ export default function TodayGamePage() {
   const svgRef = useRef<SVGSVGElement>(null);
 
   const selectedDateParam = searchParams.get("date");
-  const todayDate = useMemo(() => new Date().toISOString().slice(0, 10), []);
+  const todayDate = useMemo(() => getMelbourneDateKey(), []);
   const gameDate = useMemo(() => {
+    if (gameDateProp) return resolveMelbourneDateKey(gameDateProp);
     if (!selectedDateParam) return todayDate;
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(selectedDateParam)) return todayDate;
-    return selectedDateParam > todayDate ? todayDate : selectedDateParam;
-  }, [selectedDateParam, todayDate]);
+    return resolveMelbourneDateKey(selectedDateParam);
+  }, [gameDateProp, selectedDateParam, todayDate]);
   const isPastDay = gameDate < todayDate;
   const stageAnomalies = useMemo(() => {
     if (dailyAnomalies.length === 0) return [];
@@ -230,38 +238,57 @@ export default function TodayGamePage() {
   const draftStorageKey = useMemo(() => (anomaly ? `anomaly-draft:${gameDate}:${anomaly.id}` : null), [anomaly, gameDate]);
   const stageDifficulty = STAGE_DIFFICULTIES[minigameIndex] ?? STAGE_DIFFICULTIES[STAGE_DIFFICULTIES.length - 1];
 
-  useEffect(() => {
-    let cancelled = false;
+  const loadToday = useCallback(async () => {
+    // Avoid synchronous setState in effect
+    await Promise.resolve();
+    setLoading(true);
+    setFeedback(null);
+    const response = await fetch(`/api/game/today?date=${encodeURIComponent(gameDate)}`, { cache: "no-store" });
+    const payload = (await response.json()) as {
+      anomaly: DailyAnomaly | null;
+      anomalies?: DailyAnomaly[];
+      user?: { id: string } | null;
+      error?: string;
+    };
 
-    async function loadToday() {
-      setLoading(true);
-      setFeedback(null);
-      const response = await fetch(`/api/game/today?date=${encodeURIComponent(gameDate)}`, { cache: "no-store" });
-      const payload = (await response.json()) as { anomaly: DailyAnomaly | null; anomalies?: DailyAnomaly[]; error?: string };
-      if (cancelled) return;
-      if (!response.ok) {
-        setFeedback(payload.error ?? "Could not load daily anomaly.");
-        setDailyAnomalies([]);
-        setLoading(false);
-        return;
-      }
-
-      const incoming = Array.isArray(payload.anomalies) && payload.anomalies.length ? payload.anomalies : payload.anomaly ? [payload.anomaly] : [];
-      setDailyAnomalies(incoming);
-      setAnnotations([]);
-      setNote("");
-      setPhaseFoldHint(false);
-      setBinHint(false);
-      setPeriodDays(2);
-      setMinigameIndex(0);
+    if (!response.ok) {
+      setFeedback(payload.error ?? "Could not load daily anomaly.");
+      setDailyAnomalies([]);
       setLoading(false);
+      return;
     }
 
-    void loadToday();
+    if (payload.user?.id) {
+      setUserId(payload.user.id);
+    }
+
+    const incoming =
+      Array.isArray(payload.anomalies) && payload.anomalies.length
+        ? payload.anomalies
+        : payload.anomaly
+          ? [payload.anomaly]
+          : [];
+    setDailyAnomalies(incoming);
+    setAnnotations([]);
+    setNote("");
+    setPhaseFoldHint(false);
+    setBinHint(false);
+    setPeriodDays(2);
+    setMinigameIndex(0);
+    setLoading(false);
+  }, [gameDate]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const fetchData = async () => {
+      if (cancelled) return;
+      await loadToday();
+    };
+    void fetchData();
     return () => {
       cancelled = true;
     };
-  }, [gameDate]);
+  }, [loadToday]);
 
   useEffect(() => {
     if (!anomaly) return;
@@ -531,10 +558,7 @@ export default function TodayGamePage() {
       setFeedback("No anomaly loaded for this date.");
       return;
     }
-    if (annotations.length === 0) {
-      setFeedback("Add at least one annotated interval before continuing.");
-      return;
-    }
+    if (annotations.length === 0) return;
 
     setSubmitting(true);
     setFeedback(null);
@@ -610,17 +634,71 @@ export default function TodayGamePage() {
     }
 
     setFeedback(
-      `Daily set complete. Score ${completePayload.score ?? 0}${completePayload.xpMultiplier === 0.5 ? " (50% XP for past-day puzzle)." : ""}${completePayload.badgesAwarded ? ` New badges: ${completePayload.badgesAwarded}.` : ""}`,
+      `Daily set complete. Score ${completePayload.score ?? 0}${completePayload.xpMultiplier === 0 ? " (archive run: no score/streak awarded)." : ""}${completePayload.xpMultiplier === 0.5 ? " (50% XP for past-day puzzle)." : ""}${completePayload.badgesAwarded ? ` New badges: ${completePayload.badgesAwarded}.` : ""}`,
     );
     setSubmitting(false);
-    const gamesPlayed = Number(completePayload.stats?.games_played ?? 0);
-    if (gamesPlayed === 1) {
-      queueExitSurvey({
-        source: "first_game_complete",
-        version: process.env.NEXT_PUBLIC_APP_VERSION?.trim() || "v1",
-        gameDate,
-        score: completePayload.score,
-      });
+    queueSurveyTrigger({
+      source: "planet_transit",
+      version: process.env.NEXT_PUBLIC_APP_VERSION?.trim() || "v1",
+      gameDate,
+      score: completePayload.score,
+    });
+    trackGameplayEvent("planet_transit_completed", {
+      game_date: gameDate,
+      score: completePayload.score ?? 0,
+      used_phase_hint: phaseFoldHint,
+      used_bin_hint: binHint,
+      annotations_count: annotations.length,
+    });
+    if (onMissionComplete) {
+      onMissionComplete({ score: completePayload.score ?? 0 });
+    } else {
+      router.push("/");
+    }
+  }
+
+  async function handleNoPlanetIdentified() {
+    if (annotations.length > 0) return;
+    setSubmitting(true);
+    setFeedback(null);
+
+    const completeResponse = await fetch("/api/game/complete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        completedPuzzles: 1,
+        confidence: 55,
+        note: "No planet identified by player",
+        date: gameDate,
+      }),
+    });
+
+    const completePayload = (await completeResponse.json()) as {
+      error?: string;
+      score?: number;
+    };
+
+    if (!completeResponse.ok) {
+      setFeedback(completePayload.error ?? "Could not submit no-planet result.");
+      setSubmitting(false);
+      return;
+    }
+
+    setFeedback("No planet identified. Mission ended for today.");
+    setSubmitting(false);
+    queueSurveyTrigger({
+      source: "planet_no_detection",
+      version: process.env.NEXT_PUBLIC_APP_VERSION?.trim() || "v1",
+      gameDate,
+      score: completePayload.score,
+    });
+    trackGameplayEvent("planet_no_detection_confirmed", {
+      game_date: gameDate,
+      score: completePayload.score ?? 0,
+    });
+    if (onMissionComplete) {
+      onMissionComplete({ score: completePayload.score ?? 0, terminatedEarly: true });
+      return;
     }
     router.push("/");
   }
@@ -630,7 +708,7 @@ export default function TodayGamePage() {
   const confidenceLevel = confidence >= 80 ? "High" : confidence >= 55 ? "Medium" : "Low";
   const confidenceLevelClass = confidenceLevel.toLowerCase();
   const title = "Find the Transit Signal";
-  const progressLabel = `${minigameIndex + 1} / 3`;
+  const progressLabel = `Signal ${minigameIndex + 1}`;
   const sourceViewerHref = useMemo(() => {
     if (!anomaly?.sourceUrl) return null;
     const params = new URLSearchParams({
@@ -649,8 +727,9 @@ export default function TodayGamePage() {
 
   return (
     <section className="puzzle-screen">
+      {userId && !isPastDay ? <StreakRepairPrompt userId={userId} gameDate={gameDate} onRepairComplete={loadToday} /> : null}
       <header className="puzzle-header panel">
-        <p className="eyebrow">Daily Planet Hunt</p>
+        <p className="eyebrow">Daily Mission</p>
         <div className="puzzle-header-row">
           <div>
             <h1>{title}</h1>
@@ -658,7 +737,7 @@ export default function TodayGamePage() {
             <div className="puzzle-context-row">
               <span className="puzzle-context-pill">Date {gameDate}</span>
               <span className="puzzle-context-pill">Difficulty {stageDifficulty}</span>
-              {isPastDay ? <span className="puzzle-context-pill">Past day (50% XP)</span> : null}
+              {isPastDay ? <span className="puzzle-context-pill">Archive day (no score/streak)</span> : null}
               {anomaly ? <span className="puzzle-context-pill">Target {anomaly.label}</span> : null}
               {anomaly ? <span className="puzzle-context-pill">TIC {anomaly.ticId}</span> : null}
               {anomaly ? <span className="puzzle-context-pill">Type {anomaly.anomalyType ?? "planet"}</span> : null}
@@ -755,13 +834,8 @@ export default function TodayGamePage() {
         </article>
 
         <aside className="puzzle-sidebar panel">
-          <div className="puzzle-toolbar">
-            <button className="button puzzle-action-secondary" type="button" onClick={() => setShowTutorial((value) => !value)}>
-              <span data-cy="puzzle-help-toggle">{showTutorial ? "Hide help" : "Help / Tutorial"}</span>
-            </button>
-          </div>
-
-          {showTutorial ? (
+          <details className="puzzle-collapsible">
+            <summary data-cy="puzzle-help-toggle">Help / Tutorial</summary>
             <aside className="puzzle-help" aria-live="polite">
               <p className="puzzle-help-title">Quick Guide</p>
               <p className="puzzle-help-context">Context: real exoplanet candidates show recurring dips at a consistent period, not random one-off noise.</p>
@@ -772,10 +846,12 @@ export default function TodayGamePage() {
               </ol>
               <p className="puzzle-help-hint">Strong evidence: repeatability, sharp dip profile, baseline recovery.</p>
             </aside>
-          ) : null}
+          </details>
 
           <section className="puzzle-controls" aria-label="Puzzle controls">
-              <div className="puzzle-control-group is-compact">
+              <details className="puzzle-collapsible">
+                <summary>Hints</summary>
+                <div className="puzzle-control-group is-compact">
                 <div className="puzzle-hints-head">
                   <p className="puzzle-control-label">Hints</p>
                   <span className="puzzle-hints-penalty">Reward x{rewardMultiplier.toFixed(2)}</span>
@@ -805,6 +881,7 @@ export default function TodayGamePage() {
                   </select>
                 </label>
               </div>
+              </details>
 
               <div className="puzzle-controls-top">
                 <div className="puzzle-control-group is-compact">
@@ -863,25 +940,30 @@ export default function TodayGamePage() {
                 </div>
               </div>
 
-              <div className="puzzle-control-group">
-                <p className="puzzle-control-label">Note (optional)</p>
-                <textarea className="textarea puzzle-note" value={annotationNote} onChange={(event) => setAnnotationNote(event.target.value)} placeholder="Quick detail for next interval..." />
-              </div>
+              <details className="puzzle-collapsible">
+                <summary>Notes</summary>
+                <div className="puzzle-control-group">
+                  <p className="puzzle-control-label">Note (optional)</p>
+                  <textarea className="textarea puzzle-note" value={annotationNote} onChange={(event) => setAnnotationNote(event.target.value)} placeholder="Quick detail for next interval..." />
+                </div>
 
-              <div className="puzzle-control-group">
-                <p className="puzzle-control-label">Final summary</p>
-                <textarea
-                  className="textarea puzzle-note"
-                  data-cy="puzzle-note"
-                  value={note}
-                  onChange={(event) => setNote(event.target.value)}
-                  placeholder="Why this is a planet candidate..."
-                />
-              </div>
+                <div className="puzzle-control-group">
+                  <p className="puzzle-control-label">Final summary</p>
+                  <textarea
+                    className="textarea puzzle-note"
+                    data-cy="puzzle-note"
+                    value={note}
+                    onChange={(event) => setNote(event.target.value)}
+                    placeholder="Why this is a planet candidate..."
+                  />
+                </div>
+              </details>
           </section>
 
           {annotations.length ? (
-            <div className="puzzle-annotation-list">
+            <details className="puzzle-collapsible">
+              <summary>Evidence Annotations ({annotations.length})</summary>
+              <div className="puzzle-annotation-list">
               {annotations.map((annotation, idx) => (
                 <div
                   key={annotation.id}
@@ -897,10 +979,25 @@ export default function TodayGamePage() {
                   </button>
                 </div>
               ))}
+              </div>
+            </details>
+          ) : null}
+
+          {annotations.length === 0 ? (
+            <div className="puzzle-no-planet-banner">
+              <p className="puzzle-feedback">No planet identified yet. If this signal looks like noise, you can submit that result.</p>
+              <button
+                className="button puzzle-action-secondary"
+                type="button"
+                onClick={() => void handleNoPlanetIdentified()}
+                disabled={submitting || loading}
+              >
+                Confirm No Planet Here
+              </button>
             </div>
           ) : null}
 
-          <div className="puzzle-next-row">
+          <div className="puzzle-next-row mission-sticky-actions">
             <>
               <button
                 className="button puzzle-action-secondary"
@@ -915,7 +1012,7 @@ export default function TodayGamePage() {
                 className="button button-primary puzzle-action-primary"
                 type="button"
                 onClick={() => void handleSubmitEvidenceAndContinue()}
-                disabled={submitting || loading}
+                disabled={submitting || loading || annotations.length === 0}
               >
                 <span data-cy="puzzle-finish-button">
                   {submitting ? "Saving..." : minigameIndex < 2 ? `Submit Evidence & Continue (${STAGE_DIFFICULTIES[minigameIndex + 1]})` : "Submit Final Evidence"}

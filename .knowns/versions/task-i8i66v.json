@@ -1,0 +1,159 @@
+{
+  "taskId": "i8i66v",
+  "currentVersion": 3,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "i8i66v",
+      "version": 1,
+      "timestamp": "2026-03-08T00:56:17.797Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "in-progress"
+        },
+        {
+          "field": "assignee",
+          "newValue": "@me"
+        }
+      ],
+      "snapshot": {
+        "title": "Cleanup dupes and add native-style mobile PWA prompt",
+        "description": "Clean up duplicated Supabase config logic, simplify mission status banner behavior, and add mobile-first install prompt UX with rejection persisted in local storage.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "cleanup",
+          "mobile",
+          "pwa"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Supabase config duplication is reduced via shared helper module"
+          },
+          {
+            "completed": false,
+            "text": "Mobile PWA install prompt appears on supported browsers and stores rejection in local storage"
+          },
+          {
+            "completed": false,
+            "text": "Mobile UI receives native-style spacing/safe-area improvements without breaking desktop"
+          }
+        ]
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "i8i66v",
+      "version": 2,
+      "timestamp": "2026-03-08T00:56:28.285Z",
+      "changes": [
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "Supabase config duplication is reduced via shared helper module"
+            },
+            {
+              "completed": false,
+              "text": "Mobile PWA install prompt appears on supported browsers and stores rejection in local storage"
+            },
+            {
+              "completed": false,
+              "text": "Mobile UI receives native-style spacing/safe-area improvements without breaking desktop"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "Supabase config duplication is reduced via shared helper module"
+            },
+            {
+              "completed": true,
+              "text": "Mobile PWA install prompt appears on supported browsers and stores rejection in local storage"
+            },
+            {
+              "completed": true,
+              "text": "Mobile UI receives native-style spacing/safe-area improvements without breaking desktop"
+            }
+          ]
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Cleanup: extracted shared Supabase config helpers (cookie name, URL/key resolution, localhost detection) and refactored server/client/middleware to use them. Simplified MissionStatusBanner to offline-only. Added global mobile PWA install prompt component with beforeinstallprompt handling; if user dismisses/rejects, localStorage key cosmo_pwa_install_rejected=1 suppresses future prompts in that browser. Added mobile native-feel polish in globals.css: safer spacing, larger panel radii, overscroll/tap-highlight tuning, and bottom-sheet style install prompt above tab bar with safe-area handling. Validation: npm run lint (1 pre-existing warning only), npm run build passes."
+        }
+      ],
+      "snapshot": {
+        "title": "Cleanup dupes and add native-style mobile PWA prompt",
+        "description": "Clean up duplicated Supabase config logic, simplify mission status banner behavior, and add mobile-first install prompt UX with rejection persisted in local storage.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "cleanup",
+          "mobile",
+          "pwa"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Supabase config duplication is reduced via shared helper module"
+          },
+          {
+            "completed": true,
+            "text": "Mobile PWA install prompt appears on supported browsers and stores rejection in local storage"
+          },
+          {
+            "completed": true,
+            "text": "Mobile UI receives native-style spacing/safe-area improvements without breaking desktop"
+          }
+        ],
+        "implementationNotes": "Cleanup: extracted shared Supabase config helpers (cookie name, URL/key resolution, localhost detection) and refactored server/client/middleware to use them. Simplified MissionStatusBanner to offline-only. Added global mobile PWA install prompt component with beforeinstallprompt handling; if user dismisses/rejects, localStorage key cosmo_pwa_install_rejected=1 suppresses future prompts in that browser. Added mobile native-feel polish in globals.css: safer spacing, larger panel radii, overscroll/tap-highlight tuning, and bottom-sheet style install prompt above tab bar with safe-area handling. Validation: npm run lint (1 pre-existing warning only), npm run build passes."
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "i8i66v",
+      "version": 3,
+      "timestamp": "2026-03-08T00:56:35.708Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        }
+      ],
+      "snapshot": {
+        "title": "Cleanup dupes and add native-style mobile PWA prompt",
+        "description": "Clean up duplicated Supabase config logic, simplify mission status banner behavior, and add mobile-first install prompt UX with rejection persisted in local storage.",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "cleanup",
+          "mobile",
+          "pwa"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Supabase config duplication is reduced via shared helper module"
+          },
+          {
+            "completed": true,
+            "text": "Mobile PWA install prompt appears on supported browsers and stores rejection in local storage"
+          },
+          {
+            "completed": true,
+            "text": "Mobile UI receives native-style spacing/safe-area improvements without breaking desktop"
+          }
+        ],
+        "implementationNotes": "Cleanup: extracted shared Supabase config helpers (cookie name, URL/key resolution, localhost detection) and refactored server/client/middleware to use them. Simplified MissionStatusBanner to offline-only. Added global mobile PWA install prompt component with beforeinstallprompt handling; if user dismisses/rejects, localStorage key cosmo_pwa_install_rejected=1 suppresses future prompts in that browser. Added mobile native-feel polish in globals.css: safer spacing, larger panel radii, overscroll/tap-highlight tuning, and bottom-sheet style install prompt above tab bar with safe-area handling. Validation: npm run lint (1 pre-existing warning only), npm run build passes."
+      }
+    }
+  ]
+}
