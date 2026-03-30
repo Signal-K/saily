@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
@@ -55,7 +56,14 @@ export default function SourceLightcurvePage() {
       </div>
 
       <div className="source-image-wrap">
-        <img src={imageSrc} alt={label || `TIC ${ticId} light curve`} className="source-lightcurve-image" />
+        <Image
+          src={imageSrc}
+          alt={label || `TIC ${ticId} light curve`}
+          className="source-lightcurve-image"
+          width={900}
+          height={400}
+          unoptimized
+        />
       </div>
 
       <div className="source-actions">

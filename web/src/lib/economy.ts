@@ -9,7 +9,6 @@ export async function repairStreak(date: string): Promise<boolean> {
   const { error } = await supabase.rpc("repair_streak", { target_date: date });
   
   if (error) {
-    console.error("Error repairing streak:", error);
     throw new Error(error.message);
   }
   return true;
@@ -22,9 +21,8 @@ export async function repairStreak(date: string): Promise<boolean> {
 export async function unlockArchive(date: string): Promise<boolean> {
   const supabase = createClient();
   const { error } = await supabase.rpc("unlock_archive", { target_date: date });
-  
+
   if (error) {
-    console.error("Error unlocking archive:", error);
     throw new Error(error.message);
   }
   return true;
@@ -42,8 +40,6 @@ export async function getDataChipsBalance(userId: string): Promise<number> {
     .single();
     
   if (error) {
-    console.error("Error fetching data chips:", error);
-    // Return 0 on error to avoid breaking UI, but log it
     return 0;
   }
   

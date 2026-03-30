@@ -1,7 +1,7 @@
 ---
 id: 8rv9kf
 title: Design the arc-complete reward moment for storyline milestones
-status: todo
+status: done
 priority: medium
 labels:
   - creative
@@ -9,7 +9,7 @@ labels:
   - narrative
   - rewards
 createdAt: '2026-03-25T20:26:56.016Z'
-updatedAt: '2026-03-28T04:15:52.123Z'
+updatedAt: '2026-03-31T21:01:39.886Z'
 timeSpent: 0
 assignee: '@Liam'
 ---

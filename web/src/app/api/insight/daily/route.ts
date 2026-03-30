@@ -49,7 +49,7 @@ export async function GET(request: Request) {
 
   try {
     const live = await fetchLiveInsightSols();
-    if (live.length >= 5) {
+    if (live.length >= 7) {
       pool = live;
       source = "live";
     }

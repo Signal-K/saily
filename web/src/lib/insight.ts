@@ -1,7 +1,5 @@
 import { resolveGameDate } from "@/lib/game";
 
-export type InsightMetric = "pressure" | "temperature" | "wind";
-
 export type InsightMetricSummary = {
   av: number | null;
   mn: number | null;
@@ -21,13 +19,33 @@ export type InsightSol = {
   hws: InsightMetricSummary;
 };
 
+export type InsightSolRisk = {
+  sol: string;
+  riskScore: number;    // 0–100, higher = more dangerous
+  windRisk: number;     // 0–100
+  pressureRisk: number; // 0–100
+  tempRisk: number;     // 0–100
+};
+
+export type InsightWindow = {
+  solA: string;
+  solB: string;
+  windowRisk: number; // average risk of both sols
+  rank: number;       // 1 = safest
+};
+
 export type InsightPuzzle = {
   date: string;
-  metric: InsightMetric;
-  metricLabel: string;
   prompt: string;
   subtitle: string;
   sols: InsightSol[];
+};
+
+export type InsightAnswerResult = {
+  puzzle: InsightPuzzle;
+  solRisks: InsightSolRisk[];
+  allWindows: InsightWindow[];
+  optimalWindow: InsightWindow;
 };
 
 type RawInsightFeed = {
@@ -109,7 +127,7 @@ export const INSIGHT_FALLBACK_SOLS: InsightSol[] = [
     lastUtc: "2020-10-24T21:50:16Z",
     at: { av: -62.551, mn: -96.644, mx: -11.561, ct: 177554 },
     pre: { av: 744.529, mn: 719.4178, mx: 763.2724, ct: 887776 },
-    hws: { av: 5.565, mn: 0.231, mx: 19.409000000000002, ct: 87171 },
+    hws: { av: 5.565, mn: 0.231, mx: 19.409, ct: 87171 },
   },
   {
     sol: "680",
@@ -166,77 +184,104 @@ function hashString(input: string) {
   return Math.abs(hash);
 }
 
-function metricValue(sol: InsightSol, metric: InsightMetric) {
-  if (metric === "pressure") return sol.pre.av;
-  if (metric === "temperature") return sol.at.av;
-  return sol.hws.av;
-}
-
-function median(values: number[]) {
-  const sorted = [...values].sort((a, b) => a - b);
-  const mid = Math.floor(sorted.length / 2);
-  if (sorted.length === 0) return 0;
-  if (sorted.length % 2 === 0) return (sorted[mid - 1] + sorted[mid]) / 2;
-  return sorted[mid];
-}
-
 function sortSolsAscending(sols: InsightSol[]) {
   return [...sols].sort((a, b) => Number(a.sol) - Number(b.sol));
 }
 
-function pickWindow(date: string, pool: InsightSol[], size = 5) {
+function pickWindow(date: string, pool: InsightSol[], size = 7) {
   const sorted = sortSolsAscending(pool);
   if (sorted.length <= size) return sorted;
   const start = hashString(`${date}:window`) % (sorted.length - size + 1);
   return sorted.slice(start, start + size);
 }
 
-function pickMetric(date: string): InsightMetric {
-  const metrics: InsightMetric[] = ["pressure", "temperature", "wind"];
-  return metrics[hashString(`${date}:metric`) % metrics.length];
+function safeVal(v: number | null | undefined, fallback: number): number {
+  return typeof v === "number" ? v : fallback;
 }
 
-function metricLabel(metric: InsightMetric) {
-  if (metric === "pressure") return "pressure";
-  if (metric === "temperature") return "temperature";
-  return "wind speed";
+function normalize(value: number, min: number, max: number): number {
+  if (max === min) return 0;
+  return Math.max(0, Math.min(1, (value - min) / (max - min)));
+}
+
+// Risk factors per sol:
+//   Wind hazard    (40%): peak gust (hws.mx) — higher = more dangerous
+//   Pressure churn (40%): daily range (pre.mx - pre.mn) — larger = more unstable
+//   Temp floor     (20%): daily minimum (at.mn) — colder = harder on hardware
+export function computeSolRisks(sols: InsightSol[]): InsightSolRisk[] {
+  const windPeaks = sols.map((s) => safeVal(s.hws.mx, safeVal(s.hws.av, 0)));
+  const windMin = Math.min(...windPeaks);
+  const windMax = Math.max(...windPeaks);
+
+  const presRanges = sols.map(
+    (s) => safeVal(s.pre.mx, safeVal(s.pre.av, 0)) - safeVal(s.pre.mn, safeVal(s.pre.av, 0)),
+  );
+  const presMin = Math.min(...presRanges);
+  const presMax = Math.max(...presRanges);
+
+  // Lower min temp = more dangerous, so invert: coldest maps to risk 1.0
+  const tempMins = sols.map((s) => safeVal(s.at.mn, safeVal(s.at.av, 0)));
+  const tempFloorMin = Math.min(...tempMins); // coldest (highest risk)
+  const tempFloorMax = Math.max(...tempMins); // warmest (lowest risk)
+
+  return sols.map((sol, i) => {
+    const windNorm = normalize(windPeaks[i]!, windMin, windMax);
+    const presNorm = normalize(presRanges[i]!, presMin, presMax);
+    // Invert: normalize against swapped min/max so colder = higher score
+    const tempNorm = normalize(tempMins[i]!, tempFloorMax, tempFloorMin);
+
+    const riskScore = (windNorm * 0.4 + presNorm * 0.4 + tempNorm * 0.2) * 100;
+    return {
+      sol: sol.sol,
+      riskScore: Math.round(riskScore * 10) / 10,
+      windRisk: Math.round(windNorm * 1000) / 10,
+      pressureRisk: Math.round(presNorm * 1000) / 10,
+      tempRisk: Math.round(tempNorm * 1000) / 10,
+    };
+  });
+}
+
+export function computeWindows(solRisks: InsightSolRisk[]): InsightWindow[] {
+  const raw: Omit<InsightWindow, "rank">[] = [];
+  for (let i = 0; i < solRisks.length - 1; i++) {
+    raw.push({
+      solA: solRisks[i]!.sol,
+      solB: solRisks[i + 1]!.sol,
+      windowRisk: Math.round(((solRisks[i]!.riskScore + solRisks[i + 1]!.riskScore) / 2) * 10) / 10,
+    });
+  }
+  const sorted = [...raw].sort((a, b) => a.windowRisk - b.windowRisk);
+  return raw.map((w) => ({
+    ...w,
+    rank: sorted.findIndex((s) => s.solA === w.solA && s.solB === w.solB) + 1,
+  }));
+}
+
+export function scoreInsightWindow(selectedSolA: string, selectedSolB: string, allWindows: InsightWindow[]): number {
+  const selected = allWindows.find((w) => w.solA === selectedSolA && w.solB === selectedSolB);
+  if (!selected) return 0;
+  if (selected.rank === 1) return 100;
+  if (selected.rank === 2) return 75;
+  if (selected.rank === 3) return 50;
+  return 25;
 }
 
 export function getInsightPuzzle(date?: string, pool: InsightSol[] = INSIGHT_FALLBACK_SOLS): InsightPuzzle {
   const dateKey = resolveGameDate(date);
-  const sols = pickWindow(dateKey, pool, 5);
-  const metric = pickMetric(dateKey);
-  const label = metricLabel(metric);
+  const sols = pickWindow(dateKey, pool, 7);
   return {
     date: dateKey,
-    metric,
-    metricLabel: label,
-    prompt: `Which Sol looks most anomalous for ${label} compared with the surrounding readings?`,
-    subtitle: "Compare the average readings and pick the day that most likely disrupted route planning.",
+    prompt: "Select the safest 2-Sol transit window for the surface unit.",
+    subtitle:
+      "Check wind peaks, pressure swings, and temperature floors. Pick two consecutive Sols that give the rover the clearest run.",
     sols,
   };
 }
 
-export function getInsightAnswer(date?: string, pool: InsightSol[] = INSIGHT_FALLBACK_SOLS) {
+export function getInsightAnswer(date?: string, pool: InsightSol[] = INSIGHT_FALLBACK_SOLS): InsightAnswerResult {
   const puzzle = getInsightPuzzle(date, pool);
-  const values = puzzle.sols.map((sol) => metricValue(sol, puzzle.metric)).filter((value): value is number => typeof value === "number");
-  const baseline = median(values);
-
-  let winner = puzzle.sols[0];
-  let bestDelta = -1;
-  puzzle.sols.forEach((sol) => {
-    const value = metricValue(sol, puzzle.metric);
-    const delta = typeof value === "number" ? Math.abs(value - baseline) : -1;
-    if (delta > bestDelta) {
-      bestDelta = delta;
-      winner = sol;
-    }
-  });
-
-  return {
-    puzzle,
-    answerSol: winner.sol,
-    answerValue: metricValue(winner, puzzle.metric),
-    baseline,
-  };
+  const solRisks = computeSolRisks(puzzle.sols);
+  const allWindows = computeWindows(solRisks);
+  const optimalWindow = allWindows.find((w) => w.rank === 1) ?? allWindows[0]!;
+  return { puzzle, solRisks, allWindows, optimalWindow };
 }

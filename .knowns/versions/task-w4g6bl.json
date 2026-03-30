@@ -1,0 +1,28 @@
+{
+  "taskId": "w4g6bl",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "w4g6bl",
+      "version": 1,
+      "timestamp": "2026-03-31T21:01:37.751Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "in-progress"
+        }
+      ],
+      "snapshot": {
+        "title": "Write arc completion and reward screen copy for all characters",
+        "description": "Write copy for all 4 characters: voice closing line, headline, 2-3 sentences. Covers both the arc completion screen and reward screen. Should feel personal and earned. Merges magq2n + nm3efx. Kanban: i2mj6e",
+        "status": "in-progress",
+        "priority": "medium",
+        "assignee": "@Liam",
+        "labels": [],
+        "acceptanceCriteria": []
+      }
+    }
+  ]
+}

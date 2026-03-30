@@ -39,7 +39,6 @@ export function StreakRepairPrompt({ userId, gameDate, onRepairComplete }: Strea
         .in("game_date", [yesterdayStr, dayBeforeStr]);
 
       if (playsError) {
-        console.error("Error checking plays:", playsError);
         setLoading(false);
         return;
       }
@@ -90,8 +89,7 @@ export function StreakRepairPrompt({ userId, gameDate, onRepairComplete }: Strea
       });
       onRepairComplete();
       setCanRepair(false); // Hide prompt
-    } catch (err: unknown) {
-      console.error("Repair failed:", err);
+    } catch {
       setError("Failed to repair streak. Try again.");
     } finally {
       setRepairing(false);

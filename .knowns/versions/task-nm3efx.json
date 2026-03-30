@@ -1,0 +1,45 @@
+{
+  "taskId": "nm3efx",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "nm3efx",
+      "version": 1,
+      "timestamp": "2026-03-31T21:01:39.427Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        }
+      ],
+      "snapshot": {
+        "title": "Write arc-completion reward screen copy for each character",
+        "description": "When a player completes an arc they get a reward (Chips/Postcard). The reward screen needs character-specific copy: a closing line from that character + a flavour sentence about what they earned. 4 characters × 1–2 lines each. Keep it punchy and in-universe. ~1h.",
+        "status": "done",
+        "priority": "medium",
+        "assignee": "Liam",
+        "labels": [
+          "narrative",
+          "writing",
+          "design"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "4 reward screen messages written (one per character)"
+          },
+          {
+            "completed": false,
+            "text": "Each has a character voice line + reward flavour text"
+          },
+          {
+            "completed": false,
+            "text": "Copy handed off or added to the relevant scene file"
+          }
+        ]
+      }
+    }
+  ]
+}

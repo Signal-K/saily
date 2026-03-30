@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
 import { getDayAccessForUser } from "@/lib/day-access";
 import { resolveGameDate } from "@/lib/game";
-import { INSIGHT_FALLBACK_SOLS, getInsightAnswer, parseInsightFeed, type InsightSol } from "@/lib/insight";
+import { INSIGHT_FALLBACK_SOLS, getInsightAnswer, parseInsightFeed, scoreInsightWindow, type InsightSol } from "@/lib/insight";
 import { createClient } from "@/lib/supabase/server";
 
 type SubmitBody = {
   date?: string;
-  selectedSol?: string;
+  selectedSolA?: string;
+  selectedSolB?: string;
 };
 
 async function fetchLiveInsightSols(): Promise<InsightSol[]> {
@@ -37,15 +38,16 @@ export async function POST(request: Request) {
 
   const payload = (await request.json().catch(() => ({}))) as SubmitBody;
   const date = resolveGameDate(payload.date);
-  const selectedSol = typeof payload.selectedSol === "string" ? payload.selectedSol.trim() : "";
+  const selectedSolA = typeof payload.selectedSolA === "string" ? payload.selectedSolA.trim() : "";
+  const selectedSolB = typeof payload.selectedSolB === "string" ? payload.selectedSolB.trim() : "";
   const access = await getDayAccessForUser(supabase, user?.id, date);
 
   if (!access.allowed) {
     return NextResponse.json({ error: "Unlock this archived mission before playing it." }, { status: 403 });
   }
 
-  if (!selectedSol) {
-    return NextResponse.json({ error: "selectedSol is required" }, { status: 400 });
+  if (!selectedSolA || !selectedSolB) {
+    return NextResponse.json({ error: "selectedSolA and selectedSolB are required" }, { status: 400 });
   }
 
   let source: "live" | "fallback" = "fallback";
@@ -53,7 +55,7 @@ export async function POST(request: Request) {
 
   try {
     const live = await fetchLiveInsightSols();
-    if (live.length >= 5) {
+    if (live.length >= 7) {
       pool = live;
       source = "live";
     }
@@ -62,19 +64,20 @@ export async function POST(request: Request) {
   }
 
   const answer = getInsightAnswer(date, pool);
-  const correct = selectedSol === answer.answerSol;
-  const score = correct ? 90 : 20;
+  const score = scoreInsightWindow(selectedSolA, selectedSolB, answer.allWindows);
+  const selectedWindow = answer.allWindows.find((w) => w.solA === selectedSolA && w.solB === selectedSolB);
+  const isOptimal = selectedWindow?.rank === 1;
 
   return NextResponse.json({
     ok: true,
     source,
-    correct,
     score,
-    answerSol: answer.answerSol,
-    metric: answer.puzzle.metric,
-    metricLabel: answer.puzzle.metricLabel,
-    baseline: answer.baseline,
-    answerValue: answer.answerValue,
+    isOptimal,
+    selectedRank: selectedWindow?.rank ?? null,
+    selectedWindowRisk: selectedWindow?.windowRisk ?? null,
+    optimalWindow: answer.optimalWindow,
+    allWindows: answer.allWindows,
+    solRisks: answer.solRisks,
     archiveMode: !access.isToday,
   });
 }

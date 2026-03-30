@@ -1,8 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
   turbopack: {
     root: process.cwd(),
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images-assets.nasa.gov",
+      },
+    ],
   },
   env: {
     // Support Vercel env names without NEXT_PUBLIC_ prefix.

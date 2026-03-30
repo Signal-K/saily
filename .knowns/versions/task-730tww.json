@@ -1,0 +1,58 @@
+{
+  "taskId": "730tww",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "730tww",
+      "version": 1,
+      "timestamp": "2026-03-30T11:44:55.641Z",
+      "changes": [
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [],
+          "newValue": [
+            {
+              "text": "Archive day entry screen/state described (what the player sees before starting)",
+              "completed": false
+            },
+            {
+              "text": "Streak-repair success moment specced (copy + visual direction)",
+              "completed": false
+            },
+            {
+              "text": "Differences from normal mission-complete are clearly defined",
+              "completed": false
+            }
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Design streak-repair / archive day visual flow",
+        "description": "Players can repair broken streaks by accessing archive days. This is a meaningful moment — a second chance — but currently has no celebratory or explanatory visual design. Spec the flow: what appears when entering an archive day (explanation/context), what plays when the repair is successful, and how it differs from a normal mission-complete. The archive access and streak-repair mechanics are already implemented; this unblocks a visual polish pass.",
+        "status": "todo",
+        "priority": "medium",
+        "assignee": "@Liam",
+        "labels": [
+          "sketch",
+          "design",
+          "ux-copy"
+        ],
+        "acceptanceCriteria": [
+          {
+            "text": "Archive day entry screen/state described (what the player sees before starting)",
+            "completed": false
+          },
+          {
+            "text": "Streak-repair success moment specced (copy + visual direction)",
+            "completed": false
+          },
+          {
+            "text": "Differences from normal mission-complete are clearly defined",
+            "completed": false
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getRobotAvatarDataUri } from "@/lib/avatar";
@@ -19,11 +20,11 @@ type Props = {
   referralCode?: string | null;
 };
 
-export function MissionComplete({ 
-  character, 
-  chapter, 
-  score, 
-  isStorylineComplete, 
+export function MissionComplete({
+  character,
+  chapter,
+  score,
+  isStorylineComplete,
   storylineTitle,
   postcardTitle = "Sailor's Postcard",
   postcardMessage = "You've completed this arc! Share your discovery with others.",
@@ -31,6 +32,7 @@ export function MissionComplete({
   awardedChips = 0,
   referralCode = null
 }: Props) {
+  const [copied, setCopied] = useState(false);
   const expression = endedEarly ? "sad" : chapter.resolutionExpression;
   const avatarSrc = getRobotAvatarDataUri(character.avatarSeed, 72, expression);
 
@@ -86,22 +88,26 @@ export function MissionComplete({
             <h3>{postcardTitle}</h3>
           </div>
           <p className="postcard-msg">{postcardMessage}</p>
-          <div className="postcard-referral">
-            <span className="referral-label">Your Referral Code:</span>
-            <code className="referral-code">{referralCode ?? "SAILY-CODE"}</code>
-          </div>
-          <button 
-            className="button button-secondary button-sm" 
-            onClick={() => {
-              if (referralCode) {
-                const url = `${window.location.origin}/auth/sign-up?ref=${referralCode}`;
-                navigator.clipboard.writeText(url);
-                alert("Referral link copied to clipboard!");
-              }
-            }}
-          >
-            Copy Referral Link
-          </button>
+          {referralCode && (
+            <>
+              <div className="postcard-referral">
+                <span className="referral-label">Your Referral Code:</span>
+                <code className="referral-code">{referralCode}</code>
+              </div>
+              <button
+                className="button button-secondary button-sm"
+                onClick={() => {
+                  const url = `${window.location.origin}/auth/sign-up?ref=${referralCode}`;
+                  navigator.clipboard.writeText(url).then(() => {
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                  });
+                }}
+              >
+                {copied ? "Copied!" : "Copy Referral Link"}
+              </button>
+            </>
+          )}
         </div>
       )}
 

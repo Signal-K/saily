@@ -1,0 +1,32 @@
+{
+  "taskId": "lccgj7",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "lccgj7",
+      "version": 1,
+      "timestamp": "2026-03-31T21:01:38.172Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        }
+      ],
+      "snapshot": {
+        "title": "Write briefing dialogue for all 4 character arcs",
+        "description": "Each character has a one-liner that plays before the daily puzzle — their briefing expression. Several chapters are missing these lines. Go through each of the 4 characters (Zix, Brix, Pip, The Cartographer) and write the missing ones. ~20-30 short lines total. Match each character's established voice and arc position.",
+        "status": "done",
+        "priority": "medium",
+        "assignee": "Liam",
+        "labels": [
+          "liam-sprint",
+          "narrative",
+          "writing"
+        ],
+        "acceptanceCriteria": []
+      }
+    }
+  ]
+}

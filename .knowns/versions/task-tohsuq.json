@@ -1,6 +1,6 @@
 {
   "taskId": "tohsuq",
-  "currentVersion": 2,
+  "currentVersion": 3,
   "versions": [
     {
       "id": "v1",
@@ -50,6 +50,41 @@
         "title": "Sketch the end-of-arc reward screen",
         "description": "When a character arc completes, a reward screen fires. Sketch the layout — what appears (character art, arc title, reward summary), how it's structured, and what the CTA is.",
         "status": "todo",
+        "priority": "medium",
+        "assignee": "@Liam",
+        "labels": [
+          "sketch",
+          "design"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Layout sketch complete"
+          },
+          {
+            "completed": false,
+            "text": "Reward elements identified"
+          }
+        ],
+        "implementationNotes": "kanban: pr392y"
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "tohsuq",
+      "version": 3,
+      "timestamp": "2026-03-31T21:01:39.954Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        }
+      ],
+      "snapshot": {
+        "title": "Sketch the end-of-arc reward screen",
+        "description": "When a character arc completes, a reward screen fires. Sketch the layout — what appears (character art, arc title, reward summary), how it's structured, and what the CTA is.",
+        "status": "done",
         "priority": "medium",
         "assignee": "@Liam",
         "labels": [

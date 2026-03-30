@@ -349,12 +349,18 @@ export default function TodayGamePage({ onMissionComplete, gameDate: gameDatePro
       if (!draftStorageKey) return;
       const raw = localStorage.getItem(draftStorageKey);
       if (!raw) return;
-      const parsed = JSON.parse(raw) as {
+      let parsed: {
         annotations?: SavedAnnotation[];
         note?: string;
         hintFlags?: SavedHintFlags;
         periodDays?: number;
       };
+      try {
+        parsed = JSON.parse(raw);
+      } catch {
+        localStorage.removeItem(draftStorageKey);
+        return;
+      }
       if (Array.isArray(parsed.annotations)) {
         setAnnotations(
           parsed.annotations.map((item, idx) => ({
@@ -538,6 +544,10 @@ export default function TodayGamePage({ onMissionComplete, gameDate: gameDatePro
     setDragging(false);
     setDraftStart(null);
     setDraftEnd(null);
+  }
+
+  function undoLastAnnotation() {
+    setAnnotations((current) => current.slice(0, -1));
   }
 
   function clearDraft() {
@@ -1007,6 +1017,15 @@ export default function TodayGamePage({ onMissionComplete, gameDate: gameDatePro
                 disabled={submitting || loading}
               >
                 Clear Draft
+              </button>
+              <button
+                className="button puzzle-action-secondary"
+                data-cy="puzzle-undo-button"
+                type="button"
+                onClick={undoLastAnnotation}
+                disabled={submitting || loading || annotations.length === 0}
+              >
+                Undo
               </button>
               <button
                 className="button button-primary puzzle-action-primary"

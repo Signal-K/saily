@@ -1,17 +1,16 @@
 ---
 id: 33dtin
 title: Write missing briefingExpression dialogue for all 4 character arcs
-status: todo
+status: done
 priority: medium
 labels:
   - narrative
   - writing
 createdAt: '2026-03-23T23:53:11.511Z'
-updatedAt: '2026-03-24T00:14:48.149Z'
+updatedAt: '2026-03-31T21:01:38.839Z'
 timeSpent: 0
 assignee: Liam
 ---
-
 # Write missing briefingExpression dialogue for all 4 character arcs
 
 ## Description
@@ -26,3 +25,4 @@ Each chapter needs a briefingExpression — the short in-character voice line th
 - [ ] #2 Lines are in the character's established voice
 - [ ] #3 No placeholder/fallback text visible in UI
 <!-- AC:END -->
+

@@ -1,0 +1,44 @@
+{
+  "taskId": "33dtin",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "33dtin",
+      "version": 1,
+      "timestamp": "2026-03-31T21:01:38.839Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        }
+      ],
+      "snapshot": {
+        "title": "Write missing briefingExpression dialogue for all 4 character arcs",
+        "description": "Each chapter needs a briefingExpression — the short in-character voice line that plays when a chapter is selected. Missing entries show a blank/fallback. Go through each character (all 4 arcs) and write 1–2 sentence briefing lines for every chapter missing one. Tone should match each character's voice. ~2h.",
+        "status": "done",
+        "priority": "medium",
+        "assignee": "Liam",
+        "labels": [
+          "narrative",
+          "writing"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Every chapter has a non-empty briefingExpression"
+          },
+          {
+            "completed": false,
+            "text": "Lines are in the character's established voice"
+          },
+          {
+            "completed": false,
+            "text": "No placeholder/fallback text visible in UI"
+          }
+        ]
+      }
+    }
+  ]
+}

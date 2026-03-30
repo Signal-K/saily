@@ -1,13 +1,13 @@
 ---
 id: tohsuq
 title: Sketch the end-of-arc reward screen
-status: todo
+status: done
 priority: medium
 labels:
   - sketch
   - design
 createdAt: '2026-03-26T02:31:23.459Z'
-updatedAt: '2026-03-28T04:15:52.168Z'
+updatedAt: '2026-03-31T21:01:39.954Z'
 timeSpent: 0
 assignee: '@Liam'
 ---

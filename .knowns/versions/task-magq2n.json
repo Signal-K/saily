@@ -1,0 +1,32 @@
+{
+  "taskId": "magq2n",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "magq2n",
+      "version": 1,
+      "timestamp": "2026-03-31T21:01:39.010Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        }
+      ],
+      "snapshot": {
+        "title": "Write arc 1 completion screen copy for each character",
+        "description": "When a player finishes a character's arc, a reward screen marks the moment. Write the copy for all 4 characters: a short headline and 2-3 sentences. Should feel personal to each character and earned. This is the last thing a player sees for arc 1 — it needs to land.",
+        "status": "done",
+        "priority": "medium",
+        "assignee": "Liam",
+        "labels": [
+          "liam-sprint",
+          "narrative",
+          "writing"
+        ],
+        "acceptanceCriteria": []
+      }
+    }
+  ]
+}
