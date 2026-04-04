@@ -29,6 +29,9 @@ test:
 test-e2e:
 	docker compose --env-file .env.docker run --rm cypress
 
+tour:
+	./scripts/run-tour.sh
+
 # Legacy aliases
 docker-up: up
 docker-down: down

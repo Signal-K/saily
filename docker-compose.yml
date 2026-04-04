@@ -1,4 +1,142 @@
 services:
+  db:
+    image: supabase/postgres:17.4.1.078
+    restart: unless-stopped
+    ports:
+      - "54322:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  kong:
+    image: kong:2.8.1
+    restart: unless-stopped
+    ports:
+      - "54321:8000"
+    environment:
+      KONG_DATABASE: "off"
+      KONG_DECLARATIVE_CONFIG: /home/kong/kong.yml
+      KONG_DNS_ORDER: LAST,A,CNAME
+      KONG_PLUGINS: request-transformer,cors,key-auth,acl,basic-auth
+      KONG_NGINX_PROXY_PROXY_BUFFER_SIZE: 160k
+      KONG_NGINX_PROXY_PROXY_BUFFERS: 64 160k
+    volumes:
+      - ./supabase/kong.yml:/home/kong/kong.yml:ro
+    depends_on:
+      db:
+        condition: service_healthy
+
+  auth:
+    image: supabase/gotrue:v2.170.0
+    restart: unless-stopped
+    environment:
+      GOTRUE_API_HOST: 0.0.0.0
+      GOTRUE_API_PORT: 9999
+      API_EXTERNAL_URL: http://localhost:54321
+      GOTRUE_DB_DRIVER: postgres
+      GOTRUE_DB_DATABASE_URL: postgres://supabase_auth_admin:postgres@db:5432/postgres
+      GOTRUE_SITE_URL: http://localhost:3000
+      GOTRUE_DISABLE_SIGNUP: false
+      GOTRUE_JWT_ADMIN_ROLES: service_role
+      GOTRUE_JWT_AUD: authenticated
+      GOTRUE_JWT_DEFAULT_GROUP_NAME: authenticated
+      GOTRUE_JWT_EXP: 3600
+      GOTRUE_JWT_SECRET: super-secret-jwt-token-with-at-least-32-characters-long
+      GOTRUE_EXTERNAL_EMAIL_ENABLED: true
+      GOTRUE_MAILER_AUTOCONFIRM: true
+      GOTRUE_SMTP_ADMIN_EMAIL: admin@example.com
+      GOTRUE_SMTP_HOST: inbucket
+      GOTRUE_SMTP_PORT: 2500
+      GOTRUE_SMTP_SENDER_NAME: Saily
+    depends_on:
+      db:
+        condition: service_healthy
+
+  rest:
+    image: postgrest/postgrest:v12.2.12
+    restart: unless-stopped
+    environment:
+      PGRST_DB_URI: postgres://authenticator:postgres@db:5432/postgres
+      PGRST_DB_SCHEMAS: public,graphql_public
+      PGRST_DB_ANON_ROLE: anon
+      PGRST_JWT_SECRET: super-secret-jwt-token-with-at-least-32-characters-long
+      PGRST_DB_USE_LEGACY_GUCS: false
+      PGRST_APP_SETTINGS_JWT_SECRET: super-secret-jwt-token-with-at-least-32-characters-long
+      PGRST_APP_SETTINGS_JWT_EXP: 3600
+    depends_on:
+      db:
+        condition: service_healthy
+
+  storage:
+    image: supabase/storage-api:v1.22.17
+    restart: unless-stopped
+    environment:
+      ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRFA0NiK7kyqHDan_WiAgwWkd4xh38DyHNXX6XyHfiM
+      SERVICE_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hj04zWl196z2-SBc0
+      POSTGREST_URL: http://rest:3000
+      PGRST_JWT_SECRET: super-secret-jwt-token-with-at-least-32-characters-long
+      DATABASE_URL: postgres://supabase_storage_admin:postgres@db:5432/postgres
+      FILE_SIZE_LIMIT: 52428800
+      STORAGE_BACKEND: file
+      FILE_STORAGE_BACKEND_PATH: /var/lib/storage
+      TENANT_ID: stub
+      REGION: stub
+      GLOBAL_S3_BUCKET: stub
+      ENABLE_IMAGE_TRANSFORMATION: false
+    volumes:
+      - storage_data:/var/lib/storage
+    depends_on:
+      db:
+        condition: service_healthy
+      rest:
+        condition: service_started
+
+  meta:
+    image: supabase/postgres-meta:v0.87.3
+    restart: unless-stopped
+    environment:
+      PG_META_PORT: 8080
+      PG_META_DB_HOST: db
+      PG_META_DB_PORT: 5432
+      PG_META_DB_NAME: postgres
+      PG_META_DB_USER: supabase_admin
+      PG_META_DB_PASSWORD: postgres
+    depends_on:
+      db:
+        condition: service_healthy
+
+  studio:
+    image: supabase/studio:20250317-6955350
+    restart: unless-stopped
+    ports:
+      - "54323:3000"
+    environment:
+      STUDIO_PG_META_URL: http://meta:8080
+      POSTGRES_PASSWORD: postgres
+      DEFAULT_ORGANIZATION_NAME: Saily
+      DEFAULT_PROJECT_NAME: saily
+      SUPABASE_URL: http://kong:8000
+      SUPABASE_PUBLIC_URL: http://localhost:54321
+      SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRFA0NiK7kyqHDan_WiAgwWkd4xh38DyHNXX6XyHfiM
+      SUPABASE_SERVICE_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hj04zWl196z2-SBc0
+      AUTH_JWT_SECRET: super-secret-jwt-token-with-at-least-32-characters-long
+    depends_on:
+      db:
+        condition: service_healthy
+
+  inbucket:
+    image: inbucket/inbucket:3.0.4
+    restart: unless-stopped
+    ports:
+      - "54324:9000"
+
   web:
     build:
       context: ./web
@@ -10,13 +148,16 @@ services:
     ports:
       - "3000:3000"
     environment:
-      NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:-http://host.docker.internal:54321}
-      SUPABASE_URL_INTERNAL: ${SUPABASE_URL_INTERNAL:-http://host.docker.internal:54321}
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY:-sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH}
-      NEXT_PUBLIC_AUTH_GOOGLE_ENABLED: ${NEXT_PUBLIC_AUTH_GOOGLE_ENABLED:-false}
+      NEXT_PUBLIC_SUPABASE_URL: http://localhost:54321
+      SUPABASE_URL_INTERNAL: http://kong:8000
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRFA0NiK7kyqHDan_WiAgwWkd4xh38DyHNXX6XyHfiM
+      NEXT_PUBLIC_AUTH_GOOGLE_ENABLED: "false"
       WATCHPACK_POLLING: "true"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    depends_on:
+      kong:
+        condition: service_started
+      db:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000"]
       interval: 5s
@@ -35,13 +176,28 @@ services:
       CYPRESS_E2E_TEST_EMAIL: ${E2E_TEST_EMAIL}
       CYPRESS_E2E_TEST_PASSWORD: ${E2E_TEST_PASSWORD}
       CYPRESS_E2E_TEST_RUN_TAG: ${E2E_TEST_RUN_TAG:-e2e-run}
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     depends_on:
       web:
         condition: service_healthy
     profiles:
       - test
 
+  tour-tester:
+    image: cypress/included:15.10.0
+    working_dir: /e2e
+    volumes:
+      - ./web:/e2e
+      - web_node_modules:/e2e/node_modules
+      - ./:/project
+    environment:
+      CYPRESS_baseUrl: http://web:3000
+    depends_on:
+      web:
+        condition: service_healthy
+    profiles:
+      - tour
+
 volumes:
+  db_data:
+  storage_data:
   web_node_modules:

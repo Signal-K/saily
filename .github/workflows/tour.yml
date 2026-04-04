@@ -1,0 +1,76 @@
+name: Game Tour
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  tour:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: 2.75.0
+
+      - name: Install dependencies
+        working-directory: web
+        run: yarn install --frozen-lockfile
+
+      - name: Start local Supabase
+        run: supabase start
+
+      - name: Apply migrations and seed
+        run: supabase db reset --local
+
+      - name: Export Supabase env
+        shell: bash
+        run: |
+          set -euo pipefail
+          supabase status -o env > /tmp/supabase.env
+          API_URL="$(grep '^API_URL=' /tmp/supabase.env | cut -d= -f2- | sed 's/^\"//;s/\"$//')"
+          ANON_KEY="$(grep '^ANON_KEY=' /tmp/supabase.env | cut -d= -f2- | sed 's/^\"//;s/\"$//')"
+          {
+            echo "NEXT_PUBLIC_SUPABASE_URL=${API_URL}"
+            echo "SUPABASE_URL_INTERNAL=${API_URL}"
+            echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=${ANON_KEY}"
+          } >> "$GITHUB_ENV"
+
+      - name: Build
+        working-directory: web
+        run: yarn build
+
+      - name: Run tour
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: web
+          install: false
+          start: yarn dev
+          wait-on: "http://localhost:3000"
+          wait-on-timeout: 60
+          command: yarn cypress:run --spec cypress/e2e/tour.cy.ts
+
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tour-screenshots
+          path: web/cypress/screenshots/tour.cy.ts/
+          if-no-files-found: ignore
+
+      - name: Stop local Supabase
+        if: always()
+        run: supabase stop
