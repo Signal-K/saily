@@ -188,7 +188,7 @@ export default function InSightGamePage({ onMissionComplete, gameDate }: InSight
       game_date: date,
       score: finalResult.score,
       is_optimal: finalResult.isOptimal,
-      selected_rank: finalResult.selectedRank,
+      selected_rank: finalResult.selectedRank ?? undefined,
       selected_sol_a: selectedWindow.solA,
       selected_sol_b: selectedWindow.solB,
     });
