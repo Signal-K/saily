@@ -1,6 +1,6 @@
 {
   "taskId": "wnmktw",
-  "currentVersion": 2,
+  "currentVersion": 6,
   "versions": [
     {
       "id": "v1",
@@ -77,6 +77,173 @@
           }
         ],
         "implementationNotes": "Derived from /Users/scroobz/Navigation/Native/planet-hunters-experiment-1/.knowns/docs/dev/creative-sprint-writing-design-tasks.md. Adapted the external button-guide task pattern into Saily-specific helper-copy work around mission controls, archive unlocks, discussion gating, and science tools."
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "wnmktw",
+      "version": 3,
+      "timestamp": "2026-04-08T04:37:43.568Z",
+      "changes": [
+        {
+          "field": "labels",
+          "oldValue": [
+            "creative",
+            "ux-copy",
+            "writing"
+          ],
+          "newValue": [
+            "narrative"
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Write mission control helper copy for puzzle actions",
+        "description": "Derived from the external creative sprint doc: write plain-language helper copy for the most confusing player actions in Saily, especially daily mission controls, archive unlocks, discuss gating, and science annotation tools.",
+        "status": "todo",
+        "priority": "medium",
+        "assignee": "@Liam",
+        "labels": [
+          "narrative"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Copy covers the primary action sets on the current mission/game surfaces"
+          },
+          {
+            "completed": false,
+            "text": "Tone is short, friendly, and low-jargon"
+          },
+          {
+            "completed": false,
+            "text": "Notes identify the target screens/components for implementation"
+          }
+        ],
+        "implementationNotes": "Derived from /Users/scroobz/Navigation/Native/planet-hunters-experiment-1/.knowns/docs/dev/creative-sprint-writing-design-tasks.md. Adapted the external button-guide task pattern into Saily-specific helper-copy work around mission controls, archive unlocks, discussion gating, and science tools."
+      }
+    },
+    {
+      "id": "v4",
+      "taskId": "wnmktw",
+      "version": 4,
+      "timestamp": "2026-04-08T04:42:56.936Z",
+      "changes": [
+        {
+          "field": "priority",
+          "oldValue": "medium",
+          "newValue": "low"
+        }
+      ],
+      "snapshot": {
+        "title": "Write mission control helper copy for puzzle actions",
+        "description": "Derived from the external creative sprint doc: write plain-language helper copy for the most confusing player actions in Saily, especially daily mission controls, archive unlocks, discuss gating, and science annotation tools.",
+        "status": "todo",
+        "priority": "low",
+        "assignee": "@Liam",
+        "labels": [
+          "narrative"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Copy covers the primary action sets on the current mission/game surfaces"
+          },
+          {
+            "completed": false,
+            "text": "Tone is short, friendly, and low-jargon"
+          },
+          {
+            "completed": false,
+            "text": "Notes identify the target screens/components for implementation"
+          }
+        ],
+        "implementationNotes": "Derived from /Users/scroobz/Navigation/Native/planet-hunters-experiment-1/.knowns/docs/dev/creative-sprint-writing-design-tasks.md. Adapted the external button-guide task pattern into Saily-specific helper-copy work around mission controls, archive unlocks, discussion gating, and science tools."
+      }
+    },
+    {
+      "id": "v5",
+      "taskId": "wnmktw",
+      "version": 5,
+      "timestamp": "2026-04-08T10:49:38.214Z",
+      "changes": [
+        {
+          "field": "labels",
+          "oldValue": [
+            "narrative"
+          ],
+          "newValue": [
+            "needs-liam"
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Write mission control helper copy for puzzle actions",
+        "description": "Derived from the external creative sprint doc: write plain-language helper copy for the most confusing player actions in Saily, especially daily mission controls, archive unlocks, discuss gating, and science annotation tools.",
+        "status": "todo",
+        "priority": "low",
+        "assignee": "@Liam",
+        "labels": [
+          "needs-liam"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Copy covers the primary action sets on the current mission/game surfaces"
+          },
+          {
+            "completed": false,
+            "text": "Tone is short, friendly, and low-jargon"
+          },
+          {
+            "completed": false,
+            "text": "Notes identify the target screens/components for implementation"
+          }
+        ],
+        "implementationNotes": "Derived from /Users/scroobz/Navigation/Native/planet-hunters-experiment-1/.knowns/docs/dev/creative-sprint-writing-design-tasks.md. Adapted the external button-guide task pattern into Saily-specific helper-copy work around mission controls, archive unlocks, discussion gating, and science tools."
+      }
+    },
+    {
+      "id": "v6",
+      "taskId": "wnmktw",
+      "version": 6,
+      "timestamp": "2026-04-09T03:31:27.502Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "blocked"
+        },
+        {
+          "field": "implementationNotes",
+          "oldValue": "Derived from /Users/scroobz/Navigation/Native/planet-hunters-experiment-1/.knowns/docs/dev/creative-sprint-writing-design-tasks.md. Adapted the external button-guide task pattern into Saily-specific helper-copy work around mission controls, archive unlocks, discussion gating, and science tools.",
+          "newValue": "Derived from /Users/scroobz/Navigation/Native/planet-hunters-experiment-1/.knowns/docs/dev/creative-sprint-writing-design-tasks.md. Adapted the external button-guide task pattern into Saily-specific helper-copy work around mission controls, archive unlocks, discussion gating, and science tools.\n\nArchived pre-MVP (2026-04-09). Puzzles self-explanatory for MVP. Restore to todo on 2026-04-13."
+        }
+      ],
+      "snapshot": {
+        "title": "Write mission control helper copy for puzzle actions",
+        "description": "Derived from the external creative sprint doc: write plain-language helper copy for the most confusing player actions in Saily, especially daily mission controls, archive unlocks, discuss gating, and science annotation tools.",
+        "status": "blocked",
+        "priority": "low",
+        "assignee": "@Liam",
+        "labels": [
+          "needs-liam"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Copy covers the primary action sets on the current mission/game surfaces"
+          },
+          {
+            "completed": false,
+            "text": "Tone is short, friendly, and low-jargon"
+          },
+          {
+            "completed": false,
+            "text": "Notes identify the target screens/components for implementation"
+          }
+        ],
+        "implementationNotes": "Derived from /Users/scroobz/Navigation/Native/planet-hunters-experiment-1/.knowns/docs/dev/creative-sprint-writing-design-tasks.md. Adapted the external button-guide task pattern into Saily-specific helper-copy work around mission controls, archive unlocks, discussion gating, and science tools.\n\nArchived pre-MVP (2026-04-09). Puzzles self-explanatory for MVP. Restore to todo on 2026-04-13."
       }
     }
   ]

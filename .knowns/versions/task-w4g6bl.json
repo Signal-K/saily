@@ -1,6 +1,6 @@
 {
   "taskId": "w4g6bl",
-  "currentVersion": 1,
+  "currentVersion": 3,
   "versions": [
     {
       "id": "v1",
@@ -22,6 +22,61 @@
         "assignee": "@Liam",
         "labels": [],
         "acceptanceCriteria": []
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "w4g6bl",
+      "version": 2,
+      "timestamp": "2026-04-08T04:37:44.139Z",
+      "changes": [
+        {
+          "field": "labels",
+          "oldValue": [],
+          "newValue": [
+            "narrative"
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Write arc completion and reward screen copy for all characters",
+        "description": "Write copy for all 4 characters: voice closing line, headline, 2-3 sentences. Covers both the arc completion screen and reward screen. Should feel personal and earned. Merges magq2n + nm3efx. Kanban: i2mj6e",
+        "status": "in-progress",
+        "priority": "medium",
+        "assignee": "@Liam",
+        "labels": [
+          "narrative"
+        ],
+        "acceptanceCriteria": []
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "w4g6bl",
+      "version": 3,
+      "timestamp": "2026-04-09T03:31:28.814Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "blocked"
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Archived pre-MVP (2026-04-09). Arc completion copy is post-Arc-1. Restore to todo on 2026-04-13."
+        }
+      ],
+      "snapshot": {
+        "title": "Write arc completion and reward screen copy for all characters",
+        "description": "Write copy for all 4 characters: voice closing line, headline, 2-3 sentences. Covers both the arc completion screen and reward screen. Should feel personal and earned. Merges magq2n + nm3efx. Kanban: i2mj6e",
+        "status": "blocked",
+        "priority": "medium",
+        "assignee": "@Liam",
+        "labels": [
+          "narrative"
+        ],
+        "acceptanceCriteria": [],
+        "implementationNotes": "Archived pre-MVP (2026-04-09). Arc completion copy is post-Arc-1. Restore to todo on 2026-04-13."
       }
     }
   ]

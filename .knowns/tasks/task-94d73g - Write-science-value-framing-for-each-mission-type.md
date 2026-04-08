@@ -1,15 +1,12 @@
 ---
 id: 94d73g
 title: Write science-value framing for each mission type
-status: todo
-priority: medium
+status: blocked
+priority: low
 labels:
-  - creative
-  - product-copy
-  - science
-  - narrative
+  - needs-liam
 createdAt: '2026-03-26T00:39:38.835Z'
-updatedAt: '2026-03-28T04:15:52.147Z'
+updatedAt: '2026-04-09T03:31:18.363Z'
 timeSpent: 0
 assignee: '@Liam'
 ---
@@ -27,4 +24,10 @@ Define, in a simple repeated format, what real dataset the player is seeing, wha
 - [ ] #2 Each mission type has dataset, player action, scientific output/benefit, and narrative output sections
 - [ ] #3 Language is plain enough to reuse in onboarding, home hub, and puzzle helper copy
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Archived pre-MVP (2026-04-09). Restore to todo on 2026-04-13.
+<!-- SECTION:NOTES:END -->
 

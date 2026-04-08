@@ -1,0 +1,114 @@
+{
+  "taskId": "a8eay1",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "a8eay1",
+      "version": 1,
+      "timestamp": "2026-04-08T11:03:41.602Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "User can see their current Data Chip balance"
+            },
+            {
+              "completed": false,
+              "text": "User can see which missed dates are repairable"
+            },
+            {
+              "completed": false,
+              "text": "User can repair a streak date (with confirmation)"
+            },
+            {
+              "completed": false,
+              "text": "User can unlock an archive date (with confirmation)"
+            },
+            {
+              "completed": false,
+              "text": "Chip balance updates immediately after spend"
+            },
+            {
+              "completed": false,
+              "text": "Insufficient chips state is handled gracefully"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "User can see their current Data Chip balance"
+            },
+            {
+              "completed": true,
+              "text": "User can see which missed dates are repairable"
+            },
+            {
+              "completed": true,
+              "text": "User can repair a streak date (with confirmation)"
+            },
+            {
+              "completed": true,
+              "text": "User can unlock an archive date (with confirmation)"
+            },
+            {
+              "completed": true,
+              "text": "Chip balance updates immediately after spend"
+            },
+            {
+              "completed": true,
+              "text": "Insufficient chips state is handled gracefully"
+            }
+          ]
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Created web/src/app/chips/page.tsx — client component. Loads chip balance, finds repairable dates (missed days within 7 days where surrounding day was played), and archive dates (last 30 days not played/unlocked). Each action calls economy.ts repairStreak/unlockArchive, updates balance optimistically. Disabled when chips=0."
+        }
+      ],
+      "snapshot": {
+        "title": "Build streak repair and archive unlock screens",
+        "description": "The streak repair logic (economy.ts, streak-repair-prompt.tsx) and archive unlock (unlockArchive in economy.ts) are implemented but there is no dedicated screen or visual flow for using Data Chips. Currently the repair prompt is a small inline component. Build a proper /chips or modal-based screen that: (1) shows current chip balance, (2) lists repairable dates (missed days within repair window), (3) shows archive dates available to unlock, (4) confirms chip spend before deducting. No new design needed — use existing panel/button/chip styles from globals.css and mission-complete. The streak-repair-prompt.tsx component is the starting point.",
+        "status": "done",
+        "priority": "medium",
+        "labels": [
+          "functionality"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "User can see their current Data Chip balance"
+          },
+          {
+            "completed": true,
+            "text": "User can see which missed dates are repairable"
+          },
+          {
+            "completed": true,
+            "text": "User can repair a streak date (with confirmation)"
+          },
+          {
+            "completed": true,
+            "text": "User can unlock an archive date (with confirmation)"
+          },
+          {
+            "completed": true,
+            "text": "Chip balance updates immediately after spend"
+          },
+          {
+            "completed": true,
+            "text": "Insufficient chips state is handled gracefully"
+          }
+        ],
+        "implementationNotes": "Created web/src/app/chips/page.tsx — client component. Loads chip balance, finds repairable dates (missed days within 7 days where surrounding day was played), and archive dates (last 30 days not played/unlocked). Each action calls economy.ts repairStreak/unlockArchive, updates balance optimistically. Disabled when chips=0."
+      }
+    }
+  ]
+}

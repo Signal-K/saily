@@ -1,14 +1,12 @@
 ---
 id: 2pqc1e
 title: Draft Story Arc 2 chapter outlines for one character (chapters 6–10)
-status: todo
-priority: medium
+status: blocked
+priority: low
 labels:
-  - narrative
-  - story
-  - writing
+  - needs-liam
 createdAt: '2026-03-23T23:53:12.296Z'
-updatedAt: '2026-03-26T02:30:13.672Z'
+updatedAt: '2026-04-09T03:31:14.539Z'
 timeSpent: 0
 assignee: Liam
 ---
@@ -26,4 +24,10 @@ Pick one of the 4 characters and outline their second arc. 5 chapters (6–10). 
 - [ ] #2 5 chapter outlines written (scene summary, tension/choice, emotional tone per chapter)
 - [ ] #3 Each chapter has briefing text and resolution text sketched out
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Archived pre-MVP (2026-04-09). Restore to todo on 2026-04-13.
+<!-- SECTION:NOTES:END -->
 

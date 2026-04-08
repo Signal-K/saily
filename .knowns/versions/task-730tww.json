@@ -1,6 +1,6 @@
 {
   "taskId": "730tww",
-  "currentVersion": 1,
+  "currentVersion": 5,
   "versions": [
     {
       "id": "v1",
@@ -52,6 +52,169 @@
             "completed": false
           }
         ]
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "730tww",
+      "version": 2,
+      "timestamp": "2026-04-08T04:36:10.240Z",
+      "changes": [
+        {
+          "field": "labels",
+          "oldValue": [
+            "sketch",
+            "design",
+            "ux-copy"
+          ],
+          "newValue": [
+            "design-required"
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Design streak-repair / archive day visual flow",
+        "description": "Players can repair broken streaks by accessing archive days. This is a meaningful moment — a second chance — but currently has no celebratory or explanatory visual design. Spec the flow: what appears when entering an archive day (explanation/context), what plays when the repair is successful, and how it differs from a normal mission-complete. The archive access and streak-repair mechanics are already implemented; this unblocks a visual polish pass.",
+        "status": "todo",
+        "priority": "medium",
+        "assignee": "@Liam",
+        "labels": [
+          "design-required"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Archive day entry screen/state described (what the player sees before starting)"
+          },
+          {
+            "completed": false,
+            "text": "Streak-repair success moment specced (copy + visual direction)"
+          },
+          {
+            "completed": false,
+            "text": "Differences from normal mission-complete are clearly defined"
+          }
+        ]
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "730tww",
+      "version": 3,
+      "timestamp": "2026-04-08T04:42:53.640Z",
+      "changes": [
+        {
+          "field": "priority",
+          "oldValue": "medium",
+          "newValue": "low"
+        }
+      ],
+      "snapshot": {
+        "title": "Design streak-repair / archive day visual flow",
+        "description": "Players can repair broken streaks by accessing archive days. This is a meaningful moment — a second chance — but currently has no celebratory or explanatory visual design. Spec the flow: what appears when entering an archive day (explanation/context), what plays when the repair is successful, and how it differs from a normal mission-complete. The archive access and streak-repair mechanics are already implemented; this unblocks a visual polish pass.",
+        "status": "todo",
+        "priority": "low",
+        "assignee": "@Liam",
+        "labels": [
+          "design-required"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Archive day entry screen/state described (what the player sees before starting)"
+          },
+          {
+            "completed": false,
+            "text": "Streak-repair success moment specced (copy + visual direction)"
+          },
+          {
+            "completed": false,
+            "text": "Differences from normal mission-complete are clearly defined"
+          }
+        ]
+      }
+    },
+    {
+      "id": "v4",
+      "taskId": "730tww",
+      "version": 4,
+      "timestamp": "2026-04-08T10:49:35.057Z",
+      "changes": [
+        {
+          "field": "labels",
+          "oldValue": [
+            "design-required"
+          ],
+          "newValue": [
+            "needs-liam"
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Design streak-repair / archive day visual flow",
+        "description": "Players can repair broken streaks by accessing archive days. This is a meaningful moment — a second chance — but currently has no celebratory or explanatory visual design. Spec the flow: what appears when entering an archive day (explanation/context), what plays when the repair is successful, and how it differs from a normal mission-complete. The archive access and streak-repair mechanics are already implemented; this unblocks a visual polish pass.",
+        "status": "todo",
+        "priority": "low",
+        "assignee": "@Liam",
+        "labels": [
+          "needs-liam"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Archive day entry screen/state described (what the player sees before starting)"
+          },
+          {
+            "completed": false,
+            "text": "Streak-repair success moment specced (copy + visual direction)"
+          },
+          {
+            "completed": false,
+            "text": "Differences from normal mission-complete are clearly defined"
+          }
+        ]
+      }
+    },
+    {
+      "id": "v5",
+      "taskId": "730tww",
+      "version": 5,
+      "timestamp": "2026-04-09T03:31:16.475Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "blocked"
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Archived pre-MVP (2026-04-09). Restore to todo on 2026-04-13."
+        }
+      ],
+      "snapshot": {
+        "title": "Design streak-repair / archive day visual flow",
+        "description": "Players can repair broken streaks by accessing archive days. This is a meaningful moment — a second chance — but currently has no celebratory or explanatory visual design. Spec the flow: what appears when entering an archive day (explanation/context), what plays when the repair is successful, and how it differs from a normal mission-complete. The archive access and streak-repair mechanics are already implemented; this unblocks a visual polish pass.",
+        "status": "blocked",
+        "priority": "low",
+        "assignee": "@Liam",
+        "labels": [
+          "needs-liam"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Archive day entry screen/state described (what the player sees before starting)"
+          },
+          {
+            "completed": false,
+            "text": "Streak-repair success moment specced (copy + visual direction)"
+          },
+          {
+            "completed": false,
+            "text": "Differences from normal mission-complete are clearly defined"
+          }
+        ],
+        "implementationNotes": "Archived pre-MVP (2026-04-09). Restore to todo on 2026-04-13."
       }
     }
   ]

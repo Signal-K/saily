@@ -1,6 +1,6 @@
 {
   "taskId": "5hakbo",
-  "currentVersion": 2,
+  "currentVersion": 6,
   "versions": [
     {
       "id": "v1",
@@ -67,6 +67,156 @@
           }
         ],
         "implementationNotes": "kanban: gh3sgu"
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "5hakbo",
+      "version": 3,
+      "timestamp": "2026-04-08T04:36:07.638Z",
+      "changes": [
+        {
+          "field": "labels",
+          "oldValue": [
+            "sketch",
+            "design"
+          ],
+          "newValue": [
+            "design-required"
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Sketch the character selection / briefing screen layout",
+        "description": "Before each daily mission, players see a character briefing. Sketch the layout of this screen — portrait, character name, arc progress indicator, briefing expression, and start button.",
+        "status": "todo",
+        "priority": "medium",
+        "assignee": "@Liam",
+        "labels": [
+          "design-required"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Layout sketch complete"
+          },
+          {
+            "completed": false,
+            "text": "Key UI zones identified"
+          }
+        ],
+        "implementationNotes": "kanban: gh3sgu"
+      }
+    },
+    {
+      "id": "v4",
+      "taskId": "5hakbo",
+      "version": 4,
+      "timestamp": "2026-04-08T04:42:52.103Z",
+      "changes": [
+        {
+          "field": "priority",
+          "oldValue": "medium",
+          "newValue": "low"
+        }
+      ],
+      "snapshot": {
+        "title": "Sketch the character selection / briefing screen layout",
+        "description": "Before each daily mission, players see a character briefing. Sketch the layout of this screen — portrait, character name, arc progress indicator, briefing expression, and start button.",
+        "status": "todo",
+        "priority": "low",
+        "assignee": "@Liam",
+        "labels": [
+          "design-required"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Layout sketch complete"
+          },
+          {
+            "completed": false,
+            "text": "Key UI zones identified"
+          }
+        ],
+        "implementationNotes": "kanban: gh3sgu"
+      }
+    },
+    {
+      "id": "v5",
+      "taskId": "5hakbo",
+      "version": 5,
+      "timestamp": "2026-04-08T10:49:34.053Z",
+      "changes": [
+        {
+          "field": "labels",
+          "oldValue": [
+            "design-required"
+          ],
+          "newValue": [
+            "needs-liam"
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Sketch the character selection / briefing screen layout",
+        "description": "Before each daily mission, players see a character briefing. Sketch the layout of this screen — portrait, character name, arc progress indicator, briefing expression, and start button.",
+        "status": "todo",
+        "priority": "low",
+        "assignee": "@Liam",
+        "labels": [
+          "needs-liam"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Layout sketch complete"
+          },
+          {
+            "completed": false,
+            "text": "Key UI zones identified"
+          }
+        ],
+        "implementationNotes": "kanban: gh3sgu"
+      }
+    },
+    {
+      "id": "v6",
+      "taskId": "5hakbo",
+      "version": 6,
+      "timestamp": "2026-04-09T03:31:15.541Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "blocked"
+        },
+        {
+          "field": "implementationNotes",
+          "oldValue": "kanban: gh3sgu",
+          "newValue": "kanban: gh3sgu\n\nArchived pre-MVP (2026-04-09). Restore to todo on 2026-04-13."
+        }
+      ],
+      "snapshot": {
+        "title": "Sketch the character selection / briefing screen layout",
+        "description": "Before each daily mission, players see a character briefing. Sketch the layout of this screen — portrait, character name, arc progress indicator, briefing expression, and start button.",
+        "status": "blocked",
+        "priority": "low",
+        "assignee": "@Liam",
+        "labels": [
+          "needs-liam"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Layout sketch complete"
+          },
+          {
+            "completed": false,
+            "text": "Key UI zones identified"
+          }
+        ],
+        "implementationNotes": "kanban: gh3sgu\n\nArchived pre-MVP (2026-04-09). Restore to todo on 2026-04-13."
       }
     }
   ]

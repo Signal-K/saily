@@ -1,0 +1,90 @@
+{
+  "taskId": "54p88y",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "54p88y",
+      "version": 1,
+      "timestamp": "2026-04-08T11:03:34.819Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "Leaderboard page shows top 50 players by total_score"
+            },
+            {
+              "completed": false,
+              "text": "Logged-in user's row is highlighted"
+            },
+            {
+              "completed": false,
+              "text": "Page is accessible without login (public)"
+            },
+            {
+              "completed": false,
+              "text": "user_stats has index on total_score for the query"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "Leaderboard page shows top 50 players by total_score"
+            },
+            {
+              "completed": true,
+              "text": "Logged-in user's row is highlighted"
+            },
+            {
+              "completed": true,
+              "text": "Page is accessible without login (public)"
+            },
+            {
+              "completed": true,
+              "text": "user_stats has index on total_score for the query"
+            }
+          ]
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Created web/src/app/leaderboard/page.tsx — server component, queries user_stats joined with profiles, top 50 by total_score desc. Logged-in user row highlighted. Public (no auth required). Index on user_stats(total_score desc) added in migration 20260408210000."
+        }
+      ],
+      "snapshot": {
+        "title": "Add leaderboard page",
+        "description": "The spec calls for global leaderboards based on score/XP. The user_stats table has total_score, wins, current_streak, best_streak. Build a /leaderboard page that shows top players by total_score. Use the existing profile/home page patterns (server component, Supabase query). Show: rank, username, total_score, current_streak. Highlight the logged-in user's row. No new design needed — use existing table/panel styles. RLS: leaderboard data is public (no user-specific filtering needed). Add a Supabase index on user_stats.total_score DESC if not present.",
+        "status": "done",
+        "priority": "medium",
+        "labels": [
+          "functionality"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Leaderboard page shows top 50 players by total_score"
+          },
+          {
+            "completed": true,
+            "text": "Logged-in user's row is highlighted"
+          },
+          {
+            "completed": true,
+            "text": "Page is accessible without login (public)"
+          },
+          {
+            "completed": true,
+            "text": "user_stats has index on total_score for the query"
+          }
+        ],
+        "implementationNotes": "Created web/src/app/leaderboard/page.tsx — server component, queries user_stats joined with profiles, top 50 by total_score desc. Logged-in user row highlighted. Public (no auth required). Index on user_stats(total_score desc) added in migration 20260408210000."
+      }
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "taskId": "9f4ugu",
+  "currentVersion": 4,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "9f4ugu",
+      "version": 1,
+      "timestamp": "2026-04-08T04:36:09.635Z",
+      "changes": [
+        {
+          "field": "labels",
+          "oldValue": [],
+          "newValue": [
+            "design-required"
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Design and sketch the arc-complete celebration moment",
+        "description": "Sketch the layout and write the UX spec for the arc-complete screen. Headline, supporting line, timing, visual sequence. Restrained puzzle-console aesthetic, not a full cutscene. Merges 8rv9kf + tohsuq (pr392y). Kanban: er5qm8",
+        "status": "todo",
+        "priority": "medium",
+        "assignee": "@Liam",
+        "labels": [
+          "design-required"
+        ],
+        "acceptanceCriteria": []
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "9f4ugu",
+      "version": 2,
+      "timestamp": "2026-04-08T04:42:53.146Z",
+      "changes": [
+        {
+          "field": "priority",
+          "oldValue": "medium",
+          "newValue": "low"
+        }
+      ],
+      "snapshot": {
+        "title": "Design and sketch the arc-complete celebration moment",
+        "description": "Sketch the layout and write the UX spec for the arc-complete screen. Headline, supporting line, timing, visual sequence. Restrained puzzle-console aesthetic, not a full cutscene. Merges 8rv9kf + tohsuq (pr392y). Kanban: er5qm8",
+        "status": "todo",
+        "priority": "low",
+        "assignee": "@Liam",
+        "labels": [
+          "design-required"
+        ],
+        "acceptanceCriteria": []
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "9f4ugu",
+      "version": 3,
+      "timestamp": "2026-04-08T10:49:34.561Z",
+      "changes": [
+        {
+          "field": "labels",
+          "oldValue": [
+            "design-required"
+          ],
+          "newValue": [
+            "needs-liam"
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Design and sketch the arc-complete celebration moment",
+        "description": "Sketch the layout and write the UX spec for the arc-complete screen. Headline, supporting line, timing, visual sequence. Restrained puzzle-console aesthetic, not a full cutscene. Merges 8rv9kf + tohsuq (pr392y). Kanban: er5qm8",
+        "status": "todo",
+        "priority": "low",
+        "assignee": "@Liam",
+        "labels": [
+          "needs-liam"
+        ],
+        "acceptanceCriteria": []
+      }
+    },
+    {
+      "id": "v4",
+      "taskId": "9f4ugu",
+      "version": 4,
+      "timestamp": "2026-04-09T03:31:19.656Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "blocked"
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Archived pre-MVP (2026-04-09). Restore to todo on 2026-04-13."
+        }
+      ],
+      "snapshot": {
+        "title": "Design and sketch the arc-complete celebration moment",
+        "description": "Sketch the layout and write the UX spec for the arc-complete screen. Headline, supporting line, timing, visual sequence. Restrained puzzle-console aesthetic, not a full cutscene. Merges 8rv9kf + tohsuq (pr392y). Kanban: er5qm8",
+        "status": "blocked",
+        "priority": "low",
+        "assignee": "@Liam",
+        "labels": [
+          "needs-liam"
+        ],
+        "acceptanceCriteria": [],
+        "implementationNotes": "Archived pre-MVP (2026-04-09). Restore to todo on 2026-04-13."
+      }
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "taskId": "41rpck",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "41rpck",
+      "version": 1,
+      "timestamp": "2026-04-08T11:03:23.548Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "Home page shows 'Already played today' state with score when user has played"
+            },
+            {
+              "completed": false,
+              "text": "Home page shows chapter progress (e.g. Chapter 2 of 5) for active storyline"
+            },
+            {
+              "completed": false,
+              "text": "Home page shows tomorrow's character as a teaser"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "Home page shows 'Already played today' state with score when user has played"
+            },
+            {
+              "completed": true,
+              "text": "Home page shows chapter progress (e.g. Chapter 2 of 5) for active storyline"
+            },
+            {
+              "completed": true,
+              "text": "Home page shows tomorrow's character as a teaser"
+            }
+          ]
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Updated home-page.tsx: added todayPlay query (daily_plays for today) and storyProgressRes query (user_story_progress for active storyline). Shows 'Mission complete — score X' + 'See Results' CTA when played, normal CTA otherwise. Chapter progress shown in subtitle (Chapter N of M). Tomorrow's character/storyline teaser added below CTAs."
+        }
+      ],
+      "snapshot": {
+        "title": "Improve home hub: show today's mission status and next storyline preview",
+        "description": "The home page (web/src/components/pages/home-page.tsx) shows the current storyline and character. Improve it to: (1) clearly show whether the user has already played today (played = show score + 'See results' CTA, not played = show 'Play now' CTA), (2) show which storyline is active tomorrow as a teaser (use getStorylineForDate with tomorrow's date), (3) show the user's chapter progress within the active storyline (e.g. 'Chapter 3 of 5'). All data is already available via existing Supabase queries on the page — this is a UI/logic improvement, no new APIs needed.",
+        "status": "done",
+        "priority": "medium",
+        "labels": [
+          "functionality"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Home page shows 'Already played today' state with score when user has played"
+          },
+          {
+            "completed": true,
+            "text": "Home page shows chapter progress (e.g. Chapter 2 of 5) for active storyline"
+          },
+          {
+            "completed": true,
+            "text": "Home page shows tomorrow's character as a teaser"
+          }
+        ],
+        "implementationNotes": "Updated home-page.tsx: added todayPlay query (daily_plays for today) and storyProgressRes query (user_story_progress for active storyline). Shows 'Mission complete — score X' + 'See Results' CTA when played, normal CTA otherwise. Chapter progress shown in subtitle (Chapter N of M). Tomorrow's character/storyline teaser added below CTAs."
+      }
+    }
+  ]
+}

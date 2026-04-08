@@ -92,4 +92,69 @@ describe("Streak Repair", () => {
     cy.contains("You need 1 Data Chip to repair your streak, but you have 0").should("be.visible");
     cy.contains("button", "Repair Streak (-1 Chip)").should("not.exist");
   });
+
+  it("repair button calls RPC and dismisses prompt on success", () => {
+    cy.intercept("GET", "/api/game/today*", {
+      statusCode: 200,
+      body: {
+        date: todayStr,
+        user: { id: "test-user" },
+        access: { allowed: true, isToday: true },
+        anomaly: { id: 1, ticId: "123", label: "Mock", lightcurve: [] },
+        anomalies: [{ id: 1, ticId: "123", label: "Mock", lightcurve: [] }],
+      },
+    }).as("todayGameRepair");
+
+    cy.intercept("GET", "**/rest/v1/daily_plays*", {
+      statusCode: 200,
+      body: [{ game_date: dayBeforeStr }],
+    }).as("fetchPlaysRepair");
+
+    cy.intercept("GET", "**/rest/v1/profiles*", {
+      statusCode: 200,
+      body: [{ data_chips: 3 }],
+    }).as("fetchProfileRepair");
+
+    cy.intercept("POST", "**/rest/v1/rpc/repair_streak*", {
+      statusCode: 200,
+      body: true,
+    }).as("repairRpc");
+
+    cy.visit(`/games/today?date=${todayStr}`);
+    cy.wait("@todayGameRepair");
+    cy.contains("button", "Begin Mission").click();
+
+    cy.contains("Streak Broken!", { timeout: 10000 }).should("be.visible");
+    cy.contains("button", "Repair Streak (-1 Chip)").click();
+
+    cy.wait("@repairRpc");
+    cy.contains("Streak Broken!").should("not.exist");
+  });
+
+  it("does not show repair prompt when yesterday was played", () => {
+    cy.intercept("GET", "/api/game/today*", {
+      statusCode: 200,
+      body: {
+        date: todayStr,
+        user: { id: "test-user" },
+        access: { allowed: true, isToday: true },
+        anomaly: { id: 1, ticId: "123", label: "Mock", lightcurve: [] },
+        anomalies: [{ id: 1, ticId: "123", label: "Mock", lightcurve: [] }],
+      },
+    }).as("todayGamePlayed");
+
+    cy.intercept("GET", "**/rest/v1/daily_plays*", {
+      statusCode: 200,
+      body: [{ game_date: yesterdayStr }],
+    }).as("fetchPlaysPlayed");
+
+    cy.visit(`/games/today?date=${todayStr}`);
+    cy.wait("@todayGamePlayed");
+    cy.contains("button", "Begin Mission").click();
+
+    cy.contains("Loading daily anomaly...").should("not.exist");
+    // Give the component time to check repair status
+    cy.wait(500);
+    cy.contains("Streak Broken!").should("not.exist");
+  });
 });

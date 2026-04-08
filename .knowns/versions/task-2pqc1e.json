@@ -1,6 +1,6 @@
 {
   "taskId": "2pqc1e",
-  "currentVersion": 3,
+  "currentVersion": 7,
   "versions": [
     {
       "id": "v1",
@@ -150,6 +150,169 @@
             "completed": false
           }
         ]
+      }
+    },
+    {
+      "id": "v4",
+      "taskId": "2pqc1e",
+      "version": 4,
+      "timestamp": "2026-04-08T04:37:41.174Z",
+      "changes": [
+        {
+          "field": "labels",
+          "oldValue": [
+            "narrative",
+            "story",
+            "writing"
+          ],
+          "newValue": [
+            "narrative"
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Draft Story Arc 2 chapter outlines for one character (chapters 6–10)",
+        "description": "Pick one of the 4 characters and outline their second arc. 5 chapters (6–10). Per chapter: a 2–3 sentence scene summary, the core choice or tension, and what the character is feeling or deciding. This becomes the brief for writing the full arc. ~2–3h. Don't write full dialogue — just the skeleton.",
+        "status": "todo",
+        "priority": "medium",
+        "assignee": "Liam",
+        "labels": [
+          "narrative"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "One character chosen and documented"
+          },
+          {
+            "completed": false,
+            "text": "5 chapter outlines written (scene summary, tension/choice, emotional tone per chapter)"
+          },
+          {
+            "completed": false,
+            "text": "Each chapter has briefing text and resolution text sketched out"
+          }
+        ]
+      }
+    },
+    {
+      "id": "v5",
+      "taskId": "2pqc1e",
+      "version": 5,
+      "timestamp": "2026-04-08T04:42:54.607Z",
+      "changes": [
+        {
+          "field": "priority",
+          "oldValue": "medium",
+          "newValue": "low"
+        }
+      ],
+      "snapshot": {
+        "title": "Draft Story Arc 2 chapter outlines for one character (chapters 6–10)",
+        "description": "Pick one of the 4 characters and outline their second arc. 5 chapters (6–10). Per chapter: a 2–3 sentence scene summary, the core choice or tension, and what the character is feeling or deciding. This becomes the brief for writing the full arc. ~2–3h. Don't write full dialogue — just the skeleton.",
+        "status": "todo",
+        "priority": "low",
+        "assignee": "Liam",
+        "labels": [
+          "narrative"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "One character chosen and documented"
+          },
+          {
+            "completed": false,
+            "text": "5 chapter outlines written (scene summary, tension/choice, emotional tone per chapter)"
+          },
+          {
+            "completed": false,
+            "text": "Each chapter has briefing text and resolution text sketched out"
+          }
+        ]
+      }
+    },
+    {
+      "id": "v6",
+      "taskId": "2pqc1e",
+      "version": 6,
+      "timestamp": "2026-04-08T10:49:36.658Z",
+      "changes": [
+        {
+          "field": "labels",
+          "oldValue": [
+            "narrative"
+          ],
+          "newValue": [
+            "needs-liam"
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Draft Story Arc 2 chapter outlines for one character (chapters 6–10)",
+        "description": "Pick one of the 4 characters and outline their second arc. 5 chapters (6–10). Per chapter: a 2–3 sentence scene summary, the core choice or tension, and what the character is feeling or deciding. This becomes the brief for writing the full arc. ~2–3h. Don't write full dialogue — just the skeleton.",
+        "status": "todo",
+        "priority": "low",
+        "assignee": "Liam",
+        "labels": [
+          "needs-liam"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "One character chosen and documented"
+          },
+          {
+            "completed": false,
+            "text": "5 chapter outlines written (scene summary, tension/choice, emotional tone per chapter)"
+          },
+          {
+            "completed": false,
+            "text": "Each chapter has briefing text and resolution text sketched out"
+          }
+        ]
+      }
+    },
+    {
+      "id": "v7",
+      "taskId": "2pqc1e",
+      "version": 7,
+      "timestamp": "2026-04-09T03:31:14.540Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "blocked"
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Archived pre-MVP (2026-04-09). Restore to todo on 2026-04-13."
+        }
+      ],
+      "snapshot": {
+        "title": "Draft Story Arc 2 chapter outlines for one character (chapters 6–10)",
+        "description": "Pick one of the 4 characters and outline their second arc. 5 chapters (6–10). Per chapter: a 2–3 sentence scene summary, the core choice or tension, and what the character is feeling or deciding. This becomes the brief for writing the full arc. ~2–3h. Don't write full dialogue — just the skeleton.",
+        "status": "blocked",
+        "priority": "low",
+        "assignee": "Liam",
+        "labels": [
+          "needs-liam"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "One character chosen and documented"
+          },
+          {
+            "completed": false,
+            "text": "5 chapter outlines written (scene summary, tension/choice, emotional tone per chapter)"
+          },
+          {
+            "completed": false,
+            "text": "Each chapter has briefing text and resolution text sketched out"
+          }
+        ],
+        "implementationNotes": "Archived pre-MVP (2026-04-09). Restore to todo on 2026-04-13."
       }
     }
   ]

@@ -7,7 +7,7 @@ import {
   getInsightPuzzle,
   parseInsightFeed,
   scoreInsightWindow,
-} from "./insight";
+} from "../insight";
 
 describe("insight puzzle generation", () => {
   it("returns a stable 7-sol puzzle for a given date", () => {

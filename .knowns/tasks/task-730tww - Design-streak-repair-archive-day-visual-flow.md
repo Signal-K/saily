@@ -1,14 +1,12 @@
 ---
 id: 730tww
 title: Design streak-repair / archive day visual flow
-status: todo
-priority: medium
+status: blocked
+priority: low
 labels:
-  - sketch
-  - design
-  - ux-copy
+  - needs-liam
 createdAt: '2026-03-30T11:44:42.502Z'
-updatedAt: '2026-03-30T11:44:55.641Z'
+updatedAt: '2026-04-09T03:31:16.474Z'
 timeSpent: 0
 assignee: '@Liam'
 ---
@@ -26,4 +24,10 @@ Players can repair broken streaks by accessing archive days. This is a meaningfu
 - [ ] #2 Streak-repair success moment specced (copy + visual direction)
 - [ ] #3 Differences from normal mission-complete are clearly defined
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Archived pre-MVP (2026-04-09). Restore to todo on 2026-04-13.
+<!-- SECTION:NOTES:END -->
 

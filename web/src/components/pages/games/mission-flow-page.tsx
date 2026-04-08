@@ -76,6 +76,8 @@ export default function MissionFlowPage() {
         if (gameRes.ok) {
           const gamePayload = (await gameRes.json()) as { access?: MissionAccess };
           setAccess(gamePayload.access ?? null);
+        } else {
+          console.error("Failed to load mission access:", await gameRes.text());
         }
 
         const res = await fetch(`/api/story/progress?storylineId=${storyline.id}`, {
@@ -84,9 +86,14 @@ export default function MissionFlowPage() {
         if (res.ok) {
           const payload = (await res.json()) as { chapterIndex?: number };
           setChapterIndex(payload.chapterIndex ?? 0);
+        } else {
+          // If 401/unauthenticated, we just stay at chapter 0 silently.
+          if (res.status !== 401) {
+            console.error("Failed to load story progress:", await res.text());
+          }
         }
-      } catch {
-        // Unauthenticated or network error — start at chapter 0.
+      } catch (err) {
+        console.error("Network error during mission initialization:", err);
       }
       setStage("briefing");
     }
@@ -130,6 +137,21 @@ export default function MissionFlowPage() {
 
     if (access?.isToday ?? true) {
       try {
+        // Record the daily play and update streak/stats for the full mission.
+        const completedPuzzles = gameOrder.length;
+        const res = await fetch("/api/game/complete", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ completedPuzzles, date: missionDate }),
+        });
+        if (!res.ok) {
+          console.error("Failed to record daily game completion:", await res.text());
+        }
+      } catch (err) {
+        console.error("Network error recording daily game completion:", err);
+      }
+
+      try {
         const res = await fetch("/api/story/progress", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -139,9 +161,11 @@ export default function MissionFlowPage() {
           const payload = (await res.json()) as { awardedChips?: number; referralCode?: string };
           setAwardedChips(payload.awardedChips ?? 0);
           setReferralCode(payload.referralCode ?? null);
+        } else {
+          console.error("Failed to advance story progress:", await res.text());
         }
-      } catch {
-        // Non-fatal — progress still shows complete UI.
+      } catch (err) {
+        console.error("Network error advancing story progress:", err);
       }
     }
 

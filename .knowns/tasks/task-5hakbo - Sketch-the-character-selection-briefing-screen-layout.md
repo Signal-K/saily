@@ -1,13 +1,12 @@
 ---
 id: 5hakbo
 title: Sketch the character selection / briefing screen layout
-status: todo
-priority: medium
+status: blocked
+priority: low
 labels:
-  - sketch
-  - design
+  - needs-liam
 createdAt: '2026-03-26T02:31:22.859Z'
-updatedAt: '2026-03-28T04:15:52.018Z'
+updatedAt: '2026-04-09T03:31:15.541Z'
 timeSpent: 0
 assignee: '@Liam'
 ---
@@ -29,5 +28,7 @@ Before each daily mission, players see a character briefing. Sketch the layout o
 
 <!-- SECTION:NOTES:BEGIN -->
 kanban: gh3sgu
+
+Archived pre-MVP (2026-04-09). Restore to todo on 2026-04-13.
 <!-- SECTION:NOTES:END -->
 

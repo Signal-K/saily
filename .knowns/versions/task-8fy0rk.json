@@ -1,6 +1,6 @@
 {
   "taskId": "8fy0rk",
-  "currentVersion": 1,
+  "currentVersion": 5,
   "versions": [
     {
       "id": "v1",
@@ -39,6 +39,170 @@
             "text": "Maps copy targets to the existing InSight mission UI components"
           }
         ]
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "8fy0rk",
+      "version": 2,
+      "timestamp": "2026-04-08T04:36:08.930Z",
+      "changes": [
+        {
+          "field": "labels",
+          "oldValue": [
+            "creative",
+            "ux-copy",
+            "science",
+            "insight"
+          ],
+          "newValue": [
+            "design-required"
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Design InSight Weather Desk explanation and result copy",
+        "description": "Write the concise explainer, helper text, and result-state copy that clarifies what InSight data the player is reviewing, what counts as an anomaly, and why the anomaly flag matters scientifically and in the Star Sailors fiction. Should fit the restrained Saily console aesthetic and plug into the Weather Desk mission surface.",
+        "status": "todo",
+        "priority": "medium",
+        "assignee": "@Liam",
+        "labels": [
+          "design-required"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Includes pre-play explainer, action hint, and post-submit result copy"
+          },
+          {
+            "completed": false,
+            "text": "Explains the scientific value of anomaly flagging without overstating certainty"
+          },
+          {
+            "completed": false,
+            "text": "Maps copy targets to the existing InSight mission UI components"
+          }
+        ]
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "8fy0rk",
+      "version": 3,
+      "timestamp": "2026-04-08T04:42:52.623Z",
+      "changes": [
+        {
+          "field": "priority",
+          "oldValue": "medium",
+          "newValue": "low"
+        }
+      ],
+      "snapshot": {
+        "title": "Design InSight Weather Desk explanation and result copy",
+        "description": "Write the concise explainer, helper text, and result-state copy that clarifies what InSight data the player is reviewing, what counts as an anomaly, and why the anomaly flag matters scientifically and in the Star Sailors fiction. Should fit the restrained Saily console aesthetic and plug into the Weather Desk mission surface.",
+        "status": "todo",
+        "priority": "low",
+        "assignee": "@Liam",
+        "labels": [
+          "design-required"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Includes pre-play explainer, action hint, and post-submit result copy"
+          },
+          {
+            "completed": false,
+            "text": "Explains the scientific value of anomaly flagging without overstating certainty"
+          },
+          {
+            "completed": false,
+            "text": "Maps copy targets to the existing InSight mission UI components"
+          }
+        ]
+      }
+    },
+    {
+      "id": "v4",
+      "taskId": "8fy0rk",
+      "version": 4,
+      "timestamp": "2026-04-08T10:49:35.599Z",
+      "changes": [
+        {
+          "field": "labels",
+          "oldValue": [
+            "design-required"
+          ],
+          "newValue": [
+            "needs-liam"
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Design InSight Weather Desk explanation and result copy",
+        "description": "Write the concise explainer, helper text, and result-state copy that clarifies what InSight data the player is reviewing, what counts as an anomaly, and why the anomaly flag matters scientifically and in the Star Sailors fiction. Should fit the restrained Saily console aesthetic and plug into the Weather Desk mission surface.",
+        "status": "todo",
+        "priority": "low",
+        "assignee": "@Liam",
+        "labels": [
+          "needs-liam"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Includes pre-play explainer, action hint, and post-submit result copy"
+          },
+          {
+            "completed": false,
+            "text": "Explains the scientific value of anomaly flagging without overstating certainty"
+          },
+          {
+            "completed": false,
+            "text": "Maps copy targets to the existing InSight mission UI components"
+          }
+        ]
+      }
+    },
+    {
+      "id": "v5",
+      "taskId": "8fy0rk",
+      "version": 5,
+      "timestamp": "2026-04-09T03:31:17.409Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "blocked"
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Archived pre-MVP (2026-04-09). Restore to todo on 2026-04-13."
+        }
+      ],
+      "snapshot": {
+        "title": "Design InSight Weather Desk explanation and result copy",
+        "description": "Write the concise explainer, helper text, and result-state copy that clarifies what InSight data the player is reviewing, what counts as an anomaly, and why the anomaly flag matters scientifically and in the Star Sailors fiction. Should fit the restrained Saily console aesthetic and plug into the Weather Desk mission surface.",
+        "status": "blocked",
+        "priority": "low",
+        "assignee": "@Liam",
+        "labels": [
+          "needs-liam"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Includes pre-play explainer, action hint, and post-submit result copy"
+          },
+          {
+            "completed": false,
+            "text": "Explains the scientific value of anomaly flagging without overstating certainty"
+          },
+          {
+            "completed": false,
+            "text": "Maps copy targets to the existing InSight mission UI components"
+          }
+        ],
+        "implementationNotes": "Archived pre-MVP (2026-04-09). Restore to todo on 2026-04-13."
       }
     }
   ]

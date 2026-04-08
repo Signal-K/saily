@@ -1,0 +1,146 @@
+{
+  "taskId": "miadz1",
+  "currentVersion": 2,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "miadz1",
+      "version": 1,
+      "timestamp": "2026-04-08T10:48:37.599Z",
+      "changes": [
+        {
+          "field": "description",
+          "oldValue": "Improve the 'tour' script to automatically validate narrative consistency on PRs.",
+          "newValue": "The 'tour' script (check scripts/ or Makefile for 'tour' target) runs a headless walkthrough of the app. Enhance it to also validate: (1) all 4 storylines have 5 chapters with non-empty briefing/beat1/beat2/resolution, (2) all character avatarSeeds resolve to a valid DiceBear URL, (3) the daily anomaly API returns a valid response. Add a make target or CI step that runs this on PRs. See Makefile and .github/ for existing CI config."
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "Tour script detects broken narrative paths"
+            },
+            {
+              "completed": false,
+              "text": "Integrated into CI/CD"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": false,
+              "text": "Tour script detects broken narrative paths"
+            },
+            {
+              "completed": false,
+              "text": "Integrated into CI/CD"
+            },
+            {
+              "text": "Tour script validates storyline completeness (all required fields non-empty)",
+              "completed": false
+            },
+            {
+              "text": "Tour script validates avatar seeds produce valid URLs",
+              "completed": false
+            },
+            {
+              "text": "Tour script exits non-zero on validation failure",
+              "completed": false
+            },
+            {
+              "text": "CI runs the validation step on PRs",
+              "completed": false
+            }
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Enhance 'tour' script for automated validation",
+        "description": "The 'tour' script (check scripts/ or Makefile for 'tour' target) runs a headless walkthrough of the app. Enhance it to also validate: (1) all 4 storylines have 5 chapters with non-empty briefing/beat1/beat2/resolution, (2) all character avatarSeeds resolve to a valid DiceBear URL, (3) the daily anomaly API returns a valid response. Add a make target or CI step that runs this on PRs. See Makefile and .github/ for existing CI config.",
+        "status": "todo",
+        "priority": "medium",
+        "labels": [
+          "functionality"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Tour script detects broken narrative paths"
+          },
+          {
+            "completed": false,
+            "text": "Integrated into CI/CD"
+          },
+          {
+            "text": "Tour script validates storyline completeness (all required fields non-empty)",
+            "completed": false
+          },
+          {
+            "text": "Tour script validates avatar seeds produce valid URLs",
+            "completed": false
+          },
+          {
+            "text": "Tour script exits non-zero on validation failure",
+            "completed": false
+          },
+          {
+            "text": "CI runs the validation step on PRs",
+            "completed": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "miadz1",
+      "version": 2,
+      "timestamp": "2026-04-09T03:31:22.628Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "blocked"
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Archived pre-MVP (2026-04-09). Tour run manually for MVP. Restore to todo on 2026-04-13."
+        }
+      ],
+      "snapshot": {
+        "title": "Enhance 'tour' script for automated validation",
+        "description": "The 'tour' script (check scripts/ or Makefile for 'tour' target) runs a headless walkthrough of the app. Enhance it to also validate: (1) all 4 storylines have 5 chapters with non-empty briefing/beat1/beat2/resolution, (2) all character avatarSeeds resolve to a valid DiceBear URL, (3) the daily anomaly API returns a valid response. Add a make target or CI step that runs this on PRs. See Makefile and .github/ for existing CI config.",
+        "status": "blocked",
+        "priority": "medium",
+        "labels": [
+          "functionality"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Tour script detects broken narrative paths"
+          },
+          {
+            "completed": false,
+            "text": "Integrated into CI/CD"
+          },
+          {
+            "completed": false,
+            "text": "Tour script validates storyline completeness (all required fields non-empty)"
+          },
+          {
+            "completed": false,
+            "text": "Tour script validates avatar seeds produce valid URLs"
+          },
+          {
+            "completed": false,
+            "text": "Tour script exits non-zero on validation failure"
+          },
+          {
+            "completed": false,
+            "text": "CI runs the validation step on PRs"
+          }
+        ],
+        "implementationNotes": "Archived pre-MVP (2026-04-09). Tour run manually for MVP. Restore to todo on 2026-04-13."
+      }
+    }
+  ]
+}

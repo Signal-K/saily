@@ -1,6 +1,6 @@
 {
   "taskId": "uq7odn",
-  "currentVersion": 1,
+  "currentVersion": 5,
   "versions": [
     {
       "id": "v1",
@@ -60,6 +60,185 @@
             "completed": false
           }
         ]
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "uq7odn",
+      "version": 2,
+      "timestamp": "2026-04-08T04:37:43.006Z",
+      "changes": [
+        {
+          "field": "labels",
+          "oldValue": [
+            "creative",
+            "writing",
+            "narrative"
+          ],
+          "newValue": [
+            "narrative"
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Write character science-reaction lines",
+        "description": "When a player annotates a notable science target (e.g. flags a transit signal on a TESS lightcurve, marks an anomaly on Mars, or logs a weather anomaly on InSight), the character could react with a short in-universe line. Design the trigger conditions and write 1–2 reaction lines per character per mission type. These would render as a brief narrative beat after game submission, before the next beat.",
+        "status": "todo",
+        "priority": "medium",
+        "assignee": "@Liam",
+        "labels": [
+          "narrative"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Trigger conditions defined per mission type (what counts as notable)"
+          },
+          {
+            "completed": false,
+            "text": "1–2 lines written per character per mission type (4 characters × 4 types = 16 reactions minimum)"
+          },
+          {
+            "completed": false,
+            "text": "Tone matches each character's established voice"
+          },
+          {
+            "completed": false,
+            "text": "Format ready to drop into mission flow as optional beat"
+          }
+        ]
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "uq7odn",
+      "version": 3,
+      "timestamp": "2026-04-08T04:42:56.448Z",
+      "changes": [
+        {
+          "field": "priority",
+          "oldValue": "medium",
+          "newValue": "low"
+        }
+      ],
+      "snapshot": {
+        "title": "Write character science-reaction lines",
+        "description": "When a player annotates a notable science target (e.g. flags a transit signal on a TESS lightcurve, marks an anomaly on Mars, or logs a weather anomaly on InSight), the character could react with a short in-universe line. Design the trigger conditions and write 1–2 reaction lines per character per mission type. These would render as a brief narrative beat after game submission, before the next beat.",
+        "status": "todo",
+        "priority": "low",
+        "assignee": "@Liam",
+        "labels": [
+          "narrative"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Trigger conditions defined per mission type (what counts as notable)"
+          },
+          {
+            "completed": false,
+            "text": "1–2 lines written per character per mission type (4 characters × 4 types = 16 reactions minimum)"
+          },
+          {
+            "completed": false,
+            "text": "Tone matches each character's established voice"
+          },
+          {
+            "completed": false,
+            "text": "Format ready to drop into mission flow as optional beat"
+          }
+        ]
+      }
+    },
+    {
+      "id": "v4",
+      "taskId": "uq7odn",
+      "version": 4,
+      "timestamp": "2026-04-08T10:49:37.656Z",
+      "changes": [
+        {
+          "field": "labels",
+          "oldValue": [
+            "narrative"
+          ],
+          "newValue": [
+            "needs-liam"
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Write character science-reaction lines",
+        "description": "When a player annotates a notable science target (e.g. flags a transit signal on a TESS lightcurve, marks an anomaly on Mars, or logs a weather anomaly on InSight), the character could react with a short in-universe line. Design the trigger conditions and write 1–2 reaction lines per character per mission type. These would render as a brief narrative beat after game submission, before the next beat.",
+        "status": "todo",
+        "priority": "low",
+        "assignee": "@Liam",
+        "labels": [
+          "needs-liam"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Trigger conditions defined per mission type (what counts as notable)"
+          },
+          {
+            "completed": false,
+            "text": "1–2 lines written per character per mission type (4 characters × 4 types = 16 reactions minimum)"
+          },
+          {
+            "completed": false,
+            "text": "Tone matches each character's established voice"
+          },
+          {
+            "completed": false,
+            "text": "Format ready to drop into mission flow as optional beat"
+          }
+        ]
+      }
+    },
+    {
+      "id": "v5",
+      "taskId": "uq7odn",
+      "version": 5,
+      "timestamp": "2026-04-09T03:31:26.260Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "blocked"
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Archived pre-MVP (2026-04-09). Restore to todo on 2026-04-13."
+        }
+      ],
+      "snapshot": {
+        "title": "Write character science-reaction lines",
+        "description": "When a player annotates a notable science target (e.g. flags a transit signal on a TESS lightcurve, marks an anomaly on Mars, or logs a weather anomaly on InSight), the character could react with a short in-universe line. Design the trigger conditions and write 1–2 reaction lines per character per mission type. These would render as a brief narrative beat after game submission, before the next beat.",
+        "status": "blocked",
+        "priority": "low",
+        "assignee": "@Liam",
+        "labels": [
+          "needs-liam"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Trigger conditions defined per mission type (what counts as notable)"
+          },
+          {
+            "completed": false,
+            "text": "1–2 lines written per character per mission type (4 characters × 4 types = 16 reactions minimum)"
+          },
+          {
+            "completed": false,
+            "text": "Tone matches each character's established voice"
+          },
+          {
+            "completed": false,
+            "text": "Format ready to drop into mission flow as optional beat"
+          }
+        ],
+        "implementationNotes": "Archived pre-MVP (2026-04-09). Restore to todo on 2026-04-13."
       }
     }
   ]

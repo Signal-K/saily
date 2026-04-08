@@ -1,14 +1,12 @@
 ---
 id: uq7odn
 title: Write character science-reaction lines
-status: todo
-priority: medium
+status: blocked
+priority: low
 labels:
-  - creative
-  - writing
-  - narrative
+  - needs-liam
 createdAt: '2026-03-30T11:44:42.462Z'
-updatedAt: '2026-03-30T11:44:54.380Z'
+updatedAt: '2026-04-09T03:31:26.260Z'
 timeSpent: 0
 assignee: '@Liam'
 ---
@@ -27,4 +25,10 @@ When a player annotates a notable science target (e.g. flags a transit signal on
 - [ ] #3 Tone matches each character's established voice
 - [ ] #4 Format ready to drop into mission flow as optional beat
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Archived pre-MVP (2026-04-09). Restore to todo on 2026-04-13.
+<!-- SECTION:NOTES:END -->
 

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { getStorylineForDate, getCharacterForStoryline } from "@/lib/mission";
 import { getRobotAvatarDataUri } from "@/lib/avatar";
+import { getMelbourneDateKey } from "@/lib/melbourne-date";
 
 type BadgeRef = {
   name: string;
@@ -37,14 +38,23 @@ function getMissionStatusLabel(streak: number | null | undefined, chips: number 
 
 export default async function Home() {
   const supabase = await createClient();
-  const todayStoryline = getStorylineForDate(new Date());
+  const today = getMelbourneDateKey();
+  const todayDate = new Date();
+  const tomorrowDate = new Date(todayDate);
+  tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+
+  const todayStoryline = getStorylineForDate(todayDate);
   const todayCharacter = getCharacterForStoryline(todayStoryline);
   const todayAvatarSrc = getRobotAvatarDataUri(todayCharacter.avatarSeed, 64);
+
+  const tomorrowStoryline = getStorylineForDate(tomorrowDate);
+  const tomorrowCharacter = getCharacterForStoryline(tomorrowStoryline);
+  const tomorrowAvatarSrc = getRobotAvatarDataUri(tomorrowCharacter.avatarSeed, 40);
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const [profileRes, statsRes, badgesRes, playsRes, commentsRes] = await Promise.all([
+  const [profileRes, statsRes, badgesRes, playsRes, commentsRes, todayPlayRes, storyProgressRes] = await Promise.all([
     user
       ? supabase.from("profiles").select("data_chips").eq("id", user.id).maybeSingle()
       : Promise.resolve({ data: null }),
@@ -63,6 +73,12 @@ export default async function Home() {
       ? supabase.from("daily_plays").select("game_date,won,score,attempts,played_at").eq("user_id", user.id).order("played_at", { ascending: false }).limit(5)
       : Promise.resolve({ data: [] }),
     supabase.from("comments").select("id,game_date,body,created_at,profiles(username)").order("created_at", { ascending: false }).limit(5),
+    user
+      ? supabase.from("daily_plays").select("score,won").eq("user_id", user.id).eq("game_date", today).maybeSingle()
+      : Promise.resolve({ data: null }),
+    user
+      ? supabase.from("user_story_progress").select("chapter_index").eq("user_id", user.id).eq("storyline_id", todayStoryline.id).maybeSingle()
+      : Promise.resolve({ data: null }),
   ]);
 
   const profile = profileRes.data;
@@ -70,6 +86,10 @@ export default async function Home() {
   const badges = (badgesRes.data ?? []).map((row) => (Array.isArray(row.badges) ? row.badges[0] : row.badges)).filter(Boolean) as BadgeRef[];
   const plays = playsRes.data ?? [];
   const comments = (commentsRes.data ?? []) as CommentRow[];
+  const todayPlay = todayPlayRes.data;
+  const chapterIndex = storyProgressRes.data?.chapter_index ?? 0;
+  const chapterNumber = Math.min(chapterIndex + 1, todayStoryline.chapters.length);
+  const playedToday = Boolean(todayPlay);
   const missionStatus = getMissionStatusLabel(stats?.current_streak, profile?.data_chips);
   const missionBars = [stats?.current_streak ?? 0, profile?.data_chips ?? 0, stats?.wins ?? 0, badges.length];
 
@@ -93,20 +113,45 @@ export default async function Home() {
               />
               <div>
                 <h1>{todayStoryline.title}</h1>
-                <p className="muted">{todayCharacter.name} &middot; {todayCharacter.occupation}</p>
+                <p className="muted">
+                  {todayCharacter.name} &middot; {todayCharacter.occupation}
+                  {user && <span className="home-chapter-badge"> &middot; Chapter {chapterNumber} of {todayStoryline.chapters.length}</span>}
+                </p>
               </div>
             </div>
-            <p className="home-mission-desc">Help {todayCharacter.name} solve today&apos;s mystery by classifying real space data.</p>
-            <div className="cta-row">
-              <Link href="/games/today" className="button button-primary button-full">
-                Start Today&apos;s Mission
-              </Link>
-              <Link href="/calendar" className="button">
-                Archive
-              </Link>
-              <Link href="/discuss" className="button">
-                Discuss
-              </Link>
+            {playedToday ? (
+              <>
+                <p className="home-mission-desc home-mission-done">
+                  ✓ Mission complete &mdash; score {todayPlay?.score ?? 0}
+                </p>
+                <div className="cta-row">
+                  <Link href="/games/today" className="button button-primary button-full">
+                    See Results
+                  </Link>
+                  <Link href="/discuss" className="button">
+                    Discuss
+                  </Link>
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="home-mission-desc">Help {todayCharacter.name} solve today&apos;s mystery by classifying real space data.</p>
+                <div className="cta-row">
+                  <Link href="/games/today" className="button button-primary button-full">
+                    Start Today&apos;s Mission
+                  </Link>
+                  <Link href="/calendar" className="button">
+                    Archive
+                  </Link>
+                  <Link href="/discuss" className="button">
+                    Discuss
+                  </Link>
+                </div>
+              </>
+            )}
+            <div className="home-tomorrow-teaser">
+              <Image src={tomorrowAvatarSrc} alt={tomorrowCharacter.name} width={24} height={24} unoptimized className="home-tomorrow-avatar" />
+              <span className="muted">Tomorrow: {tomorrowCharacter.name} &mdash; {tomorrowStoryline.title}</span>
             </div>
           </div>
 

@@ -1,15 +1,12 @@
 ---
 id: 8fy0rk
 title: Design InSight Weather Desk explanation and result copy
-status: todo
-priority: medium
+status: blocked
+priority: low
 labels:
-  - creative
-  - ux-copy
-  - science
-  - insight
+  - needs-liam
 createdAt: '2026-03-26T00:39:38.844Z'
-updatedAt: '2026-03-28T04:15:52.098Z'
+updatedAt: '2026-04-09T03:31:17.408Z'
 timeSpent: 0
 assignee: '@Liam'
 ---
@@ -27,4 +24,10 @@ Write the concise explainer, helper text, and result-state copy that clarifies w
 - [ ] #2 Explains the scientific value of anomaly flagging without overstating certainty
 - [ ] #3 Maps copy targets to the existing InSight mission UI components
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Archived pre-MVP (2026-04-09). Restore to todo on 2026-04-13.
+<!-- SECTION:NOTES:END -->
 

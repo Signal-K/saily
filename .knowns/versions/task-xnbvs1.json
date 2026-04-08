@@ -1,6 +1,6 @@
 {
   "taskId": "xnbvs1",
-  "currentVersion": 1,
+  "currentVersion": 5,
   "versions": [
     {
       "id": "v1",
@@ -52,6 +52,174 @@
             "completed": false
           }
         ]
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "xnbvs1",
+      "version": 2,
+      "timestamp": "2026-04-08T04:36:10.833Z",
+      "changes": [
+        {
+          "field": "labels",
+          "oldValue": [
+            "sketch",
+            "design",
+            "narrative"
+          ],
+          "newValue": [
+            "design-required"
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Design postcard gallery screen",
+        "description": "Collected arc-completion postcards have no home. Design the screen layout and interaction model for a postcard gallery — where it lives in the nav, how postcards are displayed (collected vs. locked), and what tapping one shows. References the existing postcard fields in `lib/storylines.ts` (postcardTitle, postcardMessage). Directly unblocks a gallery implementation ticket.",
+        "status": "todo",
+        "priority": "medium",
+        "assignee": "@Liam",
+        "labels": [
+          "design-required"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Screen layout sketch complete (placement in app, card grid/list, locked state)"
+          },
+          {
+            "completed": false,
+            "text": "Tap/expand interaction described"
+          },
+          {
+            "completed": false,
+            "text": "Empty state (no postcards yet) defined"
+          }
+        ]
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "xnbvs1",
+      "version": 3,
+      "timestamp": "2026-04-08T04:42:54.131Z",
+      "changes": [
+        {
+          "field": "priority",
+          "oldValue": "medium",
+          "newValue": "low"
+        }
+      ],
+      "snapshot": {
+        "title": "Design postcard gallery screen",
+        "description": "Collected arc-completion postcards have no home. Design the screen layout and interaction model for a postcard gallery — where it lives in the nav, how postcards are displayed (collected vs. locked), and what tapping one shows. References the existing postcard fields in `lib/storylines.ts` (postcardTitle, postcardMessage). Directly unblocks a gallery implementation ticket.",
+        "status": "todo",
+        "priority": "low",
+        "assignee": "@Liam",
+        "labels": [
+          "design-required"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Screen layout sketch complete (placement in app, card grid/list, locked state)"
+          },
+          {
+            "completed": false,
+            "text": "Tap/expand interaction described"
+          },
+          {
+            "completed": false,
+            "text": "Empty state (no postcards yet) defined"
+          }
+        ]
+      }
+    },
+    {
+      "id": "v4",
+      "taskId": "xnbvs1",
+      "version": 4,
+      "timestamp": "2026-04-08T10:49:44.743Z",
+      "changes": [
+        {
+          "field": "description",
+          "oldValue": "Collected arc-completion postcards have no home. Design the screen layout and interaction model for a postcard gallery — where it lives in the nav, how postcards are displayed (collected vs. locked), and what tapping one shows. References the existing postcard fields in `lib/storylines.ts` (postcardTitle, postcardMessage). Directly unblocks a gallery implementation ticket.",
+          "newValue": "The postcard data model exists (arc completion awards postcards with a referral code). Build a /postcards page listing all earned postcards for the logged-in user. Each postcard shows: character name, arc title, postcardTitle, postcardMessage, copyable referral code. Reuse the postcard card visual from MissionComplete (web/src/components/mission/mission-complete.tsx). No new design needed."
+        },
+        {
+          "field": "labels",
+          "oldValue": [
+            "design-required"
+          ],
+          "newValue": [
+            "functionality"
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Design postcard gallery screen",
+        "description": "The postcard data model exists (arc completion awards postcards with a referral code). Build a /postcards page listing all earned postcards for the logged-in user. Each postcard shows: character name, arc title, postcardTitle, postcardMessage, copyable referral code. Reuse the postcard card visual from MissionComplete (web/src/components/mission/mission-complete.tsx). No new design needed.",
+        "status": "todo",
+        "priority": "low",
+        "assignee": "@Liam",
+        "labels": [
+          "functionality"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Screen layout sketch complete (placement in app, card grid/list, locked state)"
+          },
+          {
+            "completed": false,
+            "text": "Tap/expand interaction described"
+          },
+          {
+            "completed": false,
+            "text": "Empty state (no postcards yet) defined"
+          }
+        ]
+      }
+    },
+    {
+      "id": "v5",
+      "taskId": "xnbvs1",
+      "version": 5,
+      "timestamp": "2026-04-08T10:49:56.274Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Superseded by task-jbz049 which has full spec and AC."
+        }
+      ],
+      "snapshot": {
+        "title": "Design postcard gallery screen",
+        "description": "The postcard data model exists (arc completion awards postcards with a referral code). Build a /postcards page listing all earned postcards for the logged-in user. Each postcard shows: character name, arc title, postcardTitle, postcardMessage, copyable referral code. Reuse the postcard card visual from MissionComplete (web/src/components/mission/mission-complete.tsx). No new design needed.",
+        "status": "done",
+        "priority": "low",
+        "assignee": "@Liam",
+        "labels": [
+          "functionality"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Screen layout sketch complete (placement in app, card grid/list, locked state)"
+          },
+          {
+            "completed": false,
+            "text": "Tap/expand interaction described"
+          },
+          {
+            "completed": false,
+            "text": "Empty state (no postcards yet) defined"
+          }
+        ],
+        "implementationNotes": "Superseded by task-jbz049 which has full spec and AC."
       }
     }
   ]

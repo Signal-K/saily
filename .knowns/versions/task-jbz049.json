@@ -1,0 +1,103 @@
+{
+  "taskId": "jbz049",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "jbz049",
+      "version": 1,
+      "timestamp": "2026-04-08T11:03:35.280Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "Logged-in user can view all their earned postcards at /postcards or profile"
+            },
+            {
+              "completed": false,
+              "text": "Each postcard shows character, arc title, message, and referral code"
+            },
+            {
+              "completed": false,
+              "text": "Referral code is copyable (copy button)"
+            },
+            {
+              "completed": false,
+              "text": "Empty state shown when no postcards earned yet"
+            },
+            {
+              "completed": false,
+              "text": "Page is accessible to unauthenticated users with a sign-in prompt"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "Logged-in user can view all their earned postcards at /postcards or profile"
+            },
+            {
+              "completed": true,
+              "text": "Each postcard shows character, arc title, message, and referral code"
+            },
+            {
+              "completed": true,
+              "text": "Referral code is copyable (copy button)"
+            },
+            {
+              "completed": true,
+              "text": "Empty state shown when no postcards earned yet"
+            },
+            {
+              "completed": true,
+              "text": "Page is accessible to unauthenticated users with a sign-in prompt"
+            }
+          ]
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Created web/src/app/postcards/page.tsx — server component, reads profiles.completed_storylines, maps to STORYLINES to get postcard content. Shows all earned postcards with title, message, referral code. Redirects to sign-in if unauthenticated. Empty state with CTA if no postcards yet."
+        }
+      ],
+      "snapshot": {
+        "title": "Build postcard gallery screen",
+        "description": "The postcard system is already implemented — postcards are awarded on arc completion and stored with a referral code. There is no screen to view collected postcards. Build /postcards page (or surface it on the profile page) that lists all earned postcards for the logged-in user. Data: query user_story_progress or a postcards table for completed arcs. Each postcard shows: character name, arc title, postcardTitle, postcardMessage, referral code (copyable). The MissionComplete component (web/src/components/mission/mission-complete.tsx) shows the postcard design — reuse that visual style. No new design needed: match the existing postcard card style from mission-complete.",
+        "status": "done",
+        "priority": "medium",
+        "labels": [
+          "functionality",
+          "narrative"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Logged-in user can view all their earned postcards at /postcards or profile"
+          },
+          {
+            "completed": true,
+            "text": "Each postcard shows character, arc title, message, and referral code"
+          },
+          {
+            "completed": true,
+            "text": "Referral code is copyable (copy button)"
+          },
+          {
+            "completed": true,
+            "text": "Empty state shown when no postcards earned yet"
+          },
+          {
+            "completed": true,
+            "text": "Page is accessible to unauthenticated users with a sign-in prompt"
+          }
+        ],
+        "implementationNotes": "Created web/src/app/postcards/page.tsx — server component, reads profiles.completed_storylines, maps to STORYLINES to get postcard content. Shows all earned postcards with title, message, referral code. Redirects to sign-in if unauthenticated. Empty state with CTA if no postcards yet."
+      }
+    }
+  ]
+}

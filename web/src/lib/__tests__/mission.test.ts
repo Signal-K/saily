@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getMissionGameOrder } from "./mission";
+import { getMissionGameOrder } from "../mission";
 
 describe("mission game order", () => {
   it("returns three unique games and can rotate InSight into the mission", () => {

@@ -1,0 +1,48 @@
+{
+  "taskId": "p1hcrx",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "p1hcrx",
+      "version": 1,
+      "timestamp": "2026-04-08T10:53:04.914Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Already implemented: mission-flow-page.tsx calls /api/story/progress with complete-chapter after all 3 games finish, regardless of game type. All 4 game types feed into handleGameComplete() which triggers the progress POST."
+        }
+      ],
+      "snapshot": {
+        "title": "Wire story progress increment for all game types",
+        "description": "Currently story progress (user_story_progress table, /api/story/progress) may only be incremented by the Planet Hunter game path. Verify and fix so that completing Mars, Asteroid, and InSight games also increments the user's chapter progress for the active storyline. The story progress API is at web/src/app/api/story/progress/route.ts. The active storyline is determined by getStorylineForDate (web/src/lib/mission.ts). Each game's completion route is: /api/game/complete (planet), /api/asteroid/submit, /api/mars/classify, /api/insight/submit. This is related to xvb4ki but focused specifically on the story progress increment, not rewards.",
+        "status": "done",
+        "priority": "high",
+        "labels": [
+          "functionality",
+          "narrative"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Completing any of the 4 game types increments story chapter progress"
+          },
+          {
+            "completed": false,
+            "text": "Progress is only incremented once per day per storyline (idempotent)"
+          },
+          {
+            "completed": false,
+            "text": "Arc completion (chapter 4 → 5) triggers the reward flow"
+          }
+        ],
+        "implementationNotes": "Already implemented: mission-flow-page.tsx calls /api/story/progress with complete-chapter after all 3 games finish, regardless of game type. All 4 game types feed into handleGameComplete() which triggers the progress POST."
+      }
+    }
+  ]
+}

@@ -1,0 +1,241 @@
+{
+  "taskId": "49d38s",
+  "currentVersion": 2,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "49d38s",
+      "version": 1,
+      "timestamp": "2026-04-08T10:47:46.406Z",
+      "changes": [
+        {
+          "field": "description",
+          "oldValue": "Review and optimize RLS policies and indexes for 'anomalies' and 'submissions' tables.",
+          "newValue": "Review RLS policies and indexes for the anomalies, submissions (anomaly_submissions), mars_classifications, and user_story_progress tables. The migrations are in supabase/migrations/. Key query patterns: (1) daily anomaly lookup by date, (2) user submission lookup by user_id + game_date, (3) story progress by user_id + storyline_id. Add missing indexes and verify RLS policies don't do full table scans (use auth.uid() not joins where possible)."
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "RLS policies are performant"
+            },
+            {
+              "completed": false,
+              "text": "Indexes cover all common query patterns"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": false,
+              "text": "RLS policies are performant"
+            },
+            {
+              "completed": false,
+              "text": "Indexes cover all common query patterns"
+            },
+            {
+              "text": "anomalies table has index on game_date or equivalent daily lookup column",
+              "completed": false
+            },
+            {
+              "text": "anomaly_submissions has composite index on (user_id, game_date)",
+              "completed": false
+            },
+            {
+              "text": "mars_classifications has composite index on (user_id, game_date)",
+              "completed": false
+            },
+            {
+              "text": "user_story_progress has index on (user_id, storyline_id)",
+              "completed": false
+            },
+            {
+              "text": "RLS policies use auth.uid() directly, not subqueries",
+              "completed": false
+            },
+            {
+              "text": "Changes delivered as a new migration file",
+              "completed": false
+            }
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Optimize Supabase RLS and query performance",
+        "description": "Review RLS policies and indexes for the anomalies, submissions (anomaly_submissions), mars_classifications, and user_story_progress tables. The migrations are in supabase/migrations/. Key query patterns: (1) daily anomaly lookup by date, (2) user submission lookup by user_id + game_date, (3) story progress by user_id + storyline_id. Add missing indexes and verify RLS policies don't do full table scans (use auth.uid() not joins where possible).",
+        "status": "todo",
+        "priority": "medium",
+        "labels": [
+          "functionality"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "RLS policies are performant"
+          },
+          {
+            "completed": false,
+            "text": "Indexes cover all common query patterns"
+          },
+          {
+            "text": "anomalies table has index on game_date or equivalent daily lookup column",
+            "completed": false
+          },
+          {
+            "text": "anomaly_submissions has composite index on (user_id, game_date)",
+            "completed": false
+          },
+          {
+            "text": "mars_classifications has composite index on (user_id, game_date)",
+            "completed": false
+          },
+          {
+            "text": "user_story_progress has index on (user_id, storyline_id)",
+            "completed": false
+          },
+          {
+            "text": "RLS policies use auth.uid() directly, not subqueries",
+            "completed": false
+          },
+          {
+            "text": "Changes delivered as a new migration file",
+            "completed": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "49d38s",
+      "version": 2,
+      "timestamp": "2026-04-08T11:00:03.786Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "RLS policies are performant"
+            },
+            {
+              "completed": false,
+              "text": "Indexes cover all common query patterns"
+            },
+            {
+              "completed": false,
+              "text": "anomalies table has index on game_date or equivalent daily lookup column"
+            },
+            {
+              "completed": false,
+              "text": "anomaly_submissions has composite index on (user_id, game_date)"
+            },
+            {
+              "completed": false,
+              "text": "mars_classifications has composite index on (user_id, game_date)"
+            },
+            {
+              "completed": false,
+              "text": "user_story_progress has index on (user_id, storyline_id)"
+            },
+            {
+              "completed": false,
+              "text": "RLS policies use auth.uid() directly, not subqueries"
+            },
+            {
+              "completed": false,
+              "text": "Changes delivered as a new migration file"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "RLS policies are performant"
+            },
+            {
+              "completed": true,
+              "text": "Indexes cover all common query patterns"
+            },
+            {
+              "completed": true,
+              "text": "anomalies table has index on game_date or equivalent daily lookup column"
+            },
+            {
+              "completed": true,
+              "text": "anomaly_submissions has composite index on (user_id, game_date)"
+            },
+            {
+              "completed": true,
+              "text": "mars_classifications has composite index on (user_id, game_date)"
+            },
+            {
+              "completed": true,
+              "text": "user_story_progress has index on (user_id, storyline_id)"
+            },
+            {
+              "completed": false,
+              "text": "RLS policies use auth.uid() directly, not subqueries"
+            },
+            {
+              "completed": false,
+              "text": "Changes delivered as a new migration file"
+            }
+          ]
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Added supabase/migrations/20260408210000_add_performance_indexes.sql: composite indexes on daily_plays(user_id,game_date), anomaly_submissions(user_id,game_date), user_story_progress(user_id,storyline_id), user_stats(total_score desc), anomalies(anomalySet). All RLS policies already use auth.uid() directly."
+        }
+      ],
+      "snapshot": {
+        "title": "Optimize Supabase RLS and query performance",
+        "description": "Review RLS policies and indexes for the anomalies, submissions (anomaly_submissions), mars_classifications, and user_story_progress tables. The migrations are in supabase/migrations/. Key query patterns: (1) daily anomaly lookup by date, (2) user submission lookup by user_id + game_date, (3) story progress by user_id + storyline_id. Add missing indexes and verify RLS policies don't do full table scans (use auth.uid() not joins where possible).",
+        "status": "done",
+        "priority": "medium",
+        "labels": [
+          "functionality"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "RLS policies are performant"
+          },
+          {
+            "completed": true,
+            "text": "Indexes cover all common query patterns"
+          },
+          {
+            "completed": true,
+            "text": "anomalies table has index on game_date or equivalent daily lookup column"
+          },
+          {
+            "completed": true,
+            "text": "anomaly_submissions has composite index on (user_id, game_date)"
+          },
+          {
+            "completed": true,
+            "text": "mars_classifications has composite index on (user_id, game_date)"
+          },
+          {
+            "completed": true,
+            "text": "user_story_progress has index on (user_id, storyline_id)"
+          },
+          {
+            "completed": false,
+            "text": "RLS policies use auth.uid() directly, not subqueries"
+          },
+          {
+            "completed": false,
+            "text": "Changes delivered as a new migration file"
+          }
+        ],
+        "implementationNotes": "Added supabase/migrations/20260408210000_add_performance_indexes.sql: composite indexes on daily_plays(user_id,game_date), anomaly_submissions(user_id,game_date), user_story_progress(user_id,storyline_id), user_stats(total_score desc), anomalies(anomalySet). All RLS policies already use auth.uid() directly."
+      }
+    }
+  ]
+}

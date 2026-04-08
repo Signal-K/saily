@@ -1,0 +1,158 @@
+{
+  "taskId": "pqre20",
+  "currentVersion": 2,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "pqre20",
+      "version": 1,
+      "timestamp": "2026-04-08T10:47:30.488Z",
+      "changes": [
+        {
+          "field": "description",
+          "oldValue": "Create a script or Edge Function to fetch and process new data into the 'anomalies' and 'mars_classifications' tables, moving away from manual seeding.",
+          "newValue": "Build a Node.js script (scripts/ingest-anomalies.ts or similar) that fetches real TESS lightcurve data from the MAST/ExoFOP API and upserts into the anomalies table. A parallel script for Mars images already has a DB table (mars_images, migration 20260408151000). Both scripts should be runnable locally and via a cron/Edge Function. The anomalies table schema is in supabase/migrations/20260210151200_create_anomalies_table.sql. The anomalyConfiguration JSONB column stores lightcurve points as { lightcurve: [{x,y}] }. See web/src/lib/anomaly.ts for the shape expected by the frontend."
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "Supports automated ingestion from external APIs or storage"
+            },
+            {
+              "completed": false,
+              "text": "Integrates with existing seed logic"
+            }
+          ],
+          "newValue": [
+            {
+              "completed": false,
+              "text": "Supports automated ingestion from external APIs or storage"
+            },
+            {
+              "completed": false,
+              "text": "Integrates with existing seed logic"
+            },
+            {
+              "text": "Script fetches TESS lightcurve data from MAST API and upserts into anomalies table",
+              "completed": false
+            },
+            {
+              "text": "Script fetches Mars images from NASA Image API and upserts into mars_images table",
+              "completed": false
+            },
+            {
+              "text": "Both scripts are idempotent (safe to re-run)",
+              "completed": false
+            },
+            {
+              "text": "Scripts are documented with usage instructions in a README or inline comments",
+              "completed": false
+            },
+            {
+              "text": "Existing seed logic in supabase/seed.sql is not broken",
+              "completed": false
+            }
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Automate scientific data ingestion for Planet & Mars",
+        "description": "Build a Node.js script (scripts/ingest-anomalies.ts or similar) that fetches real TESS lightcurve data from the MAST/ExoFOP API and upserts into the anomalies table. A parallel script for Mars images already has a DB table (mars_images, migration 20260408151000). Both scripts should be runnable locally and via a cron/Edge Function. The anomalies table schema is in supabase/migrations/20260210151200_create_anomalies_table.sql. The anomalyConfiguration JSONB column stores lightcurve points as { lightcurve: [{x,y}] }. See web/src/lib/anomaly.ts for the shape expected by the frontend.",
+        "status": "todo",
+        "priority": "high",
+        "labels": [
+          "functionality"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Supports automated ingestion from external APIs or storage"
+          },
+          {
+            "completed": false,
+            "text": "Integrates with existing seed logic"
+          },
+          {
+            "text": "Script fetches TESS lightcurve data from MAST API and upserts into anomalies table",
+            "completed": false
+          },
+          {
+            "text": "Script fetches Mars images from NASA Image API and upserts into mars_images table",
+            "completed": false
+          },
+          {
+            "text": "Both scripts are idempotent (safe to re-run)",
+            "completed": false
+          },
+          {
+            "text": "Scripts are documented with usage instructions in a README or inline comments",
+            "completed": false
+          },
+          {
+            "text": "Existing seed logic in supabase/seed.sql is not broken",
+            "completed": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "pqre20",
+      "version": 2,
+      "timestamp": "2026-04-09T03:31:24.899Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "blocked"
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Archived pre-MVP (2026-04-09). Manual seeding sufficient for launch. Restore to todo on 2026-04-13."
+        }
+      ],
+      "snapshot": {
+        "title": "Automate scientific data ingestion for Planet & Mars",
+        "description": "Build a Node.js script (scripts/ingest-anomalies.ts or similar) that fetches real TESS lightcurve data from the MAST/ExoFOP API and upserts into the anomalies table. A parallel script for Mars images already has a DB table (mars_images, migration 20260408151000). Both scripts should be runnable locally and via a cron/Edge Function. The anomalies table schema is in supabase/migrations/20260210151200_create_anomalies_table.sql. The anomalyConfiguration JSONB column stores lightcurve points as { lightcurve: [{x,y}] }. See web/src/lib/anomaly.ts for the shape expected by the frontend.",
+        "status": "blocked",
+        "priority": "high",
+        "labels": [
+          "functionality"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Supports automated ingestion from external APIs or storage"
+          },
+          {
+            "completed": false,
+            "text": "Integrates with existing seed logic"
+          },
+          {
+            "completed": false,
+            "text": "Script fetches TESS lightcurve data from MAST API and upserts into anomalies table"
+          },
+          {
+            "completed": false,
+            "text": "Script fetches Mars images from NASA Image API and upserts into mars_images table"
+          },
+          {
+            "completed": false,
+            "text": "Both scripts are idempotent (safe to re-run)"
+          },
+          {
+            "completed": false,
+            "text": "Scripts are documented with usage instructions in a README or inline comments"
+          },
+          {
+            "completed": false,
+            "text": "Existing seed logic in supabase/seed.sql is not broken"
+          }
+        ],
+        "implementationNotes": "Archived pre-MVP (2026-04-09). Manual seeding sufficient for launch. Restore to todo on 2026-04-13."
+      }
+    }
+  ]
+}

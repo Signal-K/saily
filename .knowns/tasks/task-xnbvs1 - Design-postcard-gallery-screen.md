@@ -1,14 +1,12 @@
 ---
 id: xnbvs1
 title: Design postcard gallery screen
-status: todo
-priority: medium
+status: done
+priority: low
 labels:
-  - sketch
-  - design
-  - narrative
+  - functionality
 createdAt: '2026-03-30T11:44:42.416Z'
-updatedAt: '2026-03-30T11:44:52.128Z'
+updatedAt: '2026-04-08T10:49:56.273Z'
 timeSpent: 0
 assignee: '@Liam'
 ---
@@ -17,7 +15,7 @@ assignee: '@Liam'
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-Collected arc-completion postcards have no home. Design the screen layout and interaction model for a postcard gallery — where it lives in the nav, how postcards are displayed (collected vs. locked), and what tapping one shows. References the existing postcard fields in `lib/storylines.ts` (postcardTitle, postcardMessage). Directly unblocks a gallery implementation ticket.
+The postcard data model exists (arc completion awards postcards with a referral code). Build a /postcards page listing all earned postcards for the logged-in user. Each postcard shows: character name, arc title, postcardTitle, postcardMessage, copyable referral code. Reuse the postcard card visual from MissionComplete (web/src/components/mission/mission-complete.tsx). No new design needed.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
@@ -26,4 +24,10 @@ Collected arc-completion postcards have no home. Design the screen layout and in
 - [ ] #2 Tap/expand interaction described
 - [ ] #3 Empty state (no postcards yet) defined
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Superseded by task-jbz049 which has full spec and AC.
+<!-- SECTION:NOTES:END -->
 
