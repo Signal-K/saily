@@ -30,10 +30,10 @@ describe("Streak Repair", () => {
     // Mock profiles to show chip balance
     cy.intercept("GET", "**/rest/v1/profiles*", {
       statusCode: 200,
-      body: [{ data_chips: 5 }]
+      body: { data_chips: 5 }
     }).as("fetchProfile");
 
-    cy.visit(`/games/today?date=${todayStr}`);
+    cy.visit(`/games/today?date=${todayStr}&firstGame=planet`);
     cy.wait("@todayGame");
     cy.contains("button", "Begin Mission").click();
 
@@ -57,7 +57,7 @@ describe("Streak Repair", () => {
         }
       }).as("todayGameDismiss");
 
-    cy.visit(`/games/today?date=${todayStr}`);
+    cy.visit(`/games/today?date=${todayStr}&firstGame=planet`);
     cy.wait("@todayGameDismiss");
     cy.contains("button", "Begin Mission").click();
     cy.contains("button", "Skip", { timeout: 10000 }).click();
@@ -78,10 +78,10 @@ describe("Streak Repair", () => {
 
     cy.intercept("GET", "**/rest/v1/profiles*", {
       statusCode: 200,
-      body: [{ data_chips: 0 }]
+      body: { data_chips: 0 }
     }).as("fetchProfileEmpty");
 
-    cy.visit(`/games/today?date=${todayStr}`);
+    cy.visit(`/games/today?date=${todayStr}&firstGame=planet`);
     cy.wait("@todayGameEmpty");
     cy.contains("button", "Begin Mission").click();
 
@@ -112,7 +112,7 @@ describe("Streak Repair", () => {
 
     cy.intercept("GET", "**/rest/v1/profiles*", {
       statusCode: 200,
-      body: [{ data_chips: 3 }],
+      body: { data_chips: 3 }
     }).as("fetchProfileRepair");
 
     cy.intercept("POST", "**/rest/v1/rpc/repair_streak*", {
@@ -120,7 +120,7 @@ describe("Streak Repair", () => {
       body: true,
     }).as("repairRpc");
 
-    cy.visit(`/games/today?date=${todayStr}`);
+    cy.visit(`/games/today?date=${todayStr}&firstGame=planet`);
     cy.wait("@todayGameRepair");
     cy.contains("button", "Begin Mission").click();
 
@@ -148,7 +148,7 @@ describe("Streak Repair", () => {
       body: [{ game_date: yesterdayStr }],
     }).as("fetchPlaysPlayed");
 
-    cy.visit(`/games/today?date=${todayStr}`);
+    cy.visit(`/games/today?date=${todayStr}&firstGame=planet`);
     cy.wait("@todayGamePlayed");
     cy.contains("button", "Begin Mission").click();
 

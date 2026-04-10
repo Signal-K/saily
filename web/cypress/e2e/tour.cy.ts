@@ -91,7 +91,10 @@ describe("Comprehensive Game Tour", () => {
     // 1. Home Page
     cy.visit("/");
     cy.screenshot("01-homepage");
-    cy.contains("Start Today's Mission").click();
+    
+    // Force a specific game order and character storyline for the tour to be deterministic
+    // We visit /games/today directly with the parameters to ensure the test flow matches
+    cy.visit("/games/today?gameOrder=planet,asteroid,mars");
 
     // 2. Mission Briefing
     cy.wait("@storyProgress");
@@ -128,7 +131,7 @@ describe("Comprehensive Game Tour", () => {
 
     // 6. Narrative Transition 2
     cy.screenshot("06-narrative-beat-2");
-    cy.contains("button", "Continue to Mars Surface Survey").click();
+    cy.contains("button", "Continue to Surface Survey").click();
 
     // 7. Mars Classification (Game 3)
     cy.wait("@marsImages");
