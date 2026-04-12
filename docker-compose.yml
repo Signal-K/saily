@@ -3,7 +3,7 @@ services:
     image: supabase/postgres:17.4.1.078
     restart: unless-stopped
     ports:
-      - "54322:5432"
+      - "54325:5432"
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
@@ -19,7 +19,7 @@ services:
     image: kong:2.8.1
     restart: unless-stopped
     ports:
-      - "54321:8000"
+      - "54326:8000"
     environment:
       KONG_DATABASE: "off"
       KONG_DECLARATIVE_CONFIG: /home/kong/kong.yml
@@ -39,7 +39,7 @@ services:
     environment:
       GOTRUE_API_HOST: 0.0.0.0
       GOTRUE_API_PORT: 9999
-      API_EXTERNAL_URL: http://localhost:54321
+      API_EXTERNAL_URL: http://localhost:54326
       GOTRUE_DB_DRIVER: postgres
       GOTRUE_DB_DATABASE_URL: postgres://supabase_auth_admin:postgres@db:5432/postgres
       GOTRUE_SITE_URL: http://localhost:3000
@@ -123,7 +123,7 @@ services:
       DEFAULT_ORGANIZATION_NAME: Saily
       DEFAULT_PROJECT_NAME: saily
       SUPABASE_URL: http://kong:8000
-      SUPABASE_PUBLIC_URL: http://localhost:54321
+      SUPABASE_PUBLIC_URL: http://localhost:54326
       SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRFA0NiK7kyqHDan_WiAgwWkd4xh38DyHNXX6XyHfiM
       SUPABASE_SERVICE_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hj04zWl196z2-SBc0
       AUTH_JWT_SECRET: super-secret-jwt-token-with-at-least-32-characters-long
@@ -148,7 +148,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      NEXT_PUBLIC_SUPABASE_URL: http://localhost:54321
+      NEXT_PUBLIC_SUPABASE_URL: http://localhost:54326
       SUPABASE_URL_INTERNAL: http://kong:8000
       NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRFA0NiK7kyqHDan_WiAgwWkd4xh38DyHNXX6XyHfiM
       NEXT_PUBLIC_AUTH_GOOGLE_ENABLED: "false"
@@ -160,10 +160,10 @@ services:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-      start_period: 15s
+      interval: 10s
+      timeout: 10s
+      retries: 15
+      start_period: 30s
 
   cypress:
     image: cypress/included:15.10.0

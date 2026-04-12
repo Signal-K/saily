@@ -1,0 +1,112 @@
+[23:32:26]  Verifying Cypress can run /root/.cache/Cypress/15.10.0/Cypress [started]
+[23:32:28]  Verifying Cypress can run /root/.cache/Cypress/15.10.0/Cypress [COMPLETED]
+[35m[95mWarning:[39m[35m The [33mallowCypressEnv[39m[35m configuration option is enabled. This allows any browser code to read values from [33mCypress.env()[39m[35m. This is insecure and will be removed in a future major version.[39m
+[35m[39m
+[35m1. Replace [33mCypress.env()[39m[35m calls with [33mcy.env()[39m[35m (for sensitive values) or [33mCypress.expose()[39m[35m (for public configuration)[39m
+[35m2. Set [33mallowCypressEnv: false[39m[35m in your Cypress configuration to disable [33mCypress.env()[39m[35m[39m
+[35m[39m
+[35mLearn more: https://on.cypress.io/cypress-env-migration[39m
+[35m[39m
+
+[90m====================================================================================================[39m
+
+[0m  ([4m[1mRun Starting[22m[24m)[0m
+
+[90m  ┌[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m┐[39m
+[90m  │[39m [90mCypress:[39m        15.10.0                                                                        [90m│[39m
+[90m  │[39m [90mBrowser:[39m        Electron 138 [90m(headless)[39m                                                        [90m│[39m
+[90m  │[39m [90mNode Version:[39m   [0mv24.14.0 [90m(/usr/local/bin/node)[39m[0m                                                 [90m│[39m
+[90m  │[39m [90mSpecs:[39m          [0m1 found (tour.cy.ts)[0m                                                           [90m│[39m
+[90m  │[39m [90mSearched:[39m       [0mcypress/e2e/tour.cy.ts[0m                                                         [90m│[39m
+[90m  └[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m┘[39m
+
+
+[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m
+                                                                                                    
+  Running:  [90mtour.cy.ts[39m                                                                      [90m(1 of 1)[39m
+
+[0m[0m
+[0m  Comprehensive Game Tour[0m
+    [33m(Attempt 1 of 2)[0m completes a full tour of all game mechanics
+  [31m  1) completes a full tour of all game mechanics[0m
+
+
+[92m [0m[32m 0 passing[0m[90m (30s)[0m
+[31m  1 failing[0m
+
+[0m  1) Comprehensive Game Tour
+       completes a full tour of all game mechanics:
+[0m[31m     AssertionError: Timed out retrying after 4000ms: expected consoleError to not have been called at least once[0m[90m
+      at Context.eval (webpack://web/./cypress/e2e/tour.cy.ts:154:28)
+[0m
+
+
+
+[31m  ([4m[1mResults[22m[24m)[39m
+
+[90m  ┌[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m┐[39m
+[90m  │[39m [90mTests:[39m        [31m1[39m                                                                                [90m│[39m
+[90m  │[39m [90mPassing:[39m      [31m0[39m                                                                                [90m│[39m
+[90m  │[39m [90mFailing:[39m      [31m1[39m                                                                                [90m│[39m
+[90m  │[39m [90mPending:[39m      [31m0[39m                                                                                [90m│[39m
+[90m  │[39m [90mSkipped:[39m      [31m0[39m                                                                                [90m│[39m
+[90m  │[39m [90mScreenshots:[39m  [31m26[39m                                                                               [90m│[39m
+[90m  │[39m [90mVideo:[39m        [31mfalse[39m                                                                            [90m│[39m
+[90m  │[39m [90mDuration:[39m     [31m30 seconds[39m                                                                       [90m│[39m
+[90m  │[39m [90mSpec Ran:[39m     [31m[31mtour.cy.ts[31m[39m                                                                       [90m│[39m
+[90m  └[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m┘[39m
+
+
+[33m  ([4m[1mScreenshots[22m[24m)[39m
+
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/01-homepage.png[0m                                  [90m[90m(1280x857)[90m[39m
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/02-mission-briefing.png[0m                          [90m[90m(1280x742)[90m[39m
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/03-planet-hunting-start.png[0m                      [90m[90m(1280x895)[90m[39m
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/03-planet-hunting-step-1.png[0m                     [90m[90m(1280x895)[90m[39m
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/03-planet-hunting-step-2.png[0m                     [90m[90m(1280x895)[90m[39m
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/03-planet-hunting-step-3.png[0m                     [90m[90m(1280x895)[90m[39m
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/04-narrative-beat-1.png[0m                          [90m[90m(1280x720)[90m[39m
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/05-asteroid-mapping.png[0m                          [90m[90m(1280x860)[90m[39m
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/06-narrative-beat-2.png[0m                          [90m[90m(1280x720)[90m[39m
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/07-mars-classification.png[0m                       [90m[90m(1280x904)[90m[39m
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/08-mission-complete.png[0m                          [90m[90m(1280x904)[90m[39m
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/09-final-home.png[0m                                [90m[90m(1280x857)[90m[39m
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/Comprehensive Game Tour -- completes a full [0m     [90m[90m(1280x720)[90m[39m
+[90m [39m    [0mtour of all game mechanics (failed).png[0m                                                        
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/01-homepage (attempt 2).png[0m                      [90m[90m(1280x857)[90m[39m
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/02-mission-briefing (attempt 2).png[0m              [90m[90m(1280x742)[90m[39m
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/03-planet-hunting-start (attempt 2).png[0m          [90m[90m(1280x895)[90m[39m
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/03-planet-hunting-step-1 (attempt 2).png[0m         [90m[90m(1280x895)[90m[39m
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/03-planet-hunting-step-2 (attempt 2).png[0m         [90m[90m(1280x895)[90m[39m
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/03-planet-hunting-step-3 (attempt 2).png[0m         [90m[90m(1280x895)[90m[39m
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/04-narrative-beat-1 (attempt 2).png[0m              [90m[90m(1280x720)[90m[39m
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/05-asteroid-mapping (attempt 2).png[0m              [90m[90m(1280x860)[90m[39m
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/06-narrative-beat-2 (attempt 2).png[0m              [90m[90m(1280x720)[90m[39m
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/07-mars-classification (attempt 2).png[0m           [90m[90m(1280x904)[90m[39m
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/08-mission-complete (attempt 2).png[0m              [90m[90m(1280x904)[90m[39m
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/09-final-home (attempt 2).png[0m                    [90m[90m(1280x857)[90m[39m
+[90m [39m -  [0m/e2e/cypress/screenshots/tour.cy.ts/Comprehensive Game Tour -- completes a full [0m     [90m[90m(1280x720)[90m[39m
+[90m [39m    [0mtour of all game mechanics (failed) (attempt 2).png[0m                                            
+
+
+[90m====================================================================================================[39m
+
+[0m  ([4m[1mRun Finished[22m[24m)[0m
+
+
+[90m   [39m    [90mSpec[39m                                              [90mTests[39m  [90mPassing[39m  [90mFailing[39m  [90mPending[39m  [90mSkipped[39m [90m [39m
+[90m  ┌[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m┐[39m
+[90m  │[39m [31m✖[39m  [0mtour.cy.ts[0m                               [90m00:30[39m        [0m1[0m        [90m-[39m        [31m1[39m        [90m-[39m        [90m-[39m [90m│[39m
+[90m  └[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m┘[39m
+[90m   [39m [31m✖[39m  [31m1 of 1 failed (100%)[39m                     [90m00:30[39m        [0m1[0m        [90m-[39m        [31m1[39m        [90m-[39m        [90m-[39m [90m [39m
+
+[90m----------------------------------------------------------------------------------------------------[39m
+
+  Debug faster with full visibility.
+
+  Record to Cypress Cloud and get instant access to full test details and replays.
+  Inspect the DOM, network events, and console logs exactly as they ran in CI.
+
+  >> [36mhttps://on.cypress.io/cloud-get-started[39m
+
+[90m----------------------------------------------------------------------------------------------------[39m

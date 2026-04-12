@@ -6,7 +6,12 @@ import { getMelbourneDayIndex } from "./melbourne-date";
 
 export type MissionGame = "planet" | "asteroid" | "mars" | "insight";
 
-const MISSION_GAMES: MissionGame[] = ["planet", "asteroid", "mars", "insight"];
+const IS_PROD = process.env.NEXT_PUBLIC_VERCEL_ENV === "production";
+
+export const MISSION_GAMES: MissionGame[] = IS_PROD
+  ? ["planet", "mars", "insight"]
+  : ["planet", "asteroid", "mars", "insight"];
+
 const MISSION_GAME_COUNT = 3;
 
 function buildMissionGamePermutations() {
@@ -67,6 +72,21 @@ export function isStorylineComplete(storyline: Storyline, chapterIndex: number):
   return chapterIndex >= storyline.chapters.length;
 }
 
+// Maps specific dates (YYYY-MM-DD Melbourne time) to a forced game order.
+const GAME_ORDER_DATE_OVERRIDES: Record<string, MissionGame[]> = {
+  "2026-04-17": ["planet", "asteroid", "mars"],
+};
+
+/**
+ * Returns a forced game order for a specific date, or null if no override exists.
+ * Filters out games that are not in the active MISSION_GAMES pool (e.g. gating non-prod games).
+ */
+export function getGameOrderOverrideForDate(dateKey: string): MissionGame[] | null {
+  const override = GAME_ORDER_DATE_OVERRIDES[dateKey];
+  if (!override) return null;
+  return override.filter((g) => MISSION_GAMES.includes(g));
+}
+
 /**
  * Returns a deterministic but chapter-varying game order for the active storyline.
  */
@@ -78,5 +98,12 @@ export function getMissionGameOrder(storylineId: string, chapterIndex: number): 
     hash |= 0;
   }
   const idx = Math.abs(hash) % GAME_ORDER_PERMUTATIONS.length;
-  return GAME_ORDER_PERMUTATIONS[idx].slice(0, MISSION_GAME_COUNT);
+  let games = [...GAME_ORDER_PERMUTATIONS[idx]].slice(0, MISSION_GAME_COUNT);
+
+  // For new users (Chapter 1 / index 0), ensure "planet" (the simplest puzzle) is first.
+  if (chapterIndex === 0 && games.includes("planet") && games[0] !== "planet") {
+    games = ["planet", ...games.filter((g) => g !== "planet")];
+  }
+
+  return games;
 }

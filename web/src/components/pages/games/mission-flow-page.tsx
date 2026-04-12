@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { getStorylineForDate, getCharacterForStoryline, getChapterForIndex, getMissionGameOrder, isStorylineComplete, type MissionGame } from "@/lib/mission";
+import { getStorylineForDate, getCharacterForStoryline, getChapterForIndex, getMissionGameOrder, getGameOrderOverrideForDate, isStorylineComplete, type MissionGame, MISSION_GAMES } from "@/lib/mission";
 import { MissionBriefing } from "@/components/mission/mission-briefing";
 import { NarrativeBeat } from "@/components/mission/narrative-beat";
 import { MissionComplete } from "@/components/mission/mission-complete";
@@ -103,15 +103,17 @@ export default function MissionFlowPage() {
   const chapter = getChapterForIndex(storyline, chapterIndex);
   const chapterNumber = Math.min(chapterIndex + 1, storyline.chapters.length);
   const totalChapters = storyline.chapters.length;
-  const baseGameOrder = getMissionGameOrder(storyline.id, chapterIndex);
+  const dateOverride = getGameOrderOverrideForDate(missionDate);
+  const baseGameOrder = dateOverride ?? getMissionGameOrder(storyline.id, chapterIndex);
   const gameOrderOverride = searchParams
     .get("gameOrder")
     ?.split(",")
     .map((value) => value.trim())
-    .filter(isMissionGame);
+    .filter(isMissionGame)
+    .filter((g) => MISSION_GAMES.includes(g));
   // Allow e2e tests to pin the first game via ?firstGame=planet|asteroid|mars|insight
   const firstGameParam = searchParams.get("firstGame");
-  const firstGameOverride = firstGameParam && isMissionGame(firstGameParam) ? firstGameParam : null;
+  const firstGameOverride = firstGameParam && isMissionGame(firstGameParam) && MISSION_GAMES.includes(firstGameParam) ? firstGameParam : null;
   const gameOrder: MissionGame[] = firstGameOverride
     ? [firstGameOverride, ...baseGameOrder.filter((g) => g !== firstGameOverride)].slice(0, 3)
     : gameOrderOverride && new Set(gameOrderOverride).size === 3
