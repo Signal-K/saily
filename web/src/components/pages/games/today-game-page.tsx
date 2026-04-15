@@ -8,7 +8,6 @@ import { StreakRepairPrompt } from "@/components/streak-repair-prompt";
 import { getMelbourneDateKey, resolveMelbourneDateKey } from "@/lib/melbourne-date";
 import {
   type LightcurvePoint,
-  type DisplayPoint,
   type Annotation,
   TOTAL_DAYS,
   clamp01,
