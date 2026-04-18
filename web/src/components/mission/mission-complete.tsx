@@ -13,7 +13,6 @@ type Props = {
   score: number;
   isStorylineComplete: boolean;
   storylineTitle: string;
-  postcardTitle?: string;
   postcardMessage?: string;
   endedEarly?: boolean;
   awardedChips?: number;
@@ -37,7 +36,6 @@ export function MissionComplete({
   score,
   isStorylineComplete,
   storylineTitle,
-  postcardTitle = "Sailor's Postcard",
   postcardMessage = "Your data contribution has been logged to the network. A postcard has been added to your archive.",
   endedEarly = false,
   awardedChips = 0,

@@ -323,7 +323,6 @@ export default function MissionFlowPage() {
         score={totalScore}
         isStorylineComplete={(access?.isToday ?? true) && isStorylineComplete(storyline, chapterIndex + 1)}
         storylineTitle={storyline.title}
-        postcardTitle={storyline.postcardTitle}
         postcardMessage={storyline.postcardMessage}
         endedEarly={endedEarly}
         awardedChips={awardedChips}

@@ -3,7 +3,6 @@ import {
   toDisplayPoints,
   mergeSegments,
   projectAnnotationToView,
-  TOTAL_DAYS,
   type Annotation,
 } from "../planet-logic";
 

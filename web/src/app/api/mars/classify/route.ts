@@ -10,7 +10,6 @@ type ClassifyBody = {
     imageId: string;
     imageUrl: string;
     annotations?: unknown[];
-    confidence: number;
     note?: string;
   }>;
 };
@@ -49,7 +48,7 @@ export async function POST(request: Request) {
       image_id: c.imageId.slice(0, 80),
       image_url: c.imageUrl.slice(0, 500),
       annotations: Array.isArray(c.annotations) ? c.annotations : [],
-      confidence: Math.max(0, Math.min(100, Math.round(Number(c.confidence) || 70))),
+      confidence: 100,
       note: c.note ? c.note.slice(0, 1000) : null,
     }));
 
@@ -65,8 +64,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 
-  const avgConfidence =
-    rows.reduce((sum, r) => sum + r.confidence, 0) / rows.length;
+  const avgConfidence = 100;
   const totalAnnotations = rows.reduce((sum, r) => sum + r.annotations.length, 0);
   
   // Base 40 + points for images + points for annotations + confidence bonus

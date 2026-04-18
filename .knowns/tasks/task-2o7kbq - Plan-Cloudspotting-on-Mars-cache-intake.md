@@ -1,14 +1,14 @@
 ---
 id: 2o7kbq
 title: Plan Cloudspotting on Mars cache intake
-status: todo
+status: done
 priority: medium
 labels:
   - science-data
   - ingestion
   - planning
 createdAt: '2026-04-25T00:39:34.448Z'
-updatedAt: '2026-04-25T00:39:34.448Z'
+updatedAt: '2026-04-25T11:34:35.641Z'
 timeSpent: 0
 parent: sly004
 ---

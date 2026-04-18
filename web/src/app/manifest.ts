@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Cosmo",
-    short_name: "Cosmo",
+    name: "The Daily Sail",
+    short_name: "Saily",
     description: "Daily space science missions — hunt planets, survey asteroids, classify Mars",
     id: "/",
     scope: "/",

@@ -1,0 +1,52 @@
+{
+  "taskId": "sly003",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "sly003",
+      "version": 1,
+      "timestamp": "2026-04-25T11:31:55.835Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "in-progress"
+        },
+        {
+          "field": "implementationNotes",
+          "oldValue": "Created by project-management reset on 2026-04-20.",
+          "newValue": "Created by project-management reset on 2026-04-20.\n\nUpdated manifest.ts and sw.js for consistency with 'The Daily Sail' branding. Verified Melbourne date logic for daily resets. Offline shell is functional. Final step requires physical device testing to confirm install prompt behavior and clipping."
+        }
+      ],
+      "snapshot": {
+        "title": "Run mobile PWA external tester pass",
+        "description": "This is part of the 2026-04-20 Star Sailors MVP/project-management reset. Project: Saily / The Daily Sail. Work must stay tied to MVP closure, distribution, testing, or agent handoff for this week.",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "pwa",
+          "mobile",
+          "testing"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "PWA install path is either working or documented with exact blocker."
+          },
+          {
+            "completed": false,
+            "text": "Offline shell does not break the MVP path."
+          },
+          {
+            "completed": false,
+            "text": "Tester notes include device/browser coverage."
+          }
+        ],
+        "implementationPlan": "1. Test install/offline shell behavior and Melbourne midnight reset assumptions.\n2. Capture screenshots for any clipping or navigation issue.",
+        "implementationNotes": "Created by project-management reset on 2026-04-20.\n\nUpdated manifest.ts and sw.js for consistency with 'The Daily Sail' branding. Verified Melbourne date logic for daily resets. Offline shell is functional. Final step requires physical device testing to confirm install prompt behavior and clipping."
+      }
+    }
+  ]
+}

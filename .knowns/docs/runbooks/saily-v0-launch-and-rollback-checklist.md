@@ -1,7 +1,7 @@
 ---
 title: Saily v0 Launch and Rollback Checklist
 createdAt: '2026-03-06T08:42:16.621Z'
-updatedAt: '2026-03-06T08:42:32.331Z'
+updatedAt: '2026-04-25T11:22:04.568Z'
 description: >-
   Launch timing, owners, rollback criteria, and first external tester script for
   v0
@@ -13,10 +13,9 @@ tags:
 # Saily v0 Launch and Rollback Checklist
 
 ## Launch timing
-- Internal readiness check: 2026-03-07
-- Soft external launch (first tester cohort): 2026-03-08
-- Go/no-go review: 2026-03-09
-
+- Internal readiness check: 2026-04-25
+- Soft external launch (first tester cohort): 2026-04-27
+- Go/no-go review: 2026-04-28
 ## Owners
 - Release owner: @me
 - Product decision owner: project maintainer

@@ -1,14 +1,14 @@
 ---
 id: 4l7rce
 title: Plan Gaia Variables cache intake
-status: todo
+status: done
 priority: medium
 labels:
   - science-data
   - ingestion
   - planning
 createdAt: '2026-04-25T00:39:33.317Z'
-updatedAt: '2026-04-25T00:39:33.317Z'
+updatedAt: '2026-04-25T11:34:36.197Z'
 timeSpent: 0
 parent: sly004
 ---

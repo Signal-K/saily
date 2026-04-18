@@ -140,9 +140,9 @@ export default async function Home() {
                   <Link href="/games/today" className="button button-primary button-full">
                     Initialize Mission
                   </Link>
-                  <Link href="/calendar" className="button">
+                  {/* <Link href="/calendar" className="button">
                     Archive
-                  </Link>
+                  </Link> */}
                   <Link href="/discuss" className="button">
                     Consensus
                   </Link>
@@ -183,7 +183,7 @@ export default async function Home() {
                 <Link href={user ? "/profile" : "/auth/sign-in"} className="home-console-link">
                   User Port
                 </Link>
-                <Link href="/search" className="home-console-link">
+                {/* <Link href="/search" className="home-console-link">
                   Registry
                 </Link>
                 <Link href="/games/asteroids" className="home-console-link">
@@ -191,14 +191,14 @@ export default async function Home() {
                 </Link>
                 <Link href="/games/mars" className="home-console-link">
                   Classification
-                </Link>
+                </Link> */}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <div className="home-games-row">
+      {/* <div className="home-games-row">
         <Link href="/games/today" className="home-game-card">
           <span className="home-game-icon" aria-hidden>◌</span>
           <span className="home-game-label">Transit Scan</span>
@@ -211,7 +211,7 @@ export default async function Home() {
           <span className="home-game-icon" aria-hidden>◎</span>
           <span className="home-game-label">Surface Tags</span>
         </Link>
-      </div>
+      </div> */}
 
       {/* ── Signed-in user sections ─────────────────────────────────── */}
       {user ? (

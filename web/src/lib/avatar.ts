@@ -1,8 +1,10 @@
 import { createAvatar } from "@dicebear/core";
-import * as botttsNeutral from "@dicebear/bottts-neutral";
+import * as bottts from "@dicebear/bottts";
 
 export type AvatarExpression = "neutral" | "happy" | "sad" | "surprised" | "serious";
 
+// bottts has different mouth names than bottts-neutral.
+// Let's use standard ones that exist in bottts.
 type Mouth = "bite" | "diagram" | "grill01" | "grill02" | "grill03" | "smile01" | "smile02" | "square01" | "square02";
 
 const MOUTH_MAP: Record<AvatarExpression, Mouth[]> = {
@@ -14,7 +16,7 @@ const MOUTH_MAP: Record<AvatarExpression, Mouth[]> = {
 };
 
 export function getRobotAvatarDataUri(seed: string, size = 64, expression: AvatarExpression = "neutral") {
-  return createAvatar(botttsNeutral, {
+  return createAvatar(bottts, {
     seed,
     size,
     radius: 50,

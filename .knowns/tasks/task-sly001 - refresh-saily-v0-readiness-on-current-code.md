@@ -1,18 +1,17 @@
 ---
 id: sly001
-title: "Refresh Saily v0 readiness on current code"
-status: todo
+title: Refresh Saily v0 readiness on current code
+status: done
 priority: high
 labels:
   - mvp
   - release
   - v0
-createdAt: '2026-04-20T00:00:00+10:00'
-updatedAt: '2026-04-20T00:00:00+10:00'
+createdAt: '2026-04-19T14:00:00.000Z'
+updatedAt: '2026-04-25T11:26:29.185Z'
 timeSpent: 0
 assignee: '@me'
 ---
-
 # Refresh Saily v0 readiness on current code
 
 ## Description
@@ -21,6 +20,13 @@ assignee: '@me'
 This is part of the 2026-04-20 Star Sailors MVP/project-management reset. Project: Saily / The Daily Sail. Work must stay tied to MVP closure, distribution, testing, or agent handoff for this week.
 <!-- SECTION:DESCRIPTION:END -->
 
+## Acceptance Criteria
+<!-- AC:BEGIN -->
+- [x] #1 Readiness command result is recorded.
+- [x] #2 Launch/rollback checklist reflects the current build, not March assumptions.
+- [x] #3 Only blocking failures remain active.
+<!-- AC:END -->
+
 ## Implementation Plan
 
 <!-- SECTION:PLAN:BEGIN -->
@@ -28,19 +34,11 @@ This is part of the 2026-04-20 Star Sailors MVP/project-management reset. Projec
 2. Update launch, rollback, and first-tester dates for the current week.
 <!-- SECTION:PLAN:END -->
 
-## Acceptance Criteria
-
-- [ ] Readiness command result is recorded.
-- [ ] Launch/rollback checklist reflects the current build, not March assumptions.
-- [ ] Only blocking failures remain active.
-
-## Source Context
-
-- Obsidian command center: /Users/scroobz/Navigation/quartz/content/Studio/Project-Management/Star-Sailors-MVP-Command-Center.md
-- Weekly plan: /Users/scroobz/Navigation/quartz/content/Studio/Project-Management/This-Week-MVP-Execution-Plan-2026-04-20.md
-
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 Created by project-management reset on 2026-04-20.
+
+Ran scripts/release/check_v0_readiness.sh. Initially failed on lint errors in cypress/e2e/tour.cy.ts and unused variables. Fixed linting and build error (postcardTitle prop). Script now passes successfully.
 <!-- SECTION:NOTES:END -->
+

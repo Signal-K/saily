@@ -1,6 +1,6 @@
 {
   "taskId": "sly004",
-  "currentVersion": 4,
+  "currentVersion": 5,
   "versions": [
     {
       "id": "v1",
@@ -159,6 +159,78 @@
           },
           {
             "completed": false,
+            "text": "No live API dependency is required for the daily play path."
+          }
+        ],
+        "implementationPlan": "1. Refresh Knowns docs so narrative/spec references match the new science-feed mapping\n2. Extend science-feed research with concrete intake recommendations for CoM, Gaia Variables, Rubin Comet Catchers, and Active Asteroids\n3. Add code-side source descriptors and cache-oriented types for the four new feeds\n4. Run focused validation and append notes back to Knowns",
+        "implementationNotes": "Created by project-management reset on 2026-04-20.\n\nProgress: updated specs/characters-storylines + research/importable-science-feeds for CoM, Gaia Variables, Rubin Comet Catchers, and Active Asteroids; added web/src/lib/science-feeds.ts registry and unit tests.\n\nImplementation: added cache-first Cloudspotting on Mars domain module (), fallback subjects, cached-row normalization, and  route that prefers  and falls back safely when absent. Verified with focused unit tests."
+      }
+    },
+    {
+      "id": "v5",
+      "taskId": "sly004",
+      "version": 5,
+      "timestamp": "2026-04-25T11:34:50.146Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "One source is selected for the next post-MVP expansion."
+            },
+            {
+              "completed": false,
+              "text": "Cache schema and ingestion steps are documented."
+            },
+            {
+              "completed": false,
+              "text": "No live API dependency is required for the daily play path."
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "One source is selected for the next post-MVP expansion."
+            },
+            {
+              "completed": true,
+              "text": "Cache schema and ingestion steps are documented."
+            },
+            {
+              "completed": true,
+              "text": "No live API dependency is required for the daily play path."
+            }
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Define next science-feed cache intake for daily puzzles",
+        "description": "This is part of the 2026-04-20 Star Sailors MVP/project-management reset. Project: Saily / The Daily Sail. Work must stay tied to MVP closure, distribution, testing, or agent handoff for this week.",
+        "status": "done",
+        "priority": "medium",
+        "assignee": "@me",
+        "labels": [
+          "science-data",
+          "ingestion",
+          "planning"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "One source is selected for the next post-MVP expansion."
+          },
+          {
+            "completed": true,
+            "text": "Cache schema and ingestion steps are documented."
+          },
+          {
+            "completed": true,
             "text": "No live API dependency is required for the daily play path."
           }
         ],

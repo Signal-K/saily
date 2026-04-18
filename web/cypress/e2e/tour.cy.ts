@@ -151,9 +151,9 @@ describe("Comprehensive Game Tour", () => {
     cy.screenshot("09-final-home");
 
     // Verify no critical console errors were logged
-    cy.get("@consoleError").then((spy: any) => {
+    cy.get("@consoleError").then((spy: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
       if (spy.called) {
-        spy.calls.all().forEach((call: any, index: number) => {
+        spy.getCalls().forEach((call: any, index: number) => { // eslint-disable-line @typescript-eslint/no-explicit-any
           cy.log(`Console Error #${index + 1}: ${JSON.stringify(call.args)}`);
           console.log(`Console Error #${index + 1}:`, ...call.args);
         });

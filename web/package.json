@@ -17,6 +17,7 @@
     "e2e:user:cleanup": "node scripts/e2e/cleanup-test-user.mjs"
   },
   "dependencies": {
+    "@dicebear/bottts": "^9.4.2",
     "@dicebear/bottts-neutral": "^9.3.1",
     "@dicebear/core": "^9.3.1",
     "@radix-ui/react-switch": "^1.2.6",

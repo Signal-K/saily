@@ -8,7 +8,6 @@ import { StreakRepairPrompt } from "@/components/streak-repair-prompt";
 import { getMelbourneDateKey, resolveMelbourneDateKey } from "@/lib/melbourne-date";
 import {
   type LightcurvePoint,
-  type DisplayPoint,
   type Annotation,
   TOTAL_DAYS,
   clamp01,
@@ -66,7 +65,6 @@ export default function TodayGamePage({ onMissionComplete, gameDate: gameDatePro
   const [loading, setLoading] = useState(true);
   const [minigameIndex, setMinigameIndex] = useState(0);
   const [userId, setUserId] = useState<string | null>(null);
-  const [confidence, setConfidence] = useState(70);
   const [tag, setTag] = useState<(typeof TAGS)[number]>(TAGS[0]);
   const [periodDays, setPeriodDays] = useState(2);
   const [phaseFoldHint, setPhaseFoldHint] = useState(false);
@@ -188,7 +186,7 @@ export default function TodayGamePage({ onMissionComplete, gameDate: gameDatePro
             id: `saved-${idx}-${Date.now()}`,
             xStart: clamp01(Number(item.xStart)),
             xEnd: clamp01(Number(item.xEnd)),
-            confidence: Math.max(0, Math.min(100, Math.round(Number(item.confidence)))),
+            confidence: 100,
             tag: String(item.tag || "Other"),
             note: typeof item.note === "string" ? item.note : undefined,
             coordinateMode: item.coordinateMode === "phase" ? "phase" : item.coordinateMode === "time" ? "time" : defaultCoordinateMode,
@@ -230,7 +228,7 @@ export default function TodayGamePage({ onMissionComplete, gameDate: gameDatePro
             id: `local-${idx}-${Date.now()}`,
             xStart: clamp01(Number(item.xStart)),
             xEnd: clamp01(Number(item.xEnd)),
-            confidence: Math.max(0, Math.min(100, Math.round(Number(item.confidence)))),
+            confidence: 100,
             tag: String(item.tag || "Other"),
             note: typeof item.note === "string" ? item.note : undefined,
             coordinateMode: item.coordinateMode === "phase" ? "phase" : "time",
@@ -394,7 +392,7 @@ export default function TodayGamePage({ onMissionComplete, gameDate: gameDatePro
           id: `${Date.now()}-${current.length}`,
           xStart,
           xEnd,
-          confidence,
+          confidence: 100,
           tag,
           note: annotationNote.trim() || undefined,
           coordinateMode: phaseFoldHint ? "phase" : "time",
@@ -473,7 +471,7 @@ export default function TodayGamePage({ onMissionComplete, gameDate: gameDatePro
     if (nextStage < 3) {
       setMinigameIndex(nextStage);
       setFeedback(
-        `Research logged. Confidence x${(payload.rewardMultiplier ?? rewardMultiplier).toFixed(2)}. Initiating signal ${nextStage + 1} (${STAGE_DIFFICULTIES[nextStage]}).`,
+        `Research logged. Initiating signal ${nextStage + 1} (${STAGE_DIFFICULTIES[nextStage]}).`,
       );
       setSubmitting(false);
       return;
@@ -484,7 +482,6 @@ export default function TodayGamePage({ onMissionComplete, gameDate: gameDatePro
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         completedPuzzles: 3,
-        confidence,
         note,
         date: gameDate,
       }),
@@ -507,7 +504,7 @@ export default function TodayGamePage({ onMissionComplete, gameDate: gameDatePro
     }
 
     setFeedback(
-      `Research cycle complete. Confidence ${completePayload.score ?? 0}${completePayload.xpMultiplier === 0 ? "% (archive: no streak awarded)." : "%"}${completePayload.badgesAwarded ? ` New registries: ${completePayload.badgesAwarded}.` : ""}`,
+      `Research cycle complete. Rating ${completePayload.score ?? 0}${completePayload.xpMultiplier === 0 ? "% (archive: no streak awarded)." : "%"}${completePayload.badgesAwarded ? ` New registries: ${completePayload.badgesAwarded}.` : ""}`,
     );
     setSubmitting(false);
     queueSurveyTrigger({
@@ -540,7 +537,6 @@ export default function TodayGamePage({ onMissionComplete, gameDate: gameDatePro
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         completedPuzzles: 1,
-        confidence: 55,
         note: "No planet identified by player",
         date: gameDate,
       }),
@@ -578,8 +574,6 @@ export default function TodayGamePage({ onMissionComplete, gameDate: gameDatePro
 
   const pendingStart = draftStart === null || draftEnd === null ? null : Math.min(draftStart, draftEnd);
   const pendingEnd = draftStart === null || draftEnd === null ? null : Math.max(draftStart, draftEnd);
-  const confidenceLevel = confidence >= 80 ? "High" : confidence >= 55 ? "Medium" : "Low";
-  const confidenceLevelClass = confidenceLevel.toLowerCase();
   const title = "Transit Signal Analysis";
   const progressLabel = `Signal ${minigameIndex + 1}`;
   const sourceViewerHref = useMemo(() => {
@@ -732,7 +726,7 @@ export default function TodayGamePage({ onMissionComplete, gameDate: gameDatePro
               <p className="puzzle-help-context">Context: real exoplanet candidates show recurring dips at a consistent period, not random one-off noise.</p>
               <ol className="puzzle-help-compact-list">
                 <li>Draw suspected dip intervals.</li>
-                <li>Tag + confidence each interval.</li>
+                <li>Tag each interval.</li>
                 <li>Submit evidence to continue to the next signal.</li>
               </ol>
               <p className="puzzle-help-hint">Strong evidence: repeatability, sharp dip profile, baseline recovery.</p>
@@ -794,41 +788,6 @@ export default function TodayGamePage({ onMissionComplete, gameDate: gameDatePro
                     ))}
                   </div>
                 </div>
-
-                <div className="puzzle-control-group is-compact">
-                  <div className="puzzle-confidence-head">
-                    <p className="puzzle-control-label">Confidence</p>
-                    <span className={`puzzle-confidence-badge is-${confidenceLevelClass}`}>
-                      {confidence}% {confidenceLevel}
-                    </span>
-                  </div>
-                  <div className="puzzle-range-row">
-                    <input
-                      className="puzzle-confidence-range"
-                      data-cy="puzzle-confidence-range"
-                      type="range"
-                      min={0}
-                      max={100}
-                      value={confidence}
-                      onChange={(event) => setConfidence(Number(event.target.value))}
-                      style={{
-                        background: `linear-gradient(90deg, var(--brand) 0%, var(--brand) ${confidence}%, color-mix(in oklab, var(--border) 84%, transparent) ${confidence}%, color-mix(in oklab, var(--border) 84%, transparent) 100%)`,
-                      }}
-                    />
-                  </div>
-                  <div className="puzzle-confidence-presets">
-                    {[40, 70, 90].map((value) => (
-                      <button
-                        key={value}
-                        type="button"
-                        className={`puzzle-confidence-preset${confidence === value ? " is-active" : ""}`}
-                        onClick={() => setConfidence(value)}
-                      >
-                        {value}%
-                      </button>
-                    ))}
-                  </div>
-                </div>
               </div>
 
               <details className="puzzle-collapsible">
@@ -862,7 +821,7 @@ export default function TodayGamePage({ onMissionComplete, gameDate: gameDatePro
                   style={{ borderLeft: `4px solid ${(TAG_COLORS[annotation.tag] ?? TAG_COLORS.Other).stroke}` }}
                 >
                   <p>
-                    #{idx + 1} {annotation.tag} • {annotation.confidence}% • {annotation.xStart.toFixed(3)}-{annotation.xEnd.toFixed(3)}
+                    #{idx + 1} {annotation.tag} • {annotation.xStart.toFixed(3)}-{annotation.xEnd.toFixed(3)}
                   </p>
                   {annotation.note ? <p className="puzzle-annotation-note">{annotation.note}</p> : null}
                   <button className="button puzzle-action-secondary" type="button" onClick={() => removeAnnotation(annotation.id)}>

@@ -153,12 +153,11 @@ function normalizeResultCard(payload: Record<string, unknown>): ResultCard {
       if (entry && typeof entry === "object" && !Array.isArray(entry)) {
         const row = entry as Record<string, unknown>;
         const tag = asString(row.tag) ?? "Annotation";
-        const confidence = typeof row.confidence === "number" ? `${Math.round(row.confidence)}%` : null;
         const xStart = typeof row.xStart === "number" ? row.xStart.toFixed(3) : null;
         const xEnd = typeof row.xEnd === "number" ? row.xEnd.toFixed(3) : null;
         const note = asString(row.note);
         const range = xStart && xEnd ? `${xStart}-${xEnd}` : null;
-        const parts = [tag, range, confidence].filter(Boolean);
+        const parts = [tag, range].filter(Boolean);
         const label = parts.join(" • ");
         annotations.push(note ? `${label} — ${note}` : label);
       }
@@ -407,8 +406,7 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
               typeof item.xStart === "number" && typeof item.xEnd === "number"
                 ? `${item.xStart.toFixed(3)}-${item.xEnd.toFixed(3)}`
                 : "";
-            const confidence = typeof item.confidence === "number" ? `${Math.round(item.confidence)}%` : "";
-            const base = [tag, range, confidence].filter(Boolean).join(" • ");
+            const base = [tag, range].filter(Boolean).join(" • ");
             const note = typeof item.note === "string" ? item.note.trim() : "";
             return note ? `${base} — ${note}` : base;
           })

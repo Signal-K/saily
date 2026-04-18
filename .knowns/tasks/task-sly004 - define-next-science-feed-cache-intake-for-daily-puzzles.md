@@ -1,14 +1,14 @@
 ---
 id: sly004
 title: Define next science-feed cache intake for daily puzzles
-status: in-progress
+status: done
 priority: medium
 labels:
   - science-data
   - ingestion
   - planning
 createdAt: '2026-04-19T14:00:00.000Z'
-updatedAt: '2026-04-25T00:49:36.306Z'
+updatedAt: '2026-04-25T11:34:50.146Z'
 timeSpent: 0
 assignee: '@me'
 ---
@@ -22,9 +22,9 @@ This is part of the 2026-04-20 Star Sailors MVP/project-management reset. Projec
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 One source is selected for the next post-MVP expansion.
-- [ ] #2 Cache schema and ingestion steps are documented.
-- [ ] #3 No live API dependency is required for the daily play path.
+- [x] #1 One source is selected for the next post-MVP expansion.
+- [x] #2 Cache schema and ingestion steps are documented.
+- [x] #3 No live API dependency is required for the daily play path.
 <!-- AC:END -->
 
 ## Implementation Plan

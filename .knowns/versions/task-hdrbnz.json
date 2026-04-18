@@ -1,0 +1,40 @@
+{
+  "taskId": "hdrbnz",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "hdrbnz",
+      "version": 1,
+      "timestamp": "2026-04-25T11:34:36.474Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        }
+      ],
+      "snapshot": {
+        "title": "Refresh narrative and spec docs for post-TESS science feeds",
+        "description": "Update story/spec references so the four active narrative arcs align with Cloudspotting on Mars, Gaia Variables, Rubin Comet Catchers, and Active Asteroids. Parent: @task-sly004",
+        "status": "done",
+        "priority": "medium",
+        "labels": [
+          "narrative",
+          "docs",
+          "science-data"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Knowns docs reflect current narrative-project mapping"
+          },
+          {
+            "completed": false,
+            "text": "Story/spec drift is reduced before gameplay wiring begins"
+          }
+        ]
+      }
+    }
+  ]
+}

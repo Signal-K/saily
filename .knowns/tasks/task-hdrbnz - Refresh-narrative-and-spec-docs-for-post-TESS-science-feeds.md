@@ -1,14 +1,14 @@
 ---
 id: hdrbnz
 title: Refresh narrative and spec docs for post-TESS science feeds
-status: todo
+status: done
 priority: medium
 labels:
   - narrative
   - docs
   - science-data
 createdAt: '2026-04-25T00:39:33.643Z'
-updatedAt: '2026-04-25T00:39:33.643Z'
+updatedAt: '2026-04-25T11:34:36.474Z'
 timeSpent: 0
 parent: sly004
 ---

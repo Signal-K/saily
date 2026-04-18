@@ -6,7 +6,6 @@ import { createClient } from "@/lib/supabase/server";
 type Annotation = {
   xStart: number;
   xEnd: number;
-  confidence: number;
   tag: string;
   note?: string;
   coordinateMode?: "time" | "phase";
@@ -18,7 +17,14 @@ type SubmitBody = {
   anomalyId?: number;
   ticId?: string;
   note?: string;
-  annotations?: Annotation[];
+  annotations: Array<{
+    xStart: number;
+    xEnd: number;
+    tag: string;
+    note?: string;
+    coordinateMode?: "time" | "phase";
+    sourcePeriodDays?: number;
+  }>;
   hintFlags?: {
     phaseFold?: boolean;
     bin?: boolean;
@@ -31,13 +37,13 @@ function isFiniteNumber(value: unknown) {
   return typeof value === "number" && Number.isFinite(value);
 }
 
-function normalizeAnnotations(value: unknown): Annotation[] {
+function normalizeAnnotations(value: unknown): Array<Annotation & { confidence: number }> {
   if (!Array.isArray(value)) return [];
   return value
     .map((row) => {
       if (!row || typeof row !== "object") return null;
       const annotation = row as Partial<Annotation>;
-      if (!isFiniteNumber(annotation.xStart) || !isFiniteNumber(annotation.xEnd) || !isFiniteNumber(annotation.confidence)) {
+      if (!isFiniteNumber(annotation.xStart) || !isFiniteNumber(annotation.xEnd)) {
         return null;
       }
       if (typeof annotation.tag !== "string" || annotation.tag.trim().length === 0) {
@@ -45,18 +51,16 @@ function normalizeAnnotations(value: unknown): Annotation[] {
       }
       const rawStart = Number(annotation.xStart);
       const rawEnd = Number(annotation.xEnd);
-      const rawConfidence = Number(annotation.confidence);
       const xStart = Math.max(0, Math.min(1, rawStart));
       const xEnd = Math.max(0, Math.min(1, rawEnd));
-      const confidence = Math.max(0, Math.min(100, Math.round(rawConfidence)));
       const coordinateMode: Annotation["coordinateMode"] = annotation.coordinateMode === "phase" ? "phase" : "time";
       const sourcePeriodRaw = Number(annotation.sourcePeriodDays);
       const sourcePeriodDays = coordinateMode === "phase" && Number.isFinite(sourcePeriodRaw) ? Math.max(0.2, Math.min(30, Number(sourcePeriodRaw.toFixed(4)))) : undefined;
 
-      const base: Annotation = {
+      const base: Annotation & { confidence: number } = {
         xStart: Number(Math.min(xStart, xEnd).toFixed(5)),
         xEnd: Number(Math.max(xStart, xEnd).toFixed(5)),
-        confidence,
+        confidence: 100,
         tag: annotation.tag.trim().slice(0, 60),
         coordinateMode,
         sourcePeriodDays,
@@ -66,7 +70,7 @@ function normalizeAnnotations(value: unknown): Annotation[] {
       }
       return base;
     })
-    .filter((row): row is Annotation => row !== null);
+    .filter((row): row is Annotation & { confidence: number } => row !== null);
 }
 
 export async function POST(request: Request) {

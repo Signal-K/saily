@@ -47,7 +47,7 @@ export function AuthStatus() {
       setAuth({
         id: session.user.id,
         email: session.user.email,
-        avatarUrl: getRobotAvatarDataUri(session.user.email, 48),
+        avatarUrl: getRobotAvatarDataUri(session.user.id, 48),
         chips,
       });
       setLoading(false);
@@ -68,7 +68,7 @@ export function AuthStatus() {
       setAuth({
         id: user.id,
         email: user.email,
-        avatarUrl: getRobotAvatarDataUri(user.email, 48),
+        avatarUrl: getRobotAvatarDataUri(user.id, 48),
         chips,
       });
     });

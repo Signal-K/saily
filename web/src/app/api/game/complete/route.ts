@@ -5,7 +5,6 @@ import { createClient } from "@/lib/supabase/server";
 
 type CompleteBody = {
   completedPuzzles?: number;
-  confidence?: number;
   note?: string;
   date?: string;
 };
@@ -28,7 +27,7 @@ export async function POST(request: Request) {
 
   const payload = (await request.json().catch(() => ({}))) as CompleteBody;
   const completedPuzzles = normalizeNumber(payload.completedPuzzles, 3, 1, 3);
-  const confidence = normalizeNumber(payload.confidence, 70, 0, 100);
+  const confidence = 100;
   const date = resolveGameDate(payload.date);
   const access = await getDayAccessForUser(supabase, user.id, date);
 

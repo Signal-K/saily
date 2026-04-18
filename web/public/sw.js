@@ -1,4 +1,4 @@
-const CACHE_NAME = "cosmo-shell-v1";
+const CACHE_NAME = "saily-shell-v1";
 const SHELL = ["/", "/games/today", "/offline", "/manifest.webmanifest"];
 
 self.addEventListener("install", (event) => {

@@ -117,9 +117,9 @@ export default async function RootLayout({
                     <Link href="/games/today" className="header-nav-link" data-cy="nav-today">
                       Today&apos;s Mission
                     </Link>
-                    <Link href="/calendar" className="header-nav-link" data-cy="nav-calendar">
+                    {/* <Link href="/calendar" className="header-nav-link" data-cy="nav-calendar">
                       Calendar
-                    </Link>
+                    </Link> */}
                     <Link href="/discuss" className="header-nav-link" data-cy="nav-discuss">
                       Discuss
                     </Link>
@@ -147,10 +147,10 @@ export default async function RootLayout({
             <span className="mobile-tab-icon" aria-hidden>🔭</span>
             <span>Mission</span>
           </Link>
-          <Link href="/calendar" className="mobile-tab" data-cy="nav-calendar-mobile">
+          {/* <Link href="/calendar" className="mobile-tab" data-cy="nav-calendar-mobile">
             <span className="mobile-tab-icon" aria-hidden>📅</span>
             <span>Calendar</span>
-          </Link>
+          </Link> */}
           <Link href="/discuss" className="mobile-tab" data-cy="nav-discuss-mobile">
             <span className="mobile-tab-icon" aria-hidden>💬</span>
             <span>Discuss</span>

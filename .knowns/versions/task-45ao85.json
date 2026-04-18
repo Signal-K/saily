@@ -1,0 +1,40 @@
+{
+  "taskId": "45ao85",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "45ao85",
+      "version": 1,
+      "timestamp": "2026-04-25T11:34:35.921Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        }
+      ],
+      "snapshot": {
+        "title": "Plan Active Asteroids cache intake",
+        "description": "Define cache schema, ingestion steps, and daily puzzle mapping for Active Asteroids candidate review. Parent: @task-sly004",
+        "status": "done",
+        "priority": "medium",
+        "labels": [
+          "science-data",
+          "ingestion",
+          "planning"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Active Asteroids source and cache shape are defined"
+          },
+          {
+            "completed": false,
+            "text": "No live API dependency is required for the daily play path"
+          }
+        ]
+      }
+    }
+  ]
+}

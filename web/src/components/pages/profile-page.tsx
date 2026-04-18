@@ -60,7 +60,7 @@ export default async function ProfilePage() {
   ]);
 
   const displayName = profile?.username ?? user.email ?? "player";
-  const avatarUrl = getRobotAvatarDataUri(displayName, 96);
+  const avatarUrl = getRobotAvatarDataUri(user.id, 96);
   const followersCount = followersCountRes.count ?? 0;
   const followingCount = followingCountRes.count ?? 0;
   const initialFollowingIds = (followingRows ?? []).map((row) => row.following_id);

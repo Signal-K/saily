@@ -1,0 +1,119 @@
+{
+  "taskId": "sly001",
+  "currentVersion": 2,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "sly001",
+      "version": 1,
+      "timestamp": "2026-04-25T11:26:24.092Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "oldValue": "Created by project-management reset on 2026-04-20.",
+          "newValue": "Created by project-management reset on 2026-04-20.\n\nRan scripts/release/check_v0_readiness.sh. Initially failed on lint errors in cypress/e2e/tour.cy.ts and unused variables. Fixed linting and build error (postcardTitle prop). Script now passes successfully."
+        }
+      ],
+      "snapshot": {
+        "title": "Refresh Saily v0 readiness on current code",
+        "description": "This is part of the 2026-04-20 Star Sailors MVP/project-management reset. Project: Saily / The Daily Sail. Work must stay tied to MVP closure, distribution, testing, or agent handoff for this week.",
+        "status": "todo",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "mvp",
+          "release",
+          "v0"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Readiness command result is recorded."
+          },
+          {
+            "completed": false,
+            "text": "Launch/rollback checklist reflects the current build, not March assumptions."
+          },
+          {
+            "completed": false,
+            "text": "Only blocking failures remain active."
+          }
+        ],
+        "implementationPlan": "1. Run the current readiness script and capture failures.\n2. Update launch, rollback, and first-tester dates for the current week.",
+        "implementationNotes": "Created by project-management reset on 2026-04-20.\n\nRan scripts/release/check_v0_readiness.sh. Initially failed on lint errors in cypress/e2e/tour.cy.ts and unused variables. Fixed linting and build error (postcardTitle prop). Script now passes successfully."
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "sly001",
+      "version": 2,
+      "timestamp": "2026-04-25T11:26:29.185Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": [
+            {
+              "completed": false,
+              "text": "Readiness command result is recorded."
+            },
+            {
+              "completed": false,
+              "text": "Launch/rollback checklist reflects the current build, not March assumptions."
+            },
+            {
+              "completed": false,
+              "text": "Only blocking failures remain active."
+            }
+          ],
+          "newValue": [
+            {
+              "completed": true,
+              "text": "Readiness command result is recorded."
+            },
+            {
+              "completed": true,
+              "text": "Launch/rollback checklist reflects the current build, not March assumptions."
+            },
+            {
+              "completed": true,
+              "text": "Only blocking failures remain active."
+            }
+          ]
+        }
+      ],
+      "snapshot": {
+        "title": "Refresh Saily v0 readiness on current code",
+        "description": "This is part of the 2026-04-20 Star Sailors MVP/project-management reset. Project: Saily / The Daily Sail. Work must stay tied to MVP closure, distribution, testing, or agent handoff for this week.",
+        "status": "done",
+        "priority": "high",
+        "assignee": "@me",
+        "labels": [
+          "mvp",
+          "release",
+          "v0"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Readiness command result is recorded."
+          },
+          {
+            "completed": true,
+            "text": "Launch/rollback checklist reflects the current build, not March assumptions."
+          },
+          {
+            "completed": true,
+            "text": "Only blocking failures remain active."
+          }
+        ],
+        "implementationPlan": "1. Run the current readiness script and capture failures.\n2. Update launch, rollback, and first-tester dates for the current week.",
+        "implementationNotes": "Created by project-management reset on 2026-04-20.\n\nRan scripts/release/check_v0_readiness.sh. Initially failed on lint errors in cypress/e2e/tour.cy.ts and unused variables. Fixed linting and build error (postcardTitle prop). Script now passes successfully."
+      }
+    }
+  ]
+}

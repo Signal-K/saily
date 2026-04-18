@@ -20,7 +20,6 @@ type ClassificationEntry = {
   imageId: string;
   imageUrl: string;
   annotations: MarsAnnotation[];
-  confidence: number;
   note: string;
 };
 
@@ -73,7 +72,6 @@ export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePa
           imageId: img.id,
           imageUrl: img.url,
           annotations: [],
-          confidence: 70,
           note: "",
         })),
       );
@@ -90,13 +88,12 @@ export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePa
     async function checkExisting() {
       const res = await fetch(`/api/mars/classify?date=${date}`, { cache: "no-store" });
       const payload = (await res.json().catch(() => ({}))) as {
-        classifications?: Array<{ image_id: string; classification: string; confidence: number }>;
+        classifications?: Array<{ image_id: string; classification: string }>;
       };
       if (cancelled) return;
       if (res.ok && Array.isArray(payload.classifications) && payload.classifications.length > 0) {
         setSubmitted(true);
-        const avg = payload.classifications.reduce((s, c) => s + c.confidence, 0) / payload.classifications.length;
-        setScore(Math.round(40 + (payload.classifications.length / 3) * 40 + avg * 0.2));
+          setScore(Math.round(40 + (payload.classifications.length / 3) * 60));
       }
     }
 
@@ -151,12 +148,6 @@ export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePa
       )
     );
   };
-
-  function setConfidence(index: number, value: number) {
-    setEntries((prev) =>
-      prev.map((e, i) => (i === index ? { ...e, confidence: value } : e)),
-    );
-  }
 
   async function handleSubmit() {
     const complete = entries.filter((e) => e.annotations.length > 0);
@@ -404,19 +395,6 @@ export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePa
               ))}
             </div>
 
-            <div className="puzzle-control-group">
-              <p className="puzzle-control-label">
-                Confidence - {activeEntry?.confidence ?? 0}%
-              </p>
-              <input
-                type="range"
-                min={0}
-                max={100}
-                value={activeEntry?.confidence ?? 0}
-                onChange={(e) => setConfidence(activeIndex, Number(e.target.value))}
-                style={{ width: "100%" }}
-              />
-            </div>
           </div>
 
           {status ? <p className="puzzle-feedback">{status}</p> : null}

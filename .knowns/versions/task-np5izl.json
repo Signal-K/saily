@@ -1,0 +1,40 @@
+{
+  "taskId": "np5izl",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "np5izl",
+      "version": 1,
+      "timestamp": "2026-04-25T11:34:36.753Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        }
+      ],
+      "snapshot": {
+        "title": "Plan Rubin Comet Catchers cache intake",
+        "description": "Define cache schema, ingestion steps, and daily puzzle mapping for Rubin Comet Catchers small-body activity classification. Parent: @task-sly004",
+        "status": "done",
+        "priority": "medium",
+        "labels": [
+          "science-data",
+          "ingestion",
+          "planning"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Rubin Comet Catchers source and cache shape are defined"
+          },
+          {
+            "completed": false,
+            "text": "No live API dependency is required for the daily play path"
+          }
+        ]
+      }
+    }
+  ]
+}
