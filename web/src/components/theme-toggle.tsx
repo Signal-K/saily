@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import * as Switch from "@radix-ui/react-switch";
 
 type Theme = "light" | "dark";
 
@@ -25,26 +24,14 @@ export function ThemeToggle({ initialTheme }: { initialTheme: Theme }) {
   const isDark = theme === "dark";
 
   return (
-    <Switch.Root
-      className="theme-switch"
+    <button
+      className="button theme-toggle-btn"
       data-cy="theme-toggle"
-      checked={isDark}
-      onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
+      onClick={() => setTheme(isDark ? "light" : "dark")}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       title={isDark ? "Light mode" : "Dark mode"}
     >
-      <span className="theme-switch-bg" aria-hidden>
-        <span className="theme-layer theme-layer-1" />
-        <span className="theme-layer theme-layer-2" />
-        <span className="theme-layer theme-layer-3" />
-        <span className="theme-stars" />
-        <span className="theme-cloud theme-cloud-1" />
-        <span className="theme-cloud theme-cloud-2" />
-        <span className="theme-cloud theme-cloud-3" />
-      </span>
-      <Switch.Thumb className="theme-switch-thumb">
-        <span className="theme-switch-moon-craters" />
-      </Switch.Thumb>
-    </Switch.Root>
+      <span className="technical-readout">{isDark ? "DRK" : "LGT"}</span>
+    </button>
   );
 }

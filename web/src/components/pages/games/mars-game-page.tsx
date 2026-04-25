@@ -44,6 +44,7 @@ export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePa
   const [score, setScore] = useState<number | null>(null);
   const [status, setStatus] = useState<string | null>(null);
   const imageRef = useRef<HTMLImageElement>(null);
+  const markerSequenceRef = useRef(0);
 
   const loadImages = useCallback(async () => {
     // Avoid synchronous setState in effect
@@ -115,13 +116,16 @@ export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePa
 
   const handleImageClick = (e: React.MouseEvent<HTMLImageElement>) => {
     if (!imageRef.current || submitted) return;
-    
+
     const rect = imageRef.current.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width;
     const y = (e.clientY - rect.top) / rect.height;
+    if (x < 0 || x > 1 || y < 0 || y > 1) return;
+
+    markerSequenceRef.current += 1;
 
     const newAnnotation: MarsAnnotation = {
-      id: Date.now().toString(),
+      id: `${activeImage?.id ?? "image"}-${markerSequenceRef.current}`,
       x,
       y,
       type: selectedTemplate.id,
@@ -135,6 +139,7 @@ export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePa
           : entry
       )
     );
+    setStatus(`Placed ${selectedTemplate.label} pin.`);
   };
 
   const removeAnnotation = (id: string) => {
@@ -196,6 +201,7 @@ export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePa
   const activeEntry = entries[activeIndex];
   const activeImage = images[activeIndex];
   const annotatedCount = entries.filter((e) => e.annotations.length > 0).length;
+  const canSubmit = annotatedCount > 0;
 
   if (loading) {
     return (
@@ -244,7 +250,7 @@ export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePa
         <h1>Mars Surface Classification</h1>
         <div className="puzzle-header-row">
           <p className="muted puzzle-header-summary">
-            Identify and tag geological features. Tap the image to place a marker.
+            Pick an object type, then tap the image to drop pins where you see it.
           </p>
           <span className="puzzle-progress">Survey</span>
         </div>
@@ -263,8 +269,31 @@ export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePa
             <div className="mars-image-container" style={{ position: "relative" }}>
               <h2>{activeImage.title}</h2>
               <p className="muted" style={{ fontSize: "0.8rem", marginBottom: "0.5rem" }}>{activeImage.credit}</p>
-              
-              <div className="mars-annotation-wrapper" style={{ position: "relative", cursor: "crosshair" }}>
+
+              <div className="mars-toolbar">
+                <div className="mars-toolbar-copy">
+                  <p className="puzzle-control-label">Active Object Type</p>
+                  <strong>{selectedTemplate.label}</strong>
+                  <span className="muted">Tap anywhere on the photo to place a pin.</span>
+                </div>
+                <button
+                  type="button"
+                  className="button mars-clear-button"
+                  onClick={() =>
+                    setEntries((prev) =>
+                      prev.map((entry, i) => (i === activeIndex ? { ...entry, annotations: [] } : entry)),
+                    )
+                  }
+                  disabled={activeEntry.annotations.length === 0}
+                >
+                  Clear Image Pins
+                </button>
+              </div>
+
+              <div
+                className="mars-annotation-wrapper"
+                style={{ position: "relative", cursor: submitted ? "default" : "crosshair" }}
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   ref={imageRef}
@@ -281,18 +310,22 @@ export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePa
                   }}
                   style={{
                     width: "100%",
-                    maxHeight: "min(48vh, 420px)",
-                    objectFit: "cover",
+                    maxHeight: "min(58vh, 560px)",
+                    objectFit: "contain",
                     borderRadius: "0.75rem",
                     border: "1px solid var(--border)",
                     display: "block",
+                    background: "var(--surface-container-low)",
+                    touchAction: "manipulation",
                   }}
                 />
                 {activeEntry.annotations.map((a) => (
-                  <div
+                  <button
                     key={a.id}
+                    type="button"
                     className="mars-marker"
-                    title={a.label}
+                    aria-label={`Remove ${a.label} pin`}
+                    title={`${a.label} pin`}
                     onClick={(e) => {
                       e.stopPropagation();
                       removeAnnotation(a.id);
@@ -301,9 +334,9 @@ export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePa
                       position: "absolute",
                       left: `${a.x * 100}%`,
                       top: `${a.y * 100}%`,
-                      width: "24px",
-                      height: "24px",
-                      background: "rgba(255, 0, 0, 0.6)",
+                      width: "28px",
+                      height: "28px",
+                      background: "color-mix(in oklab, var(--primary) 80%, #ec3f3f)",
                       border: "2px solid white",
                       borderRadius: "50%",
                       transform: "translate(-50%, -50%)",
@@ -314,11 +347,12 @@ export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePa
                       fontSize: "12px",
                       fontWeight: "bold",
                       cursor: "pointer",
-                      boxShadow: "0 0 4px rgba(0,0,0,0.5)",
+                      boxShadow: "0 6px 12px rgba(0,0,0,0.28)",
+                      touchAction: "manipulation",
                     }}
                   >
-                    ×
-                  </div>
+                    {a.label.charAt(0)}
+                  </button>
                 ))}
               </div>
             </div>
@@ -327,14 +361,22 @@ export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePa
 
         <aside className="puzzle-sidebar panel">
           <div className="puzzle-controls">
-            <p className="puzzle-control-label">Template Dictionary</p>
+            <div className="mars-mobile-order">
+              <p className="puzzle-control-label">Object Types</p>
+              <p className="muted mars-helper-text">
+                Select a type, then place one or more pins on the current image.
+              </p>
+            </div>
             <div className="mars-template-grid">
               {MARS_TEMPLATE_DICTIONARY.map((template) => (
                 <button
                   key={template.id}
                   type="button"
                   className={`mars-template-card${selectedTemplate.id === template.id ? " is-selected" : ""}`}
-                  onClick={() => setSelectedTemplate(template)}
+                  onClick={() => {
+                    setSelectedTemplate(template);
+                    setStatus(`Selected ${template.label}. Tap the image to place a pin.`);
+                  }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={template.imageUrl} alt={template.label} />
@@ -382,11 +424,16 @@ export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePa
           {activeEntry?.annotations.length > 0 ? (
             <div className="puzzle-annotation-list" style={{ marginTop: "1rem" }}>
               <p className="muted" style={{ fontSize: "0.85rem", marginBottom: "0.5rem" }}>Annotations ({activeEntry.annotations.length}):</p>
-              <div className="chip-list">
+              <div className="chip-list mars-chip-list">
                 {activeEntry.annotations.map(a => (
-                  <span key={a.id} className="puzzle-context-pill">
-                    {a.label} <button onClick={() => removeAnnotation(a.id)} style={{ border: "none", background: "none", cursor: "pointer", marginLeft: "4px" }}>×</button>
-                  </span>
+                  <button
+                    key={a.id}
+                    type="button"
+                    className="puzzle-context-pill mars-annotation-pill"
+                    onClick={() => removeAnnotation(a.id)}
+                  >
+                    {a.label} ×
+                  </button>
                 ))}
               </div>
             </div>
@@ -406,7 +453,7 @@ export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePa
                 type="button"
                 className="button button-primary puzzle-action-primary"
                 onClick={() => void handleSubmit()}
-                disabled={submitting || annotatedCount === 0}
+                disabled={submitting || !canSubmit}
               >
                 {submitting ? "Submitting..." : `Submit Survey (${annotatedCount}/${images.length})`}
               </button>
@@ -415,18 +462,44 @@ export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePa
         </aside>
       </div>
       <style jsx>{`
-        .mars-template-grid {
+        .mars-toolbar {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          gap: 0.75rem;
+          margin-bottom: 0.85rem;
+        }
+        .mars-toolbar-copy {
           display: flex;
           flex-direction: column;
+          gap: 0.12rem;
+        }
+        .mars-toolbar-copy strong {
+          font-size: 1rem;
+        }
+        .mars-toolbar-copy span {
+          font-size: 0.8rem;
+        }
+        .mars-clear-button {
+          min-height: 44px;
+          padding-inline: 1rem;
+          white-space: nowrap;
+        }
+        .mars-annotation-wrapper {
+          overflow: hidden;
+          border-radius: 0.75rem;
+        }
+        .mars-template-grid {
+          display: grid;
           gap: 0.5rem;
-          max-height: 300px;
-          overflow-y: auto;
-          padding-right: 4px;
+          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
         }
         .mars-template-card {
           display: flex;
           gap: 0.75rem;
-          padding: 0.5rem;
+          align-items: center;
+          min-height: 72px;
+          padding: 0.7rem;
           border: 1px solid var(--border);
           border-radius: 0.5rem;
           background: var(--surface);
@@ -438,6 +511,12 @@ export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePa
           border-color: var(--brand);
           background: color-mix(in oklab, var(--brand) 10%, var(--surface));
           box-shadow: 0 0 0 1px var(--brand);
+        }
+        .mars-template-card:focus-visible,
+        .mars-annotation-pill:focus-visible,
+        .mars-marker:focus-visible {
+          outline: 2px solid var(--primary);
+          outline-offset: 2px;
         }
         .mars-template-card img {
           width: 60px;
@@ -460,6 +539,36 @@ export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePa
           display: flex;
           flex-wrap: wrap;
           gap: 4px;
+        }
+        .mars-chip-list {
+          gap: 0.5rem;
+        }
+        .mars-annotation-pill {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 40px;
+          border: 1px solid var(--outline-variant);
+          background: var(--surface-container-low);
+          cursor: pointer;
+        }
+        .mars-helper-text {
+          font-size: 0.78rem;
+          margin: 0.2rem 0 0;
+        }
+        @media (max-width: 767px) {
+          .mars-toolbar {
+            flex-direction: column;
+          }
+          .mars-clear-button {
+            width: 100%;
+          }
+          .mars-template-grid {
+            grid-template-columns: 1fr;
+          }
+          .mars-template-card {
+            min-height: 84px;
+          }
         }
       `}</style>
     </section>

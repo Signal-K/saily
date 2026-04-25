@@ -20,6 +20,17 @@ type Props = {
   referralCode?: string | null;
 };
 
+function StarRating({ score }: { score: number }) {
+  const stars = Math.round((score / 100) * 5);
+  return (
+    <div className="mission-complete-stars" aria-label={`${stars} out of 5 stars`}>
+      {Array.from({ length: 5 }, (_, i) => (
+        <span key={i} aria-hidden style={{ opacity: i < stars ? 1 : 0.2 }}>★</span>
+      ))}
+    </div>
+  );
+}
+
 export function MissionComplete({
   character,
   chapter,
@@ -27,10 +38,10 @@ export function MissionComplete({
   isStorylineComplete,
   storylineTitle,
   postcardTitle = "Sailor's Postcard",
-  postcardMessage = "You've completed this arc! Share your discovery with others.",
+  postcardMessage = "Your data contribution has been logged to the network. A postcard has been added to your archive.",
   endedEarly = false,
   awardedChips = 0,
-  referralCode = null
+  referralCode = null,
 }: Props) {
   const [copied, setCopied] = useState(false);
   const expression = endedEarly ? "sad" : chapter.resolutionExpression;
@@ -40,62 +51,74 @@ export function MissionComplete({
     <div className="mission-complete panel">
       {/* Success banner */}
       <div className="mission-complete-banner">
-        <span className="mission-complete-trophy" aria-hidden>🏆</span>
-        <p className="eyebrow">Mission Complete</p>
+        <span className="mission-complete-trophy" aria-hidden>✓</span>
+        <p className="eyebrow" style={{ margin: "0.5rem 0 0" }}>Research Logged</p>
+        <h1 className="mission-complete-heading">Mission Complete</h1>
       </div>
 
+      {/* Character + resolution quote */}
       <div className="mission-complete-header">
         <Image
           src={avatarSrc}
           alt={character.name}
-          width={56}
-          height={56}
+          width={72}
+          height={72}
           unoptimized
           className="mission-complete-avatar"
         />
         <div>
-          <h1 className="mission-complete-title">{chapter.title}</h1>
-          <p className="muted">{character.name} &middot; {storylineTitle}</p>
+          <h2 className="mission-complete-title">{chapter.title}</h2>
+          <p className="muted" style={{ margin: 0, fontSize: "0.8rem" }}>
+            {character.name} &middot; {storylineTitle}
+          </p>
         </div>
+        <blockquote className="mission-complete-resolution" style={{ flex: 1, borderLeft: "1px solid var(--border)", paddingLeft: "1.25rem", margin: 0 }}>
+          {endedEarly
+            ? "No confirmed signals detected in this data set. Research logged with negative result."
+            : chapter.resolution}
+        </blockquote>
       </div>
 
-      <blockquote className="mission-complete-resolution">
-        {endedEarly
-          ? "You reported no confirmed planet signal today. Mission operations ended early, and your report has been logged."
-          : chapter.resolution}
-      </blockquote>
-
-      <div className="mission-complete-stats-row">
-        <div className="mission-complete-score">
-          <span className="mission-complete-score-label muted">Today&apos;s score</span>
-          <span className="mission-complete-score-value">{score}</span>
+      {/* Stat cards */}
+      <div className="mission-complete-stat-cards">
+        {/* Confidence rating */}
+        <div className="mission-complete-stat-card">
+          <p className="eyebrow" style={{ margin: "0 0 0.75rem" }}>Confidence Rating</p>
+          <div className="mission-complete-score">
+            <span className="mission-complete-score-value">{score}%</span>
+          </div>
+          <StarRating score={score} />
+          <div style={{ height: "6px", background: "var(--surface-container-high)", marginTop: "0.75rem", display: "flex" }}>
+            <div style={{ width: `${score}%`, background: "var(--primary)" }} />
+          </div>
         </div>
-        
-        {awardedChips > 0 && (
-          <div className="mission-complete-reward-pill">
-            <Image src="/assets/data-chip.svg" alt="" width={20} height={20} className="reward-chip-icon" />
-            <span>+{awardedChips} Data Chips</span>
-          </div>
-        )}
-      </div>
 
-      {isStorylineComplete && (
-        <div className="mission-complete-postcard">
-          <div className="postcard-header">
-            <div className="postcard-icon-wrap">
-              <Image src="/assets/postcard.svg" alt="" width={32} height={24} />
-            </div>
-            <h3>{postcardTitle}</h3>
-          </div>
-          <p className="postcard-msg">{postcardMessage}</p>
+        {/* Transmission / chips */}
+        <div className="mission-complete-stat-card">
+          {awardedChips > 0 && (
+            <span className="mission-complete-chips-badge">+{awardedChips} Chips</span>
+          )}
+          <p className="mission-complete-transmission-title">
+            <Image src="/assets/data-chip.svg" alt="" width={16} height={16} />
+            Transmission Received
+          </p>
+          <p className="muted" style={{ fontSize: "0.8rem", lineHeight: 1.6, margin: "0 0 1rem" }}>
+            {postcardMessage}
+          </p>
+          {isStorylineComplete && (
+            <Link href="/postcards" className="button" style={{ fontSize: "0.7rem", padding: "0.4rem 0.75rem" }}>
+              View Postcard
+            </Link>
+          )}
           {referralCode && (
-            <>
-              <div className="postcard-referral">
-                <span className="referral-label">Your Referral Code:</span>
-                <code className="referral-code">{referralCode}</code>
-              </div>
+            <div style={{ marginTop: "0.75rem" }}>
+              <p className="eyebrow" style={{ margin: "0 0 0.3rem" }}>Secure Access Key</p>
+              <code style={{ fontFamily: "var(--font-data)", fontSize: "1.2rem", fontWeight: 700, letterSpacing: "0.15em", color: "var(--primary)" }}>
+                {referralCode}
+              </code>
               <button
-                className="button button-secondary button-sm"
+                className="button"
+                style={{ marginTop: "0.5rem", fontSize: "0.7rem", padding: "0.4rem 0.75rem", display: "block", width: "100%" }}
                 onClick={() => {
                   const url = `${window.location.origin}/auth/sign-up?ref=${referralCode}`;
                   navigator.clipboard.writeText(url).then(() => {
@@ -104,109 +127,28 @@ export function MissionComplete({
                   });
                 }}
               >
-                {copied ? "Copied!" : "Copy Referral Link"}
+                {copied ? "Log Copied" : "Copy Access Link"}
               </button>
-            </>
+            </div>
           )}
         </div>
-      )}
+      </div>
 
       {isStorylineComplete && !awardedChips && (
         <div className="mission-complete-arc-done">
-          <p>
-            <strong>Arc complete ✦</strong> {character.name}&apos;s story continues next time this storyline comes around.
-          </p>
+          <strong>Research cycle complete ✦</strong> Data sets for {character.name}&apos;s current arc have been processed.
         </div>
       )}
 
-      <div className="cta-row">
-        <Link href="/" className="button button-primary">
-          Back to Home
+      {/* Actions */}
+      <div className="mission-complete-actions">
+        <Link href="/" className="button">
+          Return to Hub
         </Link>
-        <Link href="/discuss" className="button">
-          Discuss
+        <Link href="/games/today" className="button button-primary">
+          View Next Mission →
         </Link>
       </div>
-      <style jsx>{`
-        .mission-complete-stats-row {
-          display: flex;
-          align-items: center;
-          gap: 2rem;
-          margin-bottom: 1.5rem;
-        }
-        .mission-complete-reward-pill {
-          background: var(--surface-2);
-          border: 1px solid var(--border);
-          padding: 0.5rem 1rem;
-          border-radius: 2rem;
-          font-weight: 600;
-          color: var(--brand);
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-        }
-        .reward-chip-icon {
-          filter: drop-shadow(0 0 4px color-mix(in oklab, var(--brand) 30%, transparent));
-        }
-        .mission-complete-postcard {
-          background: #fff9f2;
-          color: #43302b;
-          padding: 1.5rem;
-          border-radius: 0.5rem;
-          border: 1px solid #e5d5c5;
-          margin-bottom: 1.5rem;
-          box-shadow: 2px 2px 0 #e5d5c5;
-          position: relative;
-        }
-        [data-theme='dark'] .mission-complete-postcard {
-          background: #1a1512;
-          color: #e5d5c5;
-          border-color: #43302b;
-          box-shadow: 2px 2px 0 #43302b;
-        }
-        .postcard-header {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          margin-bottom: 0.5rem;
-        }
-        .postcard-icon-wrap {
-          flex-shrink: 0;
-          filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.1));
-        }
-        .postcard-header h3 {
-          margin: 0;
-          font-family: var(--font-brand);
-          font-size: 1.25rem;
-        }
-        .postcard-msg {
-          margin: 0.5rem 0 1rem 0;
-          font-family: var(--font-handwritten, cursive);
-          font-size: 1.1rem;
-          line-height: 1.4;
-          opacity: 0.9;
-        }
-        .postcard-referral {
-          background: rgba(0,0,0,0.05);
-          padding: 1rem;
-          border-radius: 0.25rem;
-          margin: 1rem 0;
-          display: flex;
-          flex-direction: column;
-          gap: 0.25rem;
-        }
-        .referral-label {
-          font-size: 0.75rem;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-          opacity: 0.8;
-        }
-        .referral-code {
-          font-size: 1.5rem;
-          font-weight: 800;
-          letter-spacing: 0.1em;
-        }
-      `}</style>
     </div>
   );
 }

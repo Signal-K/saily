@@ -9,12 +9,12 @@ type Crumb = {
 };
 
 const LABELS: Record<string, string> = {
-  games: "Games",
-  today: "Today's Puzzle",
-  discuss: "Discuss",
-  calendar: "Calendar",
-  search: "Search",
-  profile: "Profile",
+  games: "Missions",
+  today: "Daily Mission",
+  discuss: "Consensus",
+  calendar: "Archive",
+  search: "Registry",
+  profile: "User Port",
   auth: "Auth",
   "sign-in": "Sign In",
   offline: "Offline",
@@ -33,8 +33,12 @@ export function BreadcrumbsNav() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  if (pathname === "/" || pathname.startsWith("/auth")) {
+    return null;
+  }
+
   const segments = pathname.split("/").filter(Boolean);
-  const crumbs: Crumb[] = [{ label: "Home", href: "/" }];
+  const crumbs: Crumb[] = [{ label: "Terminal", href: "/" }];
 
   let currentPath = "";
   for (const segment of segments) {
@@ -49,11 +53,11 @@ export function BreadcrumbsNav() {
   const query = searchParams.get("q")?.trim();
 
   if (pathname === "/games/today" && date) {
-    crumbs.push({ label: `Puzzle ${date}`, href: `${pathname}?date=${encodeURIComponent(date)}` });
+    crumbs.push({ label: `Mission ${date}`, href: `${pathname}?date=${encodeURIComponent(date)}` });
   }
 
   if (pathname === "/discuss" && date) {
-    crumbs.push({ label: `Date ${date}`, href: `${pathname}?date=${encodeURIComponent(date)}` });
+    crumbs.push({ label: `Consensus ${date}`, href: `${pathname}?date=${encodeURIComponent(date)}` });
   }
 
   if (pathname === "/search" && query) {

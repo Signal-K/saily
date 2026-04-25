@@ -26,678 +26,700 @@ export type Storyline = {
 };
 
 // ---------------------------------------------------------------------------
-// Storyline A — Zix (alien tourist)
+// Storyline A — Zix (Cloudspotting on Mars)
 // ---------------------------------------------------------------------------
 
 const ZIX_CHAPTERS: Chapter[] = [
   {
     index: 0,
-    title: "The Brochure Was Misleading",
+    title: "A Sky Worth Missing Lunch For",
     briefing:
-      "Hello. I am Zix. I booked a holiday package to a planet called 'Verdant Paradise' and the ship dropped me off in completely the wrong star system. The travel agent is not responding to my messages. I have snacks for approximately nine days and a strong desire to find somewhere with a breathable atmosphere and, ideally, a beach. I am told your species is quite good at reading light curves. I would very much appreciate your help finding a suitable planet.",
-    briefingExpression: "serious",
+      "Hello. I am Zix. I came to Mars expecting dramatic geology and instead became obsessed with the sky. The clouds here are thin, cold, and apparently very important to your scientists. I have borrowed an atmospheric scanner from a research outpost and promised to use it responsibly, which means I now need help identifying what sort of Martian clouds I am looking at before I embarrass myself in front of professionals.",
+    briefingExpression: "happy",
     beat1:
-      "Oh! That transit dip is very promising. You found something. I have updated my itinerary. Now I need to check whether there is water nearby — my species requires it for both drinking and recreational splashing.",
-    beat1Expression: "happy",
+      "There they are. Delicate streaks high above the horizon. I knew this sky had potential. If we can sort the shape correctly, the atmospheric team says they can learn something about how the upper air is moving.",
+    beat1Expression: "surprised",
     beat2:
-      "Water confirmed. Excellent. I have already mentally named the beach. Now I need to see what the surface actually looks like before I commit to landing. Last time I trusted a brochure I ended up on a sulphur moon.",
-    beat2Expression: "surprised",
+      "The first classification is logged. Excellent. Now I need to compare it with the surrounding weather context, because apparently on Mars even a beautiful cloud must justify itself scientifically.",
+    beat2Expression: "neutral",
     resolution:
-      "That surface looks perfectly acceptable. Possibly even nice. I am going to land, set up my portable shelter, and send a very strongly worded review to the travel agency. Thank you for your assistance. You are much more helpful than the travel agent.",
+      "Properly classified and filed. The researchers were polite enough not to mention that I originally described it as 'romantic vapor.' We are off to a strong start.",
     resolutionExpression: "happy",
-    ambience: "ship",
+    ambience: "wind",
   },
   {
     index: 1,
-    title: "The Shelter Situation",
+    title: "The Evening Belt",
     briefing:
-      "I have landed. The beach is real and it is excellent. However, I have discovered that my portable shelter has a hole in it, which means I need to find a more permanent location. I have identified three candidate planets from the local star charts but I need someone to check the transit data — my navigation system is still set to the wrong star system and I do not trust it.",
+      "The local station staff have started leaving me notes when unusual cloud bands appear near dusk, which I choose to interpret as respect. Tonight there is a broad belt forming over the crater rim, and the team wants a clean morphology log before the temperature drops further.",
     briefingExpression: "neutral",
     beat1:
-      "Good signal. That is a real planet. I am beginning to think your star system has quite a lot of planets in it, which is convenient for me. Water check next — the hole in my shelter is letting in wind and I would prefer somewhere calmer.",
+      "Good sighting. The belt is broader than yesterday's cloud and much more structured. The station meteorologist made a pleased noise when I said that aloud, so I believe we are helping.",
+    beat1Expression: "happy",
     beat2:
-      "Plenty of water. I have started a list of requirements for the new location: water, stable atmosphere, no sulphur, ideally some shade. The surface scan will tell me about the shade situation.",
+      "I am beginning to understand why they care so much. If the shape changes with altitude and season, these little ice formations are practically diary entries from the atmosphere.",
     resolution:
-      "That looks like it has shade. I am very pleased. I have packed up the leaky shelter and I am ready to move. You are becoming quite essential to my holiday. I hope you are enjoying this as much as I am.",
+      "Second entry filed. I have started a notebook titled 'Mars Sky Appreciations and Relevant Scientific Observations.' It is a serious document.",
+    resolutionExpression: "happy",
+    ambience: "wind",
   },
   {
     index: 2,
-    title: "The Food Problem",
+    title: "A Suspicious Puff",
     briefing:
-      "Good news: the new location has excellent shade. Bad news: I have eaten all my snacks. I need to find a planet with something edible growing on it, which means I need stable light levels, liquid water, and a surface that is not entirely rock. I have been studying your species' approach to this problem and I believe the answer involves looking at light curves again. I am ready.",
+      "One of the station cameras caught a compact cloud that appeared and vanished quickly enough to start an argument in the control room. Half the team thinks it was instrument noise. The other half thinks it was real and rare. I love a disagreement with data at stake.",
     briefingExpression: "serious",
     beat1:
-      "That orbital period is very stable. Consistent light, reasonable distance from the star — things could grow there. I am cautiously optimistic. Now let us check the water situation, because things that grow need water and so do I.",
+      "It was real. Brief, yes, but real. The edges are too coherent to be noise, and the position matches the thermal profile from the same window.",
+    beat1Expression: "surprised",
     beat2:
-      "Good water. I have been thinking about what I would most like to eat right now and the answer is something crunchy. I do not know if this planet has anything crunchy on it. The surface scan may give me clues.",
+      "The room is now quiet in the very satisfying way that follows evidence. I am enjoying this more than is probably dignified.",
     resolution:
-      "Mineral-rich surface. Things will definitely grow there. I am going to land and begin an exploratory food survey. If I find something crunchy I will send you a sample. Thank you again. You are very good at this.",
+      "The cloud has been confirmed and tagged for follow-up. I have not gloated. I have simply stood near the display with excellent posture.",
+    resolutionExpression: "happy",
+    ambience: "wind",
   },
   {
     index: 3,
-    title: "The Navigation Update",
+    title: "Dawn Watch",
     briefing:
-      "My navigation system has finally updated. It turns out I am in entirely the right star system — the travel agent just labelled the map wrong. This means Verdant Paradise is actually reachable from here. I need to plot the correct route, which requires checking the transit data for the approach corridor. I am very excited. I have been on this unplanned holiday for three weeks and I am ready for the planned one.",
-    briefingExpression: "happy",
+      "Today we are watching the sky before sunrise because the mesospheric team thinks the pre-dawn conditions may favor a different cloud class. This is inconvenient because it is early, but I have been promised rare atmospheric structure and that is enough for me.",
+    briefingExpression: "neutral",
     beat1:
-      "Clear approach. I can see the route now. I have been thinking about what I will do when I arrive at Verdant Paradise and the answer is: lie down for a very long time. But first, asteroid check — I need to confirm the fuel situation.",
+      "There. Thin layers, faint but persistent. Dawn on Mars is offensively beautiful when it has something to prove.",
+    beat1Expression: "happy",
     beat2:
-      "Fuel confirmed. I have repacked my bag. I have thrown away the leaky shelter. I have eaten the last of the emergency rations I found in a compartment I forgot about. Surface scan — one more look at where I have been.",
+      "The classification team says this is exactly the kind of comparative record they need. I say that means my terrible sleep schedule is now part of science.",
     resolution:
-      "A good surface. I will miss it, actually. It was not what I planned but it was quite good. Right. Verdant Paradise, here I come. Thank you for everything. I will leave you a review. Five stars.",
+      "Dawn entry complete. I am going to demand breakfast and then pretend I made this sacrifice entirely for research, which is mostly true.",
+    resolutionExpression: "happy",
+    ambience: "wind",
   },
   {
     index: 4,
-    title: "Verdant Paradise",
+    title: "Cloud Season",
     briefing:
-      "I am almost there. The approach corridor is clear and the navigation system is, for once, showing me something that matches what I can see out the window. I want to do one final data check before I land — I have learned, on this trip, that checking the data is always worth doing. It has saved me from a sulphur moon, a waterless rock, and at least two very bad decisions. One last look.",
-    briefingExpression: "happy",
+      "We now have enough entries that the station wants a cleaner picture of how the cloud forms repeat across several sols. I have gone from curious bystander to 'person who notices things in the Martian sky,' which is not how I expected this trip to evolve.",
+    briefingExpression: "serious",
     beat1:
-      "Still there. Still real. I keep checking because I still do not entirely trust the navigation system, but the data agrees with it, which is reassuring. Asteroid check — last one.",
+      "The pattern holds. Repeated shapes, repeated altitude band, repeated timing. That is not romance; that is evidence.",
+    beat1Expression: "neutral",
     beat2:
-      "Everything confirmed. I am going to land. I am going to find the beach. I am going to lie down. Surface — one final look at where I am going.",
+      "The researchers are correlating our labels with circulation models. I do not fully understand the models, but I do understand the expression of people receiving useful data.",
     resolution:
-      "That is a beach. That is an actual beach. I can see it in the surface data. I am going in. Thank you. Genuinely, sincerely, from the bottom of my three hearts — thank you.",
+      "Seasonal pattern confirmed. I have been thanked in an email with the phrase 'classification consistency,' which may be the highest compliment I have ever received.",
     resolutionExpression: "happy",
-    ambience: "ship",
+    ambience: "wind",
   },
 ];
 
 // ---------------------------------------------------------------------------
-// Storyline B — Commander Brix (alien supply run)
+// Storyline B — Commander Brix (Gaia Variables)
 // ---------------------------------------------------------------------------
 
 const BRIX_CHAPTERS: Chapter[] = [
   {
     index: 0,
-    title: "The Supply List",
+    title: "The First Light Curve",
     briefing:
-      "I am Commander Brix of the Outer Rim Supply Corps. My job is to find planets with water, minerals, and stable atmospheres and log them for future supply depots. It is not glamorous work but someone has to do it and that someone is me. I have a list of twelve candidate systems and not enough fuel to check all of them, so I need to be efficient. Your light curve analysis will help me narrow the list. Shall we begin?",
+      "I am Commander Brix, field lead for a variable-star triage program built around Gaia alerts and follow-up observatories that would very much like fewer false alarms. The sky is full of stars that brighten, dim, pulse, eclipse, and occasionally behave as if they resent cataloguing. My job is to sort the merely noisy from the genuinely interesting before we waste telescope time.",
     briefingExpression: "serious",
     beat1:
-      "Confirmed transit signal. That goes on the list. The Supply Corps will be pleased — they have been asking for new candidates in this sector for months. Now I need to check the asteroid field for water ice. Water is always the first question.",
+      "This one is not noise. The change is too clean, too structured, too repeatable. Good. Something in the catalogue is telling the truth.",
     beat1Expression: "neutral",
     beat2:
-      "Water confirmed. Good. I have logged it. The surface scan will tell me about mineral content — the Corps needs both water and building materials for a proper depot.",
+      "Now I need the morphology called properly. Pulsator, eclipsing binary, flare star, something stranger. Labels matter when the night schedule is expensive.",
     beat2Expression: "serious",
     resolution:
-      "Solid mineral readings. This is a viable depot site. I am filing the report now. Thank you for your assistance — the Corps does not usually have access to this quality of transit data. I will note your contribution in the log.",
+      "Classified and escalated. The observatory gets a justified target and I get to avoid sending a humiliating retraction memo. Efficient work.",
     resolutionExpression: "neutral",
     ambience: "ship",
   },
   {
     index: 1,
-    title: "Candidate Seven",
+    title: "Too Regular To Ignore",
     briefing:
-      "Candidate seven on the list. The previous six were either too hot, too cold, or had atmospheres that would dissolve the depot walls, which is not ideal. I am cautiously optimistic about this one based on the star type. The transit data will tell us if there is actually a planet there or if the charts are wrong again. The charts are wrong surprisingly often.",
+      "The second candidate is so regular that I distrusted it on principle. Perfect-looking curves often hide processing mistakes, but occasionally they are simply excellent data. I would like to know which sort of day I am having.",
     briefingExpression: "neutral",
     beat1:
-      "The charts were not wrong this time. Good planet signal. I have updated the log. The asteroid field on this heading has been flagged by a previous survey as potentially water-rich — let us verify.",
+      "Regular and real. I am reluctantly impressed. The cadence is stable enough that the fit should be straightforward if the classification is correct.",
+    beat1Expression: "neutral",
     beat2:
-      "Verified. I have now found water on four of the seven candidates, which is above average for this sector. The surface scan is the final check — I need to know if the terrain is buildable.",
+      "The archive disagrees with itself, which is predictable. One note says pulsator, another says binary, a third says 'check later.' We are checking later now.",
     resolution:
-      "Buildable terrain. Candidate seven is approved. I am beginning to think this sector is better than its reputation. I will recommend a full survey team. Good work today.",
+      "Dispute resolved. The target is catalogued correctly at last. I have removed the 'check later' note with considerable satisfaction.",
+    resolutionExpression: "neutral",
+    ambience: "ship",
   },
   {
     index: 2,
-    title: "The Detour",
+    title: "The Unhelpful Archive",
     briefing:
-      "I have been asked to check a system that is not on my original list. Apparently someone in the Corps flagged it based on old data and wants a current reading. I do not know why this system was flagged or what they expect to find — the request just says 'verify and report.' I am verifying and reporting. Transit data first.",
+      "A historical observer described today's candidate as 'erratic but interesting,' which is neither classification nor analysis. I do not know why astronomers tolerated prose like this for so long. Fortunately, we have the data.",
     briefingExpression: "serious",
     beat1:
-      "There is definitely something there. The old data was right. I am now curious about why this system was flagged specifically — the signal has an unusual profile. But curiosity is not in the job description. Asteroid check.",
+      "The variability is real and not random. There is structure beneath the mess, which means someone can eventually write a useful paper instead of a poetic one.",
+    beat1Expression: "surprised",
     beat2:
-      "Water present. The system is viable. I have sent the preliminary report and received back a message that just says 'confirmed, thank you.' Very informative. Surface scan, and then I am back to the original list.",
+      "The team wants a conservative label until follow-up confirms the mechanism. Sensible. I appreciate caution when the alternative is nonsense.",
     resolution:
-      "Good surface. Whatever they wanted to know about this system, the answer is: it is fine, it has water, the terrain is reasonable. I have filed the report. On to candidate eight.",
+      "Flagged as unusual and queued for additional monitoring. The archive entry has been updated in language that would survive peer review.",
+    resolutionExpression: "neutral",
+    ambience: "ship",
   },
   {
     index: 3,
-    title: "Candidate Ten",
+    title: "A Better Candidate Than The Proposal",
     briefing:
-      "Candidate ten. I am making good progress through the list. The fuel situation is better than expected — the asteroid fields in this sector have been generous with water ice, which I have been converting as I go. I need to check this candidate carefully because the star type is unusual and the Corps has specific requirements for depot stability. Transit data will tell us if the orbital mechanics are sound.",
-    briefingExpression: "neutral",
+      "One of the board's preferred targets is mediocre, but a secondary candidate from the same field may be excellent. Committees dislike being told their favorite object is less interesting than the backup. I will require evidence before I enjoy this moment.",
+    briefingExpression: "serious",
     beat1:
-      "Sound orbital mechanics. The star type is unusual but the planet's position compensates for it — stable light levels, reasonable temperature range. I am impressed. Asteroid check for the fuel situation.",
+      "Evidence obtained. The secondary target has cleaner periodic structure and a stronger case for follow-up science. That is awkward for the board and ideal for me.",
+    beat1Expression: "happy",
     beat2:
-      "Fuel situation: excellent. I have enough to complete the list and return with margin to spare. Surface scan — I want to see the terrain before I make the final recommendation.",
+      "I am preparing the comparison note now. It will be factual, restrained, and devastating.",
     resolution:
-      "Excellent terrain. Candidate ten is the best site I have found on this run. I am flagging it as priority one for the next depot build. This has been a productive survey. Thank you for the data support.",
+      "Recommendation filed. The better target wins. I expect at least one defensive email by morning.",
+    resolutionExpression: "neutral",
+    ambience: "ship",
   },
   {
     index: 4,
-    title: "Final Report",
+    title: "Night Queue",
     briefing:
-      "Last candidate on the list. I have found viable sites at candidates four, seven, and ten. The Corps will be pleased. This final check is due diligence — I want to be thorough before I file the complete report. Transit data, asteroid check, surface scan. Same as always. Let us finish properly.",
+      "We have reached the end of this week's queue and I would like to hand the telescopes a list I trust. That requires one final pass on a star whose brightness changes are subtle enough to be ignored by anyone lazy and obvious enough to matter to anyone competent.",
     briefingExpression: "serious",
     beat1:
-      "Good signal. I appreciate consistency. The asteroid field here is the last one I need to check — if it has water, I will have a complete data set for the full list.",
+      "Subtle, yes. But the signal is there. Consistent enough to classify, interesting enough to keep.",
+    beat1Expression: "neutral",
     beat2:
-      "Complete data set achieved. I have everything I need. Surface scan — final entry in the log.",
+      "The queue is starting to look respectable. I enjoy it when a pile of uncertainty becomes a list of actions.",
     resolution:
-      "Good surface. The report is complete. Twelve candidates surveyed, four viable depot sites identified, fuel reserves adequate for return. A successful run. I will see you on the next one.",
+      "Night queue complete. We now have a slate of targets worth the photons they will cost us. That is all I ask of the universe.",
     resolutionExpression: "neutral",
     ambience: "ship",
   },
 ];
 
 // ---------------------------------------------------------------------------
-// Storyline C — Pip (young alien, first solo mission)
+// Storyline C — Pip (Rubin Comet Catchers)
 // ---------------------------------------------------------------------------
 
 const PIP_CHAPTERS: Chapter[] = [
   {
     index: 0,
-    title: "First Solo",
+    title: "First Tail",
     briefing:
-      "Hi! I'm Pip. This is my first solo navigation mission — my instructor said I was ready and I think she was right, mostly. I need to find a planet with liquid water for my certification exam. The exam board requires photographic evidence of a transit signal, a water source, and a surface scan. I have the equipment, I have the checklist, and I have a lot of enthusiasm. Let's find a planet!",
+      "Hi! I'm Pip. I got assigned to the comet activity desk and I am trying to act like this is normal, but it is not normal because today's images might contain an actual tail around a tiny solar-system body and that is objectively exciting. The Rubin team says we have to be careful about distinguishing real activity from smearing, noise, and my tendency to be enthusiastic too early.",
     briefingExpression: "happy",
     beat1:
-      "I found one! I actually found one! Okay, staying calm, staying professional. The transit dip is clear and the signal is strong. I am logging this very carefully because the exam board is very particular about documentation. Water check next — this is the part I was most nervous about.",
+      "Okay. I see it. Maybe. Possibly. No, actually, yes — there is something extending from the object and it is not just my optimism this time.",
     beat1Expression: "surprised",
     beat2:
-      "Water! There is water! I have been practising the asteroid annotation technique for weeks and it worked exactly like the training said it would. I am so relieved. Surface scan is the last step. I can do this.",
-    beat2Expression: "happy",
+      "Now we need the activity call to be precise. Tail, coma, both, or neither. This is where being excited has to become being useful.",
+    beat2Expression: "serious",
     resolution:
-      "Surface scan complete. I have all three pieces of evidence. I am going to submit this to the exam board right now before anything goes wrong. Thank you so much for helping me — I was a bit nervous at the start but this went really well. I think I passed!",
+      "Useful won. The activity has been classified and sent onward. I am still excited, just in a more professional shape.",
     resolutionExpression: "happy",
     ambience: "lab",
   },
   {
     index: 1,
-    title: "The Second One",
+    title: "Training Images No Longer Fool Me",
     briefing:
-      "I passed! The exam board gave me a distinction, which my instructor said was unusual for a first attempt. She has now given me a second assignment: find a planet suitable for a research outpost. This means I need stable light, water, and a surface that is not too rocky for building. It is more specific than the first assignment but I feel much more confident now. Let's go.",
-    briefingExpression: "happy",
+      "Yesterday I got tricked by a training image designed to teach caution. Fair enough. Today I want redemption. The next object comes from a fresh batch and the note says only: 'look carefully at the faint structure.' I fully intend to.",
+    briefingExpression: "serious",
     beat1:
-      "Good transit signal. The orbital period looks stable — consistent light levels, which is what the outpost needs. I am getting better at reading these curves. Water next.",
+      "Carefully was the right instruction. The feature is faint, but it is aligned and persistent enough to matter.",
+    beat1Expression: "neutral",
     beat2:
-      "Water confirmed. I have been taking notes on the asteroid annotation process because I want to get faster at it. The surface scan will tell me about the terrain — I need to know if it is buildable.",
+      "I am getting faster at spotting the difference between a messy point-spread function and an actual little plume of material peeling away from the body.",
     resolution:
-      "Buildable terrain. I am filing the report. My instructor is going to be pleased. I am already thinking about the third assignment. I wonder what it will be.",
+      "Classification logged. Redemption achieved. I have stopped glaring at the tutorial examples now.",
+    resolutionExpression: "happy",
+    ambience: "lab",
   },
   {
     index: 2,
-    title: "The Tricky One",
+    title: "The One With The Coma",
     briefing:
-      "My instructor has given me what she calls 'a tricky one.' The star in this system is variable, which means the light curve is noisier than usual and the transit signal will be harder to pick out. She says this is good practice. I have been studying variable star patterns all week. I am ready. Probably.",
+      "This candidate is centered nicely but surrounded by a fuzziness that could mean activity or could mean the telescope had a bad moment. The senior reviewer said, 'don't overcall it.' I have repeated that sentence to myself four times.",
     briefingExpression: "serious",
     beat1:
-      "I found it. It took longer than usual but I found it. The signal was there underneath the noise — you just have to know what to look for. My instructor was right, this is good practice. Water check — I am hoping the asteroid field is straightforward.",
+      "Not overcalled. The fuzz is real and roughly symmetric. This is what a coma is supposed to feel like when you finally trust your eyes.",
+    beat1Expression: "surprised",
     beat2:
-      "The asteroid field was straightforward. I needed that after the tricky light curve. Surface scan — let's see what we are dealing with.",
+      "I think I understand why people get hooked on this work. Tiny object, tiny haze, huge scientific consequences.",
     resolution:
-      "Interesting surface. Lots of variation in the terrain — my instructor will probably ask me to write a report on what caused it. I am already thinking about the answer. This is the part of the job I like most.",
+      "Coma candidate sent up the chain. I am trying to sit still and failing slightly.",
+    resolutionExpression: "happy",
+    ambience: "lab",
   },
   {
     index: 3,
-    title: "Teaching Someone Else",
+    title: "False Alarm Drill",
     briefing:
-      "My instructor has asked me to help train a new student. I am going to demonstrate the full survey process — transit data, asteroid check, surface scan — while explaining what I am doing and why. The new student is watching. I want to do this well. Here we go.",
-    briefingExpression: "happy",
+      "The team slipped a borderline case into the queue specifically to see whether I would call activity when there was none. This feels unfair, which probably means it is good training.",
+    briefingExpression: "neutral",
     beat1:
-      "Transit signal confirmed. I explained the dip shape and what it tells us about the planet's size and orbital period. The new student asked a good question about noise filtering. I think they are going to be fine. Water next.",
+      "No tail. No coma. Just a badly behaved image. I am oddly proud of saying no with confidence.",
+    beat1Expression: "neutral",
     beat2:
-      "Water confirmed. I showed the new student how to read the asteroid annotation results and what the different ice signatures mean. They took notes. I remember taking notes like that. Surface scan — last demonstration.",
+      "It turns out restraint is also part of discovery. You protect the interesting objects by refusing to manufacture them.",
     resolution:
-      "Surface scan complete. The new student said the process made more sense watching it live than reading about it. I told them that is how I felt too. My instructor is smiling. I think that means I did well.",
+      "Rejected correctly. The senior reviewer sent back one word: 'good.' I will treasure it forever.",
+    resolutionExpression: "happy",
+    ambience: "lab",
   },
   {
     index: 4,
-    title: "The Real Thing",
+    title: "Real Queue, Real Stakes",
     briefing:
-      "My instructor has given me my first real assignment — not a training exercise, not an exam. An actual survey request from an actual client who needs an actual planet. I have done this many times in training. This is the same process. I am telling myself that because I am a little nervous. Let's do the survey.",
+      "Today's queue is all fresh data and no training wheels. If there is activity here, people may point more telescopes at it tonight. I am trying to feel honored instead of terrified.",
     briefingExpression: "serious",
     beat1:
-      "Real transit signal for a real client. I am logging everything very carefully. The client needs this data for a settlement feasibility study, which means the stakes are higher than a training exercise. Water check.",
+      "There is enough structure to merit a second look. Not dramatic, but real enough to matter.",
+    beat1Expression: "neutral",
     beat2:
-      "Water confirmed. I have been thinking about the people who might eventually live on this planet, if the feasibility study goes well. That is a strange thing to think about while doing an asteroid survey. Surface scan.",
+      "I have learned that discovery often looks like patience before it looks like glory. That seems unfair but accurate.",
     resolution:
-      "Good surface. The report is complete. I am sending it to the client now. My instructor says this is what the job actually is — careful work that other people rely on. I think I understand that now. I am glad I started with the training.",
+      "Candidate promoted for follow-up. Real queue, real call, no regrets. I may print this one out and keep it.",
     resolutionExpression: "happy",
     ambience: "lab",
   },
 ];
 
 // ---------------------------------------------------------------------------
-// Storyline D — The Cartographer (alien mapping expedition)
+// Storyline D — The Cartographer (Active Asteroids)
 // ---------------------------------------------------------------------------
 
 const CARTA_CHAPTERS: Chapter[] = [
   {
     index: 0,
-    title: "Blank Space",
+    title: "A Tail Where There Should Be None",
     briefing:
-      "I map things. That is my entire job and I find it deeply satisfying. This sector of your galaxy is listed on our charts as 'unmapped' with a small note that says 'probably fine.' I am here to replace 'probably fine' with actual data. I have a blank chart, a full fuel tank, and a methodical approach to everything. We will start with transit data — I want to know what planets are actually here.",
+      "I map things. Usually they stay mapped. Active asteroids are rude because they behave like comets when they are supposed to behave like rocks. Today's task is to review candidates that may be shedding dust or ice and decide whether the activity is real. If it is, the small-body catalogue changes. I enjoy changing a catalogue for good reasons.",
     briefingExpression: "serious",
     beat1:
-      "First entry on the chart. I have given it a preliminary designation and noted the transit parameters. The asteroid field will give me the water data — water sources are important for the chart because travellers need to know where to refuel.",
+      "Interesting. The extension is offset, directional, and not obviously an artifact. That is enough to continue.",
     beat1Expression: "neutral",
     beat2:
-      "Water source logged. I have marked it on the chart with the standard refuelling symbol. Surface data is the final entry for this location — terrain type, mineral content, habitability rating.",
-    beat2Expression: "serious",
+      "The difference between a normal asteroid and an active one is the difference between a line item and a scientific problem. I prefer scientific problems.",
     resolution:
-      "First location complete. The chart is no longer blank in this corner. I find this very satisfying. On to the next one.",
+      "Candidate logged as likely active. The map now contains one more object that refuses simplicity.",
     resolutionExpression: "neutral",
     ambience: "lab",
   },
   {
     index: 1,
-    title: "The Cluster",
+    title: "Dust Or Deception",
     briefing:
-      "There is a cluster of signals in this part of the sector that the old charts marked as 'interference, ignore.' I do not ignore things. I investigate them. The transit data will tell me whether these are real planets or whether the old charts were right about the interference. I am prepared for either outcome.",
+      "This next object has already been argued over by two analysts and an automated pipeline, which means I trust none of them yet. We need a clean human judgment on whether the apparent structure is dust emission or a trick of the image.",
     briefingExpression: "serious",
     beat1:
-      "Real planets. The old charts were wrong. I am adding a note to the chart that says 'previous survey incorrect — see current data.' I do this more often than you might expect. Water check for this location.",
+      "Dust, not deception. The profile is too coherent to dismiss.",
+    beat1Expression: "neutral",
     beat2:
-      "Water present. The cluster is genuinely interesting — multiple viable locations in close proximity. This is going to be a useful section of the chart. Surface scan.",
+      "Good. I dislike wasting time on ambiguity that turns out to be avoidable. This one earns its uncertainty.",
     resolution:
-      "Good surface data. I have updated the chart for this location and flagged the cluster for a follow-up survey. Someone will want to know about this. The chart is getting less blank.",
+      "Marked for follow-up. The analysts may resume arguing with a firmer foundation.",
+    resolutionExpression: "neutral",
+    ambience: "lab",
   },
   {
     index: 2,
-    title: "The Edge",
+    title: "The Quiet Belt Is Not Quiet",
     briefing:
-      "I am at the edge of the mapped region. Beyond this point the chart is completely empty. I find this exciting rather than alarming, which my colleagues say is unusual. The transit data here will be the first data anyone has collected in this part of the sector. I am going to be very careful and very thorough.",
+      "A supposedly ordinary main-belt field has produced an object with a suspicious fan of material. If the call holds, the belt is being less quiet than advertised. This is exactly why advertisements should not write catalogues.",
     briefingExpression: "neutral",
     beat1:
-      "First signal beyond the edge. I have marked it on the chart with a small star to indicate it is a new discovery. The asteroid field here is uncharted too — I will be the first to log its water content.",
+      "The fan is real. Narrow, but real. Something on or near the object is ejecting material into space.",
+    beat1Expression: "surprised",
     beat2:
-      "First water source beyond the edge. I have given it a proper designation and noted the ice composition. Surface scan — first surface data from this region.",
+      "I have updated the field notes already. One active object changes how we think about the neighborhood around it.",
     resolution:
-      "First surface data logged. The chart now extends further than it did this morning. I am going to sit here for a moment and appreciate that. Then I am going to keep going.",
+      "Confirmed as a worthwhile active-asteroid candidate. The quiet belt may submit a complaint if it wishes.",
+    resolutionExpression: "neutral",
+    ambience: "lab",
   },
   {
     index: 3,
-    title: "Corrections",
+    title: "Repeat Visitor",
     briefing:
-      "I have found three errors in the existing charts today. This is not unusual — old charts are often based on incomplete data or outdated instruments. My job is not just to add new information but to correct what is wrong. The transit data for this location will either confirm the existing chart entry or replace it. I am ready for either.",
+      "We have seen this object before under a different provisional label. At the time the evidence was weak. Now the archive has a second epoch and a chance to decide whether the earlier hint of activity was insight or wishful thinking.",
     briefingExpression: "serious",
     beat1:
-      "The existing entry was wrong. The planet is there but the orbital parameters are significantly different from what was recorded. I have corrected the chart and noted the discrepancy. Water check — let us see if the old data got this right.",
+      "Second epoch agrees with the first. That is excellent. Repetition is the enemy of wishful thinking.",
+    beat1Expression: "neutral",
     beat2:
-      "The water data was also wrong. The old survey missed a significant ice deposit in the asteroid field. I have updated the chart. Surface scan — I want to see if the terrain matches the old description.",
+      "With two appearances of the same behavior, the object graduates from curiosity to case file.",
     resolution:
-      "Terrain does not match the old description either. Three corrections for one location. I have flagged this for a full re-survey recommendation. The chart is more accurate than it was. That is the job.",
+      "Repeat activity recorded. I have merged the notes and promoted the object to the list of things worth bothering larger telescopes about.",
+    resolutionExpression: "neutral",
+    ambience: "lab",
   },
   {
     index: 4,
-    title: "The Last Blank",
+    title: "The Better Catalogue",
     briefing:
-      "I have reached the last unmapped section of this survey area. After this, the chart will be complete — at least for this expedition. I have been working on this sector for a long time and I am looking forward to filing the final report. One last full survey. Let us do it properly.",
+      "This week's candidates are nearly complete. What remains is a final review of one object that could either be the cleanest active asteroid in the set or one last nuisance before I file my report. Either outcome improves the catalogue. One is simply more satisfying.",
     briefingExpression: "neutral",
     beat1:
-      "Last transit signal of the expedition. I have logged it carefully. The asteroid field here is the last one I need to check — after this, the water data for the entire sector will be complete.",
+      "Satisfying outcome. The structure is clean, directional, and persistent enough to justify confidence.",
+    beat1Expression: "happy",
     beat2:
-      "Last water source logged. The chart is almost complete. Surface scan — final entry.",
+      "I appreciate a case that is both unusual and legible. Rarely do the universe and I cooperate this well.",
     resolution:
-      "Final entry complete. The chart is done. 'Probably fine' has been replaced with actual data — planet locations, water sources, surface terrain, habitability ratings. I am going to file this report and then take a very long rest. Thank you for your help with the data. The chart is better for it.",
+      "Report filed with several strong activity candidates and one especially elegant example. The catalogue is better. That is the point.",
     resolutionExpression: "happy",
     ambience: "lab",
   },
 ];
 
 // ---------------------------------------------------------------------------
-// Storyline A arc 2 — Zix (settling in on Verdant Paradise)
+// Storyline A arc 2 — Zix (Cloudspotting on Mars, deeper season)
 // ---------------------------------------------------------------------------
 
 const ZIX_ARC2_CHAPTERS: Chapter[] = [
   {
     index: 5,
-    title: "The Beach Assessment",
+    title: "The High Thin Ones",
     briefing:
-      "I have arrived. The beach is exactly as the brochure described, which is unprecedented in my experience. I have set up a proper base camp and I am now conducting a scientific assessment of the local conditions — purely out of habit. There are several things I want to confirm before I fully commit to relaxing. One of them is the atmospheric stability. I would like to know whether the good weather is structural or just today.",
+      "The station lead has informed me that I have become 'alarmingly reliable' at spotting high-altitude cloud forms, which I am choosing to hear as praise. Tonight we are looking for the very thin structures that barely separate themselves from the background.",
     briefingExpression: "happy",
     beat1:
-      "The atmospheric data is very good. The star here provides consistent light across the season, which explains the weather pattern. I am updating my holiday notes with this information. Asteroid check — I want to see the local resource situation.",
-    beat1Expression: "happy",
+      "Barely visible, but visible enough. The sky is subtle tonight and therefore smug.",
+    beat1Expression: "neutral",
     beat2:
-      "Good water and mineral readings in the asteroid field. This planet is genuinely well-supplied. I have noted this for my review of the travel agency brochure, which I am still writing. Surface scan — I want to confirm the beach extends as far as I think it does.",
-    beat2Expression: "neutral",
+      "The trick, I am told, is consistency. If several observers would call it the same thing, the atmosphere becomes easier to model. I find this strangely intimate.",
     resolution:
-      "The beach is longer than the brochure claimed. I am revising my review from one star to two. Thank you for helping me confirm the data. I am going to lie down now.",
+      "Logged successfully. I am now trusted with the difficult clouds, which feels like being handed a secret language.",
     resolutionExpression: "happy",
-    ambience: "ship",
+    ambience: "wind",
   },
   {
     index: 6,
-    title: "The Local Wildlife",
+    title: "Station Argument Number Four",
     briefing:
-      "There is something living in the water. It is small, it makes a sound I do not have a word for, and it has been watching me set up the transit scanner with what I can only describe as professional interest. I have decided to name it Gerald. Gerald does not appear to be dangerous but I would like some atmospheric and surface data before I let Gerald any closer to my equipment.",
-    briefingExpression: "surprised",
+      "A visiting researcher insists today's cloud feature is wave-like. The station lead says filamentary. I say the scanner should decide, but apparently that is why I am here.",
+    briefingExpression: "serious",
     beat1:
-      "Very stable atmosphere. Gerald has been sitting near the scanner the entire time. I have concluded that Gerald likes data, which makes Gerald my favourite local organism. Asteroid check — still need to know what Gerald is eating out there.",
-    beat1Expression: "happy",
+      "Wave-like, with cleaner periodic structure than the first impression suggested.",
+    beat1Expression: "surprised",
     beat2:
-      "Rich ice water in the asteroid field — explains the food chain. Gerald is well-fed and well-hydrated, which I respect. Surface scan — I want to understand Gerald's habitat properly.",
-    beat2Expression: "neutral",
+      "I have delivered this conclusion as calmly as possible. Calmly, but not without style.",
     resolution:
-      "Mineral-rich shallows. Excellent habitat. I have submitted a formal report about Gerald to the interstellar wildlife registry. The registry has replied asking me to confirm Gerald is not a rock. Gerald is not a rock.",
+      "Argument settled by classification. I have been offered tea by both sides, which I believe means I handled the diplomacy correctly.",
     resolutionExpression: "happy",
-    ambience: "ship",
+    ambience: "wind",
   },
   {
     index: 7,
-    title: "The Message",
+    title: "Dust And Ice",
     briefing:
-      "I have received a message from home. My cousin Vex is also lost — different star system, same travel agency, almost certainly the same labelling error. They have asked if I can help them find a viable planet while I have the scanner set up. I have said yes, obviously. I am becoming quite good at this. Gerald is also present and appears to be listening.",
+      "A dust event has complicated the sky, which means the cloud signatures are now embedded in something messier than usual. The team still wants the cloud call. I respect ambition in others when I do not have to calibrate their instruments.",
     briefingExpression: "neutral",
     beat1:
-      "Good transit signal in the sector Vex has described. I have forwarded the data to them with annotations. Vex says the annotations are 'very thorough,' which is accurate. Asteroid check — Vex will also need water data.",
+      "Messy background, real cloud. Good. Complexity is tolerable when it yields.",
     beat1Expression: "neutral",
     beat2:
-      "Water confirmed. I have sent Vex a complete briefing document. They have replied saying it is 'surprisingly professional.' I have chosen to take this as a compliment. Surface scan — final piece of data for Vex's report.",
-    beat2Expression: "serious",
+      "The atmospheric team is delighted because mixed conditions are exactly what they wanted to capture. Scientists do love the difficult days.",
     resolution:
-      "Good surface for Vex. I have filed a complete survey report. The travel agency still has not replied to my complaint. I have added Vex's complaint to mine. We are now a coalition.",
+      "Mixed-condition entry complete. I am beginning to understand that the difficult sky is often the useful sky.",
     resolutionExpression: "neutral",
-    ambience: "ship",
+    ambience: "wind",
   },
   {
     index: 8,
-    title: "The Brochure, Revisited",
+    title: "The Public Talk",
     briefing:
-      "I have discovered that the travel agency's brochure was generated from incomplete transit data — old surveys that missed several planets, including Verdant Paradise itself. I have obtained a copy of the original survey and I am going to check it against current readings. If I can prove the source data was wrong, I have grounds for a full refund. Gerald is helping. I have given Gerald a small badge.",
+      "The station has asked me to speak to new arrivals about why Martian cloud shapes matter. This is flattering and dangerous. Before I make a fool of myself in front of tourists, I would like one more clean classification to remind me I know what I am talking about.",
     briefingExpression: "serious",
     beat1:
-      "The old transit data missed this planet entirely. The orbital period is slightly unusual — it would have been easy to misfile. I am documenting this carefully. Asteroid check — I want to see if the old survey also missed the water sources.",
-    beat1Expression: "serious",
+      "Clean indeed. Distinct morphology, good context, no interpretive drama required.",
+    beat1Expression: "happy",
     beat2:
-      "The old survey also missed the asteroid field. There is a pattern here. Gerald has knocked over my reference materials twice. I have removed Gerald's badge temporarily. Surface scan — final comparison point.",
-    beat2Expression: "serious",
+      "Excellent. It is easier to explain science elegantly when the universe cooperates for once.",
     resolution:
-      "Three data points missed. The old survey was conducted with inadequate instruments or inadequate attention. My complaint is now formally supported by evidence. Gerald has been reinstated to full badge status. I am filing everything today.",
-    resolutionExpression: "neutral",
+      "Classification filed. Public talk survived. Three people asked intelligent questions and one asked whether clouds can be moody. I said yes, metaphorically.",
+    resolutionExpression: "happy",
+    ambience: "wind",
   },
   {
     index: 9,
-    title: "Home",
+    title: "Mars Sky Archive",
     briefing:
-      "The travel agency has responded. They are offering a partial refund and a voucher for another holiday, which I am going to decline on the grounds that I did not enjoy the last one, except for the parts I did enjoy, which were considerable. Before I decide whether to go home or stay, I want to do one more full scan. If Verdant Paradise checks out as well as I think it does, I may have found somewhere better than home.",
-    briefingExpression: "neutral",
+      "The season's cloud record is nearly complete. The team wants one last carefully labelled entry before they freeze the current archive and use it for the next modelling pass. I am genuinely moved to be trusted with the last look.",
+    briefingExpression: "happy",
     beat1:
-      "The transit data here still looks excellent after several weeks of readings. Consistent, stable, no anomalies. Home has worse weather. I am noting this. Asteroid check — one last resource confirmation.",
-    beat1Expression: "neutral",
+      "Beautiful structure. I realize that is not a technical phrase, but it remains true.",
+    beat1Expression: "happy",
     beat2:
-      "Everything still checks out. Gerald is on my knee. The beach is still very good. The complaint has been filed. I have everything I need. Surface scan — last one, I promise.",
-    beat2Expression: "happy",
+      "Final comparisons are coming together now. Repeat forms, rare forms, noisy forms, dawn forms. An actual archive of the Martian sky.",
     resolution:
-      "Perfect surface data. I am staying. I have sent the refund to Vex, who needed it more than I did. I have renamed the beach after the correct star system. Gerald has approved. I am home. Thank you for everything.",
+      "Archive entry complete. I came here for scenery and accidentally helped build atmospheric history. That is a very good holiday.",
     resolutionExpression: "happy",
-    ambience: "ship",
+    ambience: "wind",
   },
 ];
 
 // ---------------------------------------------------------------------------
-// Storyline B arc 2 — Commander Brix (second supply run, harder scope)
+// Storyline B arc 2 — Commander Brix (Gaia Variables, harder queue)
 // ---------------------------------------------------------------------------
 
 const BRIX_ARC2_CHAPTERS: Chapter[] = [
   {
     index: 5,
-    title: "The New List",
+    title: "The New Queue",
     briefing:
-      "Second run. The Corps has given me twenty candidates across three sectors — nearly twice the previous scope. They have also reduced the timeline. I have submitted a formal note about the timeline, which has been acknowledged and ignored. I will proceed efficiently. Transit data first, same as always.",
+      "The board has expanded my remit. I now have a longer queue, less time, and more stars whose light curves appear to have been designed as personal insults. We proceed anyway. A difficult sample is still a sample.",
     briefingExpression: "serious",
     beat1:
-      "Good signal on candidate one. I have updated the log. The Corps wants preliminary reports every three days on this run, which is new. I have scheduled them. Asteroid check.",
+      "The first new target is at least well behaved enough to classify. I appreciate that in a star.",
     beat1Expression: "neutral",
     beat2:
-      "Water present. Candidate one is viable. I have filed the preliminary report as scheduled. No response yet, which is normal. Surface scan.",
-    beat2Expression: "serious",
+      "If the rest of the queue shows similar restraint, I may even sleep this week.",
     resolution:
-      "Solid terrain. Candidate one: approved. Nineteen remaining. The Corps will note that I am on schedule. I will note that I am always on schedule.",
+      "Queue opened successfully. One target down, many to go, morale acceptable.",
     resolutionExpression: "neutral",
     ambience: "ship",
   },
   {
     index: 6,
-    title: "The Difficult System",
+    title: "Alias Problem",
     briefing:
-      "Candidate eight has an unusual star — a binary pair with a close separation. The orbital mechanics for any planets here will be complex. The old survey flagged this system as 'possibly interesting' and left it at that. I do not leave things at 'possibly interesting.' Transit data will tell me if the complexity has produced anything viable.",
+      "Today's candidate appears in two catalogs under two different provisional labels and one dramatically unhelpful comment. I require one correct identity and zero drama from this object.",
     briefingExpression: "serious",
     beat1:
-      "There is a planet. The transit signal shows a stable figure-eight orbital pattern — unusual but not impossible. I have logged the parameters carefully. This will require a detailed annotation. Asteroid check — I need to see if the binary system has disrupted the field.",
+      "The periodicity solves the identity question neatly. Good. Data can still behave with dignity.",
     beat1Expression: "neutral",
     beat2:
-      "The asteroid field is disrupted but water is still present, concentrated in a smaller zone than usual. I have marked the viable extraction region. Surface scan — I want to see if the orbital complexity has affected the surface.",
-    beat2Expression: "serious",
+      "The classification also resolves which survey was overfitting noise. I can already predict who will take that badly.",
     resolution:
-      "Surprisingly stable surface for such a complex system. Candidate eight is viable with a note about the binary approach corridor. I have added a full technical appendix. The Corps will probably ignore the appendix. I have included it anyway.",
+      "Identity corrected, classification fixed, archive cleaner. My work here is elegant if not always appreciated.",
     resolutionExpression: "neutral",
     ambience: "ship",
   },
   {
     index: 7,
-    title: "Under Pressure",
+    title: "Escalation Threshold",
     briefing:
-      "The Corps has moved the deadline forward again. I have two weeks and eleven candidates remaining. I have recalculated my route. It is possible. Not comfortable, but possible. I have also sent a second formal note about the timeline. I have received a reply saying 'we appreciate your diligence.' I have filed this reply. Transit data.",
+      "We have reached the unpleasant part of triage where every target is somewhat interesting and only some of them deserve scarce follow-up time. I dislike arbitrary thresholds, so I prefer to make the evidence do the deciding.",
     briefingExpression: "serious",
     beat1:
-      "Strong transit signal. I am working faster than the previous run but maintaining accuracy — the two are not mutually exclusive if the process is sound. Asteroid check.",
+      "This one clears the threshold. Not by much, but clearly enough.",
     beat1Expression: "neutral",
     beat2:
-      "Water confirmed quickly. The asteroid field here is straightforward. I appreciate a straightforward asteroid field. Surface scan — let us keep moving.",
-    beat2Expression: "neutral",
+      "Good. Borderline cases are tolerable when they stop being borderline.",
     resolution:
-      "Good terrain. Another candidate approved. Nine remaining, eleven days. I am on track. The Corps has sent a message asking if I need 'additional support.' I do not. I need fewer deadline changes.",
+      "Escalated with a clear justification note. I have spared the schedule one future argument.",
     resolutionExpression: "neutral",
+    ambience: "ship",
   },
   {
     index: 8,
-    title: "The Missing Entry",
+    title: "Night Of Strange Stars",
     briefing:
-      "I have found a discrepancy. Candidate fourteen on my list does not match the coordinates in the Corps database — the entry appears to be a duplicate of candidate three, which I already surveyed. Someone misfiled the original target. I have two options: skip it and note the error, or investigate the coordinates that should be there. I am going to investigate the coordinates that should be there. This is the correct approach.",
+      "Three unusual candidates arrived in one batch. That is either an astrophysical gift or a data-processing failure. Either way, I intend to know before sunrise.",
     briefingExpression: "serious",
     beat1:
-      "There is something at the correct coordinates. A planet the database does not have on record at all. The transit signal is clear. I have created a new entry. The Corps database is going to need updating. Asteroid check — first data on an unrecorded system.",
+      "At least one is real and strange in a scientifically productive way. Excellent.",
     beat1Expression: "surprised",
     beat2:
-      "Water present. This is a viable system that the Corps simply did not know about. I have filed an incident report about the database error and a discovery report about the new entry simultaneously. Surface scan — completing the record.",
-    beat2Expression: "serious",
+      "The others may still collapse into noise, but this one earns attention. I prefer one solid anomaly to ten theatrical ones.",
     resolution:
-      "Good surface. The Corps has a new candidate they did not know they had. I have also corrected the duplicate entry. The database is now accurate. I have added this to my formal notes about the timeline.",
+      "Anomaly retained and flagged for immediate follow-up. Sunrise may do as it likes now.",
     resolutionExpression: "neutral",
     ambience: "ship",
   },
   {
     index: 9,
-    title: "Second Run: Filed",
+    title: "Variable Star Ledger",
     briefing:
-      "Last candidate. The run is complete ahead of the revised deadline. Twenty candidates surveyed, including one that was not on the original list. Seven viable depot sites identified. I am going to do this final survey properly and then file a complete report, including the appendices, including the timeline correspondence, including the database correction. The Corps will receive a thorough document.",
-    briefingExpression: "serious",
+      "This campaign ends the way it began: with a final review before I hand a list of targets to people who will spend entire nights chasing them. I would like to send them something worthy of the effort.",
+    briefingExpression: "neutral",
     beat1:
-      "Final transit signal. Clean data. I am logging everything with full precision — last entry should be as accurate as the first. Asteroid check.",
+      "Final target classified without embarrassment. A comforting way to finish.",
     beat1Expression: "neutral",
     beat2:
-      "Complete water data. The second run has better data quality than the first, which I expected. Process improvement is always possible. Surface scan — final entry.",
-    beat2Expression: "serious",
+      "The ledger now contains real variables, strange variables, corrected variables, and fewer archival lies than before.",
     resolution:
-      "Second run: complete. Report filed. Eight viable sites, one database correction, three formal timeline notes. The Corps has replied: 'Excellent work, Commander. As always.' I have acknowledged this and requested a fixed deadline on the next run.",
+      "Campaign complete. The queue is defensible, the board is satisfied, and the stars remain bizarre in a manageable number of ways.",
     resolutionExpression: "neutral",
     ambience: "ship",
   },
 ];
 
 // ---------------------------------------------------------------------------
-// Storyline C arc 2 — Pip (building a practice, second and third clients)
+// Storyline C arc 2 — Pip (Rubin Comet Catchers, growing confidence)
 // ---------------------------------------------------------------------------
 
 const PIP_ARC2_CHAPTERS: Chapter[] = [
   {
     index: 5,
-    title: "Word Gets Around",
+    title: "Fresh Batch",
     briefing:
-      "My first client told a colleague about me. I have a second client — a research team who need a survey for a planned outpost site. They found me because the first client said I was 'thorough and easy to understand,' which is the best professional compliment I have ever received. My instructor says this is how a practice grows. I am going to be very thorough and very easy to understand.",
+      "A new batch from Rubin has arrived and I have been told I can help with the first-pass review instead of just the learner queue. This is thrilling and a little horrifying. I have brought snacks and discipline.",
     briefingExpression: "happy",
     beat1:
-      "Good transit signal. I am explaining everything to the research team as I go — they want to understand the process, not just the result. This is the best kind of client. Water check next.",
+      "First-pass review is faster, noisier, and much more fun than I expected.",
     beat1Expression: "happy",
     beat2:
-      "Water confirmed. The research team is asking excellent questions about the asteroid annotation. I have started writing down the questions I find most interesting — my instructor says this is how you develop a specialty. Surface scan.",
-    beat2Expression: "neutral",
+      "The object itself is borderline, but borderline is where good habits matter most.",
     resolution:
-      "Good terrain for an outpost. Report filed. The research team has asked if I do follow-up surveys. I have said yes, obviously. My instructor says I am building a client relationship. I think I am just enjoying my job.",
+      "Decision made cleanly and passed onward. I did not panic. Progress.",
     resolutionExpression: "happy",
     ambience: "lab",
   },
   {
     index: 6,
-    title: "The Rush Job",
+    title: "The One Everyone Wanted To Be Real",
     briefing:
-      "A new client has contacted me with an urgent request — they need a survey completed in forty-eight hours for a funding application. My instructor says rush jobs are part of the work and I should charge accordingly. I have charged accordingly. The client has agreed. I am nervous about the timeline but I have done this survey process many times now. I can be fast without being careless.",
+      "The team has a favorite candidate and I can feel that everyone wants it to show activity. This is dangerous. Group hope is not evidence. I am repeating that to myself while I look.",
     briefingExpression: "serious",
     beat1:
-      "Transit signal found quickly. I have been practising efficiency and it is paying off. The signal is clear — no need to re-run. Water check, moving fast.",
-    beat1Expression: "neutral",
+      "Evidence first. The activity does appear to be there, but I am pleased specifically because the data earned it.",
+    beat1Expression: "surprised",
     beat2:
-      "Water confirmed. I am annotating the asteroid field at speed but not cutting corners — just trusting the process more than I used to. Surface scan — last step.",
-    beat2Expression: "serious",
+      "I think this is what maturity feels like: being excited only after the classification is secure.",
     resolution:
-      "Survey complete in thirty-six hours. The client has their data for the funding application. They have sent a thank-you message that says 'we did not expect this to be this good.' I have decided this is also a compliment.",
+      "Favorite candidate survives scrutiny. Celebration permitted, but only now.",
     resolutionExpression: "happy",
     ambience: "lab",
   },
   {
     index: 7,
-    title: "The Difficult Briefing",
+    title: "Long Tail, Small Rock",
     briefing:
-      "My third client has sent a brief that describes what they want in terms I cannot interpret. They want a planet that is 'good for expansion' near a 'favourable resource zone.' I have replied asking for specific parameters. They have said 'you know what we mean.' I do not know what they mean. I am going to do a thorough survey and provide detailed data, and then they can tell me which parameters they actually care about.",
-    briefingExpression: "serious",
+      "Today's object has the sort of dramatic extension that makes everyone in the room lean toward the screen at once. It could still be wrong. Dramatic things are often wrong. But if it is right, it is going to be memorable.",
+    briefingExpression: "surprised",
     beat1:
-      "Good transit signal. I am documenting everything with extra detail since I do not know which metrics the client will prioritise. More data is better than less in this situation. Asteroid check.",
-    beat1Expression: "neutral",
+      "It is right. Small rock, long tail, excellent day.",
+    beat1Expression: "happy",
     beat2:
-      "Rich asteroid field — lots of resource data to report. I am building a comprehensive picture. My instructor says learning to manage unclear briefs is an important skill. I believe her. Surface scan.",
-    beat2Expression: "serious",
+      "The follow-up note is practically writing itself, except I am making sure it uses responsible nouns and verbs.",
     resolution:
-      "Detailed report filed with all parameters fully documented. The client has replied: 'This is exactly what we needed.' I have sent a follow-up asking which specific sections were most useful. Understanding the brief is part of the service.",
-    resolutionExpression: "neutral",
+      "Strong activity candidate logged. I have achieved the rare state of being both responsible and delighted.",
+    resolutionExpression: "happy",
     ambience: "lab",
   },
   {
     index: 8,
-    title: "Referral Chain",
+    title: "Teaching The New Volunteer",
     briefing:
-      "The difficult brief client has referred two more clients to me. My instructor says this is the referral chain in action — one good piece of work generates the next. I now have a waiting list, which I did not have last month. I am managing it carefully. Today's survey is for the first client on the list, a navigation company who do a lot of transit-corridor work.",
+      "Someone newer than me asked how to tell real activity from a bad image. This is surreal because I still feel new myself, but apparently I know enough to be useful to someone else now.",
     briefingExpression: "happy",
     beat1:
-      "The navigation company has very specific requirements — they care most about orbital period consistency. I am noting this and providing extra detail on the transit parameters. Getting better at reading what clients actually need. Water check.",
+      "Demonstration case acquired. Clean enough to explain, subtle enough to teach with.",
     beat1Expression: "neutral",
     beat2:
-      "Water confirmed, asteroid field is clean. The navigation company will be pleased with the corridor data. Surface scan — completing the picture.",
-    beat2Expression: "neutral",
+      "I heard myself say, 'look for persistence before excitement,' and realized I may have actually learned something.",
     resolution:
-      "Complete report filed with navigation corridor data highlighted. The company has already asked about a follow-up for an adjacent sector. I have told them I can fit them in next week. My instructor has started calling me 'the practice.' I think this means I have become one.",
+      "Classification complete and lesson delivered. The new volunteer said the process made sense. I am absurdly proud of this.",
     resolutionExpression: "happy",
     ambience: "lab",
   },
   {
     index: 9,
-    title: "Third Distinction",
+    title: "First Real Discovery Night",
     briefing:
-      "The exam board has contacted me. They want to include one of my survey reports as a sample in the new certification materials — the one from the tricky variable star. My instructor says this is unusual. I said it is the report I am most proud of because I had to work the hardest on it. The exam board has also asked me to review the new certification criteria. I have said yes. I am doing a client survey at the same time — I can manage both.",
-    briefingExpression: "happy",
+      "Tonight feels different. The queue is good, the team is moving quickly, and there is one candidate in particular that might turn into the sort of object people remember. I do not control the universe, only the quality of my call.",
+    briefingExpression: "serious",
     beat1:
-      "Strong transit signal. I have been doing this long enough that a strong, clean signal feels genuinely satisfying rather than just relieving. I am noting that down because I think it matters. Water check.",
-    beat1Expression: "happy",
+      "The call is good. Tail structure, clean orientation, enough confidence to stand behind it later.",
+    beat1Expression: "neutral",
     beat2:
-      "Water confirmed. Everything is working as it should. The exam board has sent a draft of the criteria for my review. Some of it I would do differently. I have made notes. Surface scan.",
-    beat2Expression: "neutral",
+      "That is all you can ask in this work: that when the interesting thing arrives, you recognize it honestly.",
     resolution:
-      "Survey complete. Client pleased. Exam board notes submitted. My instructor has asked if I want to take on a student of my own. I said I need to think about it. I think the answer is yes.",
+      "Discovery night entry filed. Whether this object becomes famous or not, I know I met the moment properly.",
     resolutionExpression: "happy",
     ambience: "lab",
   },
 ];
 
 // ---------------------------------------------------------------------------
-// Storyline D arc 2 — The Cartographer (sector two, corrections, deeper work)
+// Storyline D arc 2 — The Cartographer (Active Asteroids, deeper survey)
 // ---------------------------------------------------------------------------
 
 const CARTA_ARC2_CHAPTERS: Chapter[] = [
   {
     index: 5,
-    title: "Sector Two",
+    title: "Second Pass",
     briefing:
-      "Sector one is filed. Sector two is blank. The previous survey of this area was conducted forty years ago with instruments that were considered adequate at the time and are now considered historical artefacts. I expect to find errors. I am prepared for errors. The first survey point will tell me how significant the errors are going to be.",
+      "The first pass through the active-asteroid candidates improved the map. The second pass will improve my confidence in it. Some objects only reveal themselves when you compare epochs with patience instead of hope.",
     briefingExpression: "neutral",
     beat1:
-      "The transit data here does not match the forty-year-old chart. The planet exists — just not where they said it was. I have corrected the position and noted the instrument variance. Asteroid check — I will be surprised if this is accurate.",
+      "Comparison helps. The structure is more persuasive across time than in isolation.",
     beat1Expression: "neutral",
     beat2:
-      "The asteroid field position is also incorrect in the old chart. I am not surprised. I have corrected it and updated my running error tally. Current count: two. Surface scan.",
-    beat2Expression: "serious",
+      "This is why archives matter. A single image can seduce you. A sequence has standards.",
     resolution:
-      "Surface data does not match the old description either. Three corrections for the first survey point. Sector two is going to take longer than planned. I have updated my timeline. The blank chart is at least honest — it does not pretend to know things it does not.",
-    resolutionExpression: "serious",
+      "Second-pass confirmation logged. The object keeps its place on the interesting list.",
+    resolutionExpression: "neutral",
     ambience: "lab",
   },
   {
     index: 6,
-    title: "Old Errors",
+    title: "Main-Belt Surprise",
     briefing:
-      "Eleven corrections in three days. The old survey was conducted quickly and with insufficient attention to calibration — I can tell from the systematic nature of the errors. They are not random mistakes; they are the same kind of mistake made consistently. Someone was in a hurry. I am not in a hurry. Transit data.",
+      "A new candidate from a mundane part of the belt has appeared with exactly the kind of faint structure that makes a supposedly settled region interesting again. I approve of settled regions becoming less settled.",
     briefingExpression: "serious",
     beat1:
-      "Another position correction needed. The planet is here — just offset from the old chart by a consistent margin. I have calculated the instrument drift and applied a correction factor. This will save time on the remaining entries. Asteroid check.",
+      "Faint, yes. But directional and repeatable enough to respect.",
     beat1Expression: "neutral",
     beat2:
-      "The correction factor works on the asteroid field too. Good. I am now able to predict where things actually are based on where the old chart says they are. This is not how charts should work but it is useful for now. Surface scan.",
-    beat2Expression: "neutral",
+      "If this holds, the local map acquires one more exception. Exceptions are where the science lives.",
     resolution:
-      "Corrected surface data. My correction factor has reduced the error rate significantly. I have documented the methodology and added it to the survey notes. If anyone else has to work with these old charts, this will help them.",
+      "Candidate retained and documented. Mundane regions are rarely as mundane as their advocates claim.",
     resolutionExpression: "neutral",
     ambience: "lab",
   },
   {
     index: 7,
-    title: "The Unmapped Cluster",
+    title: "The Archive Revision",
     briefing:
-      "I have found a cluster of signals that does not appear in the old chart at all — not incorrectly placed, simply absent. The old survey missed this entire area. I find this more troubling than the position errors. Missing data is harder to correct than wrong data because you do not know what you do not have. I am going to map this cluster from scratch.",
+      "I revisited a previously rejected object because a new reduction changed the background subtraction. Few things are as humbling as an improved pipeline. Few are as useful.",
     briefingExpression: "serious",
     beat1:
-      "First signal from the unmapped cluster. I have given it a new designation — the old chart has no entry I can correct, so this is genuinely new data. I find this quietly exciting. Asteroid check — first resource data for this area.",
-    beat1Expression: "neutral",
+      "Useful indeed. The revised image exposes low-level activity the earlier version obscured.",
+    beat1Expression: "surprised",
     beat2:
-      "First water source in the cluster. The area is viable — multiple planets, good resources, completely absent from the official charts. I have flagged this as a significant finding. Surface scan — completing the first new entry.",
-    beat2Expression: "neutral",
+      "I enjoy being corrected by better data. It is one of the cleaner pleasures available in this profession.",
     resolution:
-      "First cluster entry complete. I have sent a preliminary report about the unmapped area to the survey authority. They have replied asking me to confirm I have not made an error. I have confirmed this three times with increasing precision.",
+      "Archive revised and object restored to relevance. The map is improved by admitting it was incomplete.",
     resolutionExpression: "neutral",
     ambience: "lab",
   },
   {
     index: 8,
-    title: "Cross-Reference",
+    title: "Three Good Candidates",
     briefing:
-      "I have found a planet that appears in two separate old charts with different data — different position, different atmospheric readings, different designation. They cannot both be correct. They may both be wrong. I need to take a current reading and establish the actual parameters before I can correct either entry.",
-    briefingExpression: "serious",
+      "We have reached the rare and satisfying point where several candidates in the same batch look genuinely defensible. The work now is not discovery alone but ranking, documenting, and ensuring none of them are promoted on charm alone.",
+    briefingExpression: "neutral",
     beat1:
-      "Current transit data confirms: the planet is at a third position, matching neither old chart. Both were wrong in the same direction, which suggests the error is in the original reference frame used for that expedition. I have logged this as a reference-frame discrepancy. Asteroid check.",
-    beat1Expression: "neutral",
+      "This one earns top priority. Cleaner activity signature, better geometry, fewer excuses required.",
+    beat1Expression: "happy",
     beat2:
-      "Asteroid field data also mismatched across the two old charts. I have now established the actual position and resources. Both old entries will be corrected and a note added explaining the discrepancy. Surface scan — establishing the definitive current record.",
-    beat2Expression: "serious",
+      "A ranked list is a civilized answer to abundance. It spares future observers from improvising under pressure.",
     resolution:
-      "Cross-reference resolved. Both old charts corrected, new primary entry established. This is the most complex correction I have made on this survey. I have written a detailed methodological note. The chart is more accurate. That is always the point.",
+      "Priority order established. The follow-up team will have a sensible night because I dislike preventable chaos.",
     resolutionExpression: "neutral",
+    ambience: "lab",
   },
   {
     index: 9,
-    title: "Sector Two: Filed",
+    title: "Active Asteroid Atlas",
     briefing:
-      "Last survey point in sector two. I have corrected forty-seven entries, added eleven new ones from the unmapped cluster, and resolved one cross-reference discrepancy. The chart is substantially better than it was when I arrived. One more full survey and the sector is complete. I am going to do it carefully.",
-    briefingExpression: "neutral",
+      "The survey closes tonight. I have enough material now to file not just a list of candidates but a more coherent picture of where activity is appearing and how confidently we can claim it. That is better than a list. It is the start of an atlas.",
+    briefingExpression: "happy",
     beat1:
-      "Final transit signal. I am checking it twice — not because I doubt the reading, but because the final entry of a survey should be checked twice. It is good practice and it is also how I work. Asteroid check.",
-    beat1Expression: "serious",
+      "Final object classified. A solid ending, which I appreciate in both surveys and literature.",
+    beat1Expression: "neutral",
     beat2:
-      "Final water source logged. The sector is now fully documented. Surface scan — completing the record.",
-    beat2Expression: "neutral",
+      "The atlas is not complete, because such things never are. But it is more accurate, more useful, and more honest than what existed before.",
     resolution:
-      "Sector two: filed. Forty-seven corrections. Eleven new entries. One cross-reference resolved. The chart is accurate. Sector three is blank. I have already requested the next survey assignment. The blank spaces always need filling.",
-    resolutionExpression: "neutral",
+      "Atlas filed. The active asteroids remain unruly, but they are now unruly inside a better map. That will do.",
+    resolutionExpression: "happy",
     ambience: "lab",
   },
 ];
@@ -710,33 +732,33 @@ export const STORYLINES: Storyline[] = [
   {
     id: "zix",
     characterId: "zix",
-    title: "Wrong Star System",
+    title: "Cloudspotting on Mars",
     chapters: [...ZIX_CHAPTERS, ...ZIX_ARC2_CHAPTERS],
-    postcardTitle: "Greetings from Verdant Paradise",
-    postcardMessage: "I finally found the beach. It's real, it's sunny, and there are NO sulphur moons in sight. Thanks for the help!",
+    postcardTitle: "Mars Sky Log: Complete",
+    postcardMessage: "The clouds were real, the classifications held up, and I now have scientific proof that Martian sunsets deserve respect.",
   },
   {
     id: "brix",
     characterId: "brix",
-    title: "Supply Run",
+    title: "Gaia Variables",
     chapters: [...BRIX_CHAPTERS, ...BRIX_ARC2_CHAPTERS],
-    postcardTitle: "Depot Survey Log: Complete",
-    postcardMessage: "Priority depot sites identified and logged. The Supply Corps acknowledges your expert data support. Over and out.",
+    postcardTitle: "Variable Queue: Cleared",
+    postcardMessage: "Interesting stars promoted, archival nonsense corrected, and the telescope schedule has been spared at least several bad decisions.",
   },
   {
     id: "pip",
     characterId: "pip",
-    title: "First Solo",
+    title: "Rubin Comet Catchers",
     chapters: [...PIP_CHAPTERS, ...PIP_ARC2_CHAPTERS],
-    postcardTitle: "Certification: High Distinction",
-    postcardMessage: "I passed my solo mission! The exam board was impressed by the data quality. You're basically my co-pilot now!",
+    postcardTitle: "Small-Body Activity Report",
+    postcardMessage: "Some tails were real, some weren't, and I managed to learn the difference without combusting from excitement.",
   },
   {
     id: "carta",
     characterId: "carta",
-    title: "Blank Space",
+    title: "Active Asteroids",
     chapters: [...CARTA_CHAPTERS, ...CARTA_ARC2_CHAPTERS],
-    postcardTitle: "Charting the Void: Sector Clear",
-    postcardMessage: "The blank spaces on the map are filled. 'Probably fine' is now verified data. A successful expedition.",
+    postcardTitle: "Atlas Revision: Active Bodies",
+    postcardMessage: "The catalogue is less wrong than it was, which is the highest form of progress.",
   },
 ];

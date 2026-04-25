@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { Analytics } from "@vercel/analytics/react";
+import { Inter, Space_Grotesk, Playfair_Display } from "next/font/google";
 import { SWRegister } from "@/components/sw-register";
 import { AuthStatus } from "@/components/auth-status";
 import { HeaderSearch } from "@/components/header-search";
@@ -9,7 +10,27 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { BreadcrumbsNav } from "@/components/breadcrumbs-nav";
 import { PostHogRuntime } from "@/components/posthog-runtime";
 import { PwaInstallPrompt } from "@/components/pwa-install-prompt";
+import Image from "next/image";
 import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+  display: "swap",
+});
+
+const playfairDisplay = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  display: "swap",
+  style: "italic",
+});
 
 const THEME_COOKIE = "cosmo_theme";
 
@@ -30,13 +51,13 @@ function getTimePeriod(): TimePeriod {
 }
 
 export const metadata: Metadata = {
-  title: "Cosmo",
-  description: "Daily space science missions — hunt planets, survey asteroids, classify Mars",
+  title: "The Daily Sail",
+  description: "Citizen Science Daily — hunt planets, survey asteroids, classify Mars",
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Cosmo",
+    title: "The Daily Sail",
   },
   icons: {
     icon: [
@@ -53,8 +74,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#e7f5f2" },
-    { media: "(prefers-color-scheme: dark)", color: "#0e0b08" },
+    { media: "(prefers-color-scheme: light)", color: "#f7f9fb" },
+    { media: "(prefers-color-scheme: dark)", color: "#001016" },
   ],
 };
 
@@ -68,7 +89,12 @@ export default async function RootLayout({
   const timePeriod = getTimePeriod();
 
   return (
-    <html lang="en" data-theme={initialTheme} data-period={timePeriod}>
+    <html
+      lang="en"
+      data-theme={initialTheme}
+      data-period={timePeriod}
+      className={`${inter.variable} ${spaceGrotesk.variable} ${playfairDisplay.variable}`}
+    >
       <body>
         <PostHogRuntime />
         <SWRegister />
@@ -77,9 +103,15 @@ export default async function RootLayout({
             <div className="header-shell">
               <div className="header-top-row">
                 <div className="header-brand-row">
-                  <Link href="/" className="home-icon-link" aria-label="Cosmo home">
-                    <span aria-hidden>✦</span>
-                    <span className="home-brand-label">Cosmo</span>
+                  <Link href="/" className="home-icon-link" aria-label="The Daily Sail home">
+                    <Image
+                      src="/logo-icon.png"
+                      alt=""
+                      width={32}
+                      height={32}
+                      className="brand-logo"
+                    />
+                    <span className="home-brand-label">The Daily Sail</span>
                   </Link>
                   <nav className="nav-links desktop-nav" aria-label="Main navigation">
                     <Link href="/games/today" className="header-nav-link" data-cy="nav-today">

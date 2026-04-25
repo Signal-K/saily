@@ -28,14 +28,14 @@ export function NarrativeBeat({ character, text, expression, continueLabel, onCo
         />
         <div className="narrative-beat-source">
           <span className="narrative-beat-name">{character.name}</span>
-          <span className="narrative-beat-label muted">Mission update</span>
+          <span className="narrative-beat-label muted">Research log update</span>
         </div>
       </div>
 
       <p className="narrative-beat-text">{text}</p>
 
       <button type="button" className="button button-primary" onClick={onContinue}>
-        {continueLabel ?? "Continue Mission"} &rarr;
+        {continueLabel ?? "Advance Mission"} &rarr;
       </button>
     </div>
   );

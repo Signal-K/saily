@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sign In / Sign Up - The Daily Sail</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    "colors": {
+                            "outline-variant": "#e2e8f0",
+                            "secondary": "#64748b",
+                            "primary": "#0284c7",
+                            "primary-highlight": "#7dd3fc",
+                            "on-background": "#0f172a",
+                            "on-surface-variant": "#475569",
+                            "outline": "#cbd5e1",
+                            "surface-container": "#ffffff",
+                            "background": "#f7f9fb",
+                            "surface": "#ffffff",
+                            "surface-dim": "#f1f5f9",
+                            "on-secondary": "#ffffff",
+                            "on-surface": "#0f172a"
+                    },
+                    "borderRadius": {
+                            "DEFAULT": "0px",
+                            "lg": "0px",
+                            "xl": "0px",
+                            "full": "0px"
+                    },
+                    "spacing": {
+                            "gutter": "16px",
+                            "container-max": "1440px",
+                            "unit": "4px",
+                            "margin": "32px"
+                    },
+                    "fontFamily": {
+                            "label-caps": [
+                                    "Space Grotesk"
+                            ],
+                            "headline-md": [
+                                    "Space Grotesk"
+                            ],
+                            "data-mono": [
+                                    "Space Grotesk"
+                            ],
+                            "body-main": [
+                                    "Inter"
+                            ],
+                            "display-lg": [
+                                    "Space Grotesk"
+                            ]
+                    },
+                    "fontSize": {
+                            "label-caps": [
+                                    "12px",
+                                    {
+                                            "lineHeight": "1",
+                                            "letterSpacing": "0.15em",
+                                            "fontWeight": "700"
+                                    }
+                            ],
+                            "headline-md": [
+                                    "24px",
+                                    {
+                                            "lineHeight": "1.2",
+                                            "letterSpacing": "0.05em",
+                                            "fontWeight": "600"
+                                    }
+                            ],
+                            "data-mono": [
+                                    "14px",
+                                    {
+                                            "lineHeight": "1.4",
+                                            "letterSpacing": "0.1em",
+                                            "fontWeight": "500"
+                                    }
+                            ],
+                            "body-main": [
+                                    "16px",
+                                    {
+                                            "lineHeight": "1.6",
+                                            "letterSpacing": "0",
+                                            "fontWeight": "400"
+                                    }
+                            ],
+                            "display-lg": [
+                                    "48px",
+                                    {
+                                            "lineHeight": "1.1",
+                                            "letterSpacing": "-0.02em",
+                                            "fontWeight": "700"
+                                    }
+                            ]
+                    }
+            },
+        }
+    </script>
+<style>
+        .dot-grid {
+            background-image: radial-gradient(rgba(2, 132, 199, 0.15) 1px, transparent 1px);
+            background-size: 16px 16px;
+        }
+        .inner-dot-grid {
+            background-image: radial-gradient(rgba(2, 132, 199, 0.08) 1px, transparent 1px);
+            background-size: 8px 8px;
+        }
+        .scanline {
+            background: linear-gradient(to bottom, transparent 50%, rgba(2, 132, 199, 0.03) 51%);
+            background-size: 100% 4px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex items-center justify-center p-gutter dot-grid relative overflow-hidden font-body-main text-body-main">
+<!-- Ambient Overlay -->
+<div class="absolute inset-0 pointer-events-none scanline z-0"></div>
+<!-- Main Auth Canvas -->
+<main class="w-full max-w-md relative z-10 flex flex-col gap-6">
+<!-- Brand Header -->
+<header class="text-center flex flex-col items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary text-4xl" data-icon="sailing" style="font-variation-settings: 'FILL' 1;">sailing</span>
+<h1 class="font-display-lg text-display-lg text-primary uppercase">THE DAILY SAIL</h1>
+<p class="font-data-mono text-data-mono text-secondary uppercase tracking-widest">Auth Terminal v2.4</p>
+</header>
+<!-- Auth Card -->
+<div class="bg-surface-container/90 backdrop-blur-md border border-primary/20 p-8 relative inner-dot-grid shadow-sm">
+<!-- Tab Toggle -->
+<div class="flex border-b border-outline-variant mb-8 relative">
+<button class="flex-1 pb-3 text-center font-label-caps text-label-caps text-primary border-b-2 border-primary uppercase tracking-widest transition-none">
+                    Sign In
+                </button>
+<button class="flex-1 pb-3 text-center font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-none uppercase tracking-widest">
+                    Join the Grid
+                </button>
+</div>
+<!-- Context Heading -->
+<div class="mb-8">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2">Welcome back.</h2>
+<p class="font-body-main text-body-main text-on-surface-variant">Enter your credentials to access the terminal.</p>
+</div>
+<!-- Form -->
+<form class="space-y-6">
+<div class="space-y-2 relative">
+<label class="font-label-caps text-label-caps text-secondary uppercase tracking-widest block" for="email">Email Address</label>
+<input class="w-full bg-surface border-b border-primary/30 border-t-0 border-l-0 border-r-0 focus:border-primary focus:ring-0 text-on-surface font-data-mono text-data-mono p-3 transition-none rounded-none placeholder:text-outline" id="email" placeholder="USER@GRID.NET" type="email"/>
+</div>
+<div class="space-y-2 relative">
+<label class="font-label-caps text-label-caps text-secondary uppercase tracking-widest block flex justify-between" for="password">
+<span>Password</span>
+</label>
+<input class="w-full bg-surface border-b border-primary/30 border-t-0 border-l-0 border-r-0 focus:border-primary focus:ring-0 text-on-surface font-data-mono text-data-mono p-3 transition-none rounded-none placeholder:text-outline" id="password" placeholder="••••••••" type="password"/>
+<div class="flex justify-end mt-1">
+<a class="font-label-caps text-[10px] text-secondary hover:text-primary uppercase tracking-widest transition-none" href="#">Reset Protocol</a>
+</div>
+</div>
+<button class="w-full border border-primary bg-primary-highlight/10 text-primary hover:bg-primary-highlight hover:text-on-surface font-label-caps text-label-caps py-4 uppercase tracking-[0.2em] transition-none flex items-center justify-center gap-2 group mt-8" type="submit">
+                    Access Terminal
+                    <span class="material-symbols-outlined text-[16px]" data-icon="login">login</span>
+</button>
+</form>
+<!-- Divider -->
+<div class="relative flex items-center py-6 my-2">
+<div class="flex-grow border-t border-outline-variant"></div>
+<span class="flex-shrink-0 mx-4 font-label-caps text-label-caps text-outline uppercase tracking-widest">OR</span>
+<div class="flex-grow border-t border-outline-variant"></div>
+</div>
+<!-- OAuth -->
+<button class="w-full border border-outline-variant bg-surface hover:border-primary/50 text-on-surface font-data-mono text-data-mono py-3 transition-none flex items-center justify-center gap-3 shadow-sm hover:bg-surface-dim" type="button">
+<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+</svg>
+                Continue with Google
+            </button>
+</div>
+<!-- Footer Links -->
+<div class="text-center">
+<p class="font-data-mono text-data-mono text-on-surface-variant">
+                Don't have an account? <a class="text-primary hover:underline underline-offset-4 decoration-primary/50 transition-none" href="#">Join the grid.</a>
+</p>
+</div>
+</main>
+</body></html>

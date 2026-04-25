@@ -4,13 +4,9 @@ import { STORYLINES, type Chapter, type Storyline } from "./storylines";
 import { CHARACTERS, type Character } from "./characters";
 import { getMelbourneDayIndex } from "./melbourne-date";
 
-export type MissionGame = "planet" | "asteroid" | "mars" | "insight";
+export type MissionGame = "planet" | "asteroid" | "mars";
 
-const IS_PROD = process.env.NEXT_PUBLIC_VERCEL_ENV === "production";
-
-export const MISSION_GAMES: MissionGame[] = IS_PROD
-  ? ["planet", "mars", "insight"]
-  : ["planet", "asteroid", "mars", "insight"];
+export const MISSION_GAMES: MissionGame[] = ["planet", "asteroid", "mars"];
 
 const MISSION_GAME_COUNT = 3;
 

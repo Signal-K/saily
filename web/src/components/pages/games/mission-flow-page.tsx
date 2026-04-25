@@ -12,7 +12,6 @@ import { MissionAmbience } from "@/components/mission/mission-ambience";
 import TodayGamePage from "@/components/pages/games/today-game-page";
 import AsteroidGamePage from "@/components/pages/games/asteroid-game-page";
 import MarsGamePage from "@/components/pages/games/mars-game-page";
-import InSightGamePage from "@/components/pages/games/insight-game-page";
 import { queueSurveyTrigger } from "@/lib/posthog/survey-queue";
 import { trackGameplayEvent } from "@/lib/analytics/events";
 import { unlockArchive } from "@/lib/economy";
@@ -34,19 +33,17 @@ const DEFAULT_SCORES: Record<MissionGame, number> = {
   planet: 0,
   asteroid: 0,
   mars: 0,
-  insight: 0,
 };
 
 function getContinueLabel(game: MissionGame | undefined) {
   if (game === "planet") return "Continue to Transit Analysis";
   if (game === "asteroid") return "Continue to Asteroid Survey";
   if (game === "mars") return "Continue to Surface Survey";
-  if (game === "insight") return "Continue to Weather Desk";
   return "Continue";
 }
 
 function isMissionGame(value: string): value is MissionGame {
-  return value === "planet" || value === "asteroid" || value === "mars" || value === "insight";
+  return value === "planet" || value === "asteroid" || value === "mars";
 }
 
 export default function MissionFlowPage() {
@@ -111,7 +108,7 @@ export default function MissionFlowPage() {
     .map((value) => value.trim())
     .filter(isMissionGame)
     .filter((g) => MISSION_GAMES.includes(g));
-  // Allow e2e tests to pin the first game via ?firstGame=planet|asteroid|mars|insight
+  // Allow e2e tests to pin the first game via ?firstGame=planet|asteroid|mars
   const firstGameParam = searchParams.get("firstGame");
   const firstGameOverride = firstGameParam && isMissionGame(firstGameParam) && MISSION_GAMES.includes(firstGameParam) ? firstGameParam : null;
   const gameOrder: MissionGame[] = firstGameOverride
@@ -194,7 +191,7 @@ export default function MissionFlowPage() {
     if (activeGame === "mars") {
       return <MarsGamePage onMissionComplete={(score) => handleGameComplete({ score })} gameDate={missionDate} />;
     }
-    return <InSightGamePage onMissionComplete={(result) => handleGameComplete(result)} gameDate={missionDate} />;
+    return null;
   }
 
   if (stage === "loading") {

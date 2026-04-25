@@ -1,3 +1,11 @@
 {
-  "active": []
+  "active": [
+    {
+      "taskId": "sly004",
+      "taskTitle": "Define next science-feed cache intake for daily puzzles",
+      "startedAt": "2026-04-25T00:39:12.333Z",
+      "pausedAt": null,
+      "totalPausedMs": 0
+    }
+  ]
 }

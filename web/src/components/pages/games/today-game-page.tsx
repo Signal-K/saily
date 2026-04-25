@@ -473,7 +473,7 @@ export default function TodayGamePage({ onMissionComplete, gameDate: gameDatePro
     if (nextStage < 3) {
       setMinigameIndex(nextStage);
       setFeedback(
-        `Evidence saved. Reward x${(payload.rewardMultiplier ?? rewardMultiplier).toFixed(2)}. Starting signal ${nextStage + 1} (${STAGE_DIFFICULTIES[nextStage]}).`,
+        `Research logged. Confidence x${(payload.rewardMultiplier ?? rewardMultiplier).toFixed(2)}. Initiating signal ${nextStage + 1} (${STAGE_DIFFICULTIES[nextStage]}).`,
       );
       setSubmitting(false);
       return;
@@ -507,7 +507,7 @@ export default function TodayGamePage({ onMissionComplete, gameDate: gameDatePro
     }
 
     setFeedback(
-      `Daily set complete. Score ${completePayload.score ?? 0}${completePayload.xpMultiplier === 0 ? " (archive run: no score/streak awarded)." : ""}${completePayload.xpMultiplier === 0.5 ? " (50% XP for past-day puzzle)." : ""}${completePayload.badgesAwarded ? ` New badges: ${completePayload.badgesAwarded}.` : ""}`,
+      `Research cycle complete. Confidence ${completePayload.score ?? 0}${completePayload.xpMultiplier === 0 ? "% (archive: no streak awarded)." : "%"}${completePayload.badgesAwarded ? ` New registries: ${completePayload.badgesAwarded}.` : ""}`,
     );
     setSubmitting(false);
     queueSurveyTrigger({
@@ -580,7 +580,7 @@ export default function TodayGamePage({ onMissionComplete, gameDate: gameDatePro
   const pendingEnd = draftStart === null || draftEnd === null ? null : Math.max(draftStart, draftEnd);
   const confidenceLevel = confidence >= 80 ? "High" : confidence >= 55 ? "Medium" : "Low";
   const confidenceLevelClass = confidenceLevel.toLowerCase();
-  const title = "Find the Transit Signal";
+  const title = "Transit Signal Analysis";
   const progressLabel = `Signal ${minigameIndex + 1}`;
   const sourceViewerHref = useMemo(() => {
     if (!anomaly?.sourceUrl) return null;
@@ -602,26 +602,44 @@ export default function TodayGamePage({ onMissionComplete, gameDate: gameDatePro
     <section className="puzzle-screen">
       {userId && !isPastDay ? <StreakRepairPrompt userId={userId} gameDate={gameDate} onRepairComplete={loadToday} /> : null}
       <header className="puzzle-header panel">
-        <p className="eyebrow">Daily Mission</p>
         <div className="puzzle-header-row">
           <div>
+            <p className="eyebrow">Active Research</p>
             <h1>{title}</h1>
-            <p className="muted puzzle-header-summary">Mark intervals where dips repeat at a stable spacing.</p>
+            <p className="muted puzzle-header-summary">Analyze intervals where dips repeat at a stable cadence.</p>
             <div className="puzzle-context-row">
-              <span className="puzzle-context-pill">Date {gameDate}</span>
-              <span className="puzzle-context-pill">Difficulty {stageDifficulty}</span>
-              {isPastDay ? <span className="puzzle-context-pill">Archive day (no score/streak)</span> : null}
-              {anomaly ? <span className="puzzle-context-pill">Target {anomaly.label}</span> : null}
+              <span className="puzzle-context-pill">Sync {gameDate}</span>
+              <span className="puzzle-context-pill">Complexity {stageDifficulty}</span>
+              {isPastDay ? <span className="puzzle-context-pill">Archive (no rating)</span> : null}
               {anomaly ? <span className="puzzle-context-pill">TIC {anomaly.ticId}</span> : null}
-              {anomaly ? <span className="puzzle-context-pill">Type {anomaly.anomalyType ?? "planet"}</span> : null}
+              {anomaly ? <span className="puzzle-context-pill">Type {anomaly.anomalyType ?? "transit"}</span> : null}
               {anomaly?.sourceUrl && sourceViewerHref ? (
                 <a href={sourceViewerHref} target="_blank" rel="noreferrer" className="puzzle-context-pill puzzle-context-pill-link">
-                  Source curve
+                  Raw telemetry
                 </a>
               ) : null}
             </div>
           </div>
-          <span className="puzzle-progress">{loading ? "Loading..." : progressLabel}</span>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "0.5rem", flexShrink: 0 }}>
+            <span className="puzzle-progress eyebrow">Progress</span>
+            <span className="puzzle-progress">{loading ? "Init..." : progressLabel}</span>
+            <div style={{ display: "flex", gap: "3px" }}>
+              {Array.from({ length: 5 }, (_, i) => {
+                const annotationCount = annotations.length;
+                return (
+                  <div
+                    key={i}
+                    style={{
+                      width: "1.5rem",
+                      height: "6px",
+                      background: i < annotationCount ? "var(--primary)" : "var(--surface-container-high)",
+                      border: "1px solid var(--border)",
+                    }}
+                  />
+                );
+              })}
+            </div>
+          </div>
         </div>
       </header>
 

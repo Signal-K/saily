@@ -99,7 +99,7 @@ export default async function Home() {
         <div className="home-console-grid">
           <div className="home-console-primary">
             <div className="home-console-kicker-row">
-              <p className="eyebrow">Orbital Console</p>
+              <p className="eyebrow">Data Terminal</p>
               <span className={`home-console-status is-${missionStatus.toLowerCase()}`}>{missionStatus}</span>
             </div>
             <div className="home-mission-header">
@@ -115,51 +115,51 @@ export default async function Home() {
                 <h1>{todayStoryline.title}</h1>
                 <p className="muted">
                   {todayCharacter.name} &middot; {todayCharacter.occupation}
-                  {user && <span className="home-chapter-badge"> &middot; Chapter {chapterNumber} of {todayStoryline.chapters.length}</span>}
+                  {user && <span className="home-chapter-badge"> &middot; Log {chapterNumber} of {todayStoryline.chapters.length}</span>}
                 </p>
               </div>
             </div>
             {playedToday ? (
               <>
                 <p className="home-mission-desc home-mission-done">
-                  ✓ Mission complete &mdash; score {todayPlay?.score ?? 0}
+                  ✓ Classification complete &mdash; confidence {todayPlay?.score ?? 0}%
                 </p>
                 <div className="cta-row">
                   <Link href="/games/today" className="button button-primary button-full">
-                    See Results
+                    Review Findings
                   </Link>
                   <Link href="/discuss" className="button">
-                    Discuss
+                    Consensus
                   </Link>
                 </div>
               </>
             ) : (
               <>
-                <p className="home-mission-desc">Help {todayCharacter.name} solve today&apos;s mystery by classifying real space data.</p>
+                <p className="home-mission-desc">Analyze real space data with {todayCharacter.name} to advance today&apos;s research mission.</p>
                 <div className="cta-row">
                   <Link href="/games/today" className="button button-primary button-full">
-                    Start Today&apos;s Mission
+                    Initialize Mission
                   </Link>
                   <Link href="/calendar" className="button">
                     Archive
                   </Link>
                   <Link href="/discuss" className="button">
-                    Discuss
+                    Consensus
                   </Link>
                 </div>
               </>
             )}
             <div className="home-tomorrow-teaser">
               <Image src={tomorrowAvatarSrc} alt={tomorrowCharacter.name} width={24} height={24} unoptimized className="home-tomorrow-avatar" />
-              <span className="muted">Tomorrow: {tomorrowCharacter.name} &mdash; {tomorrowStoryline.title}</span>
+              <span className="muted">Upcoming: {tomorrowCharacter.name} &mdash; {tomorrowStoryline.title}</span>
             </div>
           </div>
 
           <div className="home-console-side">
             <div className="home-console-panel">
               <div className="home-console-panel-head">
-                <span>Signal Board</span>
-                <small>live</small>
+                <span>Network Integrity</span>
+                <small>sync</small>
               </div>
               <div className="home-signal-bars" aria-hidden>
                 {missionBars.map((value, idx) => (
@@ -167,7 +167,7 @@ export default async function Home() {
                 ))}
               </div>
               <div className="home-console-readout">
-                <span>Streak {stats?.current_streak ?? 0}</span>
+                <span>Active Log {stats?.current_streak ?? 0}</span>
                 <span className="home-readout-chips">
                   <Image src="/assets/data-chip.svg" alt="" width={16} height={16} />
                   <span>Chips {profile?.data_chips ?? 0}</span>
@@ -176,24 +176,21 @@ export default async function Home() {
             </div>
             <div className="home-console-panel">
               <div className="home-console-panel-head">
-                <span>Mission Links</span>
-                <small>quick</small>
+                <span>Quick Access</span>
+                <small>io</small>
               </div>
               <div className="home-console-links">
                 <Link href={user ? "/profile" : "/auth/sign-in"} className="home-console-link">
-                  {user ? "Profile" : "Sign in"}
+                  User Port
                 </Link>
                 <Link href="/search" className="home-console-link">
-                  Search
+                  Registry
                 </Link>
                 <Link href="/games/asteroids" className="home-console-link">
-                  Asteroids
+                  Survey
                 </Link>
                 <Link href="/games/mars" className="home-console-link">
-                  Mars
-                </Link>
-                <Link href="/games/insight" className="home-console-link">
-                  Weather Desk
+                  Classification
                 </Link>
               </div>
             </div>
@@ -213,10 +210,6 @@ export default async function Home() {
         <Link href="/games/mars" className="home-game-card">
           <span className="home-game-icon" aria-hidden>◎</span>
           <span className="home-game-label">Surface Tags</span>
-        </Link>
-        <Link href="/games/insight" className="home-game-card">
-          <span className="home-game-icon" aria-hidden>≋</span>
-          <span className="home-game-label">Weather Desk</span>
         </Link>
       </div>
 

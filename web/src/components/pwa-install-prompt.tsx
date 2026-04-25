@@ -72,9 +72,9 @@ export function PwaInstallPrompt() {
   if (!shouldShow) return null;
 
   return (
-    <aside className="pwa-install-prompt" role="dialog" aria-label="Install Cosmo app">
-      <p className="pwa-install-title">Install Cosmo for a native-style experience</p>
-      <p className="pwa-install-copy">Open full screen, launch faster, and keep missions one tap away.</p>
+    <aside className="pwa-install-prompt" role="dialog" aria-label="Install The Daily Sail">
+      <p className="pwa-install-title">Install The Daily Sail for mobile telemetry access</p>
+      <p className="pwa-install-copy">Full-screen research terminal, faster access, and offline data sync.</p>
       <div className="pwa-install-actions">
         <button type="button" className="button button-primary" onClick={() => void handleInstall()}>
           Add to Home Screen

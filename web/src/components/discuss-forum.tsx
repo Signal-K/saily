@@ -668,16 +668,16 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
     <section className="forum-layout">
       <div className="panel forum-header">
         <div>
-          <h1>Discuss</h1>
-          <p className="muted">Two daily threads, replies, votes, reactions, and result sharing.</p>
+          <h1>Consensus</h1>
+          <p className="muted">Collaborative research logs, peer reviews, and shared findings.</p>
         </div>
         <div className="forum-header-actions">
           <label className="forum-date-field">
-            <span className="muted">Puzzle date</span>
+            <span className="muted">Mission date</span>
             <input data-cy="forum-date-input" type="date" value={date} onChange={(event) => setDate(event.target.value)} />
           </label>
           <Link className="button" href={`/games/today?date=${date}&returnTo=${encodeURIComponent(`/discuss?date=${date}`)}`}>
-            View Puzzle
+            Open Mission
           </Link>
         </div>
       </div>
@@ -783,7 +783,7 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
             data-cy="forum-composer-body"
             value={composerBody}
             onChange={(event) => setComposerBody(event.target.value)}
-            placeholder="Share your thoughts on today's puzzle..."
+            placeholder="Share your thoughts on today's research findings..."
             disabled={interactionLocked}
           />
           <label className="forum-share-toggle">
@@ -801,16 +801,16 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
               }}
               disabled={interactionLocked}
             />
-            Share my answers/results
+            Share my findings
           </label>
 
           {composerShareResult ? (
             <section className="forum-share-fields">
               <div className="forum-share-row">
-                <p className="muted">Result preview (what will be posted)</p>
+                <p className="muted">Log preview (what will be posted)</p>
                 <div className="forum-share-row-actions">
                   <button className="button" type="button" onClick={() => void preloadSharedResult()} disabled={interactionLocked}>
-                    Refresh from puzzle
+                    Sync from mission
                   </button>
                   <button className="button" type="button" onClick={() => setShowShareDetails((value) => !value)} disabled={interactionLocked}>
                     {showShareDetails ? "Hide detail fields" : "Edit detail fields"}
@@ -818,10 +818,10 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
                 </div>
               </div>
 
-              <section className="forum-result-card forum-result-preview-card" aria-label="Shared puzzle results preview">
+              <section className="forum-result-card forum-result-preview-card" aria-label="Shared mission results preview">
                 <div className="forum-result-head">
-                  <p className="forum-result-title">Daily Puzzle Results</p>
-                  <p className="forum-result-subtitle">Puzzle {date}</p>
+                  <p className="forum-result-title">Daily Mission Log</p>
+                  <p className="forum-result-subtitle">Mission {date}</p>
                 </div>
 
                 {sharedScore !== null ? (
@@ -889,14 +889,14 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
 
               {sharedAnswers.map((answer, idx) => (
                 <label className="forum-share-field" key={`answer-${idx}`}>
-                  <span>Puzzle {idx + 1} answer</span>
+                  <span>Mission component {idx + 1} analysis</span>
                   <input
                     className="input"
                     value={answer}
                     onChange={(event) =>
                       setSharedAnswers((current) => current.map((value, aIdx) => (aIdx === idx ? event.target.value : value)))
                     }
-                    placeholder={`Enter answer for puzzle ${idx + 1}`}
+                    placeholder={`Enter analysis for component ${idx + 1}`}
                     disabled={interactionLocked}
                   />
                 </label>

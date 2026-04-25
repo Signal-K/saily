@@ -1,7 +1,7 @@
 ---
 title: Importable science feeds
 createdAt: '2026-03-25T09:57:59.501Z'
-updatedAt: '2026-03-25T10:02:30.456Z'
+updatedAt: '2026-04-25T00:44:56.153Z'
 description: >-
   Current-source evaluation of official datasets/APIs for new Saily puzzle
   imports
@@ -15,83 +15,71 @@ tags:
 # Importable Science Feeds
 
 ## Recommendation order
-1. **TESScut + MAST APIs** for the next serious puzzle expansion.
-2. **NASA Exoplanet Archive TAP/API** as the metadata/control plane for candidate selection.
-3. **NASA PDS Search API** for planetary image-based puzzles beyond the current Mars implementation.
-4. **InSight Weather API** for a lightweight time-series anomaly puzzle if we want a non-image science mode.
-5. **Zooniverse / Panoptes** as a workflow and export model, not as the primary live data source.
+1. **Cloudspotting on Mars** as the first post-MVP expansion: strong fit with existing Mars surface familiarity, high scientific value, and straightforward cached daily subject intake.
+2. **Active Asteroids** as the best small-body image-review path: close to the existing asteroid/anomaly interaction model.
+3. **Rubin Comet Catchers** as the best comet-tail/coma activity path once small-body cache plumbing exists.
+4. **Gaia Variables** as the best non-image classification path once we are ready to support time-series variability cards.
+5. **Zooniverse / Panoptes** remains the workflow and export model, not the request-time gameplay backend.
 
 ## Candidate sources
 
-### 1. TESScut (MAST / STScI)
-- **Official docs:** https://mast.stsci.edu/tesscut/docs/
-- **What it gives us:** programmatic cutouts from TESS full-frame images, sector lookup by coordinates, and target-pixel cutout generation.
-- **Why it fits Saily:** strongest match for the existing transit-detection fantasy. We can keep the current lightcurve puzzle but move toward real target-pixel / sector-driven daily selections.
-- **Implementation notes:** combine sector lookup with cached cutout generation and an offline preprocessing step that converts cutouts to simplified lightcurves for gameplay.
-- **Constraints:** the docs note a limit of **5 requests/sec** and that TICA cutouts were discontinued in August 2025, so we should build around SPOC products and cache aggressively.
-- **Puzzle ideas:** transit dip ranking, "is this repeatable?", sector-to-sector comparison, moving-target exclusion.
+### 1. Cloudspotting on Mars (Zooniverse)
+- **Project:** https://www.zooniverse.org/projects/marek-slipski/cloudspotting-on-mars
+- **What it gives us:** Mars cloud-shape classifications around real mesospheric cloud imagery and associated atmospheric context.
+- **Why it fits Saily:** strongest immediate replacement/extension for the Mars research fantasy with clearer science value than generic surface tagging.
+- **Cache shape:** `cloudspotting_mars_daily` table with `game_date`, `subject_id`, `project_slug`, `image_url`, `crop_url`, `caption`, `season_or_context`, `workflow_version`, `source_metadata`.
+- **Daily play path:** serve one preselected cached subject per day. Do not fetch Zooniverse at request time.
+- **Ingestion notes:** ingest subject metadata and curated image URLs in batches, normalize to a compact image+label prompt payload, and snapshot provenance into JSON.
 
-### 2. MAST core API
-- **Official docs:** https://mast.stsci.edu/api/v0/
-- **What it gives us:** generic programmatic querying of MAST holdings, including CAOM-style searches and data discovery across missions.
-- **Why it fits Saily:** useful as the general discovery layer around TESS, Hubble, JWST, GALEX, etc. This is the best route if we want to branch into image classification, variability triage, or archive-driven daily curation.
-- **Implementation notes:** use MAST to search and prefetch candidate observations, then materialize a Saily-specific daily cache table so gameplay is not live-query dependent.
-- **Constraints:** large queries can fail around **~500k rows**, per the docs, so we should constrain and page searches.
-- **Puzzle ideas:** morphology triage, anomaly spotting in image stamps, image pair comparison, variable-object curation.
+### 2. Active Asteroids (Zooniverse)
+- **Project:** https://www.zooniverse.org/projects/orionnau/active-asteroids
+- **What it gives us:** candidate small-body image stamps where players judge whether activity is present.
+- **Why it fits Saily:** closest match to the current asteroid review interaction; easiest conceptual bridge from today's asteroid game into a real science-backed queue.
+- **Cache shape:** `active_asteroids_daily` table with `game_date`, `subject_id`, `image_url`, `candidate_id`, `epoch_label`, `source_collection`, `prompt`, `source_metadata`.
+- **Daily play path:** select one cached candidate per day, with local scoring/consensus mechanics layered on top.
+- **Ingestion notes:** keep multiple subject epochs where available; preserve enough metadata to support future expert-review exports.
 
-### 3. NASA Exoplanet Archive TAP/API
-- **Official docs:** https://exoplanetarchive.ipac.caltech.edu/docs/program_interfaces.html
-- **Useful examples:** https://exoplanetarchive.ipac.caltech.edu/docs/API_queries.html
-- **What it gives us:** candidate tables, confirmed-planet tables, KOI/TCE style metadata, mission star lists, and TAP-based querying.
-- **Why it fits Saily:** ideal control-plane source for selecting which stars/candidates to feature, attaching scientific context, and building chapter-specific puzzle pools.
-- **Implementation notes:** use TAP/API to fetch candidate metadata, dispositions, periods, radii, sectors, and labels, then join those against MAST/TESScut retrieval for the actual playable artifact.
-- **Constraints:** the docs explicitly say the archive is transitioning toward **TAP** and that most programmatic access should prefer TAP over older query examples.
-- **Puzzle ideas:** "candidate triage" cards, habitability shortlists, confidence-ranking, mission briefings seeded from real system metadata.
+### 3. Rubin Comet Catchers (Zooniverse)
+- **Project:** https://www.zooniverse.org/projects/orionnau/rubin-comet-catchers
+- **What it gives us:** Rubin small-body imagery focused on comet-like activity such as tails and comae.
+- **Why it fits Saily:** strong fit for a premium small-body classification mode after Active Asteroids establishes the cache/import pattern.
+- **Cache shape:** `rubin_comet_catchers_daily` table with `game_date`, `subject_id`, `image_urls`, `object_label`, `known_training_flag`, `activity_prompt`, `source_metadata`.
+- **Daily play path:** serve pre-ingested candidate frames and keep any training/known-object flags out of the player-visible payload.
+- **Ingestion notes:** normalize multi-image subjects into one stable card payload; retain provenance for later replay/export.
 
-### 4. NASA PDS Search API / PDS Data Search
-- **Official entry points:** https://pds.nasa.gov/datasearch/keyword-search/ and https://pds.nasa.gov/datasearch/data-search/
-- **Protocol PDF:** https://pds.nasa.gov/services/pds4_pds_search_protocol.pdf
-- **What it gives us:** programmatic discovery of PDS4 planetary data products across imaging, atmospheres, rings, and small bodies.
-- **Why it fits Saily:** strongest route for expanding beyond current Mars tagging into lunar, asteroid, comet, and outer-planet imaging without inventing fake science.
-- **Implementation notes:** start with one narrow slice (for example, Mars or small-body imaging), ingest product metadata + browse URLs into a curated puzzle pool, and avoid runtime search in the player path.
-- **Constraints:** broad search surface and heterogeneous metadata. Needs curation and normalization before it becomes game-ready.
-- **Puzzle ideas:** crater/deposit tagging, dune-vs-rock discrimination, plume/jet spotting, icy patch detection, ring-structure anomaly calls.
+### 4. Gaia Variables (project-aligned variability intake)
+- **Reference project:** Zooniverse `Gaia Vari` / Gaia-style variability classification workflows.
+- **What it gives us:** variable-object light-curve triage and classification opportunities outside the transit-only TESS path.
+- **Why it fits Saily:** best next non-image science mode after TESS; scientifically richer than route-clearance style weather scoring.
+- **Cache shape:** `gaia_variables_daily` table with `game_date`, `source_id`, `series_payload`, `class_hints`, `cadence_summary`, `provenance_url`, `source_metadata`.
+- **Daily play path:** serve compact precomputed variability cards with no dependency on live archive/API availability.
+- **Ingestion notes:** precompute simplified time-series payloads suitable for the UI; avoid shipping raw archive complexity to the client.
 
-### 5. InSight Mars Weather API
-- **Official docs:** https://api.nasa.gov/assets/insight/InSight%20Weather%20API%20Documentation.pdf
-- **Auth/rate-limit docs:** https://api.nasa.gov/assets/html/authentication.html
-- **What it gives us:** per-Sol summary weather data for temperature, pressure, wind, and seasonal context.
-- **Why it fits Saily:** lets us add a lightweight "detect the weather anomaly" or "find the outlier Sol" puzzle that still feels like field science.
-- **Implementation notes:** ingest and cache batches of Sol summaries, render compact sparklines/mini dashboards, and ask the user to identify unusual pressure drops, wind changes, or missing-sensor days.
-- **Constraints:** only the last several available Sols are exposed, values can be recalculated later, and there are known sensor gaps. Better for a supplemental mode than a deep evergreen archive.
-- **Puzzle ideas:** anomaly detection, forecast/retrospective matching, pressure-drop identification, sensor-health triage.
-
-### 6. Zooniverse / Panoptes platform
+### 5. Zooniverse / Panoptes platform
 - **Developer docs:** https://developer.zooniverse.org/
-- **Platform overview:** https://developer.zooniverse.org/en/latest/apis/platform.html
-- **Classification exports:** https://developer.zooniverse.org/en/latest/science/classifications_exports.html
-- **What it gives us:** a proven citizen-science workflow model for subjects, subject sets, workflows, classifications, and downstream aggregation.
-- **Why it fits Saily:** best reference for **how** to structure classification collection and aggregation, even if we do not use Zooniverse as the live player-facing backend.
-- **Implementation notes:** borrow their concepts for subject retirement, export shape, and aggregation thresholds. If we ever partner with an existing Zooniverse project, Panoptes also gives us a practical integration vocabulary.
-- **Constraints:** not the best fit as a live puzzle-content API for Saily. Better as a workflow model and possible ingest/export bridge.
-- **Puzzle ideas:** internal moderation + aggregation pipeline, consensus thresholds, subject retirement logic, expert review queue.
+- **API reference:** https://zooniverse.github.io/panoptes/
+- **What it gives us:** project/workflow/subject vocabulary, subject-set structure, and export/aggregation concepts.
+- **Why it fits Saily:** use it as the model for cached subject intake, moderation, export shape, and future consensus thresholds.
+- **Constraint:** classification retrieval is not a dependable public runtime source for our needs; treat Panoptes as metadata/workflow inspiration unless a partner export is available.
 
 ## What I would build next
 
 ### Best near-term path
-- Use **Exoplanet Archive** to choose targets/candidates.
-- Use **MAST + TESScut** to fetch the actual TESS products.
-- Precompute simplified gameplay payloads into Supabase so the app serves stable daily missions without live dependency risk.
+- Start with **Cloudspotting on Mars**.
+- Build a daily cache table, one ingestion script, and one normalized image-card payload.
+- Use that import pattern as the template for **Active Asteroids** and **Rubin Comet Catchers**.
 
-### Best planetary path
-- Use **PDS Search API** to curate one narrow planetary collection.
-- Continue the current point-tagging interaction but with better provenance and a larger catalog.
+### Best small-body path
+- After CoM, implement **Active Asteroids** first.
+- Reuse the same cache + image-card pipeline.
+- Add **Rubin Comet Catchers** once multi-image subject normalization is ready.
 
-### Lowest-risk new puzzle type
-- Build a compact **InSight weather anomaly** mode.
-- It is easier than a full new image pipeline and still feels scientific.
+### Best non-image path
+- Add **Gaia Variables** only after the app has a stable cache/intake layer for precomputed puzzle payloads.
+- Keep the first Gaia integration small: one compact variability classification card per day.
 
 ## Scope notes
-- I would **not** rely on live third-party APIs directly in request-time gameplay. Pre-ingest and cache instead.
-- I would treat **Zooniverse** as a product-design and aggregation reference, not the immediate content API.
-- I would keep any new dataset tied back to the core Star Sailors framing by making each puzzle about survey support, route planning, settlement scouting, or anomaly verification.
+- Do **not** rely on live third-party APIs directly in request-time gameplay.
+- Prefer one cache table per source at intake time, then converge later on a shared internal mission-payload shape if needed.
+- Treat Zooniverse as a source of public project/subject metadata and a workflow model, not as the request-time puzzle API.
+- Keep each imported source tied to a clear scientific question so narrative, UI, and eventual export all stay coherent.

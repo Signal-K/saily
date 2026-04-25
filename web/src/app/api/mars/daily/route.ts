@@ -9,13 +9,66 @@ import { createClient } from "@/lib/supabase/server";
 // ---------------------------------------------------------------------------
 
 type NasaItem = {
-  data?: Array<{ nasa_id?: string; title?: string; photographer?: string }>;
+  data?: Array<{
+    nasa_id?: string;
+    title?: string;
+    description?: string;
+    photographer?: string;
+    keywords?: string[];
+    secondary_creator?: string;
+  }>;
   links?: Array<{ href?: string; rel?: string }>;
 };
 
+const DISALLOWED_TERMS = [
+  "illustration",
+  "gradient illustration",
+  "artist concept",
+  "artist's concept",
+  "artists concept",
+  "artists rendering",
+  "rendering",
+  "concept art",
+  "animation",
+  "poster",
+  "infographic",
+  "composite",
+  "mosaic",
+] as const;
+
+function isLikelyRoverPhoto(data: NonNullable<NasaItem["data"]>[number]) {
+  const combined = [
+    data.title,
+    data.description,
+    data.photographer,
+    data.secondary_creator,
+    ...(data.keywords ?? []),
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+  if (!combined) return false;
+
+  if (DISALLOWED_TERMS.some((term) => combined.includes(term))) {
+    return false;
+  }
+
+  const hasMarsSignal = combined.includes("mars") || combined.includes("martian");
+  const hasRoverSignal =
+    combined.includes("rover") ||
+    combined.includes("perseverance") ||
+    combined.includes("curiosity") ||
+    combined.includes("mastcam") ||
+    combined.includes("navcam") ||
+    combined.includes("hazcam");
+
+  return hasMarsSignal && hasRoverSignal;
+}
+
 async function fetchNasaImages(page: number): Promise<MarsImage[]> {
   const url = new URL("https://images-api.nasa.gov/search");
-  url.searchParams.set("q", "mars rover surface");
+  url.searchParams.set("q", "\"mars rover\" surface -illustration -rendering -concept");
   url.searchParams.set("media_type", "image");
   url.searchParams.set("page", String(page));
   url.searchParams.set("page_size", "20");
@@ -36,7 +89,7 @@ async function fetchNasaImages(page: number): Promise<MarsImage[]> {
   for (const item of items) {
     const data = item.data?.[0];
     const thumb = item.links?.find((l) => l.rel === "preview")?.href ?? "";
-    if (!data?.nasa_id || !thumb) continue;
+    if (!data?.nasa_id || !thumb || !isLikelyRoverPhoto(data)) continue;
 
     images.push({
       id: data.nasa_id,
