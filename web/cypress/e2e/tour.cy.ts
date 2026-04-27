@@ -53,6 +53,11 @@ describe("Comprehensive Game Tour", () => {
       body: { ok: true, score: 95 },
     }).as("completePlanetGame");
 
+    cy.intercept("POST", "/api/story/progress", {
+      statusCode: 200,
+      body: { ok: true },
+    }).as("advanceChapter");
+
     // Mock Mars game data
     cy.intercept("GET", "/api/mars/daily*", {
       statusCode: 200,
@@ -99,11 +104,11 @@ describe("Comprehensive Game Tour", () => {
     // 2. Mission Briefing
     cy.wait("@storyProgress");
     cy.screenshot("02-mission-briefing");
-    cy.contains("button", "Begin Mission").click();
+    cy.contains("button", "Initialize Mission").click();
 
     // 3. Planet Hunting (Game 1)
     cy.wait("@todayGame");
-    cy.contains("h1", "Find the Transit Signal").should("be.visible");
+    cy.contains("h1", "Transit Signal Analysis").should("be.visible");
     cy.screenshot("03-planet-hunting-start");
     
     // Simulate drawing an annotation (3 signals total)
@@ -124,7 +129,7 @@ describe("Comprehensive Game Tour", () => {
     // 5. Asteroid Mapping (Game 2)
     cy.wait("@asteroidDraft");
     cy.contains("h1", "Water-Ice Mapping").should("be.visible");
-    cy.get("img").first().click(100, 100);
+    cy.get(".puzzle-canvas img").click(100, 100);
     cy.screenshot("05-asteroid-mapping");
     cy.contains("button", "Submit Survey").click();
     cy.wait("@submitAsteroid");
@@ -144,7 +149,7 @@ describe("Comprehensive Game Tour", () => {
     // 8. Mission Complete
     cy.screenshot("08-mission-complete");
     cy.contains("Mission Complete").should("be.visible");
-    cy.contains("Back to Home").click();
+    cy.contains("Return to Hub").click();
 
     // 9. Final check
     cy.location("pathname").should("eq", "/");

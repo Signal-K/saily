@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__knowns__detect_projects",
+      "mcp__knowns__set_project",
+      "mcp__knowns__get_board",
+      "WebFetch(domain:localhost)",
+      "mcp__knowns__update_task",
+      "mcp__knowns__get_task",
+      "mcp__knowns__get_doc",
+      "mcp__knowns__list_tasks",
+      "mcp__knowns__create_task",
+      "Skill(schedule)",
+      "mcp__stitch__get_screen"
+    ]
+  }
+}

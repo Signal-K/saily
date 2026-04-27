@@ -3,7 +3,7 @@ describe("Smoke", () => {
     cy.visit("/");
     cy.getBySel("nav-today").should("be.visible");
     cy.get("h1").should("be.visible");
-    cy.contains("a", "Start Today's Mission").should("be.visible");
+    cy.contains("a", "Initialize Mission").should("be.visible");
     cy.getBySel("header-search-input").should("be.visible");
     cy.getBySel("theme-toggle").should("be.visible");
 

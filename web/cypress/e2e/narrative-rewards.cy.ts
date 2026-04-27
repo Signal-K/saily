@@ -38,12 +38,12 @@ describe("Narrative Rewards", () => {
     }).as("completeStoryline");
 
     cy.visit("/games/today?firstGame=planet&gameOrder=planet,planet,planet");
-    cy.contains("button", "Begin Mission").click();
+    cy.contains("button", "Initialize Mission").click();
 
     // Complete 3 stages of planet game
     for (let i = 0; i < 3; i++) {
         // Mocking stages
-        cy.contains("h1", "Find the Transit Signal").should("be.visible");
+        cy.contains("h1", "Transit Signal Analysis").should("be.visible");
         // Need at least one annotation to submit
         // Since it's a mock, we can just click if it's visible, 
         // but we need to mock the annotation state.

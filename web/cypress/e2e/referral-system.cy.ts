@@ -16,7 +16,7 @@ describe("Referral System", () => {
     cy.get("#password").type("password123");
     cy.get('input[type="checkbox"]').check();
     
-    cy.contains("button", "Create account").click();
+    cy.contains("button", "Create Account").click();
 
     cy.wait("@signUp").then((interception) => {
       const body = interception.request.body;

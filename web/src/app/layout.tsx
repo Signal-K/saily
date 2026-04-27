@@ -117,9 +117,9 @@ export default async function RootLayout({
                     <Link href="/games/today" className="header-nav-link" data-cy="nav-today">
                       Today&apos;s Mission
                     </Link>
-                    {/* <Link href="/calendar" className="header-nav-link" data-cy="nav-calendar">
+                    <Link href="/calendar" className="header-nav-link" data-cy="nav-calendar">
                       Calendar
-                    </Link> */}
+                    </Link>
                     <Link href="/discuss" className="header-nav-link" data-cy="nav-discuss">
                       Discuss
                     </Link>

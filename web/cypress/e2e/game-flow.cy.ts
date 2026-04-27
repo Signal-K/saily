@@ -68,23 +68,23 @@ describe("Daily puzzle flow", () => {
 
     cy.visit("/games/today?gameOrder=planet,asteroid,mars");
     cy.wait("@storyProgress");
-    cy.contains("button", "Begin Mission").click();
+    cy.contains("button", "Initialize Mission").click();
     cy.wait("@todayGame");
     cy.wait("@loadSavedSubmission");
 
-    cy.contains("h1", "Find the Transit Signal").should("be.visible");
+    cy.contains("h1", "Transit Signal Analysis").should("be.visible");
     cy.contains(".puzzle-annotation-item", "#1", { timeout: 10000 }).should("be.visible");
     cy.getBySel("puzzle-note").type("Likely repeatable dip profile.", { force: true });
     cy.contains("button", "Use Phase Fold Hint").click({ force: true });
 
     cy.getBySel("puzzle-finish-button").click();
     cy.wait("@submitEvidence");
-    cy.contains("h1", "Find the Transit Signal").should("be.visible");
-    cy.contains(".puzzle-context-pill", "Difficulty Medium").should("be.visible");
+    cy.contains("h1", "Transit Signal Analysis").should("be.visible");
+    cy.contains(".puzzle-context-pill", "Complexity Medium").should("be.visible");
 
     cy.getBySel("puzzle-finish-button").click();
     cy.wait("@submitEvidence");
-    cy.contains(".puzzle-context-pill", "Difficulty Hard").should("be.visible");
+    cy.contains(".puzzle-context-pill", "Complexity Hard").should("be.visible");
 
     cy.getBySel("puzzle-finish-button").click();
     cy.wait("@submitEvidence");

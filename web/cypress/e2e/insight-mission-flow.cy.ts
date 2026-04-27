@@ -27,19 +27,10 @@ describe("mission flow", () => {
       body: { chapterIndex: 0 },
     }).as("storyProgress");
 
-    cy.intercept("GET", "/api/asteroid/daily*", {
+    cy.intercept("GET", "/api/asteroid/annotations*", {
       statusCode: 200,
-      body: {
-        puzzle: {
-          date: today,
-          mission: "Archive Sweep",
-          ticId: "123456789",
-          title: "Candidate Belt-4",
-          imagePath: "/assets/data-chip.svg",
-          imageAlt: "Synthetic asteroid target",
-        },
-      },
-    }).as("asteroidDaily");
+      body: { annotations: [], submitted: false },
+    }).as("asteroidAnnotations");
 
     cy.intercept("POST", "/api/asteroid/submit", {
       statusCode: 200,
@@ -52,8 +43,8 @@ describe("mission flow", () => {
     cy.visit("/games/today?gameOrder=asteroid,planet,mars");
     cy.wait("@todayAccess");
     cy.wait("@storyProgress");
-    cy.contains("button", "Begin Mission").click();
-    cy.wait("@asteroidDaily");
+    cy.contains("button", "Initialize Mission").click();
+    cy.wait("@asteroidAnnotations");
 
     cy.contains("h1", "Water-Ice Mapping").should("be.visible");
     cy.get('input[placeholder="Possible water-ice region"]').type("Primary deposit");
