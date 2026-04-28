@@ -32,6 +32,11 @@ describe("mission flow", () => {
       body: { annotations: [], submitted: false },
     }).as("asteroidAnnotations");
 
+    cy.intercept("POST", "/api/asteroid/annotations", {
+      statusCode: 200,
+      body: { ok: true, savedCount: 1 },
+    }).as("asteroidDraftSave");
+
     cy.intercept("POST", "/api/asteroid/submit", {
       statusCode: 200,
       body: {
@@ -50,6 +55,7 @@ describe("mission flow", () => {
     cy.get('input[placeholder="Possible water-ice region"]').type("Primary deposit");
     cy.get(".puzzle-canvas img").click(20, 20);
     cy.contains("button", "Submit Survey").click();
+    cy.wait("@asteroidDraftSave");
     cy.wait("@asteroidSubmit");
 
     cy.location("pathname").should("eq", "/games/today");
