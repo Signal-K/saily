@@ -36,6 +36,8 @@ describe("Streak Repair", () => {
     cy.visit(`/games/today?date=${todayStr}&firstGame=planet`);
     cy.wait("@todayGame");
     cy.contains("button", "Initialize Mission").click();
+    cy.wait("@fetchPlays");
+    cy.wait("@fetchProfile");
 
     // Wait for TodayGamePage to load its own data
     cy.contains("Loading daily anomaly...").should("not.exist");
@@ -70,6 +72,8 @@ describe("Streak Repair", () => {
     cy.visit(`/games/today?date=${todayStr}&firstGame=planet`);
     cy.wait("@todayGameDismiss");
     cy.contains("button", "Initialize Mission").click();
+    cy.wait("@fetchPlaysDismiss");
+    cy.wait("@fetchProfileDismiss");
     cy.contains("button", "Skip", { timeout: 10000 }).click();
     cy.contains("Streak Broken!").should("not.exist");
   });
@@ -99,6 +103,8 @@ describe("Streak Repair", () => {
     cy.visit(`/games/today?date=${todayStr}&firstGame=planet`);
     cy.wait("@todayGameEmpty");
     cy.contains("button", "Initialize Mission").click();
+    cy.wait("@fetchPlaysEmpty");
+    cy.wait("@fetchProfileEmpty");
 
     // Wait for TodayGamePage to load its own data
     cy.contains("Loading daily anomaly...").should("not.exist");
@@ -138,6 +144,8 @@ describe("Streak Repair", () => {
     cy.visit(`/games/today?date=${todayStr}&firstGame=planet`);
     cy.wait("@todayGameRepair");
     cy.contains("button", "Initialize Mission").click();
+    cy.wait("@fetchPlaysRepair");
+    cy.wait("@fetchProfileRepair");
 
     cy.contains("Streak Broken!", { timeout: 10000 }).should("be.visible");
     cy.contains("button", "Repair Streak (-1 Chip)").click();
@@ -166,6 +174,7 @@ describe("Streak Repair", () => {
     cy.visit(`/games/today?date=${todayStr}&firstGame=planet`);
     cy.wait("@todayGamePlayed");
     cy.contains("button", "Initialize Mission").click();
+    cy.wait("@fetchPlaysPlayed");
 
     cy.contains("Loading daily anomaly...").should("not.exist");
     // Give the component time to check repair status

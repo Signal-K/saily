@@ -203,7 +203,11 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
     () => threads.find((thread) => thread.id === selectedThreadId) ?? null,
     [threads, selectedThreadId],
   );
-  const interactionLocked = Boolean(selectedThread?.is_locked) || !isAuthenticated || (dayAccess ? !dayAccess.allowed : false);
+  const dayRestrictedThread = selectedThread?.kind === "daily_live";
+  const interactionLocked =
+    Boolean(selectedThread?.is_locked) ||
+    !isAuthenticated ||
+    (dayRestrictedThread && dayAccess ? !dayAccess.allowed : false);
   const tree = useMemo(() => buildTree(posts), [posts]);
   const sharePreviewAnswers = useMemo(
     () =>
