@@ -144,35 +144,13 @@ jobs:
             exit 1
           fi
 
-          secret_project_id="${VERCEL_PROJECT_ID:-}"
-          secret_org_id="${VERCEL_ORG_ID:-}"
-          file_project_id=""
-          file_org_id=""
-
-          if [[ -f ".vercel/project.json" ]]; then
-            file_project_id="$(node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('.vercel/project.json','utf8'));process.stdout.write(p.projectId||'')")"
-            file_org_id="$(node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('.vercel/project.json','utf8'));process.stdout.write(p.orgId||'')")"
-          fi
-
-          if [[ -n "$secret_project_id" && -n "$file_project_id" && "$secret_project_id" != "$file_project_id" ]]; then
-            echo "VERCEL_PROJECT_ID secret does not match web/.vercel/project.json"
-            exit 1
-          fi
-          if [[ -n "$secret_org_id" && -n "$file_org_id" && "$secret_org_id" != "$file_org_id" ]]; then
-            echo "VERCEL_TEAM_ID secret does not match web/.vercel/project.json orgId"
+          if [[ -z "${VERCEL_PROJECT_ID}" || -z "${VERCEL_ORG_ID}" ]]; then
+            echo "Missing VERCEL_PROJECT_ID or VERCEL_TEAM_ID secrets."
             exit 1
           fi
 
-          resolved_project_id="${secret_project_id:-$file_project_id}"
-          resolved_org_id="${secret_org_id:-$file_org_id}"
-
-          if [[ -z "$resolved_project_id" || -z "$resolved_org_id" ]]; then
-            echo "Missing Vercel project/org ids. Set VERCEL_PROJECT_ID + VERCEL_TEAM_ID secrets or commit web/.vercel/project.json."
-            exit 1
-          fi
-
-          echo "project_id=$resolved_project_id" >> "$GITHUB_OUTPUT"
-          echo "org_id=$resolved_org_id" >> "$GITHUB_OUTPUT"
+          echo "project_id=${VERCEL_PROJECT_ID}" >> "$GITHUB_OUTPUT"
+          echo "org_id=${VERCEL_ORG_ID}" >> "$GITHUB_OUTPUT"
 
       - name: Select Vercel environment
         id: deploy_target
