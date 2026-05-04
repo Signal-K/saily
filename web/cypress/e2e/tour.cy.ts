@@ -48,6 +48,11 @@ describe("Comprehensive Game Tour", () => {
       body: { ok: true, rewardMultiplier: 1.0 },
     }).as("submitAnomaly");
 
+    cy.intercept("POST", "/api/asteroid/annotations", {
+      statusCode: 200,
+      body: { ok: true, savedCount: 1 },
+    }).as("saveAsteroidDraft");
+
     cy.intercept("POST", "/api/game/complete", {
       statusCode: 200,
       body: { ok: true, score: 95 },
@@ -73,6 +78,11 @@ describe("Comprehensive Game Tour", () => {
       statusCode: 200,
       body: { ok: true, score: 88 }
     }).as("submitMars");
+
+    cy.intercept("GET", "/api/mars/classify*", {
+      statusCode: 200,
+      body: { classifications: [] },
+    }).as("getMarsClassifications");
 
     // Mock Asteroid data
     cy.intercept("GET", "/api/asteroid/annotations*", {
@@ -132,6 +142,7 @@ describe("Comprehensive Game Tour", () => {
     cy.get(".puzzle-canvas img").click(100, 100);
     cy.screenshot("05-asteroid-mapping");
     cy.contains("button", "Submit Survey").click();
+    cy.wait("@saveAsteroidDraft");
     cy.wait("@submitAsteroid");
 
     // 6. Narrative Transition 2
@@ -140,6 +151,7 @@ describe("Comprehensive Game Tour", () => {
 
     // 7. Mars Classification (Game 3)
     cy.wait("@marsImages");
+    cy.wait("@getMarsClassifications");
     cy.contains("h1", "Mars Surface Classification").should("be.visible");
     cy.get(".mars-annotation-wrapper img").click(200, 200);
     cy.screenshot("07-mars-classification");
