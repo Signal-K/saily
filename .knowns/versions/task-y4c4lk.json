@@ -1,0 +1,32 @@
+{
+  "taskId": "y4c4lk",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "y4c4lk",
+      "version": 1,
+      "timestamp": "2026-05-02T12:36:39.684Z",
+      "changes": [
+        {
+          "field": "description",
+          "oldValue": "Planning task 45ao85 is done. Build the actual ingestion: fetch subjects from Zooniverse Active Asteroids project, normalize to ActiveAsteroidsDaily type, populate active_asteroids_daily table. One entry per game date. Prerequisite for Carta narrative alignment.",
+          "newValue": "Same infrastructure as Cloudspotting on Mars — public Zooniverse API, same cache table pattern. No credentials needed.\n\nBlocked on `dmukp0` (Cloudspotting) completing first — that establishes the ingestion pattern and script template this one will reuse. No input needed from you until Cloudspotting is done."
+        }
+      ],
+      "snapshot": {
+        "title": "Science data ingestion: Active Asteroids cache pipeline",
+        "description": "Same infrastructure as Cloudspotting on Mars — public Zooniverse API, same cache table pattern. No credentials needed.\n\nBlocked on `dmukp0` (Cloudspotting) completing first — that establishes the ingestion pattern and script template this one will reuse. No input needed from you until Cloudspotting is done.",
+        "status": "todo",
+        "priority": "medium",
+        "labels": [
+          "science-data",
+          "ingestion",
+          "post-v0",
+          "active-asteroids"
+        ],
+        "acceptanceCriteria": []
+      }
+    }
+  ]
+}

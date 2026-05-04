@@ -1,0 +1,59 @@
+{
+  "taskId": "194n57",
+  "currentVersion": 2,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "194n57",
+      "version": 1,
+      "timestamp": "2026-05-02T10:24:14.565Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "newValue": "InSight is not in any nav (desktop or mobile). No links to /games/insight from home or layout. It's unreachable without knowing the URL — not a v0 tester risk. Decision still needed: integrate or formally remove the route."
+        }
+      ],
+      "snapshot": {
+        "title": "Decide InSight puzzle fate: integrate or remove from nav",
+        "description": "A full InSight Mars weather desk puzzle exists (insight-game-page.tsx, /games/insight, /api/insight/*) but is not a MissionGame type and is outside the daily mission flow. It has its own doc (guides/insight-weather-desk). Decision needed: integrate as a MissionGame type, keep as a standalone bonus page, or remove from navigation for v0 to avoid confusing testers.",
+        "status": "todo",
+        "priority": "high",
+        "labels": [
+          "v0",
+          "ux",
+          "puzzle",
+          "decision"
+        ],
+        "acceptanceCriteria": [],
+        "implementationNotes": "InSight is not in any nav (desktop or mobile). No links to /games/insight from home or layout. It's unreachable without knowing the URL — not a v0 tester risk. Decision still needed: integrate or formally remove the route."
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "194n57",
+      "version": 2,
+      "timestamp": "2026-05-02T12:36:26.083Z",
+      "changes": [
+        {
+          "field": "description",
+          "oldValue": "A full InSight Mars weather desk puzzle exists (insight-game-page.tsx, /games/insight, /api/insight/*) but is not a MissionGame type and is outside the daily mission flow. It has its own doc (guides/insight-weather-desk). Decision needed: integrate as a MissionGame type, keep as a standalone bonus page, or remove from navigation for v0 to avoid confusing testers.",
+          "newValue": "InSight is unreachable from any nav — testers won't stumble on it. But it's a live route taking up maintenance surface. Pick one:\n\n**A)** Leave it hidden — no action needed.\n**B)** Add a link in Quick Access on the home page — I can do this in 10 minutes.\n**C)** Remove the route and all related API + lib files entirely — I can do this in 15 minutes.\n\nJust reply with A, B, or C."
+        }
+      ],
+      "snapshot": {
+        "title": "Decide InSight puzzle fate: integrate or remove from nav",
+        "description": "InSight is unreachable from any nav — testers won't stumble on it. But it's a live route taking up maintenance surface. Pick one:\n\n**A)** Leave it hidden — no action needed.\n**B)** Add a link in Quick Access on the home page — I can do this in 10 minutes.\n**C)** Remove the route and all related API + lib files entirely — I can do this in 15 minutes.\n\nJust reply with A, B, or C.",
+        "status": "todo",
+        "priority": "high",
+        "labels": [
+          "v0",
+          "ux",
+          "puzzle",
+          "decision"
+        ],
+        "acceptanceCriteria": [],
+        "implementationNotes": "InSight is not in any nav (desktop or mobile). No links to /games/insight from home or layout. It's unreachable without knowing the URL — not a v0 tester risk. Decision still needed: integrate or formally remove the route."
+      }
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "taskId": "dmukp0",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "dmukp0",
+      "version": 1,
+      "timestamp": "2026-05-02T12:36:37.925Z",
+      "changes": [
+        {
+          "field": "description",
+          "oldValue": "Planning task 2o7kbq is done. Build the actual ingestion: fetch subjects from Zooniverse Cloudspotting on Mars project, normalize to CloudspottingMarsDaily type (defined in science-feeds.ts), and populate the cloudspotting_mars_daily Supabase table. One entry per game date. Prerequisite for Zix narrative alignment.",
+          "newValue": "Ready to build. No credentials needed — Zooniverse Panoptes is a public API for public projects.\n\nWhat I need from you before starting:\n1. Does the `cloudspotting_mars_daily` Supabase table already exist, or should I write the migration?\n2. Should the ingestion script run as a scheduled Supabase Edge Function, a Node script in /scripts, or something else?\n\nOnce you answer those two, I can ship this without further input."
+        }
+      ],
+      "snapshot": {
+        "title": "Science data ingestion: Cloudspotting on Mars cache pipeline",
+        "description": "Ready to build. No credentials needed — Zooniverse Panoptes is a public API for public projects.\n\nWhat I need from you before starting:\n1. Does the `cloudspotting_mars_daily` Supabase table already exist, or should I write the migration?\n2. Should the ingestion script run as a scheduled Supabase Edge Function, a Node script in /scripts, or something else?\n\nOnce you answer those two, I can ship this without further input.",
+        "status": "todo",
+        "priority": "medium",
+        "labels": [
+          "science-data",
+          "ingestion",
+          "post-v0",
+          "cloudspotting"
+        ],
+        "acceptanceCriteria": []
+      }
+    }
+  ]
+}

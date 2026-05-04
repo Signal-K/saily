@@ -1,0 +1,32 @@
+{
+  "taskId": "0wih04",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "0wih04",
+      "version": 1,
+      "timestamp": "2026-05-02T12:36:42.147Z",
+      "changes": [
+        {
+          "field": "description",
+          "oldValue": "Planning task np5izl is done. Build the actual ingestion: fetch multi-image subjects from Zooniverse Rubin Comet Catchers, normalize to RubinCometCatchersDaily type (multi-image payload), populate rubin_comet_catchers_daily table. Prerequisite for Pip narrative alignment.",
+          "newValue": "Same infrastructure as Cloudspotting and Active Asteroids, with one additional wrinkle: Rubin subjects have multiple images per classification card. The existing mars/asteroid game pages show one image. I'll need to build a small multi-image carousel component for the puzzle UI.\n\nBlocked on `y4c4lk` (Active Asteroids) — that establishes the image-annotation pattern this builds on. No input needed from you until Active Asteroids is done."
+        }
+      ],
+      "snapshot": {
+        "title": "Science data ingestion: Rubin Comet Catchers cache pipeline",
+        "description": "Same infrastructure as Cloudspotting and Active Asteroids, with one additional wrinkle: Rubin subjects have multiple images per classification card. The existing mars/asteroid game pages show one image. I'll need to build a small multi-image carousel component for the puzzle UI.\n\nBlocked on `y4c4lk` (Active Asteroids) — that establishes the image-annotation pattern this builds on. No input needed from you until Active Asteroids is done.",
+        "status": "todo",
+        "priority": "medium",
+        "labels": [
+          "science-data",
+          "ingestion",
+          "post-v0",
+          "rubin"
+        ],
+        "acceptanceCriteria": []
+      }
+    }
+  ]
+}

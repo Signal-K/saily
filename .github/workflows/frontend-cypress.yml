@@ -134,24 +134,6 @@ jobs:
         working-directory: web
         run: yarn install --frozen-lockfile
 
-      - name: Resolve Vercel project/org ids
-        id: vercel_ids
-        working-directory: web
-        shell: bash
-        run: |
-          if [[ -z "${VERCEL_TOKEN}" ]]; then
-            echo "Missing VERCEL_TOKEN secret."
-            exit 1
-          fi
-
-          if [[ -z "${VERCEL_PROJECT_ID}" || -z "${VERCEL_ORG_ID}" ]]; then
-            echo "Missing VERCEL_PROJECT_ID or VERCEL_TEAM_ID secrets."
-            exit 1
-          fi
-
-          echo "project_id=${VERCEL_PROJECT_ID}" >> "$GITHUB_OUTPUT"
-          echo "org_id=${VERCEL_ORG_ID}" >> "$GITHUB_OUTPUT"
-
       - name: Select Vercel environment
         id: deploy_target
         shell: bash
@@ -164,26 +146,20 @@ jobs:
             echo "prod_flag=" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Clean Vercel state
+        run: rm -rf .vercel web/.vercel
+
       - name: Pull Vercel project settings
         working-directory: web
-        env:
-          VERCEL_PROJECT_ID: ${{ steps.vercel_ids.outputs.project_id }}
-          VERCEL_ORG_ID: ${{ steps.vercel_ids.outputs.org_id }}
         run: npx vercel pull --yes --environment=${{ steps.deploy_target.outputs.environment }} --token=${{ env.VERCEL_TOKEN }}
 
       - name: Build Vercel prebuilt output
         working-directory: web
-        env:
-          VERCEL_PROJECT_ID: ${{ steps.vercel_ids.outputs.project_id }}
-          VERCEL_ORG_ID: ${{ steps.vercel_ids.outputs.org_id }}
         run: npx vercel build ${{ steps.deploy_target.outputs.prod_flag }} --token=${{ env.VERCEL_TOKEN }}
 
       - name: Deploy to Vercel
         id: deploy
         working-directory: web
-        env:
-          VERCEL_PROJECT_ID: ${{ steps.vercel_ids.outputs.project_id }}
-          VERCEL_ORG_ID: ${{ steps.vercel_ids.outputs.org_id }}
         shell: bash
         run: |
           set -euo pipefail

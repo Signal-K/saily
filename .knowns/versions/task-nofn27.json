@@ -1,0 +1,32 @@
+{
+  "taskId": "nofn27",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "nofn27",
+      "version": 1,
+      "timestamp": "2026-05-02T12:36:46.162Z",
+      "changes": [
+        {
+          "field": "description",
+          "oldValue": "Planning task 4l7rce is done. Build actual ingestion: source Gaia variable-star light curves, precompute compact CachedTimeSeriesPoint[] series payloads, populate gaia_variables_daily table as GaiaVariablesDaily type. Avoid live archive complexity in the client per science-feeds.ts notes. Prerequisite for Brix narrative alignment.",
+          "newValue": "Gaia Variables uses time-series data (light curves), not images. The existing planet-game-page lightcurve UI is the right template, but Gaia sources come from the Gaia archive, not Zooniverse subjects — the ingestion path is different.\n\nWhat I need from you: confirm the Gaia data source. Options:\n**A)** Gaia DR3 variability catalogue via ESA TAP service (public, no key) — I query and cache compact series payloads.\n**B)** A Zooniverse Gaia Variables project export if one exists.\n\nThis is last in priority order per the research doc. No urgency until the image-feed pipelines are done."
+        }
+      ],
+      "snapshot": {
+        "title": "Science data ingestion: Gaia Variables cache pipeline",
+        "description": "Gaia Variables uses time-series data (light curves), not images. The existing planet-game-page lightcurve UI is the right template, but Gaia sources come from the Gaia archive, not Zooniverse subjects — the ingestion path is different.\n\nWhat I need from you: confirm the Gaia data source. Options:\n**A)** Gaia DR3 variability catalogue via ESA TAP service (public, no key) — I query and cache compact series payloads.\n**B)** A Zooniverse Gaia Variables project export if one exists.\n\nThis is last in priority order per the research doc. No urgency until the image-feed pipelines are done.",
+        "status": "todo",
+        "priority": "medium",
+        "labels": [
+          "science-data",
+          "ingestion",
+          "post-v0",
+          "gaia"
+        ],
+        "acceptanceCriteria": []
+      }
+    }
+  ]
+}

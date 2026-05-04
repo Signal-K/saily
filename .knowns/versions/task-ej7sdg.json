@@ -1,0 +1,36 @@
+{
+  "taskId": "ej7sdg",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "ej7sdg",
+      "version": 1,
+      "timestamp": "2026-05-02T10:24:12.289Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "done"
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Confirmed dead. app/games/today now renders MissionFlowPage (lightcurve), not the word game. Removed: WORD_BANK, DailyPuzzle, getDailyWord, getPuzzleForDate, scoreGuess, normalizeGuess, seededShuffle, hashString from game.ts. Deleted api/game/submit/route.ts entirely (nothing called it). Removed puzzle field + getPuzzleForDate import from api/game/today/route.ts. tsc clean."
+        }
+      ],
+      "snapshot": {
+        "title": "Audit word-scramble code: still live or legacy?",
+        "description": "game.ts contains a full word-scramble mechanic (WORD_BANK, getDailyWord, getPuzzleForDate, scoreGuess, normalizeGuess) that api/game/submit and api/game/today import. The lightcurve mission uses a separate anomaly flow. Determine whether this word game is still reachable from the UI or is dead code, and either wire it back in intentionally or remove it.",
+        "status": "done",
+        "priority": "medium",
+        "labels": [
+          "cleanup",
+          "v0",
+          "game"
+        ],
+        "acceptanceCriteria": [],
+        "implementationNotes": "Confirmed dead. app/games/today now renders MissionFlowPage (lightcurve), not the word game. Removed: WORD_BANK, DailyPuzzle, getDailyWord, getPuzzleForDate, scoreGuess, normalizeGuess, seededShuffle, hashString from game.ts. Deleted api/game/submit/route.ts entirely (nothing called it). Removed puzzle field + getPuzzleForDate import from api/game/today/route.ts. tsc clean."
+      }
+    }
+  ]
+}

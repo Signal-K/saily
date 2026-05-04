@@ -1,0 +1,32 @@
+{
+  "taskId": "i9vn8p",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "i9vn8p",
+      "version": 1,
+      "timestamp": "2026-05-02T12:36:33.957Z",
+      "changes": [
+        {
+          "field": "description",
+          "oldValue": "The 4 characters (Zix, Brix, Pip, Carta) are written for 4 Zooniverse feeds. But MissionGame only has \"planet\", \"asteroid\", \"mars\". A player in Brix's Gaia Variables chapter gets an asteroid or planet puzzle — the story and science don't match. New MissionGame types (cloudspotting, gaia_variables, rubin, active_asteroids) are needed, each wired to the corresponding science feed and puzzle UI. Prerequisite: ingestion pipelines for those feeds.",
+          "newValue": "Currently the 4 characters (Zix/Brix/Pip/Carta) tell stories about 4 Zooniverse science feeds, but the puzzle engine only has planet/asteroid/mars. Once the first ingestion pipeline ships, I'll add the matching MissionGame type and wire it up — no decision needed from you for that.\n\nThe one thing I need confirmed: should each new feed get its own puzzle UI, or reuse the closest existing one?\n- Cloudspotting on Mars → reuse mars-game-page (image annotation) ✓\n- Active Asteroids → reuse asteroid-game-page (image annotation) ✓\n- Rubin Comet Catchers → new multi-image UI (existing pages show one image)\n- Gaia Variables → reuse planet-game-page (lightcurve) ✓\n\nIf you agree with that mapping, I can proceed without checking back."
+        }
+      ],
+      "snapshot": {
+        "title": "Narrative ↔ puzzle alignment: connect characters to Zooniverse game types",
+        "description": "Currently the 4 characters (Zix/Brix/Pip/Carta) tell stories about 4 Zooniverse science feeds, but the puzzle engine only has planet/asteroid/mars. Once the first ingestion pipeline ships, I'll add the matching MissionGame type and wire it up — no decision needed from you for that.\n\nThe one thing I need confirmed: should each new feed get its own puzzle UI, or reuse the closest existing one?\n- Cloudspotting on Mars → reuse mars-game-page (image annotation) ✓\n- Active Asteroids → reuse asteroid-game-page (image annotation) ✓\n- Rubin Comet Catchers → new multi-image UI (existing pages show one image)\n- Gaia Variables → reuse planet-game-page (lightcurve) ✓\n\nIf you agree with that mapping, I can proceed without checking back.",
+        "status": "todo",
+        "priority": "medium",
+        "labels": [
+          "narrative",
+          "game",
+          "science-data",
+          "post-v0"
+        ],
+        "acceptanceCriteria": []
+      }
+    }
+  ]
+}

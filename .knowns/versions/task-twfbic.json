@@ -1,0 +1,71 @@
+{
+  "taskId": "twfbic",
+  "currentVersion": 2,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "twfbic",
+      "version": 1,
+      "timestamp": "2026-05-02T10:30:51.465Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "in-progress"
+        },
+        {
+          "field": "implementationNotes",
+          "newValue": "Asteroid game: uses ASTEROID_ANOMALIES from secondary-game.ts — 3 hardcoded stub entries with SVG placeholder images (puzzle-1/2/3.svg) and fake TESS TIC IDs. Not serving Zooniverse or real imagery. Mars game: fetches from /api/mars/daily which uses mars-images.ts — this appears to serve real imagery. Need to verify /api/mars/daily and /api/asteroid/submit are actually functional and check what images exist under /public/puzzles/."
+        }
+      ],
+      "snapshot": {
+        "title": "Verify asteroid + mars game data pipeline for v0",
+        "description": "The 4 Zooniverse science feed cache tables are defined in science-feeds.ts but all intake tasks (2o7kbq, 45ao85, 4l7rce, np5izl) were planning-only. The asteroid and mars game pages are in the mission rotation. Confirm what data these games are actually serving today — real data, synthetic stubs, or empty? If empty, this is a v0 blocker.",
+        "status": "in-progress",
+        "priority": "high",
+        "labels": [
+          "v0",
+          "science-data",
+          "asteroid",
+          "mars",
+          "blocking"
+        ],
+        "acceptanceCriteria": [],
+        "implementationNotes": "Asteroid game: uses ASTEROID_ANOMALIES from secondary-game.ts — 3 hardcoded stub entries with SVG placeholder images (puzzle-1/2/3.svg) and fake TESS TIC IDs. Not serving Zooniverse or real imagery. Mars game: fetches from /api/mars/daily which uses mars-images.ts — this appears to serve real imagery. Need to verify /api/mars/daily and /api/asteroid/submit are actually functional and check what images exist under /public/puzzles/."
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "twfbic",
+      "version": 2,
+      "timestamp": "2026-05-02T11:53:01.730Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        },
+        {
+          "field": "implementationNotes",
+          "oldValue": "Asteroid game: uses ASTEROID_ANOMALIES from secondary-game.ts — 3 hardcoded stub entries with SVG placeholder images (puzzle-1/2/3.svg) and fake TESS TIC IDs. Not serving Zooniverse or real imagery. Mars game: fetches from /api/mars/daily which uses mars-images.ts — this appears to serve real imagery. Need to verify /api/mars/daily and /api/asteroid/submit are actually functional and check what images exist under /public/puzzles/.",
+          "newValue": "Asteroid game: uses ASTEROID_ANOMALIES from secondary-game.ts — 3 hardcoded stub entries with SVG placeholder images (puzzle-1/2/3.svg) and fake TESS TIC IDs. Not serving Zooniverse or real imagery. Mars game: fetches from /api/mars/daily which uses mars-images.ts — this appears to serve real imagery. Need to verify /api/mars/daily and /api/asteroid/submit are actually functional and check what images exist under /public/puzzles/.\n\nMars: solid — fetches live from NASA Image Library API (no key), 15-image fallback set of real Curiosity/Perseverance photos. Asteroid: was 3 SVG placeholders with fake TESS TIC IDs. Fixed: replaced with 6 real NASA asteroid images (Bennu×2, Eros, Vesta, Ida, Gaspra) from images-assets.nasa.gov (already in remotePatterns). Renamed ticId→catalogId in AsteroidAnomaly type, updated UI labels. tsc clean."
+        }
+      ],
+      "snapshot": {
+        "title": "Verify asteroid + mars game data pipeline for v0",
+        "description": "The 4 Zooniverse science feed cache tables are defined in science-feeds.ts but all intake tasks (2o7kbq, 45ao85, 4l7rce, np5izl) were planning-only. The asteroid and mars game pages are in the mission rotation. Confirm what data these games are actually serving today — real data, synthetic stubs, or empty? If empty, this is a v0 blocker.",
+        "status": "done",
+        "priority": "high",
+        "labels": [
+          "v0",
+          "science-data",
+          "asteroid",
+          "mars",
+          "blocking"
+        ],
+        "acceptanceCriteria": [],
+        "implementationNotes": "Asteroid game: uses ASTEROID_ANOMALIES from secondary-game.ts — 3 hardcoded stub entries with SVG placeholder images (puzzle-1/2/3.svg) and fake TESS TIC IDs. Not serving Zooniverse or real imagery. Mars game: fetches from /api/mars/daily which uses mars-images.ts — this appears to serve real imagery. Need to verify /api/mars/daily and /api/asteroid/submit are actually functional and check what images exist under /public/puzzles/.\n\nMars: solid — fetches live from NASA Image Library API (no key), 15-image fallback set of real Curiosity/Perseverance photos. Asteroid: was 3 SVG placeholders with fake TESS TIC IDs. Fixed: replaced with 6 real NASA asteroid images (Bennu×2, Eros, Vesta, Ida, Gaspra) from images-assets.nasa.gov (already in remotePatterns). Renamed ticId→catalogId in AsteroidAnomaly type, updated UI labels. tsc clean."
+      }
+    }
+  ]
+}

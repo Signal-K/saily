@@ -1,0 +1,32 @@
+{
+  "taskId": "a3c15z",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "a3c15z",
+      "version": 1,
+      "timestamp": "2026-05-02T12:36:29.466Z",
+      "changes": [
+        {
+          "field": "description",
+          "oldValue": "MISSION_GAME_COUNT = 1 in mission.ts:11 locks every mission to one puzzle. The full beat1/beat2 narrative flow and game permutation logic already supports 2-3 puzzles per mission. When data pipelines for multiple puzzle types are stable, raise this constant to 2 or 3 and verify the narrative beat transitions work correctly end-to-end.",
+          "newValue": "The multi-puzzle flow (briefing → game 1 → beat 1 → game 2 → beat 2 → complete) is fully coded. MISSION_GAME_COUNT = 1 is the only thing holding it back. When you're ready to turn it on, tell me the count (2 or 3) and I'll flip it and verify the beat transitions end-to-end. No decision needed until the science data pipelines are live and stable."
+        }
+      ],
+      "snapshot": {
+        "title": "Enable multi-puzzle missions (raise MISSION_GAME_COUNT)",
+        "description": "The multi-puzzle flow (briefing → game 1 → beat 1 → game 2 → beat 2 → complete) is fully coded. MISSION_GAME_COUNT = 1 is the only thing holding it back. When you're ready to turn it on, tell me the count (2 or 3) and I'll flip it and verify the beat transitions end-to-end. No decision needed until the science data pipelines are live and stable.",
+        "status": "todo",
+        "priority": "medium",
+        "labels": [
+          "game",
+          "narrative",
+          "post-v0",
+          "mvp"
+        ],
+        "acceptanceCriteria": []
+      }
+    }
+  ]
+}
