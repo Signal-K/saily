@@ -151,15 +151,24 @@ jobs:
 
       - name: Pull Vercel project settings
         working-directory: web
+        env:
+          VERCEL_PROJECT_ID: ${{ env.VERCEL_PROJECT_ID }}
+          VERCEL_ORG_ID: ${{ env.VERCEL_ORG_ID }}
         run: npx vercel pull --yes --environment=${{ steps.deploy_target.outputs.environment }} --token=${{ env.VERCEL_TOKEN }}
 
       - name: Build Vercel prebuilt output
         working-directory: web
+        env:
+          VERCEL_PROJECT_ID: ${{ env.VERCEL_PROJECT_ID }}
+          VERCEL_ORG_ID: ${{ env.VERCEL_ORG_ID }}
         run: npx vercel build ${{ steps.deploy_target.outputs.prod_flag }} --token=${{ env.VERCEL_TOKEN }}
 
       - name: Deploy to Vercel
         id: deploy
         working-directory: web
+        env:
+          VERCEL_PROJECT_ID: ${{ env.VERCEL_PROJECT_ID }}
+          VERCEL_ORG_ID: ${{ env.VERCEL_ORG_ID }}
         shell: bash
         run: |
           set -euo pipefail
