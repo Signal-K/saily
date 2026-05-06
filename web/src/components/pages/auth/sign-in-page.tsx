@@ -73,6 +73,9 @@ export default function SignInPage() {
         emailRedirectTo: `${window.location.origin}/auth/callback?next=/profile`,
         data: { 
           full_name: fullName,
+          username: fullName || email.split("@")[0],
+          first_name: firstName,
+          last_name: lastName,
           referral_code: searchParams.get("ref") || undefined
         },
       },

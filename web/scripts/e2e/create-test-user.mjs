@@ -34,6 +34,8 @@ const createRes = await fetch(`${baseUrl}/auth/v1/admin/users`, {
       e2e: true,
       run_id: runId,
       run_attempt: runAttempt,
+      username: `tester-${nonce}`,
+      full_name: "E2E Tester",
     },
   }),
 });

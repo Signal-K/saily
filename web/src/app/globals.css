@@ -129,7 +129,7 @@ h1, h2, h3, h4, h5, h6 {
   position: sticky;
   top: 0;
   z-index: 50;
-  padding-top: 1rem;
+  padding-top: max(1rem, env(safe-area-inset-top, 0));
 }
 
 .header-shell {
@@ -1260,6 +1260,7 @@ h1, h2, h3, h4, h5, h6 {
   left: 0;
   right: 0;
   z-index: 50;
+  padding-bottom: env(safe-area-inset-bottom, 0);
 }
 
 .mobile-tab {
