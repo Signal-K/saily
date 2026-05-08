@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { Analytics } from "@vercel/analytics/react";
 import { Inter, Space_Grotesk, Playfair_Display } from "next/font/google";
 import { SWRegister } from "@/components/sw-register";
@@ -10,6 +10,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { BreadcrumbsNav } from "@/components/breadcrumbs-nav";
 import { PostHogRuntime } from "@/components/posthog-runtime";
 import { PwaInstallPrompt } from "@/components/pwa-install-prompt";
+import { createClient } from "@/lib/supabase/server";
 import Image from "next/image";
 import "./globals.css";
 
@@ -85,8 +86,15 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const cookieStore = await cookies();
+  const headerStore = await headers();
+  const supabase = await createClient();
   const initialTheme = normalizeTheme(cookieStore.get(THEME_COOKIE)?.value);
   const timePeriod = getTimePeriod();
+  const pathname = headerStore.get("x-pathname") ?? "/";
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const isSignedOutLanding = pathname === "/" && !user;
 
   return (
     <html
@@ -98,69 +106,75 @@ export default async function RootLayout({
       <body>
         <PostHogRuntime />
         <SWRegister />
-        <header className="site-header">
-          <div className="container">
-            <div className="header-shell">
-              <div className="header-top-row">
-                <div className="header-brand-row">
-                  <Link href="/" className="home-icon-link" aria-label="The Daily Sail home">
-                    <Image
-                      src="/logo-icon.png"
-                      alt=""
-                      width={32}
-                      height={32}
-                      className="brand-logo"
-                    />
-                    <span className="home-brand-label">The Daily Sail</span>
-                  </Link>
-                  <nav className="nav-links desktop-nav" aria-label="Main navigation">
-                    <Link href="/games/today" className="header-nav-link" data-cy="nav-today">
-                      Today&apos;s Mission
-                    </Link>
-                    <Link href="/calendar" className="header-nav-link" data-cy="nav-calendar">
-                      Calendar
-                    </Link>
-                    <Link href="/discuss" className="header-nav-link" data-cy="nav-discuss">
-                      Discuss
-                    </Link>
-                  </nav>
-                </div>
+        {isSignedOutLanding ? (
+          <main>{children}</main>
+        ) : (
+          <>
+            <header className="site-header">
+              <div className="container">
+                <div className="header-shell">
+                  <div className="header-top-row">
+                    <div className="header-brand-row">
+                      <Link href="/" className="home-icon-link" aria-label="The Daily Sail home">
+                        <Image
+                          src="/logo-icon.png"
+                          alt=""
+                          width={32}
+                          height={32}
+                          className="brand-logo"
+                        />
+                        <span className="home-brand-label">The Daily Sail</span>
+                      </Link>
+                      <nav className="nav-links desktop-nav" aria-label="Main navigation">
+                        <Link href="/games/today" className="header-nav-link" data-cy="nav-today">
+                          Today&apos;s Mission
+                        </Link>
+                        <Link href="/calendar" className="header-nav-link" data-cy="nav-calendar">
+                          Calendar
+                        </Link>
+                        <Link href="/discuss" className="header-nav-link" data-cy="nav-discuss">
+                          Discuss
+                        </Link>
+                      </nav>
+                    </div>
 
-                <HeaderSearch />
+                    <HeaderSearch />
 
-                <div className="header-actions">
-                  <ThemeToggle initialTheme={initialTheme} />
-                  <AuthStatus />
+                    <div className="header-actions">
+                      <ThemeToggle initialTheme={initialTheme} />
+                      <AuthStatus />
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </header>
+            </header>
 
-        {/* Fixed bottom tab bar — visible only on mobile via CSS */}
-        <nav className="mobile-bottom-nav" aria-label="Mobile navigation">
-          <Link href="/" className="mobile-tab" data-cy="nav-home-mobile">
-            <span className="mobile-tab-icon" aria-hidden>⌂</span>
-            <span>Home</span>
-          </Link>
-          <Link href="/games/today" className="mobile-tab" data-cy="nav-today-mobile">
-            <span className="mobile-tab-icon" aria-hidden>🔭</span>
-            <span>Mission</span>
-          </Link>
-          {/* <Link href="/calendar" className="mobile-tab" data-cy="nav-calendar-mobile">
-            <span className="mobile-tab-icon" aria-hidden>📅</span>
-            <span>Calendar</span>
-          </Link> */}
-          <Link href="/discuss" className="mobile-tab" data-cy="nav-discuss-mobile">
-            <span className="mobile-tab-icon" aria-hidden>💬</span>
-            <span>Discuss</span>
-          </Link>
-        </nav>
+            {/* Fixed bottom tab bar — visible only on mobile via CSS */}
+            <nav className="mobile-bottom-nav" aria-label="Mobile navigation">
+              <Link href="/" className="mobile-tab" data-cy="nav-home-mobile">
+                <span className="mobile-tab-icon" aria-hidden>⌂</span>
+                <span>Home</span>
+              </Link>
+              <Link href="/games/today" className="mobile-tab" data-cy="nav-today-mobile">
+                <span className="mobile-tab-icon" aria-hidden>🔭</span>
+                <span>Mission</span>
+              </Link>
+              {/* <Link href="/calendar" className="mobile-tab" data-cy="nav-calendar-mobile">
+                <span className="mobile-tab-icon" aria-hidden>📅</span>
+                <span>Calendar</span>
+              </Link> */}
+              <Link href="/discuss" className="mobile-tab" data-cy="nav-discuss-mobile">
+                <span className="mobile-tab-icon" aria-hidden>💬</span>
+                <span>Discuss</span>
+              </Link>
+            </nav>
 
-        <main className="container page-shell">
-          <BreadcrumbsNav />
-          {children}
-        </main>
+            <main className="container page-shell">
+              <BreadcrumbsNav />
+              {children}
+            </main>
+          </>
+        )}
         <PwaInstallPrompt />
         <Analytics />
       </body>

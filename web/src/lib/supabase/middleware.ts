@@ -1,9 +1,16 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-import { SUPABASE_COOKIE_NAME, getServerSupabaseUrl, getSupabaseAnonKey, isLocalSupabaseUrl } from "./config";
+import { SUPABASE_COOKIE_NAME, getServerSupabaseUrl, getSupabaseAnonKey } from "./config";
 
 export async function updateSession(request: NextRequest) {
-  const response = NextResponse.next({ request });
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-pathname", request.nextUrl.pathname);
+
+  const response = NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
   const supabaseUrl = getServerSupabaseUrl();
   const supabaseAnonKey = getSupabaseAnonKey();
 
