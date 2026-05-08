@@ -2,11 +2,6 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { SUPABASE_COOKIE_NAME, getServerSupabaseUrl, getSupabaseAnonKey, isLocalSupabaseUrl } from "./config";
 
-function shouldSkipEdgeAuthRefresh(supabaseUrl: string) {
-  if (process.env.NODE_ENV === "production") return false;
-  return isLocalSupabaseUrl(supabaseUrl);
-}
-
 export async function updateSession(request: NextRequest) {
   const response = NextResponse.next({ request });
   const supabaseUrl = getServerSupabaseUrl();
@@ -14,9 +9,6 @@ export async function updateSession(request: NextRequest) {
 
   // Never fail the entire request pipeline if env vars are missing in edge runtime.
   if (!supabaseUrl || !supabaseAnonKey) {
-    return response;
-  }
-  if (shouldSkipEdgeAuthRefresh(supabaseUrl)) {
     return response;
   }
 

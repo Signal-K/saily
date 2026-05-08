@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getStorylineForDate, getCharacterForStoryline } from "@/lib/mission";
 import { getRobotAvatarDataUri } from "@/lib/avatar";
 import { getMelbourneDateKey } from "@/lib/melbourne-date";
+import LandingPage from "./landing-page";
 
 type BadgeRef = {
   name: string;
@@ -43,6 +44,14 @@ export default async function Home() {
   const tomorrowDate = new Date(todayDate);
   tomorrowDate.setDate(tomorrowDate.getDate() + 1);
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return <LandingPage />;
+  }
+
   const todayStoryline = getStorylineForDate(todayDate);
   const todayCharacter = getCharacterForStoryline(todayStoryline);
   const todayAvatarSrc = getRobotAvatarDataUri(todayCharacter.avatarSeed, 64);
@@ -50,35 +59,20 @@ export default async function Home() {
   const tomorrowStoryline = getStorylineForDate(tomorrowDate);
   const tomorrowCharacter = getCharacterForStoryline(tomorrowStoryline);
   const tomorrowAvatarSrc = getRobotAvatarDataUri(tomorrowCharacter.avatarSeed, 40);
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
 
   const [profileRes, statsRes, badgesRes, playsRes, commentsRes, todayPlayRes, storyProgressRes] = await Promise.all([
-    user
-      ? supabase.from("profiles").select("data_chips").eq("id", user.id).maybeSingle()
-      : Promise.resolve({ data: null }),
-    user
-      ? supabase.from("user_stats").select("games_played,wins,current_streak,best_streak,total_score").eq("user_id", user.id).maybeSingle()
-      : Promise.resolve({ data: null }),
-    user
-      ? supabase
-          .from("user_badges")
-          .select("awarded_at,badges(name,slug,description)")
-          .eq("user_id", user.id)
-          .order("awarded_at", { ascending: false })
-          .limit(4)
-      : Promise.resolve({ data: [] }),
-    user
-      ? supabase.from("daily_plays").select("game_date,won,score,attempts,played_at").eq("user_id", user.id).order("played_at", { ascending: false }).limit(5)
-      : Promise.resolve({ data: [] }),
+    supabase.from("profiles").select("data_chips").eq("id", user.id).maybeSingle(),
+    supabase.from("user_stats").select("games_played,wins,current_streak,best_streak,total_score").eq("user_id", user.id).maybeSingle(),
+    supabase
+      .from("user_badges")
+      .select("awarded_at,badges(name,slug,description)")
+      .eq("user_id", user.id)
+      .order("awarded_at", { ascending: false })
+      .limit(4),
+    supabase.from("daily_plays").select("game_date,won,score,attempts,played_at").eq("user_id", user.id).order("played_at", { ascending: false }).limit(5),
     supabase.from("comments").select("id,game_date,body,created_at,profiles(username)").order("created_at", { ascending: false }).limit(5),
-    user
-      ? supabase.from("daily_plays").select("score,won").eq("user_id", user.id).eq("game_date", today).maybeSingle()
-      : Promise.resolve({ data: null }),
-    user
-      ? supabase.from("user_story_progress").select("chapter_index").eq("user_id", user.id).eq("storyline_id", todayStoryline.id).maybeSingle()
-      : Promise.resolve({ data: null }),
+    supabase.from("daily_plays").select("score,won").eq("user_id", user.id).eq("game_date", today).maybeSingle(),
+    supabase.from("user_story_progress").select("chapter_index").eq("user_id", user.id).eq("storyline_id", todayStoryline.id).maybeSingle(),
   ]);
 
   const profile = profileRes.data;
