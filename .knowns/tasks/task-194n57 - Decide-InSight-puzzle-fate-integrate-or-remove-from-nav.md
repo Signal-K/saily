@@ -1,7 +1,7 @@
 ---
 id: 194n57
 title: 'Decide InSight puzzle fate: integrate or remove from nav'
-status: todo
+status: done
 priority: high
 labels:
   - v0
@@ -29,6 +29,5 @@ Just reply with A, B, or C.
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
-InSight is not in any nav (desktop or mobile). No links to /games/insight from home or layout. It's unreachable without knowing the URL — not a v0 tester risk. Decision still needed: integrate or formally remove the route.
+Chose **C** and removed InSight entirely. Deleted the hidden `/games/insight` route, both `/api/insight/*` endpoints, the `insight.ts` gameplay helper, the InSight game page component, and its unit test. Also removed the orphaned PostHog survey source mapping so the dead mechanic no longer adds maintenance surface.
 <!-- SECTION:NOTES:END -->
-

@@ -8,6 +8,7 @@ export type ActiveAsteroidsSubject = {
   caption: string;
   candidateId: string | null;
   epochLabel: string | null;
+  sourceCollection: string | null;
   sourceName: string;
   sourceUrl: string;
   projectUrl: string;
@@ -17,9 +18,11 @@ export type ActiveAsteroidsCacheRow = {
   game_date: string | null;
   subject_id: string | number | null;
   image_url: string | null;
+  prompt?: string | null;
   caption: string | null;
   candidate_id: string | null;
   epoch_label: string | null;
+  source_collection?: string | null;
   source_metadata: unknown;
 };
 
@@ -34,6 +37,7 @@ export const ACTIVE_ASTEROIDS_FALLBACK_SUBJECTS: ActiveAsteroidsSubject[] = [
     caption: "A candidate asteroid for activity review.",
     candidateId: "C-2021-A1",
     epochLabel: "2021-01-15",
+    sourceCollection: null,
     sourceName: "Zooniverse / Active Asteroids",
     sourceUrl: PROJECT_URL,
     projectUrl: PROJECT_URL,
@@ -86,6 +90,7 @@ export function toActiveAsteroidsSubject(row: ActiveAsteroidsCacheRow): ActiveAs
     caption: row.caption?.trim() || "Cached Active Asteroids subject.",
     candidateId: row.candidate_id?.trim() || null,
     epochLabel: row.epoch_label?.trim() || null,
+    sourceCollection: row.source_collection?.trim() || null,
     sourceName,
     sourceUrl,
     projectUrl: PROJECT_URL,

@@ -22,9 +22,11 @@ describe("active asteroids helpers", () => {
       game_date: "2026-04-25",
       subject_id: "777",
       image_url: "https://example.com/asteroid.jpg",
+      prompt: "Is there convincing activity around this asteroid candidate?",
       caption: "A very active asteroid",
       candidate_id: "C/777",
       epoch_label: "2026-Q1",
+      source_collection: "main-belt",
       source_metadata: { title: "Custom Title" },
     };
     const subject = toActiveAsteroidsSubject(row);
@@ -32,5 +34,6 @@ describe("active asteroids helpers", () => {
     expect(subject?.id).toBe("777");
     expect(subject?.title).toBe("Custom Title");
     expect(subject?.candidateId).toBe("C/777");
+    expect(subject?.sourceCollection).toBe("main-belt");
   });
 });

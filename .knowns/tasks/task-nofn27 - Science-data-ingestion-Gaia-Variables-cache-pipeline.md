@@ -1,7 +1,7 @@
 ---
 id: nofn27
 title: 'Science data ingestion: Gaia Variables cache pipeline'
-status: todo
+status: done
 priority: medium
 labels:
   - science-data
@@ -28,3 +28,8 @@ Just use the zooniverse panoptes api to get the data and anomalies/images, ident
 This is last in priority order per the research doc. No urgency until the image-feed pipelines are done.
 <!-- SECTION:DESCRIPTION:END -->
 
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Implemented a Panoptes-first intake path per the task comment. Added `gaia_variables_daily` migration support, aligned the helper schema to `series_payload`/`class_hints`, and created `scripts/ingest-gaia-variables.mjs` to normalize subject metadata into compact time-series rows and upsert them into Supabase. This is intentionally tolerant of multiple possible series metadata shapes because the public project payload format is not yet pinned to one export variant.
+<!-- SECTION:NOTES:END -->

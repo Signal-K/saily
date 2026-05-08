@@ -1,7 +1,7 @@
 ---
 id: y4c4lk
 title: 'Science data ingestion: Active Asteroids cache pipeline'
-status: todo
+status: done
 priority: medium
 labels:
   - science-data
@@ -22,3 +22,8 @@ Same infrastructure as Cloudspotting on Mars — public Zooniverse API, same cac
 Blocked on `dmukp0` (Cloudspotting) completing first — that establishes the ingestion pattern and script template this one will reuse. No input needed from you until Cloudspotting is done.
 <!-- SECTION:DESCRIPTION:END -->
 
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Completed after the Cloudspotting scaffold landed. Added `active_asteroids_daily` cache-table migration support and `scripts/ingest-active-asteroids.mjs`, which reuses the Panoptes helper layer, normalizes image/candidate/epoch/source-collection fields, and upserts deterministic daily rows into Supabase.
+<!-- SECTION:NOTES:END -->

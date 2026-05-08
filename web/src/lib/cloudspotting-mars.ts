@@ -16,7 +16,9 @@ export type CloudspottingMarsSubject = {
 export type CloudspottingMarsCacheRow = {
   game_date: string | null;
   subject_id: string | number | null;
+  project_slug?: string | null;
   image_url: string | null;
+  crop_url?: string | null;
   caption: string | null;
   season_or_context: string | null;
   workflow_version: string | null;

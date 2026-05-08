@@ -28,7 +28,6 @@ export function PostHogRuntime() {
       archive_unlock: process.env.NEXT_PUBLIC_POSTHOG_SURVEY_ARCHIVE_ID?.trim() || "",
       discussion_flow: process.env.NEXT_PUBLIC_POSTHOG_SURVEY_DISCUSS_ID?.trim() || "",
       streak_repair: process.env.NEXT_PUBLIC_POSTHOG_SURVEY_STREAK_ID?.trim() || "",
-      insight_weather: process.env.NEXT_PUBLIC_POSTHOG_SURVEY_INSIGHT_ID?.trim() || "",
     };
     return map[source] || "";
   }

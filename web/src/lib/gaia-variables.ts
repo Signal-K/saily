@@ -13,6 +13,7 @@ export type GaiaVariablesSubject = {
   summary: string | null;
   provenanceUrl: string | null;
   cadenceSummary: string | null;
+  classHints: string[];
   sourceName: string;
   projectUrl: string;
 };
@@ -20,10 +21,11 @@ export type GaiaVariablesSubject = {
 export type GaiaVariablesCacheRow = {
   game_date: string | null;
   source_id: string | number | null;
-  series: GaiaVariablesPoint[] | null;
+  series_payload: GaiaVariablesPoint[] | null;
   summary: string | null;
   provenance_url: string | null;
   cadence_summary: string | null;
+  class_hints?: string[] | null;
   source_metadata: unknown;
 };
 
@@ -42,6 +44,7 @@ export const GAIA_VARIABLES_FALLBACK_SUBJECTS: GaiaVariablesSubject[] = [
     summary: "A standard variable star pattern.",
     provenanceUrl: null,
     cadenceSummary: "Standard 27-day cadence",
+    classHints: ["eclipsing_binary"],
     sourceName: "Gaia Archive",
     projectUrl: PROJECT_URL,
   },
@@ -70,7 +73,7 @@ export function getDailyGaiaVariablesSubject(
 
 export function toGaiaVariablesSubject(row: GaiaVariablesCacheRow): GaiaVariablesSubject | null {
   const sourceId = row.source_id == null ? "" : String(row.source_id).trim();
-  const series = row.series || [];
+  const series = row.series_payload || [];
   if (!sourceId || series.length === 0) return null;
 
   const metadata = row.source_metadata && typeof row.source_metadata === "object"
@@ -92,6 +95,9 @@ export function toGaiaVariablesSubject(row: GaiaVariablesCacheRow): GaiaVariable
     summary: row.summary?.trim() || null,
     provenanceUrl: row.provenance_url?.trim() || null,
     cadenceSummary: row.cadence_summary?.trim() || null,
+    classHints: Array.isArray(row.class_hints)
+      ? row.class_hints.filter((value): value is string => typeof value === "string" && value.trim().length > 0)
+      : [],
     sourceName,
     projectUrl: PROJECT_URL,
   };

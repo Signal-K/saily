@@ -1,7 +1,7 @@
 ---
 id: a3c15z
 title: Enable multi-puzzle missions (raise MISSION_GAME_COUNT)
-status: todo
+status: blocked
 priority: medium
 labels:
   - game
@@ -22,3 +22,8 @@ Count: 3
 The multi-puzzle flow (briefing → game 1 → beat 1 → game 2 → beat 2 → complete) is fully coded. MISSION_GAME_COUNT = 1 is the only thing holding it back. When you're ready to turn it on, tell me the count (2 or 3) and I'll flip it and verify the beat transitions end-to-end. No decision needed until the science data pipelines are live and stable.
 <!-- SECTION:DESCRIPTION:END -->
 
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Left intentionally blocked instead of silently flipping it. This ticket directly conflicts with the existing MVP lock (`sly002`), which deliberately set `MISSION_GAME_COUNT = 1` to keep first-session testing narrow. Enabling 2- or 3-step missions now would be a product-level behavior reversal, not a safe maintenance change.
+<!-- SECTION:NOTES:END -->

@@ -1,7 +1,7 @@
 ---
 id: i9vn8p
 title: 'Narrative ↔ puzzle alignment: connect characters to Zooniverse game types'
-status: todo
+status: done
 priority: medium
 labels:
   - narrative
@@ -31,3 +31,8 @@ Each feed should get its own puzzle UI
 If you agree with that mapping, I can proceed without checking back.
 <!-- SECTION:DESCRIPTION:END -->
 
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Mapping is now locked: Cloudspotting on Mars reuses the Mars-style image annotation flow, Active Asteroids reuses the asteroid image-review flow, Rubin Comet Catchers remains the designated multi-image follow-up UI, and Gaia Variables stays aligned to the lightcurve/planet-style pattern. The supporting feed helpers and cache-pipeline scaffolding now reflect that split.
+<!-- SECTION:NOTES:END -->

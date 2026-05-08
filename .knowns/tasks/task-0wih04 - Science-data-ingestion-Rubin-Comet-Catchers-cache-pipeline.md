@@ -1,7 +1,7 @@
 ---
 id: 0wih04
 title: 'Science data ingestion: Rubin Comet Catchers cache pipeline'
-status: todo
+status: done
 priority: medium
 labels:
   - science-data
@@ -22,3 +22,8 @@ Same infrastructure as Cloudspotting and Active Asteroids, with one additional w
 Blocked on `y4c4lk` (Active Asteroids) — that establishes the image-annotation pattern this builds on. No input needed from you until Active Asteroids is done.
 <!-- SECTION:DESCRIPTION:END -->
 
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Completed the cache-pipeline scaffolding. Added `rubin_comet_catchers_daily` table migration, a reusable Panoptes ingestion helper, and `scripts/ingest-rubin-comet-catchers.mjs` to fetch public project subjects, normalize multi-image cards, and upsert deterministic daily rows into Supabase. The gameplay-side multi-image UI is still a separate product enhancement, but the ticketed ingestion pipeline is now in place.
+<!-- SECTION:NOTES:END -->

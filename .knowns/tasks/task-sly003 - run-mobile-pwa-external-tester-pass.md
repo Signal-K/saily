@@ -1,7 +1,7 @@
 ---
 id: sly003
 title: Run mobile PWA external tester pass
-status: in-progress
+status: blocked
 priority: high
 labels:
   - pwa
@@ -41,4 +41,3 @@ Created by project-management reset on 2026-04-20.
 
 Updated manifest.ts and sw.js for consistency with 'The Daily Sail' branding. Verified Melbourne date logic for daily resets. Offline shell is functional. Final step requires physical device testing to confirm install prompt behavior and clipping.
 <!-- SECTION:NOTES:END -->
-

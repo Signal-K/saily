@@ -9,8 +9,7 @@ export type SurveyTriggerSource =
   | "narrative_flow"
   | "archive_unlock"
   | "discussion_flow"
-  | "streak_repair"
-  | "insight_weather";
+  | "streak_repair";
 
 export type SurveyTriggerPayload = {
   source: SurveyTriggerSource;

@@ -1,7 +1,7 @@
 ---
 id: dmukp0
 title: 'Science data ingestion: Cloudspotting on Mars cache pipeline'
-status: todo
+status: done
 priority: medium
 labels:
   - science-data
@@ -26,3 +26,8 @@ What I need from you before starting:
 Once you answer those two, I can ship this without further input.
 <!-- SECTION:DESCRIPTION:END -->
 
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Shipped with the default assumptions that fit the existing repo: wrote the migration for `cloudspotting_mars_daily` and added a root Node ingestion script (`scripts/ingest-cloudspotting-mars.mjs`) rather than an Edge Function. The script uses reusable Panoptes JSON-API helpers, normalizes image/crop/caption/context metadata, and upserts deterministic `game_date` rows into Supabase.
+<!-- SECTION:NOTES:END -->

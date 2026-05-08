@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import {
   getDailyRubinCometCatchersSubject,
   toRubinCometCatchersSubject,
-  RUBIN_COMET_CATCHERS_FALLBACK_SUBJECTS,
 } from "../rubin-comet-catchers";
 
 describe("rubin comet catchers helpers", () => {
