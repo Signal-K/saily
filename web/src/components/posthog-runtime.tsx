@@ -27,7 +27,6 @@ export function PostHogRuntime() {
       narrative_flow: process.env.NEXT_PUBLIC_POSTHOG_SURVEY_NARRATIVE_ID?.trim() || "",
       archive_unlock: process.env.NEXT_PUBLIC_POSTHOG_SURVEY_ARCHIVE_ID?.trim() || "",
       discussion_flow: process.env.NEXT_PUBLIC_POSTHOG_SURVEY_DISCUSS_ID?.trim() || "",
-      streak_repair: process.env.NEXT_PUBLIC_POSTHOG_SURVEY_STREAK_ID?.trim() || "",
     };
     return map[source] || "";
   }
@@ -42,6 +41,7 @@ export function PostHogRuntime() {
       capture_pageview: true,
       capture_pageleave: true,
       disable_session_recording: true,
+      disable_surveys_automatic_display: true,
     });
 
     const supabase = createSupabaseClient();
@@ -91,8 +91,8 @@ export function PostHogRuntime() {
 
       posthog.surveys.displaySurvey(surveyId, {
         displayType: DisplaySurveyType.Popover,
-        ignoreConditions: false,
-        ignoreDelay: false,
+        ignoreConditions: true,
+        ignoreDelay: true,
         properties,
       });
       markSurveyShown(queued.source);

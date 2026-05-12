@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { repairStreak, getDataChipsBalance } from "@/lib/economy";
 import { shiftDateKey } from "@/lib/melbourne-date";
-import { queueSurveyTrigger } from "@/lib/posthog/survey-queue";
 import Image from "next/image";
 
 type StreakRepairPromptProps = {
@@ -82,11 +81,6 @@ export function StreakRepairPrompt({ userId, gameDate, onRepairComplete }: Strea
     setError(null);
     try {
       await repairStreak(repairDate);
-      queueSurveyTrigger({
-        source: "streak_repair",
-        version: process.env.NEXT_PUBLIC_APP_VERSION?.trim() || "v1",
-        gameDate,
-      });
       onRepairComplete();
       setCanRepair(false); // Hide prompt
     } catch {

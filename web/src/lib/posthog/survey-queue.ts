@@ -1,15 +1,17 @@
 export const SURVEY_QUEUE_KEY = "posthog:survey:queue";
 const SURVEY_SHOWN_KEY = "posthog:survey:shown";
 
-export type SurveyTriggerSource =
-  | "planet_transit"
-  | "planet_no_detection"
-  | "asteroid_mapping"
-  | "mars_classification"
-  | "narrative_flow"
-  | "archive_unlock"
-  | "discussion_flow"
-  | "streak_repair";
+export const SURVEY_TRIGGER_SOURCES = [
+  "planet_transit",
+  "planet_no_detection",
+  "asteroid_mapping",
+  "mars_classification",
+  "narrative_flow",
+  "archive_unlock",
+  "discussion_flow",
+] as const;
+
+export type SurveyTriggerSource = (typeof SURVEY_TRIGGER_SOURCES)[number];
 
 export type SurveyTriggerPayload = {
   source: SurveyTriggerSource;
@@ -35,6 +37,10 @@ function writeShownMap(map: Record<string, number>) {
   localStorage.setItem(SURVEY_SHOWN_KEY, JSON.stringify(map));
 }
 
+function isSurveyTriggerSource(source: string): source is SurveyTriggerSource {
+  return (SURVEY_TRIGGER_SOURCES as readonly string[]).includes(source);
+}
+
 export function queueSurveyTrigger(payload: SurveyTriggerPayload, options?: { cooldownDays?: number; sampleRate?: number }) {
   if (typeof window === "undefined") return;
   const cooldownDays = options?.cooldownDays ?? 10;
@@ -57,6 +63,7 @@ export function dequeueSurveyTrigger(): SurveyTriggerPayload | null {
   try {
     const parsed = JSON.parse(raw) as SurveyTriggerPayload;
     if (!parsed || typeof parsed.source !== "string" || typeof parsed.version !== "string") return null;
+    if (!isSurveyTriggerSource(parsed.source)) return null;
     return parsed;
   } catch {
     return null;
