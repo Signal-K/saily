@@ -1,0 +1,169 @@
+{
+  "taskId": "mrwlmf",
+  "currentVersion": 3,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "mrwlmf",
+      "version": 1,
+      "timestamp": "2026-05-09T11:50:22.577341Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": null,
+          "newValue": "in-progress"
+        },
+        {
+          "field": "priority",
+          "oldValue": null,
+          "newValue": "high"
+        }
+      ],
+      "snapshot": {
+        "assignee": "@me",
+        "description": "All four storylines (Zix, Brix, Pip, Carta) have dialogue that is too long, overly self-referential, relies on accumulated narrative context, and doesn't clearly communicate what the player needs to do. Briefings, updates, and resolutions should be short, grounded in the science task, and stand alone without reading previous chapters.",
+        "labels": [
+          "content",
+          "missions",
+          "dialogue"
+        ],
+        "priority": "high",
+        "status": "in-progress",
+        "title": "Rewrite all mission dialogue — shorter, task-focused, no narrative in-jokes"
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "mrwlmf",
+      "version": 2,
+      "timestamp": "2026-05-09T11:50:27.139531Z",
+      "changes": [
+        {
+          "field": "acceptanceCriteria",
+          "oldValue": null,
+          "newValue": [
+            {
+              "completed": false,
+              "text": "All briefing/update/resolution strings are ≤2 sentences"
+            },
+            {
+              "completed": false,
+              "text": "No dialogue references events from previous chapters (each beat stands alone)"
+            },
+            {
+              "completed": false,
+              "text": "Character voice is present but not dependent on personality quirks built up over multiple chapters"
+            },
+            {
+              "completed": false,
+              "text": "All 4 storylines × 10 chapters × 4 beats rewritten"
+            },
+            {
+              "completed": false,
+              "text": "Postcards/titles updated to match new tone"
+            },
+            {
+              "completed": false,
+              "text": "Tests pass after the change"
+            }
+          ]
+        }
+      ],
+      "snapshot": {
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "All briefing/update/resolution strings are ≤2 sentences"
+          },
+          {
+            "completed": false,
+            "text": "No dialogue references events from previous chapters (each beat stands alone)"
+          },
+          {
+            "completed": false,
+            "text": "Character voice is present but not dependent on personality quirks built up over multiple chapters"
+          },
+          {
+            "completed": false,
+            "text": "All 4 storylines × 10 chapters × 4 beats rewritten"
+          },
+          {
+            "completed": false,
+            "text": "Postcards/titles updated to match new tone"
+          },
+          {
+            "completed": false,
+            "text": "Tests pass after the change"
+          }
+        ],
+        "assignee": "@me",
+        "description": "All four storylines (Zix, Brix, Pip, Carta) have dialogue that is too long, overly self-referential, relies on accumulated narrative context, and doesn't clearly communicate what the player needs to do. Briefings, updates, and resolutions should be short, grounded in the science task, and stand alone without reading previous chapters.",
+        "labels": [
+          "content",
+          "missions",
+          "dialogue"
+        ],
+        "priority": "high",
+        "status": "in-progress",
+        "title": "Rewrite all mission dialogue — shorter, task-focused, no narrative in-jokes"
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "mrwlmf",
+      "version": 3,
+      "timestamp": "2026-05-09T12:01:17.888086Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        },
+        {
+          "field": "implementationNotes",
+          "oldValue": null,
+          "newValue": "Replaced 4 storylines (Zix/Brix/Pip/Carta) with single Gizmo storyline. 5 chapters, 1-2 sentence beats. Removed fleeReason from Character type (unused). Updated tests to drop the hardcoded count of 4."
+        }
+      ],
+      "snapshot": {
+        "acceptanceCriteria": [
+          {
+            "text": "All briefing/update/resolution strings are ≤2 sentences",
+            "completed": true
+          },
+          {
+            "text": "No dialogue references events from previous chapters (each beat stands alone)",
+            "completed": true
+          },
+          {
+            "text": "Character voice is present but not dependent on personality quirks built up over multiple chapters",
+            "completed": true
+          },
+          {
+            "text": "All 4 storylines × 10 chapters × 4 beats rewritten",
+            "completed": true
+          },
+          {
+            "text": "Postcards/titles updated to match new tone",
+            "completed": true
+          },
+          {
+            "text": "Tests pass after the change",
+            "completed": true
+          }
+        ],
+        "assignee": "@me",
+        "description": "All four storylines (Zix, Brix, Pip, Carta) have dialogue that is too long, overly self-referential, relies on accumulated narrative context, and doesn't clearly communicate what the player needs to do. Briefings, updates, and resolutions should be short, grounded in the science task, and stand alone without reading previous chapters.",
+        "implementationNotes": "Replaced 4 storylines (Zix/Brix/Pip/Carta) with single Gizmo storyline. 5 chapters, 1-2 sentence beats. Removed fleeReason from Character type (unused). Updated tests to drop the hardcoded count of 4.",
+        "labels": [
+          "content",
+          "missions",
+          "dialogue"
+        ],
+        "priority": "high",
+        "status": "done",
+        "title": "Rewrite all mission dialogue — shorter, task-focused, no narrative in-jokes"
+      }
+    }
+  ]
+}

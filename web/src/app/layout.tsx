@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import { cookies, headers } from "next/headers";
 import { Analytics } from "@vercel/analytics/react";
-import { Inter, Space_Grotesk, Playfair_Display } from "next/font/google";
+import { Source_Serif_4 } from "next/font/google";
 import { SWRegister } from "@/components/sw-register";
 import { AuthStatus } from "@/components/auth-status";
 import { HeaderSearch } from "@/components/header-search";
@@ -14,23 +14,11 @@ import { createClient } from "@/lib/supabase/server";
 import Image from "next/image";
 import "./globals.css";
 
-const inter = Inter({
+const sourceSerif4 = Source_Serif_4({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-source-serif",
   display: "swap",
-});
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-space-grotesk",
-  display: "swap",
-});
-
-const playfairDisplay = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-playfair",
-  display: "swap",
-  style: "italic",
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 const THEME_COOKIE = "cosmo_theme";
@@ -101,7 +89,7 @@ export default async function RootLayout({
       lang="en"
       data-theme={initialTheme}
       data-period={timePeriod}
-      className={`${inter.variable} ${spaceGrotesk.variable} ${playfairDisplay.variable}`}
+      className={sourceSerif4.variable}
     >
       <body>
         <PostHogRuntime />
@@ -111,41 +99,45 @@ export default async function RootLayout({
         ) : (
           <>
             <header className="site-header">
-              <div className="container">
-                <div className="header-shell">
-                  <div className="header-top-row">
-                    <div className="header-brand-row">
-                      <Link href="/" className="home-icon-link" aria-label="The Daily Sail home">
-                        <Image
-                          src="/logo-icon.png"
-                          alt=""
-                          width={32}
-                          height={32}
-                          className="brand-logo"
-                        />
-                        <span className="home-brand-label">The Daily Sail</span>
-                      </Link>
-                      <nav className="nav-links desktop-nav" aria-label="Main navigation">
-                        <Link href="/games/today" className="header-nav-link" data-cy="nav-today">
-                          Today&apos;s Mission
-                        </Link>
-                        <Link href="/calendar" className="header-nav-link" data-cy="nav-calendar">
-                          Calendar
-                        </Link>
-                        <Link href="/discuss" className="header-nav-link" data-cy="nav-discuss">
-                          Discuss
-                        </Link>
-                      </nav>
-                    </div>
-
-                    <HeaderSearch />
-
-                    <div className="header-actions">
-                      <ThemeToggle initialTheme={initialTheme} />
-                      <AuthStatus />
-                    </div>
-                  </div>
+              {/* Row 1: brand + search + actions */}
+              <div className="header-top-row">
+                <div className="header-brand-row">
+                  <Link href="/" className="home-icon-link" aria-label="The Daily Sail home">
+                    <Image
+                      src="/logo-icon.png"
+                      alt=""
+                      width={34}
+                      height={34}
+                      className="brand-logo"
+                    />
+                    <span className="home-brand-label">
+                      <span className="home-brand-name">The Daily <em>Sail</em></span>
+                      <span className="home-brand-sub">Citizen Science Daily</span>
+                    </span>
+                  </Link>
                 </div>
+
+                <HeaderSearch />
+
+                <div className="header-actions">
+                  <ThemeToggle initialTheme={initialTheme} />
+                  <AuthStatus />
+                </div>
+              </div>
+
+              {/* Row 2: main navigation */}
+              <div className="header-nav-row">
+                <nav className="nav-links desktop-nav" aria-label="Main navigation">
+                  <Link href="/games/today" className="header-nav-link" data-cy="nav-today">
+                    Today&apos;s Mission
+                  </Link>
+                  <Link href="/calendar" className="header-nav-link" data-cy="nav-calendar">
+                    Calendar
+                  </Link>
+                  <Link href="/discuss" className="header-nav-link" data-cy="nav-discuss">
+                    Discuss
+                  </Link>
+                </nav>
               </div>
             </header>
 

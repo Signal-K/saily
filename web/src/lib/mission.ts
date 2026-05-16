@@ -8,7 +8,7 @@ export type MissionGame = "planet" | "asteroid" | "mars";
 
 export const MISSION_GAMES: MissionGame[] = ["planet", "asteroid", "mars"];
 
-const MISSION_GAME_COUNT = 1;
+const MISSION_GAME_COUNT = MISSION_GAMES.length;
 
 function buildMissionGamePermutations() {
   const permutations: MissionGame[][] = [];

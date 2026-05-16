@@ -56,21 +56,26 @@ type ResultCard = {
 const EMOJIS = ["👍", "🔥", "🎉", "🤔", "😂"];
 const RESULT_IMAGES = ["/puzzles/lightcurve-analysis.svg"];
 
-function displayName(post: Post) {
-  const profile = Array.isArray(post.profiles) ? profileFromArray(post.profiles) : post.profiles;
-  return profile?.username ?? "player";
-}
+const label = {
+  fontFamily: "var(--font-data)",
+  fontSize: "0.6rem",
+  letterSpacing: "0.12em",
+  textTransform: "uppercase" as const,
+};
 
-function profileFromArray(items: { username?: string }[]) {
-  return items[0] ?? null;
+const dataText = {
+  fontFamily: "var(--font-data)",
+};
+
+function displayName(post: Post) {
+  const profile = Array.isArray(post.profiles) ? post.profiles[0] ?? null : post.profiles;
+  return profile?.username ?? "player";
 }
 
 function buildTree(posts: Post[]): PostNode[] {
   const map = new Map<number, PostNode>();
   posts.forEach((post) => map.set(post.id, { ...post, children: [] }));
-
   const roots: PostNode[] = [];
-
   map.forEach((post) => {
     if (post.parent_post_id && map.has(post.parent_post_id)) {
       map.get(post.parent_post_id)!.children.push(post);
@@ -78,7 +83,6 @@ function buildTree(posts: Post[]): PostNode[] {
     }
     roots.push(post);
   });
-
   return roots;
 }
 
@@ -92,14 +96,6 @@ function previousDateKeys(startDate: string, count: number) {
     out.push(d.toISOString().slice(0, 10));
   }
   return out;
-}
-
-function formatDateLabel(date: string) {
-  const [year, month, day] = date.split("-").map(Number);
-  const utcDate = new Date(Date.UTC(year, month - 1, day));
-  const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  return `${weekdays[utcDate.getUTCDay()]}, ${day} ${months[month - 1]}`;
 }
 
 function asString(value: unknown): string | null {
@@ -119,7 +115,6 @@ function normalizeResultCard(payload: Record<string, unknown>): ResultCard {
   const subtitle = puzzleDate ? `Puzzle ${puzzleDate}` : asString(payload.type);
   const score = typeof payload.score === "number" && Number.isFinite(payload.score) ? payload.score : null;
   const summary = asString(payload.summary);
-
   const images = asImageArray(payload.images);
 
   const answers: ResultPair[] = [];
@@ -131,12 +126,11 @@ function normalizeResultCard(payload: Record<string, unknown>): ResultCard {
         if (text) answers.push({ label: `Answer ${idx + 1}`, value: text });
         return;
       }
-
       if (entry && typeof entry === "object" && !Array.isArray(entry)) {
         const row = entry as Record<string, unknown>;
-        const label = asString(row.label) ?? `Answer ${idx + 1}`;
+        const lbl = asString(row.label) ?? `Answer ${idx + 1}`;
         const value = asString(row.value);
-        if (value) answers.push({ label, value });
+        if (value) answers.push({ label: lbl, value });
       }
     });
   }
@@ -158,8 +152,8 @@ function normalizeResultCard(payload: Record<string, unknown>): ResultCard {
         const note = asString(row.note);
         const range = xStart && xEnd ? `${xStart}-${xEnd}` : null;
         const parts = [tag, range].filter(Boolean);
-        const label = parts.join(" • ");
-        annotations.push(note ? `${label} — ${note}` : label);
+        const lbl = parts.join(" • ");
+        annotations.push(note ? `${lbl} — ${note}` : lbl);
       }
     });
   }
@@ -237,9 +231,7 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
       access?: DayAccess;
     };
     setDayAccess(payload.access ?? null);
-
     const threadsData = payload.threads ?? [];
-
     if (!response.ok || (threadsData.length === 0 && (payload.access?.allowed ?? true))) {
       setThreads([]);
       setSelectedThreadId(null);
@@ -247,7 +239,6 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
       setLoadingThreads(false);
       return;
     }
-
     setThreads(threadsData);
     setSelectedThreadId((current) => current ?? payload.defaultThreadId ?? threadsData[0]?.id ?? null);
     setFeedback(null);
@@ -258,17 +249,13 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
     setLoadingPosts(true);
     const response = await fetch(`/api/forum/posts?threadId=${threadId}`, { cache: "no-store" });
     const payload = (await response.json()) as { error?: string; posts?: Post[]; access?: DayAccess };
-    if (payload.access) {
-      setDayAccess(payload.access);
-    }
-
+    if (payload.access) setDayAccess(payload.access);
     if (!response.ok || !payload.posts) {
       setPosts([]);
       setFeedback(payload.error ?? "Could not load posts.");
       setLoadingPosts(false);
       return;
     }
-
     setPosts(payload.posts);
     setFeedback(null);
     setLoadingPosts(false);
@@ -277,28 +264,20 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
   useEffect(() => {
     const normalized = normalizeDateKey(date);
     if (!normalized) return;
-    const handle = window.setTimeout(() => {
-      void loadThreads(normalized);
-    }, 0);
+    const handle = window.setTimeout(() => { void loadThreads(normalized); }, 0);
     return () => window.clearTimeout(handle);
   }, [date, loadThreads]);
 
   useEffect(() => {
     if (!selectedThreadId) return;
     if (dayAccess && !dayAccess.allowed) return;
-    const handle = window.setTimeout(() => {
-      void loadPosts(selectedThreadId);
-    }, 0);
+    const handle = window.setTimeout(() => { void loadPosts(selectedThreadId); }, 0);
     return () => window.clearTimeout(handle);
   }, [selectedThreadId, loadPosts, dayAccess]);
 
   async function createPost(parentPostId: number | null) {
-    if (!isAuthenticated) {
-      setFeedback("Sign in to post comments and replies.");
-      return;
-    }
+    if (!isAuthenticated) { setFeedback("Sign in to post comments and replies."); return; }
     if (!selectedThreadId) return;
-
     const body = parentPostId ? replyBodyByPost[parentPostId]?.trim() : composerBody.trim();
     if (!body) return;
 
@@ -323,40 +302,21 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
     const response = await fetch("/api/forum/posts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        threadId: selectedThreadId,
-        parentPostId,
-        body,
-        resultPayload,
-      }),
+      body: JSON.stringify({ threadId: selectedThreadId, parentPostId, body, resultPayload }),
     });
-
-    const payload = (await response.json()) as {
-      error?: string;
-      continueThreadId?: number;
-      post?: Post;
-    };
-
+    const payload = (await response.json()) as { error?: string; continueThreadId?: number; post?: Post };
     if (!response.ok) {
       setFeedback(payload.error ?? "Could not post comment.");
-      if (payload.continueThreadId) {
-        setSelectedThreadId(payload.continueThreadId);
-      }
+      if (payload.continueThreadId) setSelectedThreadId(payload.continueThreadId);
       return;
     }
     setFeedback(null);
-
-    const createdPost = payload.post;
-    if (createdPost) {
-      setPosts((current) => [...current, createdPost]);
-    }
-
+    if (payload.post) setPosts((current) => [...current, payload.post!]);
     if (parentPostId) {
       setReplyBodyByPost((current) => ({ ...current, [parentPostId]: "" }));
       setReplyOpenByPost((current) => ({ ...current, [parentPostId]: false }));
       return;
     }
-
     setComposerBody("");
     setComposerShareResult(false);
     setSharedScore(null);
@@ -379,15 +339,10 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
         play?: { score?: number } | null;
         anomaly?: { id?: number } | null;
       };
-
       const maybeScore = payload.play?.score;
-      if (typeof maybeScore === "number" && Number.isFinite(maybeScore)) {
-        setSharedScore(maybeScore);
-      }
-
+      if (typeof maybeScore === "number" && Number.isFinite(maybeScore)) setSharedScore(maybeScore);
       const anomalyId = Number(payload.anomaly?.id);
       if (!Number.isFinite(anomalyId) || anomalyId <= 0) return;
-
       const submissionResponse = await fetch(`/api/anomaly/submit?date=${encodeURIComponent(date)}&anomalyId=${anomalyId}`, { cache: "no-store" });
       if (!submissionResponse.ok) return;
       const submissionPayload = (await submissionResponse.json()) as {
@@ -399,10 +354,8 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
           period_days?: number | null;
         } | null;
       };
-
       const submission = submissionPayload.submission;
       if (!submission) return;
-
       const annotations = Array.isArray(submission.annotations)
         ? submission.annotations.map((item) => {
             const tag = typeof item.tag === "string" ? item.tag : "Annotation";
@@ -416,18 +369,12 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
           })
         : [];
       setSharedAnnotations(annotations);
-
       setSharedAnswers((current) => {
         const next = [...current];
-        if (annotations.length > 0) {
-          next[0] = `Transit evidence: ${annotations.length} interval${annotations.length > 1 ? "s" : ""}`;
-        }
-        if (typeof submission.note === "string" && submission.note.trim().length > 0) {
-          next[2] = submission.note.trim();
-        }
+        if (annotations.length > 0) next[0] = `Transit evidence: ${annotations.length} interval${annotations.length > 1 ? "s" : ""}`;
+        if (typeof submission.note === "string" && submission.note.trim().length > 0) next[2] = submission.note.trim();
         return next;
       });
-
       const hintParts: string[] = [];
       if (submission.hint_flags?.phaseFold) hintParts.push("phase fold");
       if (submission.hint_flags?.bin) hintParts.push("binning");
@@ -440,166 +387,142 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
   }
 
   async function toggleVote(postId: number) {
-    if (!isAuthenticated) {
-      setFeedback("Sign in to vote on posts.");
-      return;
-    }
+    if (!isAuthenticated) { setFeedback("Sign in to vote on posts."); return; }
     const response = await fetch("/api/forum/vote", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ postId }),
     });
-
-    const payload = (await response.json()) as {
-      upvoted?: boolean;
-      voteCount?: number;
-      continueThreadId?: number;
-    };
-
+    const payload = (await response.json()) as { upvoted?: boolean; voteCount?: number; continueThreadId?: number };
     if (!response.ok) {
       setFeedback("Could not update vote.");
-      if (payload.continueThreadId) {
-        setSelectedThreadId(payload.continueThreadId);
-      }
+      if (payload.continueThreadId) setSelectedThreadId(payload.continueThreadId);
       return;
     }
     setFeedback(null);
-
     setPosts((current) =>
       current.map((post) =>
         post.id === postId
-          ? {
-              ...post,
-              upvoted_by_me: Boolean(payload.upvoted),
-              vote_count: payload.voteCount ?? post.vote_count,
-            }
+          ? { ...post, upvoted_by_me: Boolean(payload.upvoted), vote_count: payload.voteCount ?? post.vote_count }
           : post,
       ),
     );
   }
 
   async function toggleReaction(postId: number, emoji: string) {
-    if (!isAuthenticated) {
-      setFeedback("Sign in to react on posts.");
-      return;
-    }
+    if (!isAuthenticated) { setFeedback("Sign in to react on posts."); return; }
     const response = await fetch("/api/forum/reaction", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ postId, emoji }),
     });
-
-    const payload = (await response.json()) as {
-      reacted?: boolean;
-      emojiCount?: number;
-      continueThreadId?: number;
-    };
-
+    const payload = (await response.json()) as { reacted?: boolean; emojiCount?: number; continueThreadId?: number };
     if (!response.ok) {
       setFeedback("Could not update reaction.");
-      if (payload.continueThreadId) {
-        setSelectedThreadId(payload.continueThreadId);
-      }
+      if (payload.continueThreadId) setSelectedThreadId(payload.continueThreadId);
       return;
     }
     setFeedback(null);
-
     setPosts((current) =>
       current.map((post) => {
         if (post.id !== postId) return post;
-
         const reactionCounts = { ...post.reaction_counts };
         reactionCounts[emoji] = payload.emojiCount ?? reactionCounts[emoji] ?? 0;
-
         const reactedByMe = new Set(post.reacted_by_me);
-        if (payload.reacted) {
-          reactedByMe.add(emoji);
-        } else {
-          reactedByMe.delete(emoji);
-        }
-
-        return {
-          ...post,
-          reaction_counts: reactionCounts,
-          reacted_by_me: Array.from(reactedByMe),
-        };
+        if (payload.reacted) reactedByMe.add(emoji); else reactedByMe.delete(emoji);
+        return { ...post, reaction_counts: reactionCounts, reacted_by_me: Array.from(reactedByMe) };
       }),
     );
   }
 
-  function renderNode(node: PostNode, depth = 0) {
-    const isLocked = interactionLocked;
+  function renderResultCard(resultCard: ResultCard) {
+    return (
+      <section
+        className="border border-[var(--outline-variant)] p-4 my-3"
+        style={{ background: "var(--surface-container)" }}
+        aria-label="Shared puzzle results"
+      >
+        <div className="mb-2">
+          <p className="m-0" style={{ ...dataText, fontSize: "0.75rem", fontWeight: 700, color: "var(--on-surface)" }}>{resultCard.title}</p>
+          {resultCard.subtitle ? <p className="m-0" style={{ ...dataText, fontSize: "0.6rem", color: "var(--muted)" }}>{resultCard.subtitle}</p> : null}
+        </div>
+        {resultCard.score !== null ? (
+          <p className="my-1" style={{ ...dataText, fontSize: "0.8rem", color: "var(--primary)" }}>
+            Score <strong>{resultCard.score}</strong>
+          </p>
+        ) : null}
+        {resultCard.summary ? <p className="my-2 text-sm">{resultCard.summary}</p> : null}
+        {resultCard.images.length > 0 ? (
+          <div className="my-2">
+            {resultCard.images.map((src) => (
+              <Image key={src} src={src} alt="Shared puzzle result" width={480} height={270} unoptimized className="max-w-full" />
+            ))}
+          </div>
+        ) : null}
+        {resultCard.answers.length > 0 ? (
+          <dl className="my-2">
+            {resultCard.answers.map((item) => (
+              <div key={`${item.label}-${item.value}`}>
+                <dt style={{ ...dataText, fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--muted)" }}>{item.label}</dt>
+                <dd className="mb-2 text-sm">{item.value}</dd>
+              </div>
+            ))}
+          </dl>
+        ) : null}
+        {resultCard.annotations.length > 0 ? (
+          <ul className="list-none p-0 my-2">
+            {resultCard.annotations.map((item) => (
+              <li key={item} className="py-1 border-b border-[var(--outline-variant)]" style={{ ...dataText, fontSize: "0.65rem", color: "var(--muted)" }}>{item}</li>
+            ))}
+          </ul>
+        ) : null}
+        {resultCard.meta.length > 0 ? (
+          <div className="flex flex-wrap gap-2 mt-2">
+            {resultCard.meta.map((item) => (
+              <span
+                key={`${item.label}-${item.value}`}
+                className="border border-[var(--outline-variant)] px-2 py-0.5"
+                style={{ ...dataText, fontSize: "0.6rem", background: "var(--surface-container)", color: "var(--muted)" }}
+              >
+                <strong>{item.label}:</strong> {item.value}
+              </span>
+            ))}
+          </div>
+        ) : null}
+      </section>
+    );
+  }
 
+  function renderNode(node: PostNode, depth = 0) {
     const resultCard = node.result_payload ? normalizeResultCard(node.result_payload) : null;
+    const timeStr = new Date(node.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) + " UTC";
 
     return (
-      <article className="forum-post" key={node.id} style={{ marginLeft: `${depth * 1.15}rem` }}>
-        <div className="forum-post-head">
-          <strong>{displayName(node)}</strong>
-          <span className="muted">{new Date(node.created_at).toLocaleString()}</span>
+      <article
+        key={node.id}
+        className="border border-[var(--outline-variant)] p-4 mb-2"
+        style={{ marginLeft: `${depth * 1.25}rem`, background: "var(--surface-container-low)" }}
+      >
+        <div className="flex justify-between items-center mb-2">
+          <span style={{ ...dataText, fontSize: "0.75rem", color: "var(--primary)", letterSpacing: "0.04em" }}>
+            {displayName(node)}
+          </span>
+          <span style={{ ...dataText, fontSize: "0.6rem", color: "var(--muted)", letterSpacing: "0.06em" }}>
+            {timeStr}
+          </span>
         </div>
-        <p>{node.body}</p>
 
-        {resultCard ? (
-          <section className="forum-result-card" aria-label="Shared puzzle results">
-            <div className="forum-result-head">
-              <p className="forum-result-title">{resultCard.title}</p>
-              {resultCard.subtitle ? <p className="forum-result-subtitle">{resultCard.subtitle}</p> : null}
-            </div>
+        <p className="text-sm leading-relaxed mb-2">{node.body}</p>
 
-            {resultCard.score !== null ? (
-              <p className="forum-result-score">
-                Score <strong>{resultCard.score}</strong>
-              </p>
-            ) : null}
+        {resultCard ? renderResultCard(resultCard) : null}
 
-            {resultCard.summary ? <p className="forum-result-summary">{resultCard.summary}</p> : null}
-
-            {resultCard.images.length > 0 ? (
-              <div className="forum-result-images">
-                {resultCard.images.map((src) => (
-                  <Image key={src} src={src} alt="Shared puzzle result" width={480} height={270} unoptimized />
-                ))}
-              </div>
-            ) : null}
-
-            {resultCard.answers.length > 0 ? (
-              <dl className="forum-result-answers">
-                {resultCard.answers.map((item) => (
-                  <div key={`${item.label}-${item.value}`}>
-                    <dt>{item.label}</dt>
-                    <dd>{item.value}</dd>
-                  </div>
-                ))}
-              </dl>
-            ) : null}
-
-            {resultCard.annotations.length > 0 ? (
-              <ul className="forum-result-annotation-list">
-                {resultCard.annotations.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            ) : null}
-
-            {resultCard.meta.length > 0 ? (
-              <div className="forum-result-meta">
-                {resultCard.meta.map((item) => (
-                  <span key={`${item.label}-${item.value}`} className="forum-result-pill">
-                    <strong>{item.label}:</strong> {item.value}
-                  </span>
-                ))}
-              </div>
-            ) : null}
-          </section>
-        ) : null}
-
-        <div className="forum-actions-row">
+        <div className="flex flex-wrap gap-1 mt-2">
           <button
-            className={`forum-action-btn${node.upvoted_by_me ? " is-active" : ""}`}
+            className={`border px-2 py-0.5 cursor-pointer transition-colors${node.upvoted_by_me ? " border-[var(--primary)] text-[var(--primary)]" : " border-[var(--outline-variant)] text-[var(--muted)]"}`}
+            style={{ ...dataText, fontSize: "0.6rem", background: node.upvoted_by_me ? "color-mix(in oklab, var(--primary) 10%, transparent)" : "none" }}
             type="button"
             onClick={() => void toggleVote(node.id)}
-            disabled={isLocked}
+            disabled={interactionLocked}
           >
             ▲ {node.vote_count}
           </button>
@@ -610,26 +533,23 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
             return (
               <button
                 key={`${node.id}-${emoji}`}
-                className={`forum-action-btn${isActive ? " is-active" : ""}`}
+                className={`border px-2 py-0.5 cursor-pointer transition-colors${isActive ? " border-[var(--primary)]" : " border-[var(--outline-variant)]"}`}
+                style={{ ...dataText, fontSize: "0.6rem", background: isActive ? "color-mix(in oklab, var(--primary) 10%, transparent)" : "none" }}
                 type="button"
                 onClick={() => void toggleReaction(node.id, emoji)}
-                disabled={isLocked}
+                disabled={interactionLocked}
               >
-                {emoji} {count > 0 ? count : ""}
+                {emoji}{count > 0 ? ` ${count}` : ""}
               </button>
             );
           })}
 
           <button
-            className="forum-action-btn"
+            className="border border-[var(--outline-variant)] px-2 py-0.5 cursor-pointer hover:border-[var(--primary)] hover:text-[var(--primary)] transition-colors"
+            style={{ ...dataText, fontSize: "0.6rem", color: "var(--muted)", background: "none" }}
             type="button"
-            onClick={() =>
-              setReplyOpenByPost((current) => ({
-                ...current,
-                [node.id]: !current[node.id],
-              }))
-            }
-            disabled={isLocked}
+            onClick={() => setReplyOpenByPost((current) => ({ ...current, [node.id]: !current[node.id] }))}
+            disabled={interactionLocked}
           >
             Reply
           </button>
@@ -637,25 +557,17 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
 
         {replyOpenByPost[node.id] ? (
           <form
-            className="forum-reply-form"
-            onSubmit={(event: FormEvent) => {
-              event.preventDefault();
-              void createPost(node.id);
-            }}
+            className="mt-3 ml-4 flex flex-col gap-2"
+            onSubmit={(event: FormEvent) => { event.preventDefault(); void createPost(node.id); }}
           >
             <textarea
               className="textarea"
               value={replyBodyByPost[node.id] ?? ""}
-              onChange={(event) =>
-                setReplyBodyByPost((current) => ({
-                  ...current,
-                  [node.id]: event.target.value,
-                }))
-              }
+              onChange={(event) => setReplyBodyByPost((current) => ({ ...current, [node.id]: event.target.value }))}
               placeholder="Write a reply..."
-              disabled={isLocked}
+              disabled={interactionLocked}
             />
-            <button className="button" type="submit" disabled={isLocked}>
+            <button className="button" type="submit" disabled={interactionLocked}>
               Post reply
             </button>
           </form>
@@ -666,282 +578,398 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
     );
   }
 
-  return (
-    <section className="forum-layout">
-      <div className="panel forum-header">
-        <div>
-          <h1>Consensus</h1>
-          <p className="muted">Collaborative research logs, peer reviews, and shared findings.</p>
-        </div>
-        <div className="forum-header-actions">
-          <label className="forum-date-field">
-            <span className="muted">Mission date</span>
-            <input data-cy="forum-date-input" type="date" value={date} onChange={(event) => setDate(event.target.value)} />
-          </label>
-          <Link className="button" href={`/games/today?date=${date}&returnTo=${encodeURIComponent(`/discuss?date=${date}`)}`}>
-            Open Mission
-          </Link>
-        </div>
-      </div>
-
-      <div className="panel forum-quick-days">
-        {quickDates.map((dateKey) => (
-          <button
-            key={dateKey}
-            type="button"
-            data-cy="forum-date-chip"
-            className={`forum-date-chip${dateKey === date ? " is-active" : ""}`}
-            onClick={() => setDate(dateKey)}
-          >
-            {formatDateLabel(dateKey)}
-          </button>
-        ))}
-      </div>
-
-      <div className="forum-thread-tabs panel">
-        {loadingThreads ? <p className="muted">Loading threads...</p> : null}
-        {!loadingThreads
-          ? threads.map((thread) => (
-              <button
-                key={thread.id}
-                type="button"
-                data-cy={`forum-thread-tab-${thread.kind}`}
-                className={`forum-thread-tab${selectedThreadId === thread.id ? " is-active" : ""}`}
-                onClick={() => setSelectedThreadId(thread.id)}
-              >
-                <span>{thread.kind === "daily_live" ? "Live Thread" : "Ongoing Thread"}</span>
-                {thread.is_locked ? <small>Locked</small> : <small>Open</small>}
-              </button>
-            ))
-          : null}
-      </div>
-
-      {dayAccess && !dayAccess.allowed ? (
-        <div className="panel forum-feedback">
-          <p>
-            {dayAccess.signInRequired
-              ? "Sign in and unlock this archive day before opening the discussion."
-              : "Complete or unlock this day before opening the discussion."}
-          </p>
-          <div className="forum-lock-actions">
-            <Link
-              className="button button-primary"
-              href={
-                dayAccess.signInRequired
-                  ? `/auth/sign-in?next=${encodeURIComponent(`/discuss?date=${date}`)}`
-                  : `/games/today?date=${date}&returnTo=${encodeURIComponent(`/discuss?date=${date}`)}`
-              }
-            >
-              {dayAccess.signInRequired ? "Sign in" : "Open Mission"}
-            </Link>
-            <Link className="button" href="/calendar">
-              Calendar
-            </Link>
-          </div>
-        </div>
-      ) : null}
-
-      {!isAuthenticated ? (
-        <div className="panel forum-auth-banner">
-          <p>Sign in to comment, reply, upvote, and react.</p>
-          <Link className="button button-primary" href="/auth/sign-in">
-            Sign in
-          </Link>
-        </div>
-      ) : null}
-
-      {feedback ? (
-        <div className="panel forum-feedback">
-          <p>{feedback}</p>
-        </div>
-      ) : null}
-
-      {selectedThread?.is_locked ? (
-        <div className="panel forum-lock-banner">
-          <p>This thread is locked. Continue in the unlocked thread.</p>
-          <div className="forum-lock-actions">
-            <Link className="button" href={`/games/today?date=${date}&returnTo=${encodeURIComponent(`/discuss?date=${date}`)}`}>
-              Open Puzzle
-            </Link>
-            {selectedThread.continue_thread_id ? (
-              <button className="button button-primary" type="button" onClick={() => setSelectedThreadId(selectedThread.continue_thread_id)}>
-                Continue Discussion
-              </button>
-            ) : null}
-          </div>
-        </div>
-      ) : null}
-
-      <div className="panel forum-composer">
-        <form
-          className="forum-composer-form"
-          onSubmit={(event) => {
-            event.preventDefault();
-            void createPost(null);
-          }}
-        >
+  function renderComposer() {
+    return (
+      <div className="mt-6 pt-4 border-t border-[var(--outline-variant)]">
+        <p className="mb-2" style={{ ...label, color: "var(--muted)" }}>Input Terminal</p>
+        <form onSubmit={(event) => { event.preventDefault(); void createPost(null); }}>
           <textarea
-            className="textarea"
+            className="textarea w-full"
             data-cy="forum-composer-body"
             value={composerBody}
             onChange={(event) => setComposerBody(event.target.value)}
-            placeholder="Share your thoughts on today's research findings..."
+            placeholder="Enter findings..."
             disabled={interactionLocked}
           />
-          <label className="forum-share-toggle">
-            <input
-              data-cy="forum-composer-share"
-              type="checkbox"
-              checked={composerShareResult}
-              onChange={(event) => {
-                const checked = event.target.checked;
-                setComposerShareResult(checked);
-                if (checked) {
-                  setShowShareDetails(false);
-                  void preloadSharedResult();
-                }
-              }}
+
+          <div className="flex justify-between items-center mt-3 flex-wrap gap-3">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                data-cy="forum-composer-share"
+                type="checkbox"
+                checked={composerShareResult}
+                onChange={(event) => {
+                  const checked = event.target.checked;
+                  setComposerShareResult(checked);
+                  if (checked) { setShowShareDetails(false); void preloadSharedResult(); }
+                }}
+                disabled={interactionLocked}
+              />
+              <span style={{ ...label, color: "var(--muted)" }}>Share Findings</span>
+            </label>
+            <button
+              className="border border-[var(--primary)] px-6 py-2 cursor-pointer transition-colors hover:bg-[var(--primary)] hover:text-white disabled:opacity-40"
+              style={{ ...label, color: "var(--primary)", background: "var(--surface-container-lowest)" }}
+              data-cy="forum-post-submit"
+              type="submit"
               disabled={interactionLocked}
-            />
-            Share my findings
-          </label>
+            >
+              Submit
+            </button>
+          </div>
 
           {composerShareResult ? (
-            <section className="forum-share-fields">
-              <div className="forum-share-row">
-                <p className="muted">Log preview (what will be posted)</p>
-                <div className="forum-share-row-actions">
+            <div className="mt-4 border border-[var(--outline-variant)] p-4" style={{ background: "var(--surface-container-low)" }}>
+              <div className="flex justify-between items-center flex-wrap gap-2 mb-3">
+                <p className="muted m-0 text-sm">Log preview</p>
+                <div className="flex gap-2">
                   <button className="button" type="button" onClick={() => void preloadSharedResult()} disabled={interactionLocked}>
                     Sync from mission
                   </button>
-                  <button className="button" type="button" onClick={() => setShowShareDetails((value) => !value)} disabled={interactionLocked}>
-                    {showShareDetails ? "Hide detail fields" : "Edit detail fields"}
+                  <button className="button" type="button" onClick={() => setShowShareDetails((v) => !v)} disabled={interactionLocked}>
+                    {showShareDetails ? "Hide fields" : "Edit fields"}
                   </button>
                 </div>
               </div>
 
-              <section className="forum-result-card forum-result-preview-card" aria-label="Shared mission results preview">
-                <div className="forum-result-head">
-                  <p className="forum-result-title">Daily Mission Log</p>
-                  <p className="forum-result-subtitle">Mission {date}</p>
-                </div>
-
-                {sharedScore !== null ? (
-                  <p className="forum-result-score">
-                    Score <strong>{sharedScore}</strong>
-                  </p>
-                ) : null}
-
-                {composerBody.trim() ? <p className="forum-result-summary">{composerBody.trim().slice(0, 180)}</p> : null}
-
-                <div className="forum-result-images">
+              {/* Preview card */}
+              <div className="border border-[var(--outline-variant)] p-4" style={{ background: "var(--surface-container)" }}>
+                <p className="m-0 mb-1" style={{ ...dataText, fontSize: "0.75rem", fontWeight: 700 }}>Daily Mission Log</p>
+                <p className="m-0 mb-2" style={{ ...dataText, fontSize: "0.6rem", color: "var(--muted)" }}>Mission {date}</p>
+                {sharedScore !== null ? <p className="my-1" style={{ ...dataText, fontSize: "0.8rem", color: "var(--primary)" }}>Score <strong>{sharedScore}</strong></p> : null}
+                {composerBody.trim() ? <p className="text-sm my-2">{composerBody.trim().slice(0, 180)}</p> : null}
+                <div className="my-2">
                   {RESULT_IMAGES.map((src) => (
-                    <Image key={`preview-${src}`} src={src} alt="Shared puzzle preview" width={480} height={270} unoptimized />
+                    <Image key={`preview-${src}`} src={src} alt="Shared puzzle preview" width={480} height={270} unoptimized className="max-w-full" />
                   ))}
                 </div>
-
                 {sharePreviewAnswers.length > 0 ? (
-                  <dl className="forum-result-answers">
+                  <dl className="my-2">
                     {sharePreviewAnswers.map((item) => (
                       <div key={`${item.label}-${item.value}`}>
-                        <dt>{item.label}</dt>
-                        <dd>{item.value}</dd>
+                        <dt style={{ ...dataText, fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--muted)" }}>{item.label}</dt>
+                        <dd className="mb-1 text-sm">{item.value}</dd>
                       </div>
                     ))}
                   </dl>
                 ) : null}
-
                 {sharedAnnotations.length > 0 ? (
-                  <ul className="forum-result-annotation-list">
+                  <ul className="list-none p-0 my-2">
                     {sharedAnnotations.map((item) => (
-                      <li key={item}>{item}</li>
+                      <li key={item} style={{ ...dataText, fontSize: "0.65rem", color: "var(--muted)" }}>{item}</li>
                     ))}
                   </ul>
                 ) : null}
-
                 {sharePreviewMeta.length > 0 ? (
-                  <div className="forum-result-meta">
+                  <div className="flex flex-wrap gap-2 mt-2">
                     {sharePreviewMeta.map((item) => (
-                      <span key={`${item.label}-${item.value}`} className="forum-result-pill">
+                      <span key={`${item.label}-${item.value}`} className="border border-[var(--outline-variant)] px-2 py-0.5" style={{ ...dataText, fontSize: "0.6rem", color: "var(--muted)" }}>
                         <strong>{item.label}:</strong> {item.value}
                       </span>
                     ))}
                   </div>
                 ) : null}
-              </section>
+              </div>
 
               {showShareDetails ? (
-                <>
-              <label className="forum-share-field">
-                <span>Score</span>
-                <input
-                  className="input"
-                  type="number"
-                  min={0}
-                  step={1}
-                  value={sharedScore ?? ""}
-                  onChange={(event) => {
-                    const numeric = Number(event.target.value);
-                    setSharedScore(Number.isFinite(numeric) ? numeric : null);
-                  }}
-                  placeholder="e.g. 88"
-                  disabled={interactionLocked}
-                />
-              </label>
-
-              {sharedAnswers.map((answer, idx) => (
-                <label className="forum-share-field" key={`answer-${idx}`}>
-                  <span>Mission component {idx + 1} analysis</span>
-                  <input
-                    className="input"
-                    value={answer}
-                    onChange={(event) =>
-                      setSharedAnswers((current) => current.map((value, aIdx) => (aIdx === idx ? event.target.value : value)))
-                    }
-                    placeholder={`Enter analysis for component ${idx + 1}`}
-                    disabled={interactionLocked}
-                  />
-                </label>
-              ))}
-
-              <label className="forum-share-field">
-                <span>Imported annotations</span>
-                {sharedAnnotations.length > 0 ? (
-                  <ul className="forum-result-annotation-list">
-                    {sharedAnnotations.map((entry) => (
-                      <li key={entry}>{entry}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="muted">No saved annotations found for this date yet.</p>
-                )}
-              </label>
-
-              <label className="forum-share-field">
-                <span>Hint summary</span>
-                <input
-                  className="input"
-                  value={sharedHintSummary}
-                  onChange={(event) => setSharedHintSummary(event.target.value)}
-                  placeholder="phase fold • period 2.00d • reward x0.80"
-                  disabled={interactionLocked}
-                />
-              </label>
-                </>
+                <div className="mt-4 flex flex-col gap-3">
+                  <label className="flex flex-col gap-1" style={{ ...dataText, fontSize: "0.65rem", color: "var(--muted)" }}>
+                    <span>Score</span>
+                    <input
+                      className="input"
+                      type="number"
+                      min={0}
+                      step={1}
+                      value={sharedScore ?? ""}
+                      onChange={(event) => {
+                        const numeric = Number(event.target.value);
+                        setSharedScore(Number.isFinite(numeric) ? numeric : null);
+                      }}
+                      placeholder="e.g. 88"
+                      disabled={interactionLocked}
+                    />
+                  </label>
+                  {sharedAnswers.map((answer, idx) => (
+                    <label className="flex flex-col gap-1" key={`answer-${idx}`} style={{ ...dataText, fontSize: "0.65rem", color: "var(--muted)" }}>
+                      <span>Mission component {idx + 1} analysis</span>
+                      <input
+                        className="input"
+                        value={answer}
+                        onChange={(event) =>
+                          setSharedAnswers((current) => current.map((value, aIdx) => (aIdx === idx ? event.target.value : value)))
+                        }
+                        placeholder={`Enter analysis for component ${idx + 1}`}
+                        disabled={interactionLocked}
+                      />
+                    </label>
+                  ))}
+                  <div style={{ ...dataText, fontSize: "0.65rem", color: "var(--muted)" }}>
+                    <span>Imported annotations</span>
+                    {sharedAnnotations.length > 0 ? (
+                      <ul className="list-none p-0 mt-1">
+                        {sharedAnnotations.map((entry) => <li key={entry} className="text-xs">{entry}</li>)}
+                      </ul>
+                    ) : (
+                      <p className="muted text-xs mt-1">No saved annotations for this date.</p>
+                    )}
+                  </div>
+                  <label className="flex flex-col gap-1" style={{ ...dataText, fontSize: "0.65rem", color: "var(--muted)" }}>
+                    <span>Hint summary</span>
+                    <input
+                      className="input"
+                      value={sharedHintSummary}
+                      onChange={(event) => setSharedHintSummary(event.target.value)}
+                      placeholder="phase fold • period 2.00d • reward x0.80"
+                      disabled={interactionLocked}
+                    />
+                  </label>
+                </div>
               ) : null}
-            </section>
+            </div>
           ) : null}
-          <button className="button button-primary" data-cy="forum-post-submit" type="submit" disabled={interactionLocked}>
-            Post comment
-          </button>
         </form>
       </div>
+    );
+  }
 
-      <div className="panel forum-post-list">
-        {loadingPosts ? <p className="muted">Loading posts...</p> : null}
-        {!loadingPosts && tree.length === 0 ? <p className="muted">No posts yet. Start the discussion.</p> : null}
-        {!loadingPosts ? tree.map((node) => renderNode(node)) : null}
+  const liveThread = threads.find((t) => t.kind === "daily_live") ?? null;
+  const ongoingThreads = threads.filter((t) => t.kind === "ongoing");
+  const returnTo = encodeURIComponent(`/discuss?date=${date}`);
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6 p-6 max-w-[1440px] mx-auto items-start">
+
+      {/* ── Main column ── */}
+      <div className="flex flex-col gap-4">
+
+        {/* Page header */}
+        <header className="flex justify-between items-end pb-5 border-b border-[var(--outline-variant)] flex-wrap gap-3">
+          <div>
+            <h1 className="m-0 mb-1" style={{ ...dataText, fontSize: "clamp(2rem,5vw,2.5rem)", fontWeight: 700, letterSpacing: "-0.02em", color: "var(--on-surface)" }}>
+              CONSENSUS
+            </h1>
+            <p className="m-0 muted">Collaborative research and findings.</p>
+          </div>
+          <span className="border border-[var(--outline-variant)] px-2 py-1" style={{ ...label, color: "var(--muted)", background: "var(--surface-container-low)" }}>
+            SYS.DATE: {date}
+          </span>
+        </header>
+
+        {/* Alerts */}
+        {dayAccess && !dayAccess.allowed ? (
+          <div className="flex justify-between items-center flex-wrap gap-3 border border-[var(--outline-variant)] p-4 text-sm" style={{ background: "var(--surface-container-low)" }}>
+            <p className="m-0">
+              {dayAccess.signInRequired
+                ? "Sign in and unlock this archive day to open the discussion."
+                : "Complete or unlock this day to open the discussion."}
+            </p>
+            <div className="flex gap-2">
+              <Link
+                className="button button-primary"
+                href={dayAccess.signInRequired ? `/auth/sign-in?next=${returnTo}` : `/games/today?date=${date}&returnTo=${returnTo}`}
+              >
+                {dayAccess.signInRequired ? "Sign in" : "Open Mission"}
+              </Link>
+              <Link className="button" href="/calendar">Calendar</Link>
+            </div>
+          </div>
+        ) : null}
+
+        {!isAuthenticated ? (
+          <div className="flex justify-between items-center flex-wrap gap-3 border border-[var(--outline-variant)] p-4 text-sm" style={{ background: "var(--surface-container-low)" }}>
+            <p className="m-0">Sign in to comment, reply, upvote, and react.</p>
+            <Link className="button button-primary" href="/auth/sign-in">Sign in</Link>
+          </div>
+        ) : null}
+
+        {feedback ? (
+          <div className="border border-[var(--outline-variant)] p-4 text-sm" style={{ background: "var(--surface-container-low)" }}>
+            <p className="m-0 muted">{feedback}</p>
+          </div>
+        ) : null}
+
+        {loadingThreads ? <p className="muted text-sm">Loading threads...</p> : null}
+
+        {/* ── Daily Live thread ── */}
+        {liveThread ? (
+          <section
+            className="forum-bracket border border-[var(--outline-variant)] p-7"
+            style={{ background: "var(--surface-container-lowest)" }}
+            onClick={() => selectedThreadId !== liveThread.id && setSelectedThreadId(liveThread.id)}
+          >
+            <div className="flex justify-between items-start pb-4 mb-4 border-b border-[var(--outline-variant)] gap-4">
+              <div>
+                <span
+                  className="inline-block px-2 py-0.5 mb-2"
+                  style={{ ...label, background: "var(--primary)", color: "white" }}
+                >
+                  Daily Live
+                </span>
+                <h2 className="m-0" style={{ ...dataText, fontSize: "1.35rem", fontWeight: 600, color: "var(--on-surface)" }}>
+                  {liveThread.title}
+                </h2>
+              </div>
+              <span style={{ ...label, color: "var(--muted)" }}>{liveThread.is_locked ? "Locked" : "Open"}</span>
+            </div>
+
+            {liveThread.is_locked ? (
+              <div className="flex justify-between items-center flex-wrap gap-3 border border-[var(--outline-variant)] p-3 mb-4 text-sm" style={{ background: "var(--surface-container-low)" }}>
+                <p className="m-0">This thread is locked. Continue in the unlocked thread.</p>
+                <div className="flex gap-2">
+                  <Link className="button" href={`/games/today?date=${date}&returnTo=${returnTo}`}>Open Puzzle</Link>
+                  {liveThread.continue_thread_id ? (
+                    <button className="button button-primary" type="button" onClick={() => setSelectedThreadId(liveThread.continue_thread_id)}>
+                      Continue Discussion
+                    </button>
+                  ) : null}
+                </div>
+              </div>
+            ) : null}
+
+            {selectedThreadId === liveThread.id ? (
+              <>
+                {loadingPosts ? <p className="muted text-sm">Loading posts...</p> : null}
+                {!loadingPosts && tree.length === 0 ? <p className="muted text-sm">No posts yet. Start the discussion.</p> : null}
+                {!loadingPosts ? tree.map((node) => renderNode(node)) : null}
+                {renderComposer()}
+              </>
+            ) : (
+              <button
+                className="cursor-pointer border-none bg-none p-0 mt-1"
+                style={{ ...label, color: "var(--primary)", background: "none" }}
+                type="button"
+                onClick={() => setSelectedThreadId(liveThread.id)}
+              >
+                Access Logs →
+              </button>
+            )}
+          </section>
+        ) : null}
+
+        {/* ── Ongoing threads ── */}
+        {ongoingThreads.map((thread) => {
+          const isSelected = selectedThreadId === thread.id;
+          return (
+            <section
+              key={thread.id}
+              className={`border p-7 transition-colors${isSelected ? " border-[var(--primary)]" : " border-[var(--outline-variant)]"}`}
+              style={{ background: "var(--surface-container-lowest)" }}
+            >
+              <div className="flex justify-between items-start pb-4 mb-4 border-b border-[var(--outline-variant)] gap-4">
+                <div>
+                  <span
+                    className="inline-block border px-2 py-0.5 mb-2"
+                    style={{ ...label, borderColor: "var(--outline)", color: "var(--muted)" }}
+                  >
+                    Ongoing
+                  </span>
+                  <h2 className="m-0" style={{ ...dataText, fontSize: "1.1rem", fontWeight: 600, color: "var(--on-surface)" }}>
+                    {thread.title}
+                  </h2>
+                </div>
+                <span style={{ ...label, color: "var(--muted)" }}>
+                  {isSelected && posts.length > 0 ? `${posts.length} replies` : thread.is_locked ? "Locked" : "Open"}
+                </span>
+              </div>
+
+              {isSelected ? (
+                <>
+                  {loadingPosts ? <p className="muted text-sm">Loading posts...</p> : null}
+                  {!loadingPosts && tree.length === 0 ? <p className="muted text-sm">No posts yet.</p> : null}
+                  {!loadingPosts ? tree.map((node) => renderNode(node)) : null}
+                  {renderComposer()}
+                </>
+              ) : (
+                <button
+                  className="cursor-pointer border-none bg-none p-0"
+                  style={{ ...label, color: "var(--primary)", background: "none" }}
+                  type="button"
+                  onClick={() => setSelectedThreadId(thread.id)}
+                >
+                  Access Logs →
+                </button>
+              )}
+            </section>
+          );
+        })}
       </div>
-    </section>
+
+      {/* ── Sidebar ── */}
+      <aside className="flex flex-col gap-4">
+
+        {/* ARCHIVES */}
+        <div className="border border-[var(--outline-variant)]" style={{ background: "var(--surface-container-lowest)" }}>
+          <div
+            className="px-4 py-2 border-b border-[var(--outline-variant)]"
+            style={{ ...label, background: "var(--surface-container-low)", color: "var(--on-surface)" }}
+          >
+            Archives
+          </div>
+          {quickDates.map((dateKey) => (
+            <button
+              key={dateKey}
+              type="button"
+              data-cy="forum-date-chip"
+              className={`flex justify-between items-center w-full px-4 py-2.5 border-b border-[var(--outline-variant)] cursor-pointer transition-colors text-left${dateKey === date ? " text-[var(--primary)]" : ""}`}
+              style={{
+                ...label,
+                letterSpacing: "0.06em",
+                background: dateKey === date ? "var(--surface-container-low)" : "none",
+                color: dateKey === date ? "var(--primary)" : "var(--on-surface)",
+                border: "none",
+                borderBottom: "1px solid var(--outline-variant)",
+              }}
+              onClick={() => setDate(dateKey)}
+            >
+              <span>SYS.DATE: {dateKey}</span>
+              <span>›</span>
+            </button>
+          ))}
+          <div className="p-3">
+            <input
+              data-cy="forum-date-input"
+              type="date"
+              value={date}
+              onChange={(event) => setDate(event.target.value)}
+              className="w-full border border-[var(--outline-variant)] px-2 py-1.5"
+              style={{ ...dataText, fontSize: "0.7rem", background: "var(--surface-container-low)", color: "var(--on-surface)" }}
+            />
+          </div>
+        </div>
+
+        {/* NODE STATUS */}
+        <div className="border border-[var(--outline-variant)] p-4" style={{ background: "var(--surface-container-lowest)" }}>
+          <p className="mb-3" style={{ ...label, color: "var(--muted)" }}>Node Status</p>
+          <div className="flex items-center gap-2 mb-2">
+            <div
+              className="w-2 h-2 flex-shrink-0"
+              style={{ background: isAuthenticated ? "#10b981" : "var(--outline-variant)", border: isAuthenticated ? "1px solid #047857" : "none" }}
+            />
+            <span style={{ ...dataText, fontSize: "0.65rem", color: "var(--on-surface)" }}>
+              Comms Relay: {isAuthenticated ? "Active" : "Standby"}
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div
+              className="w-2 h-2 flex-shrink-0"
+              style={{
+                background: !dayAccess || dayAccess.allowed ? "#10b981" : "#f59e0b",
+                border: !dayAccess || dayAccess.allowed ? "1px solid #047857" : "1px solid #b45309",
+              }}
+            />
+            <span style={{ ...dataText, fontSize: "0.65rem", color: "var(--on-surface)" }}>
+              Data Stream: {!dayAccess || dayAccess.allowed ? "Nominal" : "Restricted"}
+            </span>
+          </div>
+        </div>
+
+        <Link
+          className="button button-full"
+          href={`/games/today?date=${date}&returnTo=${returnTo}`}
+        >
+          Open Mission
+        </Link>
+      </aside>
+    </div>
   );
 }

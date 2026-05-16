@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { getStorylineForDate, getCharacterForStoryline, getChapterForIndex, getMissionGameOrder, getGameOrderOverrideForDate, isStorylineComplete, type MissionGame, MISSION_GAMES } from "@/lib/mission";
 import { MissionBriefing } from "@/components/mission/mission-briefing";
-import { NarrativeBeat } from "@/components/mission/narrative-beat";
+import { NarrativeUpdate } from "@/components/mission/narrative-update";
 import { MissionComplete } from "@/components/mission/mission-complete";
 import { MissionStatusBanner } from "@/components/mission/mission-status-banner";
 import { MissionAmbience } from "@/components/mission/mission-ambience";
@@ -18,7 +18,7 @@ import { unlockArchive } from "@/lib/economy";
 import { dateKeyToUtcDate } from "@/lib/melbourne-date";
 import { resolveGameDate } from "@/lib/game";
 
-type Stage = "loading" | "briefing" | "game" | "beat" | "complete";
+type Stage = "loading" | "briefing" | "game" | "update" | "complete";
 type MissionAccess = {
   date: string;
   isToday: boolean;
@@ -130,7 +130,7 @@ export default function MissionFlowPage() {
     }
 
     if (gameCursor < gameOrder.length - 1) {
-      setStage("beat");
+      setStage("update");
       return;
     }
 
@@ -289,12 +289,12 @@ export default function MissionFlowPage() {
     );
   } else if (stage === "game") {
     content = renderActiveGame();
-  } else if (stage === "beat" && gameCursor === 0) {
+  } else if (stage === "update" && gameCursor === 0) {
     content = (
-        <NarrativeBeat
+        <NarrativeUpdate
         character={character}
-        text={chapter.beat1}
-        expression={chapter.beat1Expression}
+        text={chapter.update1}
+        expression={chapter.update1Expression}
         continueLabel={getContinueLabel(gameOrder[1])}
         onContinue={() => {
           setGameCursor(1);
@@ -302,12 +302,12 @@ export default function MissionFlowPage() {
         }}
       />
     );
-  } else if (stage === "beat") {
+  } else if (stage === "update") {
     content = (
-        <NarrativeBeat
+        <NarrativeUpdate
         character={character}
-        text={chapter.beat2}
-        expression={chapter.beat2Expression}
+        text={chapter.update2}
+        expression={chapter.update2Expression}
         continueLabel={getContinueLabel(gameOrder[2])}
         onContinue={() => {
           setGameCursor(2);

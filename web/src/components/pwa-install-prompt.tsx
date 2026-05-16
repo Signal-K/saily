@@ -14,6 +14,15 @@ function isStandaloneMode() {
   return window.matchMedia("(display-mode: standalone)").matches || (window.navigator as Navigator & { standalone?: boolean }).standalone === true;
 }
 
+function detectIosSafari() {
+  if (typeof window === "undefined") return false;
+  const userAgent = window.navigator.userAgent;
+  const isIOS = /iPad|iPhone|iPod/.test(userAgent);
+  const isWebKit = /WebKit/.test(userAgent);
+  const isOtherBrowser = /CriOS|FxiOS|EdgiOS/.test(userAgent);
+  return isIOS && isWebKit && !isOtherBrowser;
+}
+
 export function PwaInstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState<InstallPromptEvent | null>(null);
   const [dismissed, setDismissed] = useState(() => {
@@ -24,6 +33,7 @@ export function PwaInstallPrompt() {
     if (typeof window === "undefined") return false;
     return window.matchMedia("(max-width: 720px)").matches;
   });
+  const [isIosSafari] = useState(() => detectIosSafari());
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -47,8 +57,8 @@ export function PwaInstallPrompt() {
   }, []);
 
   const shouldShow = useMemo(
-    () => isMobile && !dismissed && !isStandaloneMode() && Boolean(deferredPrompt),
-    [deferredPrompt, dismissed, isMobile],
+    () => isMobile && !dismissed && !isStandaloneMode() && (Boolean(deferredPrompt) || isIosSafari),
+    [deferredPrompt, dismissed, isIosSafari, isMobile],
   );
 
   function persistDismiss() {
@@ -74,13 +84,23 @@ export function PwaInstallPrompt() {
   return (
     <aside className="pwa-install-prompt" role="dialog" aria-label="Install The Daily Sail">
       <p className="pwa-install-title">Install The Daily Sail for mobile telemetry access</p>
-      <p className="pwa-install-copy">Full-screen research terminal, faster access, and offline data sync.</p>
+      <p className="pwa-install-copy">
+        {isIosSafari
+          ? "In Safari, tap Share and then Add to Home Screen for the full-screen app."
+          : "Full-screen research terminal, faster access, and offline data sync."}
+      </p>
       <div className="pwa-install-actions">
-        <button type="button" className="button button-primary" onClick={() => void handleInstall()}>
-          Add to Home Screen
-        </button>
+        {isIosSafari ? (
+          <button type="button" className="button button-primary" onClick={persistDismiss}>
+            Got it
+          </button>
+        ) : (
+          <button type="button" className="button button-primary" onClick={() => void handleInstall()}>
+            Add to Home Screen
+          </button>
+        )}
         <button type="button" className="button" onClick={persistDismiss}>
-          No thanks
+          {isIosSafari ? "Dismiss" : "No thanks"}
         </button>
       </div>
     </aside>

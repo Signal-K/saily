@@ -1,0 +1,46 @@
+{
+  "taskId": "80hpnc",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "80hpnc",
+      "version": 1,
+      "timestamp": "2026-05-14T00:25:45.958436Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": null,
+          "newValue": "todo"
+        },
+        {
+          "field": "priority",
+          "oldValue": null,
+          "newValue": "low"
+        }
+      ],
+      "snapshot": {
+        "acceptanceCriteria": [
+          {
+            "text": "Delete anomalies_rows.csv",
+            "completed": false
+          },
+          {
+            "text": "Delete anomaly_lightkurve_map.csv",
+            "completed": false
+          },
+          {
+            "text": "Delete tour-output.log",
+            "completed": false
+          }
+        ],
+        "labels": [
+          "cleanup"
+        ],
+        "priority": "low",
+        "status": "todo",
+        "title": "Remove stale/transient files"
+      }
+    }
+  ]
+}

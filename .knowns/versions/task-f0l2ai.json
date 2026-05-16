@@ -1,0 +1,46 @@
+{
+  "taskId": "f0l2ai",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "f0l2ai",
+      "version": 1,
+      "timestamp": "2026-05-14T00:25:28.330817Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": null,
+          "newValue": "todo"
+        },
+        {
+          "field": "priority",
+          "oldValue": null,
+          "newValue": "medium"
+        }
+      ],
+      "snapshot": {
+        "acceptanceCriteria": [
+          {
+            "text": "Create scripts/lib/generic-ingest.mjs base class or utility",
+            "completed": false
+          },
+          {
+            "text": "Migrate active-asteroids, cloudspotting, gaia, and rubin scripts to use it",
+            "completed": false
+          },
+          {
+            "text": "Remove duplicated boilerplate code",
+            "completed": false
+          }
+        ],
+        "labels": [
+          "tech-debt,refactor"
+        ],
+        "priority": "medium",
+        "status": "todo",
+        "title": "Consolidate ingestion scripts"
+      }
+    }
+  ]
+}

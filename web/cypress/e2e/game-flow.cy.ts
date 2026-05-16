@@ -90,7 +90,7 @@ describe("Daily puzzle flow", () => {
     cy.wait("@submitEvidence");
     cy.wait("@completeDailySet");
     // After completing all 3 transit signals, the mission flow advances to the
-    // narrative beat between game 1 and game 2 (still on /games/today).
+    // narrative update between game 1 and game 2 (still on /games/today).
     cy.location("pathname").should("eq", "/games/today");
     cy.contains("button", "Continue to Asteroid Survey").should("be.visible");
   });

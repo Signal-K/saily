@@ -133,7 +133,7 @@ describe("Comprehensive Game Tour", () => {
     cy.wait("@completePlanetGame");
 
     // 4. Narrative Transition 1
-    cy.screenshot("04-narrative-beat-1");
+    cy.screenshot("04-narrative-update-1");
     cy.contains("button", "Continue to Asteroid Survey").click();
 
     // 5. Asteroid Mapping (Game 2)
@@ -146,7 +146,7 @@ describe("Comprehensive Game Tour", () => {
     cy.wait("@submitAsteroid");
 
     // 6. Narrative Transition 2
-    cy.screenshot("06-narrative-beat-2");
+    cy.screenshot("06-narrative-update-2");
     cy.contains("button", "Continue to Surface Survey").click();
 
     // 7. Mars Classification (Game 3)

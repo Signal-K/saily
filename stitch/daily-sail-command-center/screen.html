@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Daily Sail - Command Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-fixed": "#ffdcbe",
+                      "inverse-on-surface": "#eff1f4",
+                      "secondary-fixed": "#cbe7f5",
+                      "surface-container-high": "#e6e8eb",
+                      "surface": "#f7f9fc",
+                      "on-tertiary-container": "#ffd0a3",
+                      "outline-variant": "#bfc8ce",
+                      "surface-variant": "#e0e3e5",
+                      "surface-container-lowest": "#ffffff",
+                      "on-tertiary-fixed-variant": "#693c00",
+                      "primary-fixed-dim": "#87d0f4",
+                      "on-secondary-fixed-variant": "#304a55",
+                      "secondary-container": "#cbe7f5",
+                      "on-primary-fixed-variant": "#004d66",
+                      "outline": "#70787e",
+                      "on-surface": "#181c1e",
+                      "on-primary-container": "#a6e0ff",
+                      "on-primary": "#ffffff",
+                      "tertiary": "#693c00",
+                      "surface-container": "#eceef1",
+                      "on-tertiary-fixed": "#2c1600",
+                      "inverse-surface": "#2d3133",
+                      "on-error": "#ffffff",
+                      "on-background": "#181c1e",
+                      "secondary": "#48626e",
+                      "primary-fixed": "#c0e8ff",
+                      "on-tertiary": "#ffffff",
+                      "on-surface-variant": "#3f484d",
+                      "on-secondary-container": "#4e6874",
+                      "surface-bright": "#f7f9fc",
+                      "on-primary-fixed": "#001e2b",
+                      "secondary-fixed-dim": "#afcbd8",
+                      "on-error-container": "#93000a",
+                      "error": "#ba1a1a",
+                      "surface-dim": "#d8dadd",
+                      "surface-container-low": "#f2f4f7",
+                      "tertiary-container": "#875211",
+                      "on-secondary-fixed": "#021f29",
+                      "on-secondary": "#ffffff",
+                      "tertiary-fixed-dim": "#ffb86f",
+                      "error-container": "#ffdad6",
+                      "primary": "#004d66",
+                      "primary-container": "#006686",
+                      "surface-container-highest": "#e0e3e5",
+                      "inverse-primary": "#87d0f4",
+                      "surface-tint": "#006686",
+                      "background": "#f7f9fc"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit-12": "48px",
+                      "gutter": "24px",
+                      "base": "4px",
+                      "unit-4": "16px",
+                      "unit-1": "4px",
+                      "margin-desktop": "40px",
+                      "unit-8": "32px",
+                      "margin-mobile": "16px",
+                      "unit-2": "8px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": [
+                              "Space Grotesk"
+                      ],
+                      "label-sm": [
+                              "JetBrains Mono"
+                      ],
+                      "headline-md": [
+                              "Space Grotesk"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-sm": [
+                              "Space Grotesk"
+                      ],
+                      "headline-lg": [
+                              "Space Grotesk"
+                      ],
+                      "label-md": [
+                              "JetBrains Mono"
+                      ],
+                      "playfair": [
+                              "Playfair Display", "serif"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "0.08em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-md": [
+                              "28px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-sm": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "40px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        .dot-grid {
+            background-image: radial-gradient(theme('colors.surface-variant') 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .bracket-tl { position: absolute; top: -1px; left: -1px; width: 12px; height: 12px; border-top: 2px solid theme('colors.primary'); border-left: 2px solid theme('colors.primary'); }
+        .bracket-tr { position: absolute; top: -1px; right: -1px; width: 12px; height: 12px; border-top: 2px solid theme('colors.primary'); border-right: 2px solid theme('colors.primary'); }
+        .bracket-bl { position: absolute; bottom: -1px; left: -1px; width: 12px; height: 12px; border-bottom: 2px solid theme('colors.primary'); border-left: 2px solid theme('colors.primary'); }
+        .bracket-br { position: absolute; bottom: -1px; right: -1px; width: 12px; height: 12px; border-bottom: 2px solid theme('colors.primary'); border-right: 2px solid theme('colors.primary'); }
+        .hairline-y {
+            border-top: 1px solid theme('colors.outline-variant');
+            border-bottom: 1px solid theme('colors.outline-variant');
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md text-body-md dot-grid min-h-screen flex flex-col">
+<!-- Header Section: Newspaper Style -->
+<header class="bg-surface/80 dark:bg-surface/80 backdrop-blur-md px-margin-desktop py-unit-8 w-full border-b-4 border-on-surface sticky top-0 z-50">
+<div class="flex flex-col md:flex-row justify-between items-baseline mb-unit-4 max-w-[1440px] mx-auto">
+<div class="font-playfair text-5xl md:text-6xl font-bold tracking-tight text-on-surface">THE DAILY SAIL</div>
+<div class="font-label-md text-label-md text-outline uppercase tracking-tighter">VOL. CCXV — NO. 8412 — STARDATE 2154.08.12</div>
+</div>
+<div class="max-w-[1440px] mx-auto flex justify-between items-center py-2 hairline-y">
+<nav class="flex items-center gap-unit-8 overflow-x-auto no-scrollbar">
+<a class="font-label-md text-label-md uppercase tracking-widest text-primary font-bold transition-colors duration-200" href="#">MISSION_CONTROL</a>
+<a class="font-label-md text-label-md uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">TELEMETRY</a>
+<a class="font-label-md text-label-md uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">ARCHIVES</a>
+<a class="font-label-md text-label-md uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">FLEET_LOGS</a>
+</nav>
+<div class="hidden md:flex items-center gap-unit-4 text-outline">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">settings</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">account_circle</span>
+</div>
+</div>
+</header>
+<div class="flex flex-1">
+<!-- Main Content -->
+<main class="flex-1 p-gutter max-w-[1440px] mx-auto w-full flex flex-col gap-unit-8 mt-unit-4">
+<!-- Top HUD Bar -->
+<section class="grid grid-cols-1 lg:grid-cols-4 gap-unit-4 border-b border-outline-variant pb-unit-4">
+<!-- Handler Info -->
+<div class="bg-surface border border-outline-variant p-unit-4 relative flex items-center gap-unit-4">
+<div class="bracket-tl"></div><div class="bracket-tr"></div><div class="bracket-bl"></div><div class="bracket-br"></div>
+<img alt="Mission Handler AI Interface" class="w-16 h-16 rounded-none border border-outline-variant" data-alt="A stylized, high-contrast portrait of a futuristic AI interface character. The avatar is rendered in a minimalist, light-mode color palette with sharp geometric features, avoiding organic curves. Bright, clinical lighting highlights the droid's sleek, glacier-white metallic surface with subtle glacier-blue technological accents. The overall mood is precise, analytical, and professional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBs6i1RY352XgS6VoOBWuMbPXmOxclDpn_OtAaN9Wf5lVooTSeHbZIikGq5Ol_PmQw_aw7Z4TZNAIIDkVsYWklRkTUcPyLo-9YhwualesD1hpEKrWpBmZmwSauD40iQpDCh4owBJ2JMcuI34K99UYKC-vp_c0QBqrgUUn7EKZIXsXnjL5QopiBQorN3ZmWLlUjEzfcYOW8i7QT08WB7hBXhZlQxJjuuzvsPx3-8tcHnlB0kvq73en8Vu98FSa2cpbvycRgICzKFPfK"/>
+<div class="flex-1">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-1">HANDLER-01</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-unit-2">SIGNAL: STABLE</p>
+<button class="bg-primary text-on-primary font-label-sm text-label-sm py-1 px-2 rounded-none border border-primary hover:bg-primary-container hover:text-on-primary-container transition-colors w-full">INITIATE SCAN</button>
+</div>
+</div>
+<!-- Vital Signs -->
+<div class="bg-surface-container-low border border-outline-variant p-unit-4 relative">
+<div class="bracket-tl"></div><div class="bracket-tr"></div><div class="bracket-bl"></div><div class="bracket-br"></div>
+<h4 class="font-label-sm text-label-sm text-on-surface-variant mb-unit-1">DATA CHIPS</h4>
+<p class="font-headline-md text-headline-md text-primary">1,420</p>
+</div>
+<div class="bg-surface-container-low border border-outline-variant p-unit-4 relative">
+<div class="bracket-tl"></div><div class="bracket-tr"></div><div class="bracket-bl"></div><div class="bracket-br"></div>
+<h4 class="font-label-sm text-label-sm text-on-surface-variant mb-unit-1">XP PROGRESS</h4>
+<p class="font-headline-md text-headline-md text-primary">LVL 14 (84%)</p>
+</div>
+<div class="bg-surface-container-low border border-outline-variant p-unit-4 relative">
+<div class="bracket-tl"></div><div class="bracket-tr"></div><div class="bracket-bl"></div><div class="bracket-br"></div>
+<h4 class="font-label-sm text-label-sm text-on-surface-variant mb-unit-1">SIGNAL STABILITY</h4>
+<p class="font-headline-md text-headline-md text-primary">5 DAY STREAK</p>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-unit-8 flex-1">
+<!-- Center: Active Mission -->
+<div class="col-span-1 lg:col-span-8 flex flex-col gap-unit-4">
+<div class="bg-surface border border-outline-variant p-unit-8 relative flex flex-col items-start gap-unit-4">
+<div class="bracket-tl"></div><div class="bracket-tr"></div><div class="bracket-bl"></div><div class="bracket-br"></div>
+<span class="absolute top-unit-2 right-unit-2 font-label-sm text-label-sm text-on-surface-variant">SYS_ID: 8492</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Active Mission: Transit Scan - Sector 42</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Chapter 3 of 5</p>
+<div class="w-full h-64 bg-surface-container-low border border-outline-variant relative overflow-hidden flex items-center justify-center">
+<img alt="Lightcurve wireframe" class="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-multiply" data-alt="A highly technical wireframe sketch of an astronomical lightcurve displaying transit data. The graphic is rendered in a sharp, minimalist style against a bright glacier-white background with a faint structural grid. Data points and line graphs are shown in crisp glacier-blue and dark grey technical outlines, avoiding any organic shapes or soft shadows. The visual conveys scientific rigor, precision, and a modern laboratory environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtUKnlkwX7PXbXpnV1XKd1e02XnrXedesSeiPnG2pbBlRlAEtpBND48xLjA58NuLMLcR487toshuVMSTcdP_SijR16A92PyY9OY2k6y9Ti6It8wiIA602sHNf-d5hzled_IN4uHucc_pQINLtMqwLb6aAxp_c1OO_Nl2pE_IJsoECBT49BARZaL8YwYne13rqoxoJEe9PMig-7kfEr0H2it3yViJNA-qlVfTsZq--DIkSB4kiJDPuHFT-PzhbiJ-aQ-xO_Dpr_ax9L"/>
+<span class="font-label-md text-label-md text-primary z-10 bg-surface/80 px-2 border border-primary">AWAITING INITIALIZATION</span>
+</div>
+<button class="mt-unit-4 bg-primary text-on-primary font-label-md text-label-md py-unit-2 px-unit-8 rounded-none border border-primary hover:bg-primary-container hover:text-on-primary-container transition-colors">INITIALIZE MISSION</button>
+</div>
+<div class="bg-surface border border-outline-variant p-unit-4 relative flex items-start gap-unit-4">
+<div class="bracket-tl"></div><div class="bracket-tr"></div><div class="bracket-bl"></div><div class="bracket-br"></div>
+<img alt="Handler Avatar" class="w-12 h-12 rounded-none border border-outline-variant" data-alt="A smaller variant portrait of the futuristic AI interface character HANDLER-01. Rendered in a sharp, clinical style with stark geometric features and a light-mode color palette. The droid avatar utilizes deep blacks and pristine whites with vibrant glacier-blue accents. The portrait is cropped tightly to function as a chat avatar, emphasizing the analytical and precise nature of the AI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCklP3BLM9Cw8MoNKL6wofS1IF8l6XUAVaUEpqAOO4JWQqcW9P-Ji_S3-beGgXkZrbtcupKzOKDcM_Hbs0J8iyHj8jsdDXx201H3p7w5OySK4fjzawmQFsxL5mHVpouc2rTcMqDLLIbz93zXpk7T3_gGv2a-st6m0wDBG2-NrPpfDOYAvQ_convShFBusdIVLBhRTrBcZzLM0ylEo_PPz_fM8gJjHuagQeaa6uCLrZqZUVGMnmRtMg1-ydIfArXQT500W8N1btbHtx6"/>
+<div>
+<h4 class="font-label-sm text-label-sm text-primary mb-unit-1">HANDLER-01</h4>
+<p class="font-body-md text-body-md text-on-surface">The TESS sector 42 data just arrived, and it looks noisy. We need your eyes on these dips.</p>
+</div>
+</div>
+</div>
+<!-- Right Sidebar -->
+<div class="col-span-1 lg:col-span-4 flex flex-col gap-unit-8">
+<div class="bg-surface-container-low border border-outline-variant p-unit-4 relative">
+<div class="bracket-tl"></div><div class="bracket-tr"></div><div class="bracket-bl"></div><div class="bracket-br"></div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface border-b border-outline-variant pb-unit-2 mb-unit-4">Daily Objectives</h3>
+<ul class="flex flex-col gap-unit-2">
+<li class="flex items-center gap-unit-2 font-body-md text-body-md text-on-surface">
+<span class="material-symbols-outlined text-primary text-[20px]">check_box</span>
+                                Complete 3 scans
+                            </li>
+<li class="flex items-center gap-unit-2 font-body-md text-body-md text-on-surface-variant">
+<span class="material-symbols-outlined text-outline text-[20px]">check_box_outline_blank</span>
+                                Identify 1 transit
+                            </li>
+<li class="flex items-center gap-unit-2 font-body-md text-body-md text-on-surface-variant">
+<span class="material-symbols-outlined text-outline text-[20px]">check_box_outline_blank</span>
+                                Upvote a consensus
+                            </li>
+</ul>
+</div>
+<div class="bg-surface-container-low border border-outline-variant p-unit-4 relative flex-1 flex flex-col">
+<div class="bracket-tl"></div><div class="bracket-tr"></div><div class="bracket-bl"></div><div class="bracket-br"></div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface border-b border-outline-variant pb-unit-2 mb-unit-4">Consensus Feed</h3>
+<div class="flex-1 overflow-y-auto pr-unit-2 space-y-unit-4">
+<div class="border-b border-outline-variant pb-unit-2">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-unit-1">ALERT_ID: 1042</p>
+<p class="font-body-md text-body-md text-on-surface">User_X classified TIC 8492 <span class="text-primary border border-primary px-1 text-[10px] align-middle ml-1">STABLE</span></p>
+</div>
+<div class="border-b border-outline-variant pb-unit-2">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-unit-1">ALERT_ID: 1043</p>
+<p class="font-body-md text-body-md text-on-surface">Conflict detected in K2-18b <span class="text-error border border-error px-1 text-[10px] align-middle ml-1">WARN</span></p>
+</div>
+<div class="border-b border-outline-variant pb-unit-2">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-unit-1">ALERT_ID: 1044</p>
+<p class="font-body-md text-body-md text-on-surface">System update complete <span class="text-primary border border-primary px-1 text-[10px] align-middle ml-1">INFO</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="bg-surface-container-low dark:bg-surface-container-lowest text-primary dark:text-inverse-primary font-label-sm text-label-sm full-width bottom-0 border-t border-outline-variant dark:border-outline flat no shadows text-primary underline text-on-surface-variant opacity-70 hover:text-primary dark:hover:text-inverse-primary underline transition-all w-full py-unit-8 px-gutter flex flex-col md:flex-row justify-between items-center bg-[radial-gradient(#E2E8F0_1px,transparent_1px)] [background-size:24px_24px] z-40 relative">
+<div class="font-label-md text-label-md text-primary mb-unit-4 md:mb-0">
+            © 2144 DEEP SPACE ARCHIVE. SIGNAL ENCRYPTED.
+        </div>
+<div class="flex gap-unit-4">
+<a class="text-on-surface-variant opacity-70 hover:text-primary dark:hover:text-inverse-primary underline transition-all" href="#">Protocol</a>
+<a class="text-on-surface-variant opacity-70 hover:text-primary dark:hover:text-inverse-primary underline transition-all" href="#">Privacy</a>
+<a class="text-on-surface-variant opacity-70 hover:text-primary dark:hover:text-inverse-primary underline transition-all" href="#">Network Status</a>
+<a class="text-on-surface-variant opacity-70 hover:text-primary dark:hover:text-inverse-primary underline transition-all" href="#">Legal</a>
+</div>
+</footer>
+</body></html>

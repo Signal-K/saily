@@ -1,5 +1,5 @@
 describe("mission flow", () => {
-  it("runs asteroid survey as a daily mission game and advances to the next narrative beat", () => {
+  it("runs asteroid survey as a daily mission game and advances to the next narrative update", () => {
     const today = new Date().toISOString().slice(0, 10);
 
     cy.intercept("GET", "/api/game/today*", {

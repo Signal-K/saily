@@ -28,7 +28,7 @@ function getUsername(value: CommentRow["profiles"]) {
 
 function truncateText(text: string, maxLength = 120) {
   if (text.length <= maxLength) return text;
-  return `${text.slice(0, maxLength - 1)}…`;
+  return `${text.slice(0, maxLength - 1)}...`;
 }
 
 function getMissionStatusLabel(streak: number | null | undefined, chips: number | null | undefined) {
@@ -36,6 +36,19 @@ function getMissionStatusLabel(streak: number | null | undefined, chips: number 
   if ((chips ?? 0) > 0) return "Ready";
   return "Standby";
 }
+
+function Brackets() {
+  return (
+    <>
+      <span aria-hidden="true" className="pointer-events-none absolute -left-px -top-px h-3.5 w-3.5 border-l-2 border-t-2 border-[var(--primary)]" />
+      <span aria-hidden="true" className="pointer-events-none absolute -bottom-px -right-px h-3.5 w-3.5 border-b-2 border-r-2 border-[var(--primary)]" />
+    </>
+  );
+}
+
+const panelClass = "relative border border-[var(--outline-variant)] bg-[var(--surface-container-lowest)] shadow-none";
+const dataLabelClass = "font-[var(--font-data)] text-[0.72rem] font-bold uppercase tracking-[0.08em] text-[var(--muted)]";
+const navLinkClass = "font-[var(--font-data)] text-[0.78rem] font-bold uppercase tracking-[0.08em] text-[var(--muted)] no-underline whitespace-nowrap hover:text-[var(--primary)]";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -86,163 +99,138 @@ export default async function Home() {
   const playedToday = Boolean(todayPlay);
   const missionStatus = getMissionStatusLabel(stats?.current_streak, profile?.data_chips);
   const missionBars = [stats?.current_streak ?? 0, profile?.data_chips ?? 0, stats?.wins ?? 0, badges.length];
+  const dateLabel = todayDate.toLocaleDateString("en-AU", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+  const leadActionLabel = playedToday ? "Review Findings" : "Initialize Mission";
+  const activeChapter = todayStoryline.chapters[chapterNumber - 1];
+  const objectives: Array<[boolean, string]> = [
+    [playedToday, "Complete today's scan"],
+    [(stats?.current_streak ?? 0) > 0, "Keep the signal streak alive"],
+    [false, "Check the consensus desk"],
+  ];
 
   return (
-    <section className="home-dashboard">
-      <section className="home-console-shell hero hero-mission">
-        <div className="home-console-grid">
-          <div className="home-console-primary">
-            <div className="home-console-kicker-row">
-              <p className="eyebrow">Data Terminal</p>
-              <span className={`home-console-status is-${missionStatus.toLowerCase()}`}>{missionStatus}</span>
-            </div>
-            <div className="home-mission-header">
-              <Image
-                src={todayAvatarSrc}
-                alt={todayCharacter.name}
-                width={56}
-                height={56}
-                unoptimized
-                className="home-mission-avatar"
-              />
-              <div>
-                <h1>{todayStoryline.title}</h1>
-                <p className="muted">
-                  {todayCharacter.name} &middot; {todayCharacter.occupation}
-                  {user && <span className="home-chapter-badge"> &middot; Log {chapterNumber} of {todayStoryline.chapters.length}</span>}
-                </p>
-              </div>
-            </div>
-            {playedToday ? (
-              <>
-                <p className="home-mission-desc home-mission-done">
-                  ✓ Classification complete &mdash; confidence {todayPlay?.score ?? 0}%
-                </p>
-                <div className="cta-row">
-                  <Link href="/games/today" className="button button-primary button-full">
-                    Review Findings
-                  </Link>
-                  <Link href="/discuss" className="button">
-                    Consensus
-                  </Link>
-                </div>
-              </>
-            ) : (
-              <>
-                <p className="home-mission-desc">Analyze real space data with {todayCharacter.name} to advance today&apos;s research mission.</p>
-                <div className="cta-row">
-                  <Link href="/games/today" className="button button-primary button-full">
-                    Initialize Mission
-                  </Link>
-                  {/* <Link href="/calendar" className="button">
-                    Archive
-                  </Link> */}
-                  <Link href="/discuss" className="button">
-                    Consensus
-                  </Link>
-                </div>
-              </>
-            )}
-            <div className="home-tomorrow-teaser">
-              <Image src={tomorrowAvatarSrc} alt={tomorrowCharacter.name} width={24} height={24} unoptimized className="home-tomorrow-avatar" />
-              <span className="muted">Upcoming: {tomorrowCharacter.name} &mdash; {tomorrowStoryline.title}</span>
-            </div>
-          </div>
-
-          <div className="home-console-side">
-            <div className="home-console-panel">
-              <div className="home-console-panel-head">
-                <span>Network Integrity</span>
-                <small>sync</small>
-              </div>
-              <div className="home-signal-bars" aria-hidden>
-                {missionBars.map((value, idx) => (
-                  <span key={`${value}-${idx}`} style={{ height: `${24 + Math.min(44, value * 6)}px` }} />
-                ))}
-              </div>
-              <div className="home-console-readout">
-                <span>Active Log {stats?.current_streak ?? 0}</span>
-                <span className="home-readout-chips">
-                  <Image src="/assets/data-chip.svg" alt="" width={16} height={16} />
-                  <span>Chips {profile?.data_chips ?? 0}</span>
-                </span>
-              </div>
-            </div>
-            <div className="home-console-panel">
-              <div className="home-console-panel-head">
-                <span>Quick Access</span>
-                <small>io</small>
-              </div>
-              <div className="home-console-links">
-                <Link href={user ? "/profile" : "/auth/sign-in"} className="home-console-link">
-                  User Port
-                </Link>
-                {/* <Link href="/search" className="home-console-link">
-                  Registry
-                </Link>
-                <Link href="/games/asteroids" className="home-console-link">
-                  Survey
-                </Link>
-                <Link href="/games/mars" className="home-console-link">
-                  Classification
-                </Link> */}
-              </div>
-            </div>
-          </div>
+    <section className="mx-auto flex w-[min(1360px,calc(100%_-_1rem))] flex-col gap-5 pb-8 md:w-[min(1360px,calc(100%_-_2rem))]">
+      <header className="border-b-4 border-[var(--on-surface)] bg-[color-mix(in_oklab,var(--surface-container-lowest)_92%,transparent)] pb-3 pt-5" aria-label="Daily Sail command edition">
+        <div className="flex flex-col gap-2 border-b border-[var(--outline-variant)] pb-2 sm:flex-row sm:items-end sm:justify-between">
+          <p className={dataLabelClass}>Vol. {todayDate.getFullYear()} &middot; No. {chapterNumber}-{stats?.games_played ?? 0}</p>
+          <p className={dataLabelClass}>{dateLabel}</p>
         </div>
+        <div className="py-3 font-[var(--font-brand)] text-[clamp(3.6rem,10vw,8.25rem)] font-bold uppercase leading-[0.9] text-[var(--on-surface)] md:text-center">
+          The Daily Sail
+        </div>
+        <nav className="flex gap-[clamp(1rem,4vw,3rem)] overflow-x-auto border-y border-[var(--outline-variant)] py-2 md:justify-center" aria-label="Mission sections">
+          <Link href="/games/today" className={navLinkClass}>Mission Control</Link>
+          <Link href="/calendar" className={navLinkClass}>Archives</Link>
+          <Link href="/discuss" className={navLinkClass}>Consensus</Link>
+          <Link href="/profile" className={navLinkClass}>Fleet Log</Link>
+        </nav>
+      </header>
+
+      <section className="grid gap-4 lg:grid-cols-[minmax(280px,1.4fr)_repeat(3,minmax(150px,1fr))]" aria-label="Your command status">
+        <article className={`${panelClass} flex min-h-32 items-center gap-4 p-4 max-sm:flex-col max-sm:items-start`}>
+          <Brackets />
+          <Image src={todayAvatarSrc} alt={todayCharacter.name} width={64} height={64} unoptimized className="border-2 border-[var(--primary)] p-0.5" />
+          <div>
+            <p className="eyebrow">{todayCharacter.name}</p>
+            <h2 className="m-0 text-[clamp(1.35rem,3vw,2rem)] leading-none text-[var(--primary)]">{missionStatus} signal</h2>
+            <Link href="/games/today" className="mt-3 inline-flex font-[var(--font-data)] text-[0.68rem] font-extrabold uppercase tracking-[0.08em] underline underline-offset-4">
+              {leadActionLabel}
+            </Link>
+          </div>
+        </article>
+        {[
+          ["Data Chips", profile?.data_chips ?? 0],
+          ["Current Streak", stats?.current_streak ?? 0],
+          ["Total Score", stats?.total_score ?? 0],
+        ].map(([label, value]) => (
+          <article key={label} className={`${panelClass} flex min-h-32 flex-col justify-center gap-2 p-4`}>
+            <Brackets />
+            <span className={dataLabelClass}>{label}</span>
+            <strong className="font-[var(--font-headlines)] text-[clamp(1.8rem,4vw,2.6rem)] leading-none text-[var(--primary)]">{value}</strong>
+          </article>
+        ))}
       </section>
 
-      {/* <div className="home-games-row">
-        <Link href="/games/today" className="home-game-card">
-          <span className="home-game-icon" aria-hidden>◌</span>
-          <span className="home-game-label">Transit Scan</span>
-        </Link>
-        <Link href="/games/asteroids" className="home-game-card">
-          <span className="home-game-icon" aria-hidden>◫</span>
-          <span className="home-game-label">Ice Mapping</span>
-        </Link>
-        <Link href="/games/mars" className="home-game-card">
-          <span className="home-game-icon" aria-hidden>◎</span>
-          <span className="home-game-label">Surface Tags</span>
-        </Link>
-      </div> */}
-
-      {/* ── Signed-in user sections ─────────────────────────────────── */}
-      {user ? (
-        <>
-          {/* Stats */}
-          <section className="panel home-section" aria-label="Your stats">
-            <h2>Stats</h2>
-            <div className="home-stats-grid">
-              <article className="card">
-                <h3>Chips</h3>
-                <p>{profile?.data_chips ?? 0}</p>
-              </article>
-              <article className="card">
-                <h3>Streak</h3>
-                <p>{stats?.current_streak ?? 0}</p>
-              </article>
-              <article className="card">
-                <h3>Score</h3>
-                <p>{stats?.total_score ?? 0}</p>
-              </article>
-              <article className="card">
-                <h3>Wins</h3>
-                <p>{stats?.wins ?? 0}</p>
-              </article>
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(300px,0.86fr)]">
+        <main className="grid gap-5">
+          <article className={`${panelClass} p-[clamp(1.2rem,3vw,2rem)]`}>
+            <Brackets />
+            <div className="flex items-center justify-between gap-4">
+              <p className="eyebrow">Active Mission</p>
+              <span className={`home-console-status is-${missionStatus.toLowerCase()}`}>{playedToday ? "Filed" : missionStatus}</span>
             </div>
-          </section>
+            <h1 className="my-3 max-w-[12ch] text-[clamp(2.65rem,7vw,5.7rem)] leading-[0.94] tracking-normal max-sm:max-w-none max-sm:text-[clamp(2.25rem,16vw,3.6rem)]">
+              {todayStoryline.title}
+            </h1>
+            <p className={`${dataLabelClass} mb-5`}>
+              Chapter {chapterNumber} of {todayStoryline.chapters.length} by {todayCharacter.name}, {todayCharacter.occupation}
+            </p>
+            <div
+              className="relative min-h-[clamp(220px,32vw,380px)] overflow-hidden border border-[var(--outline-variant)] bg-[var(--surface-container-low)] [background-image:linear-gradient(90deg,color-mix(in_oklab,var(--primary)_10%,transparent)_1px,transparent_1px),linear-gradient(0deg,color-mix(in_oklab,var(--primary)_10%,transparent)_1px,transparent_1px)] [background-size:34px_34px]"
+              aria-hidden="true"
+            >
+              <div className="absolute inset-[18%_8%] rotate-[-5deg] skew-x-[-18deg] border border-[color-mix(in_oklab,var(--primary)_45%,transparent)]" />
+              <div className="absolute inset-[30%_18%] rotate-[-5deg] skew-x-[-18deg] border border-[color-mix(in_oklab,var(--primary)_28%,transparent)]" />
+              <div className="absolute left-[42%] top-[42%] h-[18px] w-[18px] rotate-[-5deg] bg-[var(--primary)]" />
+              <div className="absolute bottom-5 right-5 z-[1] flex h-[42%] w-[34%] items-end gap-2 opacity-80 max-sm:w-[48%]">
+                {missionBars.map((value, idx) => (
+                  <span key={`${value}-${idx}`} className="min-w-3 flex-1 bg-[color-mix(in_oklab,var(--primary)_68%,white)]" style={{ height: `${30 + Math.min(70, value * 7)}%` }} />
+                ))}
+              </div>
+              <span className="absolute bottom-4 left-4 z-[2] border border-[var(--primary)] bg-[color-mix(in_oklab,var(--surface-container-lowest)_86%,transparent)] px-3 py-2 font-[var(--font-data)] text-[0.76rem] font-extrabold uppercase tracking-[0.08em] text-[var(--primary)]">
+                {playedToday ? `Confidence filed at ${todayPlay?.score ?? 0}%` : "Awaiting player classification"}
+              </span>
+            </div>
+            <p className="my-5 max-w-[72ch] text-[1.05rem] text-[var(--on-surface-variant)]">
+              {playedToday
+                ? "Your field report is in the archive. Review the evidence, compare the result, or brief the consensus desk."
+                : activeChapter?.briefing ?? `Analyze real space data with ${todayCharacter.name} to advance today's research mission.`}
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Link href="/games/today" className="inline-flex items-center justify-center border border-[var(--primary)] bg-[var(--primary)] px-6 py-3 font-[var(--font-headlines)] text-sm font-bold uppercase tracking-[0.05em] text-white no-underline hover:bg-[var(--secondary)]">
+                {leadActionLabel}
+              </Link>
+              <Link href="/discuss" className="inline-flex items-center justify-center border border-[var(--outline)] bg-[var(--surface-container-lowest)] px-6 py-3 font-[var(--font-headlines)] text-sm font-bold uppercase tracking-[0.05em] no-underline hover:border-[var(--primary)] hover:bg-[var(--surface-container-low)]">
+                Consensus Desk
+              </Link>
+            </div>
+          </article>
 
-          {/* Badges + recent results side by side */}
-          <div className="home-grid-two">
-            <article className="panel home-section" aria-label="Badges">
-              <h2>Badges</h2>
+          <section className="grid gap-5 md:grid-cols-2" aria-label="Recent field notes">
+            <article className={`${panelClass} p-4`}>
+              <Brackets />
+              <h2 className="mb-4 border-b border-[var(--outline-variant)] pb-2 text-xl tracking-normal">Recent Dispatches</h2>
+              {plays.length ? (
+                <ul className="m-0 grid list-none gap-3 p-0">
+                  {plays.slice(0, 3).map((play) => (
+                    <li key={`${play.game_date}-${play.played_at}`} className="grid gap-1 border-b border-[var(--outline-variant)] pb-3">
+                      <span className={dataLabelClass}>{play.game_date}</span>
+                      <span className={`home-result-status ${play.won ? "is-win" : "is-played"}`}>{play.won ? "Won" : "Filed"}</span>
+                      <span className="text-[var(--muted)]">
+                        Score {play.score} &middot; {play.attempts} tries
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="muted">No field reports yet.</p>
+              )}
+            </article>
+
+            <article className={`${panelClass} p-4`}>
+              <Brackets />
+              <h2 className="mb-4 border-b border-[var(--outline-variant)] pb-2 text-xl tracking-normal">Medals &amp; Marks</h2>
               {badges.length ? (
-                <div className="home-badge-grid">
-                  {badges.map((badge) => (
-                    <div className="card" key={badge.slug}>
-                      <h3>{badge.name}</h3>
-                      <p>{badge.description}</p>
+                <div className="grid gap-3">
+                  {badges.slice(0, 2).map((badge) => (
+                    <div className="border border-[var(--outline-variant)] bg-[var(--surface-container-low)] p-3" key={badge.slug}>
+                      <h3 className="mb-1 mt-0 text-[0.95rem] text-[var(--primary)]">{badge.name}</h3>
+                      <p className="m-0 text-sm text-[var(--muted)]">{badge.description}</p>
                     </div>
                   ))}
                 </div>
@@ -250,48 +238,55 @@ export default async function Home() {
                 <p className="muted">Complete missions to unlock badges.</p>
               )}
             </article>
+          </section>
+        </main>
 
-            <article className="panel home-section" aria-label="Recent games">
-              <h2>Recent</h2>
-              {plays.length ? (
-                <ul className="home-list">
-                  {plays.map((play) => (
-                    <li key={`${play.game_date}-${play.played_at}`} className="home-list-item">
-                      <span className="home-result-date">{play.game_date}</span>
-                      <span className={`home-result-status ${play.won ? "is-win" : "is-played"}`}>{play.won ? "Won" : "Played"}</span>
-                      <span className="home-result-meta">
-                        Score {play.score} &middot; {play.attempts} tries
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="muted">No games yet.</p>
-              )}
-            </article>
-          </div>
-        </>
-      ) : null}
+        <aside className="grid gap-5" aria-label="Daily journal">
+          <article className={`${panelClass} p-4`}>
+            <Brackets />
+            <h2 className="mb-4 border-b border-[var(--outline-variant)] pb-2 text-xl tracking-normal">Daily Objectives</h2>
+            <ul className="m-0 grid list-none gap-3 p-0">
+              {objectives.map(([complete, label]) => (
+                <li key={label} className={`flex items-center gap-3 font-[var(--font-data)] text-[0.78rem] font-bold uppercase tracking-[0.08em] ${complete ? "text-[var(--primary)]" : "text-[var(--muted)]"}`}>
+                  <span aria-hidden="true">{complete ? "[x]" : "[ ]"}</span>
+                  {label}
+                </li>
+              ))}
+            </ul>
+          </article>
 
-      {/* ── Community feed ──────────────────────────────────────────── */}
-      <section className="panel home-section" aria-label="Community feed">
-        <h2>Community</h2>
-        {comments.length ? (
-          <ul className="home-list">
-            {comments.map((comment) => (
-              <li key={comment.id} className="home-feed-item">
-                <p>
-                  <strong>@{getUsername(comment.profiles)}</strong>{" "}
-                  <span className="muted">on {comment.game_date}</span>
-                </p>
-                <p>{truncateText(comment.body)}</p>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="muted">No community activity yet.</p>
-        )}
-      </section>
+          <article className={`${panelClass} p-4`}>
+            <Brackets />
+            <h2 className="mb-4 border-b border-[var(--outline-variant)] pb-2 text-xl tracking-normal">Tomorrow&apos;s Teaser</h2>
+            <div className="flex items-center gap-3">
+              <Image src={tomorrowAvatarSrc} alt={tomorrowCharacter.name} width={40} height={40} unoptimized className="border border-[color-mix(in_oklab,var(--primary)_24%,transparent)] bg-white" />
+              <p className="m-0 grid gap-1">
+                <strong>{tomorrowStoryline.title}</strong>
+                <span className="text-sm text-[var(--muted)]">{tomorrowCharacter.name} takes the next watch.</span>
+              </p>
+            </div>
+          </article>
+
+          <article className={`${panelClass} p-4`}>
+            <Brackets />
+            <h2 className="mb-4 border-b border-[var(--outline-variant)] pb-2 text-xl tracking-normal">Consensus Feed</h2>
+            {comments.length ? (
+              <ul className="m-0 grid list-none gap-3 p-0">
+                {comments.slice(0, 4).map((comment) => (
+                  <li key={comment.id} className="border-b border-[var(--outline-variant)] pb-3">
+                    <p className="m-0">
+                      <strong>@{getUsername(comment.profiles)}</strong> <span className="muted">on {comment.game_date}</span>
+                    </p>
+                    <p className="m-0 text-[var(--muted)]">{truncateText(comment.body, 96)}</p>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="muted">No community activity yet.</p>
+            )}
+          </article>
+        </aside>
+      </div>
     </section>
   );
 }

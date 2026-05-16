@@ -4,7 +4,9 @@
       "mcp__stitch__list_projects",
       "mcp__stitch__list_screens",
       "mcp__stitch__generate_screen_from_text",
-      "mcp__stitch__get_screen"
+      "mcp__stitch__get_screen",
+      "mcp__knowns__project",
+      "mcp__knowns__tasks"
     ]
   }
 }

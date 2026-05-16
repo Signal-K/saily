@@ -1,0 +1,42 @@
+{
+  "taskId": "ycg2sb",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "ycg2sb",
+      "version": 1,
+      "timestamp": "2026-05-14T00:26:04.42469Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": null,
+          "newValue": "todo"
+        },
+        {
+          "field": "priority",
+          "oldValue": null,
+          "newValue": "low"
+        }
+      ],
+      "snapshot": {
+        "acceptanceCriteria": [
+          {
+            "text": "Verify if stitch/ and web/stitch-designs/ are used by current dev team",
+            "completed": false
+          },
+          {
+            "text": "Archive to .knowns/archive/ or delete if obsolete",
+            "completed": false
+          }
+        ],
+        "labels": [
+          "cleanup"
+        ],
+        "priority": "low",
+        "status": "todo",
+        "title": "Audit Stitch/Design directories"
+      }
+    }
+  ]
+}

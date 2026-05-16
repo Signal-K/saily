@@ -121,7 +121,6 @@ export function AuthStatus() {
         aria-haspopup="menu"
       >
         <Image className="profile-avatar" src={auth.avatarUrl} alt="Profile avatar" width={24} height={24} unoptimized />
-        <span className="profile-email">{auth.email}</span>
       </button>
 
       {menuOpen ? (
