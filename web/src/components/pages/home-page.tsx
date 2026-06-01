@@ -114,14 +114,14 @@ export default async function Home() {
   ];
 
   return (
-    <section className="mx-auto flex w-[min(1360px,calc(100%_-_1rem))] flex-col gap-5 pb-8 md:w-[min(1360px,calc(100%_-_2rem))]">
-      <header className="border-b-4 border-[var(--on-surface)] bg-[color-mix(in_oklab,var(--surface-container-lowest)_92%,transparent)] pb-3 pt-5" aria-label="Daily Sail command edition">
+    <section className="mx-auto flex w-[min(var(--spacing-content-max),calc(100%_-_1rem))] flex-col gap-5 pb-8 md:w-[min(var(--spacing-content-max),calc(100%_-_2rem))]">
+      <header className="border-b-4 border-[var(--on-surface)] bg-[color-mix(in_oklab,var(--surface-container-lowest)_92%,transparent)] pb-3 pt-5" aria-label="Daily Transit command edition">
         <div className="flex flex-col gap-2 border-b border-[var(--outline-variant)] pb-2 sm:flex-row sm:items-end sm:justify-between">
           <p className={dataLabelClass}>Vol. {todayDate.getFullYear()} &middot; No. {chapterNumber}-{stats?.games_played ?? 0}</p>
           <p className={dataLabelClass}>{dateLabel}</p>
         </div>
         <div className="py-3 font-[var(--font-brand)] text-[clamp(3.6rem,10vw,8.25rem)] font-bold uppercase leading-[0.9] text-[var(--on-surface)] md:text-center">
-          The Daily Sail
+          The Daily Transit
         </div>
         <nav className="flex gap-[clamp(1rem,4vw,3rem)] overflow-x-auto border-y border-[var(--outline-variant)] py-2 md:justify-center" aria-label="Mission sections">
           <Link href="/games/today" className={navLinkClass}>Mission Control</Link>
@@ -156,7 +156,7 @@ export default async function Home() {
         ))}
       </section>
 
-      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(300px,0.86fr)]">
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(280px,0.72fr)]">
         <main className="grid gap-5">
           <article className={`${panelClass} p-[clamp(1.2rem,3vw,2rem)]`}>
             <Brackets />

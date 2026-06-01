@@ -1,25 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import { Analytics } from "@vercel/analytics/react";
-import { Source_Serif_4 } from "next/font/google";
 import { SWRegister } from "@/components/sw-register";
-import { AuthStatus } from "@/components/auth-status";
-import { HeaderSearch } from "@/components/header-search";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { BreadcrumbsNav } from "@/components/breadcrumbs-nav";
+import { DailyTransitMasthead } from "@/components/daily-transit-masthead";
 import { PostHogRuntime } from "@/components/posthog-runtime";
 import { PwaInstallPrompt } from "@/components/pwa-install-prompt";
-import { createClient } from "@/lib/supabase/server";
-import Image from "next/image";
 import "./globals.css";
-
-const sourceSerif4 = Source_Serif_4({
-  subsets: ["latin"],
-  variable: "--font-source-serif",
-  display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
-});
 
 const THEME_COOKIE = "cosmo_theme";
 
@@ -40,13 +28,13 @@ function getTimePeriod(): TimePeriod {
 }
 
 export const metadata: Metadata = {
-  title: "The Daily Sail",
-  description: "Citizen Science Daily — hunt planets, survey asteroids, classify Mars",
+  title: "The Daily Transit",
+  description: "Citizen Science Daily — hunt planets and classify Mars",
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "The Daily Sail",
+    title: "The Daily Transit",
   },
   icons: {
     icon: [
@@ -63,8 +51,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f7f9fb" },
-    { media: "(prefers-color-scheme: dark)", color: "#001016" },
+    { media: "(prefers-color-scheme: light)", color: "#f7f5ee" },
+    { media: "(prefers-color-scheme: dark)", color: "#111316" },
   ],
 };
 
@@ -74,99 +62,306 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const cookieStore = await cookies();
-  const headerStore = await headers();
-  const supabase = await createClient();
   const initialTheme = normalizeTheme(cookieStore.get(THEME_COOKIE)?.value);
   const timePeriod = getTimePeriod();
-  const pathname = headerStore.get("x-pathname") ?? "/";
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  const isSignedOutLanding = pathname === "/" && !user;
 
   return (
     <html
       lang="en"
       data-theme={initialTheme}
       data-period={timePeriod}
-      className={sourceSerif4.variable}
     >
       <body>
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              .dt-page-shell {
+                width: min(var(--spacing-content-max, 1180px), calc(100% - 3rem));
+                margin-inline: auto;
+                padding: 1rem 0 5rem;
+              }
+
+              .breadcrumbs-shell {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1rem;
+                margin: 0 0 1rem;
+                border: 1px solid var(--rule, #d9dde3);
+                border-top: 3px double var(--ink, #16181c);
+                background: var(--bg-surface, #fff);
+                padding: 0.65rem 0.8rem;
+              }
+
+              .breadcrumbs-back {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.4rem;
+                border: 0;
+                background: transparent;
+                color: var(--ink, #16181c);
+                font-family: var(--font-data, ui-monospace, monospace);
+                font-size: 0.68rem;
+                font-weight: 700;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                cursor: pointer;
+              }
+
+              .breadcrumbs-nav ol {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 0.4rem;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+              }
+
+              .breadcrumbs-nav li {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.4rem;
+                color: var(--fg-muted, #5b636f);
+                font-family: var(--font-data, ui-monospace, monospace);
+                font-size: 0.68rem;
+                font-weight: 700;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+              }
+
+              .breadcrumbs-nav li + li::before {
+                content: "/";
+                color: var(--fg-faded, #9099a4);
+              }
+
+              .breadcrumbs-nav a {
+                color: var(--fg-muted, #5b636f);
+                text-decoration: none;
+              }
+
+              .breadcrumbs-nav a:hover {
+                color: var(--primary, #0a82b3);
+                text-decoration: underline;
+                text-underline-offset: 3px;
+              }
+
+              .breadcrumbs-nav .is-current {
+                color: var(--primary, #0a82b3);
+              }
+
+              .breadcrumbs-nav .is-muted {
+                color: var(--fg-faded, #9099a4);
+              }
+
+              .panel,
+              .card {
+                border: 1px solid var(--rule, #d9dde3);
+                background: var(--bg-surface, #fff);
+                padding: clamp(1rem, 3vw, 1.5rem);
+                box-shadow: var(--shadow-card, 0 1px 0 #d9dde3, 0 8px 24px -12px rgba(7, 41, 56, 0.18));
+              }
+
+              .panel > h1:first-child,
+              .panel h1 {
+                margin-top: 0;
+              }
+
+              .calendar-page-shell,
+              .search-page-shell {
+                display: grid;
+                gap: 1rem;
+                width: 100%;
+              }
+
+              .calendar-page-shell > .panel:first-child,
+              .search-page-header,
+              .search-empty-state,
+              .search-error-panel,
+              .search-section {
+                border-top: 3px double var(--ink, #16181c);
+              }
+
+              .calendar-page-header,
+              .search-page-header {
+                display: flex;
+                align-items: end;
+                justify-content: space-between;
+                gap: 1rem;
+              }
+
+              .calendar-page-toolbar {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1rem;
+                border-bottom: 1px solid var(--rule, #d9dde3);
+                padding-bottom: 1rem;
+                margin-bottom: 1rem;
+              }
+
+              .calendar-page-toolbar-right {
+                display: flex;
+                gap: 0.5rem;
+              }
+
+              .calendar-page-month {
+                margin: 0;
+                font-family: var(--font-display, Georgia, serif);
+                font-size: clamp(1.4rem, 3vw, 2rem);
+                font-weight: 700;
+              }
+
+              .calendar-page-nav-btn {
+                border: 1px solid var(--ink, #16181c);
+                background: var(--bg-surface, #fff);
+                color: var(--ink, #16181c);
+                padding: 0.5rem 0.75rem;
+                font-family: var(--font-data, ui-monospace, monospace);
+                font-size: 0.68rem;
+                font-weight: 700;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                text-decoration: none;
+              }
+
+              .calendar-page-nav-btn:hover {
+                border-color: var(--primary, #0a82b3);
+                color: var(--primary, #0a82b3);
+                text-decoration: none;
+              }
+
+              .calendar-page-nav-subtle {
+                border-color: var(--rule, #d9dde3);
+                color: var(--fg-muted, #5b636f);
+              }
+
+              .calendar-page-weekdays,
+              .calendar-page-grid {
+                display: grid;
+                grid-template-columns: repeat(7, minmax(0, 1fr));
+                gap: 0.35rem;
+              }
+
+              .calendar-page-weekdays {
+                margin-bottom: 0.35rem;
+              }
+
+              .calendar-page-weekdays span {
+                color: var(--fg-muted, #5b636f);
+                font-family: var(--font-data, ui-monospace, monospace);
+                font-size: 0.65rem;
+                font-weight: 700;
+                letter-spacing: 0.12em;
+                text-align: center;
+                text-transform: uppercase;
+              }
+
+              .calendar-page-cell {
+                display: grid;
+                min-height: 72px;
+                place-items: center;
+                border: 1px solid var(--rule, #d9dde3);
+                background: var(--bg-surface-warm, #f4efe6);
+                color: var(--ink, #16181c);
+                font-family: var(--font-data, ui-monospace, monospace);
+                font-weight: 700;
+                text-decoration: none;
+              }
+
+              .calendar-page-cell.is-empty {
+                border-color: transparent;
+                background: transparent;
+              }
+
+              .calendar-page-cell.is-done {
+                border-color: var(--color-moss-400, #5e944a);
+                background: color-mix(in oklab, var(--color-moss-200, #c9dfb8) 40%, white);
+              }
+
+              .calendar-page-cell.is-partial {
+                border-color: var(--color-solar-400, #f1a417);
+                background: var(--color-solar-50, #fff5dc);
+              }
+
+              .calendar-page-cell:hover {
+                border-color: var(--primary, #0a82b3);
+                color: var(--primary, #0a82b3);
+                text-decoration: none;
+              }
+
+              .calendar-page-legend {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                margin-top: 1rem;
+                color: var(--fg-muted, #5b636f);
+                font-family: var(--font-data, ui-monospace, monospace);
+                font-size: 0.7rem;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+              }
+
+              .legend-item {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.4rem;
+              }
+
+              .legend-item .dot {
+                width: 0.7rem;
+                height: 0.7rem;
+                border: 1px solid var(--rule, #d9dde3);
+                background: var(--bg-surface-warm, #f4efe6);
+              }
+
+              .legend-item .dot.done { background: var(--color-moss-400, #5e944a); }
+              .legend-item .dot.partial { background: var(--color-solar-400, #f1a417); }
+
+              @media (max-width: 760px) {
+                .dt-page-shell {
+                  width: min(100% - 1rem, var(--spacing-content-max, 1180px));
+                }
+
+                .breadcrumbs-shell,
+                .calendar-page-toolbar,
+                .calendar-page-header,
+                .search-page-header {
+                  align-items: flex-start;
+                  flex-direction: column;
+                }
+
+                .calendar-page-cell {
+                  min-height: 48px;
+                }
+              }
+            `,
+          }}
+        />
         <PostHogRuntime />
         <SWRegister />
-        {isSignedOutLanding ? (
-          <main>{children}</main>
-        ) : (
-          <>
-            <header className="site-header">
-              {/* Row 1: brand + search + actions */}
-              <div className="header-top-row">
-                <div className="header-brand-row">
-                  <Link href="/" className="home-icon-link" aria-label="The Daily Sail home">
-                    <Image
-                      src="/logo-icon.png"
-                      alt=""
-                      width={34}
-                      height={34}
-                      className="brand-logo"
-                    />
-                    <span className="home-brand-label">
-                      <span className="home-brand-name">The Daily <em>Sail</em></span>
-                      <span className="home-brand-sub">Citizen Science Daily</span>
-                    </span>
-                  </Link>
-                </div>
+        <DailyTransitMasthead initialTheme={initialTheme} />
 
-                <HeaderSearch />
+        {/* Fixed bottom tab bar — visible only on mobile via CSS */}
+        <nav className="mobile-bottom-nav" aria-label="Mobile navigation">
+          <Link href="/" className="mobile-tab" data-cy="nav-home-mobile">
+            <span className="mobile-tab-icon" aria-hidden>◌</span>
+            <span>Home</span>
+          </Link>
+          <Link href="/games/today" className="mobile-tab" data-cy="nav-today-mobile">
+            <span className="mobile-tab-icon" aria-hidden>◎</span>
+            <span>Mission</span>
+          </Link>
+          <Link href="/discuss" className="mobile-tab" data-cy="nav-discuss-mobile">
+            <span className="mobile-tab-icon" aria-hidden>§</span>
+            <span>Discuss</span>
+          </Link>
+        </nav>
 
-                <div className="header-actions">
-                  <ThemeToggle initialTheme={initialTheme} />
-                  <AuthStatus />
-                </div>
-              </div>
-
-              {/* Row 2: main navigation */}
-              <div className="header-nav-row">
-                <nav className="nav-links desktop-nav" aria-label="Main navigation">
-                  <Link href="/games/today" className="header-nav-link" data-cy="nav-today">
-                    Today&apos;s Mission
-                  </Link>
-                  <Link href="/calendar" className="header-nav-link" data-cy="nav-calendar">
-                    Calendar
-                  </Link>
-                  <Link href="/discuss" className="header-nav-link" data-cy="nav-discuss">
-                    Discuss
-                  </Link>
-                </nav>
-              </div>
-            </header>
-
-            {/* Fixed bottom tab bar — visible only on mobile via CSS */}
-            <nav className="mobile-bottom-nav" aria-label="Mobile navigation">
-              <Link href="/" className="mobile-tab" data-cy="nav-home-mobile">
-                <span className="mobile-tab-icon" aria-hidden>⌂</span>
-                <span>Home</span>
-              </Link>
-              <Link href="/games/today" className="mobile-tab" data-cy="nav-today-mobile">
-                <span className="mobile-tab-icon" aria-hidden>🔭</span>
-                <span>Mission</span>
-              </Link>
-              {/* <Link href="/calendar" className="mobile-tab" data-cy="nav-calendar-mobile">
-                <span className="mobile-tab-icon" aria-hidden>📅</span>
-                <span>Calendar</span>
-              </Link> */}
-              <Link href="/discuss" className="mobile-tab" data-cy="nav-discuss-mobile">
-                <span className="mobile-tab-icon" aria-hidden>💬</span>
-                <span>Discuss</span>
-              </Link>
-            </nav>
-
-            <main className="container page-shell">
-              <BreadcrumbsNav />
-              {children}
-            </main>
-          </>
-        )}
+        <main className="dt-page-shell">
+          <BreadcrumbsNav />
+          {children}
+        </main>
         <PwaInstallPrompt />
         <Analytics />
       </body>

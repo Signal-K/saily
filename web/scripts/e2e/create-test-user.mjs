@@ -1,4 +1,6 @@
-import { appendFileSync } from "node:fs";
+import { appendFileSync, writeFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
 
 function cleanEnv(value) {
   return (value ?? "").trim().replace(/^"+|"+$/g, "");
@@ -59,7 +61,11 @@ const outputLines = [
 if (process.env.GITHUB_ENV) {
   appendFileSync(process.env.GITHUB_ENV, `${outputLines.join("\n")}\n`, { encoding: "utf8" });
 } else {
-  console.log(outputLines.join("\n"));
+  const scriptDir = dirname(fileURLToPath(import.meta.url));
+  const webDir = join(scriptDir, "..", "..");
+  const envPath = join(webDir, ".env.e2e.local");
+  writeFileSync(envPath, `${outputLines.join("\n")}\n`, { encoding: "utf8" });
+  console.log(`Wrote E2E env to ${envPath}`);
 }
 
 console.log(`Created E2E user ${email}`);

@@ -2,12 +2,14 @@ import { describe, expect, it } from "vitest";
 import { getMissionGameOrder } from "../mission";
 
 describe("mission game order", () => {
-  it("returns a single-game mission for the locked MVP path", () => {
-    const results = Array.from({ length: 12 }, (_, chapterIndex) => getMissionGameOrder("juniper", chapterIndex));
+  it("returns the visible two-game mission path without asteroid", () => {
+    const results = Array.from({ length: 12 }, (_, chapterIndex) => getMissionGameOrder("gizmo", chapterIndex));
 
     results.forEach((order) => {
-      expect(order).toHaveLength(1);
-      expect(["asteroid", "mars", "planet"]).toContain(order[0]);
+      expect(order).toHaveLength(2);
+      expect(order).toContain("planet");
+      expect(order).toContain("mars");
+      expect(order).not.toContain("asteroid");
     });
   });
 });

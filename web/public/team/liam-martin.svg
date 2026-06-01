@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="Liam Martin icon">
+  <rect width="96" height="96" fill="#eaf6fb"/>
+  <circle cx="48" cy="34" r="19" fill="#0a82b3"/>
+  <path d="M18 84c4-20 16-31 30-31s26 11 30 31" fill="#16181c"/>
+  <path d="M32 32c5-15 28-17 34 0-7-4-20-5-34 0Z" fill="#f4efe6"/>
+  <text x="48" y="87" text-anchor="middle" font-family="ui-monospace, monospace" font-size="16" font-weight="800" fill="#eaf6fb">LM</text>
+</svg>

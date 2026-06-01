@@ -1,4 +1,4 @@
-.PHONY: up down logs lint build test test-e2e check-supabase cypress cypress-spec
+.PHONY: up start bootstrap down logs lint build unit test test-e2e check-supabase reset-supabase cypress cypress-spec
 
 SUPABASE_DIR := $(shell pwd)/supabase
 ROOT_DIR := $(shell pwd)
@@ -26,11 +26,20 @@ check-supabase:
 		(echo "ERROR: Supabase is not running. Run: supabase start --workdir $(SUPABASE_DIR)" && exit 1)
 	@echo "Supabase OK"
 
-up: check-supabase
-	docker compose --env-file .env.docker up --build -d
+up:
+	supabase start --exclude edge-runtime
+	docker compose --env-file .env.docker up -d --no-deps web
+
+start: up
+
+bootstrap:
+	supabase start --exclude edge-runtime
+	docker compose --env-file .env.docker build web
+	docker compose --env-file .env.docker up -d --no-deps web
 
 down:
 	docker compose down
+	supabase stop
 
 logs:
 	docker compose logs -f web
@@ -39,10 +48,17 @@ lint:
 	docker compose run --rm web npm run lint
 
 build:
-	docker compose run --rm web npm run build
+	docker build --target build -t saily-web-build ./web
 
-test:
-	docker compose run --rm web npm run lint
+reset-supabase:
+	supabase start --exclude edge-runtime
+	supabase db reset --local
+
+unit:
+	cd $(WEB_DIR) && npm run test:unit
+
+test: unit
+	$(MAKE) cypress-spec SPEC=cypress/e2e/mission-minigames.cy.ts
 
 test-e2e:
 	docker compose --env-file .env.docker run --rm cypress
@@ -52,11 +68,12 @@ cypress:
 	cd "$(WEB_DIR)"; \
 	yarn install --frozen-lockfile; \
 	cd "$(ROOT_DIR)"; \
-	supabase start; \
+	supabase start --exclude edge-runtime; \
 	supabase db reset --local; \
 	$(export_supabase_env); \
 	cd "$(WEB_DIR)"; \
 	yarn e2e:user:create; \
+	set -a; . "$(WEB_DIR)/.env.e2e.local"; set +a; \
 	trap 'status=$$?; cd "$(WEB_DIR)"; yarn e2e:user:cleanup || true; cd "$(ROOT_DIR)"; supabase stop || true; exit $$status' EXIT; \
 	yarn test:e2e
 
@@ -69,13 +86,14 @@ cypress-spec:
 	cd "$(WEB_DIR)"; \
 	yarn install --frozen-lockfile; \
 	cd "$(ROOT_DIR)"; \
-	supabase start; \
+	supabase start --exclude edge-runtime; \
 	supabase db reset --local; \
 	$(export_supabase_env); \
 	cd "$(WEB_DIR)"; \
 	yarn e2e:user:create; \
+	set -a; . "$(WEB_DIR)/.env.e2e.local"; set +a; \
 	trap 'status=$$?; cd "$(WEB_DIR)"; yarn e2e:user:cleanup || true; cd "$(ROOT_DIR)"; supabase stop || true; exit $$status' EXIT; \
-	npx cypress run --spec "$$SPEC"
+	npx start-server-and-test "npm run dev" http://localhost:3000 "npm run cypress:run -- --spec $$SPEC"
 
 tour:
 	./scripts/run-tour.sh

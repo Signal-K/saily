@@ -1,6 +1,6 @@
 services:
   db:
-    image: supabase/postgres:17.4.1.078
+    image: public.ecr.aws/supabase/postgres:17.6.1.063
     restart: unless-stopped
     ports:
       - "54325:5432"
@@ -16,7 +16,7 @@ services:
       retries: 10
 
   kong:
-    image: kong:2.8.1
+    image: public.ecr.aws/supabase/kong:2.8.1
     restart: unless-stopped
     ports:
       - "54326:8000"
@@ -34,7 +34,7 @@ services:
         condition: service_healthy
 
   auth:
-    image: supabase/gotrue:v2.170.0
+    image: public.ecr.aws/supabase/gotrue:v2.186.0
     restart: unless-stopped
     environment:
       GOTRUE_API_HOST: 0.0.0.0
@@ -60,7 +60,7 @@ services:
         condition: service_healthy
 
   rest:
-    image: postgrest/postgrest:v12.2.12
+    image: public.ecr.aws/supabase/postgrest:v14.1
     restart: unless-stopped
     environment:
       PGRST_DB_URI: postgres://authenticator:postgres@db:5432/postgres
@@ -75,7 +75,7 @@ services:
         condition: service_healthy
 
   storage:
-    image: supabase/storage-api:v1.22.17
+    image: public.ecr.aws/supabase/storage-api:v1.41.8
     restart: unless-stopped
     environment:
       ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRFA0NiK7kyqHDan_WiAgwWkd4xh38DyHNXX6XyHfiM
@@ -99,7 +99,7 @@ services:
         condition: service_started
 
   meta:
-    image: supabase/postgres-meta:v0.87.3
+    image: public.ecr.aws/supabase/postgres-meta:v0.96.1
     restart: unless-stopped
     environment:
       PG_META_PORT: 8080
@@ -113,7 +113,7 @@ services:
         condition: service_healthy
 
   studio:
-    image: supabase/studio:20250317-6955350
+    image: public.ecr.aws/supabase/studio:2026.03.04-sha-0043607
     restart: unless-stopped
     ports:
       - "54323:3000"
@@ -132,7 +132,7 @@ services:
         condition: service_healthy
 
   inbucket:
-    image: inbucket/inbucket:3.0.4
+    image: public.ecr.aws/supabase/mailpit:v1.22.3
     restart: unless-stopped
     ports:
       - "54324:9000"
@@ -141,6 +141,7 @@ services:
     build:
       context: ./web
       target: dev
+    command: npm run dev -- --hostname 0.0.0.0 --port 3000
     working_dir: /app
     volumes:
       - ./web:/app
@@ -148,16 +149,18 @@ services:
     ports:
       - "3000:3000"
     environment:
-      NEXT_PUBLIC_SUPABASE_URL: http://localhost:54326
-      SUPABASE_URL_INTERNAL: http://kong:8000
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRFA0NiK7kyqHDan_WiAgwWkd4xh38DyHNXX6XyHfiM
-      NEXT_PUBLIC_AUTH_GOOGLE_ENABLED: "false"
+      NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
+      SUPABASE_URL_INTERNAL: ${SUPABASE_URL_INTERNAL}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      NEXT_PUBLIC_AUTH_GOOGLE_ENABLED: ${NEXT_PUBLIC_AUTH_GOOGLE_ENABLED:-false}
+      NEXT_PUBLIC_POSTHOG_KEY: ${NEXT_PUBLIC_POSTHOG_KEY:-}
+      NEXT_PUBLIC_POSTHOG_HOST: ${NEXT_PUBLIC_POSTHOG_HOST:-https://us.i.posthog.com}
+      POSTHOG_PROJECT_TOKEN: ${POSTHOG_PROJECT_TOKEN:-}
+      POSTHOG_PROJECT_ID: ${POSTHOG_PROJECT_ID:-199773}
+      POSTHOG_PERSONAL_API_KEY: ${POSTHOG_PERSONAL_API_KEY:-}
+      POSTHOG_CAPTURE_HOST: ${POSTHOG_CAPTURE_HOST:-https://us.i.posthog.com}
+      POSTHOG_HOST: ${POSTHOG_HOST:-https://us.posthog.com}
       WATCHPACK_POLLING: "true"
-    depends_on:
-      kong:
-        condition: service_started
-      db:
-        condition: service_healthy
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000"]
       interval: 10s
@@ -173,8 +176,8 @@ services:
       - web_node_modules:/e2e/node_modules
     environment:
       CYPRESS_baseUrl: http://web:3000
-      CYPRESS_E2E_TEST_EMAIL: ${E2E_TEST_EMAIL}
-      CYPRESS_E2E_TEST_PASSWORD: ${E2E_TEST_PASSWORD}
+      CYPRESS_E2E_TEST_EMAIL: ${E2E_TEST_EMAIL:-}
+      CYPRESS_E2E_TEST_PASSWORD: ${E2E_TEST_PASSWORD:-}
       CYPRESS_E2E_TEST_RUN_TAG: ${E2E_TEST_RUN_TAG:-e2e-run}
     depends_on:
       web:

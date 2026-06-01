@@ -9,7 +9,8 @@
     "ingest:cloudspotting": "node scripts/ingest-cloudspotting-mars.mjs",
     "ingest:active-asteroids": "node scripts/ingest-active-asteroids.mjs",
     "ingest:rubin": "node scripts/ingest-rubin-comet-catchers.mjs",
-    "ingest:gaia": "node scripts/ingest-gaia-variables.mjs"
+    "ingest:gaia": "node scripts/ingest-gaia-variables.mjs",
+    "audit:placeholders": "node scripts/audit-placeholder-content.mjs"
   },
   "devDependencies": {
     "@supabase/supabase-js": "^2.39.0",

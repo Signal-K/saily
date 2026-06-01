@@ -4,23 +4,24 @@ import { STORYLINES, type Chapter, type Storyline } from "./storylines";
 import { CHARACTERS, type Character } from "./characters";
 import { getMelbourneDayIndex } from "./melbourne-date";
 
-export type MissionGame = "planet" | "asteroid" | "mars";
+export type MissionGame = "planet" | "mars";
 
-export const MISSION_GAMES: MissionGame[] = ["planet", "asteroid", "mars"];
+export const MISSION_GAMES: MissionGame[] = ["planet", "mars"];
 
 const MISSION_GAME_COUNT = MISSION_GAMES.length;
 
 function buildMissionGamePermutations() {
   const permutations: MissionGame[][] = [];
-  MISSION_GAMES.forEach((first) => {
-    MISSION_GAMES.forEach((second) => {
-      if (second === first) return;
-      MISSION_GAMES.forEach((third) => {
-        if (third === first || third === second) return;
-        permutations.push([first, second, third]);
-      });
+  const visit = (prefix: MissionGame[], remaining: MissionGame[]) => {
+    if (remaining.length === 0) {
+      permutations.push(prefix);
+      return;
+    }
+    remaining.forEach((game) => {
+      visit([...prefix, game], remaining.filter((candidate) => candidate !== game));
     });
-  });
+  };
+  visit([], MISSION_GAMES);
   return permutations;
 }
 
@@ -69,9 +70,7 @@ export function isStorylineComplete(storyline: Storyline, chapterIndex: number):
 }
 
 // Maps specific dates (YYYY-MM-DD Melbourne time) to a forced game order.
-const GAME_ORDER_DATE_OVERRIDES: Record<string, MissionGame[]> = {
-  "2026-04-17": ["planet", "asteroid", "mars"],
-};
+const GAME_ORDER_DATE_OVERRIDES: Record<string, MissionGame[]> = {};
 
 /**
  * Returns a forced game order for a specific date, or null if no override exists.

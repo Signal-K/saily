@@ -22,7 +22,6 @@ export function PostHogRuntime() {
     const map: Record<SurveyTriggerSource, string> = {
       planet_transit: process.env.NEXT_PUBLIC_POSTHOG_SURVEY_PLANET_ID?.trim() || "",
       planet_no_detection: process.env.NEXT_PUBLIC_POSTHOG_SURVEY_NO_PLANET_ID?.trim() || "",
-      asteroid_mapping: process.env.NEXT_PUBLIC_POSTHOG_SURVEY_ASTEROID_ID?.trim() || "",
       mars_classification: process.env.NEXT_PUBLIC_POSTHOG_SURVEY_MARS_ID?.trim() || "",
       narrative_flow: process.env.NEXT_PUBLIC_POSTHOG_SURVEY_NARRATIVE_ID?.trim() || "",
       archive_unlock: process.env.NEXT_PUBLIC_POSTHOG_SURVEY_ARCHIVE_ID?.trim() || "",

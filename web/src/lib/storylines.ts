@@ -32,7 +32,7 @@ const GIZMO_CHAPTERS: Chapter[] = [
     index: 0,
     title: "Three Datasets",
     briefing:
-      "Today's mission covers three different surveys — planet transits, asteroid images, and Mars surface data. Work through each one and I'll check in between.",
+      "Today's mission covers two active surveys — planet transits and Mars surface data. Work through each one and I'll check in between.",
     briefingExpression: "happy",
     update1: "Good start. Two more to go.",
     update1Expression: "neutral",

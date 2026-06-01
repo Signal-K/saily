@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getPuzzleForDate, resolveGameDate } from "@/lib/game";
+import { resolveGameDate } from "@/lib/game";
 import { getDateSeed, toDailyAnomaly } from "@/lib/anomaly";
 import { getDayAccessForUser } from "@/lib/day-access";
 import { createClient } from "@/lib/supabase/server";
@@ -32,7 +32,6 @@ function estimateSignalStrength(lightcurve: Array<{ y: number }>) {
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
   const date = resolveGameDate(requestUrl.searchParams.get("date"));
-  const puzzle = getPuzzleForDate(date);
 
   const supabase = await createClient();
   const {
@@ -43,7 +42,6 @@ export async function GET(request: Request) {
   if (!access.allowed) {
     return NextResponse.json({
       date,
-      puzzle: null,
       anomaly: null,
       anomalies: [],
       access,
@@ -95,7 +93,7 @@ export async function GET(request: Request) {
   }
 
   if (!user) {
-    return NextResponse.json({ date, puzzle, anomaly, anomalies, access, user: null, stats: null, play: null, badges: [] });
+    return NextResponse.json({ date, anomaly, anomalies, access, user: null, stats: null, play: null, badges: [] });
   }
 
   const [{ data: stats }, { data: play }, { data: badges }] = await Promise.all([
@@ -108,5 +106,5 @@ export async function GET(request: Request) {
       .order("awarded_at", { ascending: false }),
   ]);
 
-  return NextResponse.json({ date, puzzle, anomaly, anomalies, access, user: { id: user.id, email: user.email }, stats, play, badges: badges ?? [] });
+  return NextResponse.json({ date, anomaly, anomalies, access, user: { id: user.id, email: user.email }, stats, play, badges: badges ?? [] });
 }

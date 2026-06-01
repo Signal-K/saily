@@ -36,6 +36,12 @@ yarn-error.log*
 # vercel
 .vercel
 
+# generated CMS outputs
+/src/generated/cms-content.json
+/public/feed.json
+/public/rss.xml
+/public/cms-search-index.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

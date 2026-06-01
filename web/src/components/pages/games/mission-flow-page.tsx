@@ -10,7 +10,6 @@ import { MissionComplete } from "@/components/mission/mission-complete";
 import { MissionStatusBanner } from "@/components/mission/mission-status-banner";
 import { MissionAmbience } from "@/components/mission/mission-ambience";
 import TodayGamePage from "@/components/pages/games/today-game-page";
-import AsteroidGamePage from "@/components/pages/games/asteroid-game-page";
 import MarsGamePage from "@/components/pages/games/mars-game-page";
 import { queueSurveyTrigger } from "@/lib/posthog/survey-queue";
 import { trackGameplayEvent } from "@/lib/analytics/events";
@@ -31,19 +30,17 @@ type MissionAccess = {
 
 const DEFAULT_SCORES: Record<MissionGame, number> = {
   planet: 0,
-  asteroid: 0,
   mars: 0,
 };
 
 function getContinueLabel(game: MissionGame | undefined) {
   if (game === "planet") return "Continue to Transit Analysis";
-  if (game === "asteroid") return "Continue to Asteroid Survey";
   if (game === "mars") return "Continue to Surface Survey";
   return "Continue";
 }
 
 function isMissionGame(value: string): value is MissionGame {
-  return value === "planet" || value === "asteroid" || value === "mars";
+  return value === "planet" || value === "mars";
 }
 
 export default function MissionFlowPage() {
@@ -108,13 +105,13 @@ export default function MissionFlowPage() {
     .map((value) => value.trim())
     .filter(isMissionGame)
     .filter((g) => MISSION_GAMES.includes(g));
-  // Allow e2e tests to pin the first game via ?firstGame=planet|asteroid|mars
+  // Allow e2e tests to pin the first game via ?firstGame=planet|mars
   const firstGameParam = searchParams.get("firstGame");
   const firstGameOverride = firstGameParam && isMissionGame(firstGameParam) && MISSION_GAMES.includes(firstGameParam) ? firstGameParam : null;
   const gameOrder: MissionGame[] = firstGameOverride
-    ? [firstGameOverride, ...baseGameOrder.filter((g) => g !== firstGameOverride)].slice(0, 3)
-    : gameOrderOverride && new Set(gameOrderOverride).size === 3
-      ? gameOrderOverride.slice(0, 3)
+    ? [firstGameOverride, ...baseGameOrder.filter((g) => g !== firstGameOverride)].slice(0, MISSION_GAMES.length)
+    : gameOrderOverride && new Set(gameOrderOverride).size === MISSION_GAMES.length
+      ? gameOrderOverride.slice(0, MISSION_GAMES.length)
       : baseGameOrder;
   const activeGame = gameOrder[gameCursor];
   const totalScore = Object.values(scores).reduce((sum, value) => sum + value, 0);
@@ -184,9 +181,6 @@ export default function MissionFlowPage() {
   function renderActiveGame() {
     if (activeGame === "planet") {
       return <TodayGamePage onMissionComplete={handleGameComplete} gameDate={missionDate} />;
-    }
-    if (activeGame === "asteroid") {
-      return <AsteroidGamePage onMissionComplete={(score) => handleGameComplete({ score })} gameDate={missionDate} />;
     }
     if (activeGame === "mars") {
       return <MarsGamePage onMissionComplete={(score) => handleGameComplete({ score })} gameDate={missionDate} />;

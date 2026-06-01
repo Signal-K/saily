@@ -16,6 +16,35 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## CMS
+
+The Daily Transit CMS is a local-first Jamstack pipeline. Canonical content lives in `content/` as Markdown files with YAML front matter.
+
+Current content directories:
+
+- `content/articles/` — articles and explainers
+- `content/reels/` — short-form video metadata
+- `content/projects/` — citizen-science participation links
+- `content/inbox/` — private editorial inputs, excluded from public generated output
+
+Local commands:
+
+```bash
+npm run cms:validate
+npm run cms:build
+npm run cms:preview
+```
+
+Docker commands:
+
+```bash
+docker compose run --rm cms npm run cms:validate
+docker compose run --rm cms npm run cms:build
+docker compose up web
+```
+
+`npm run build` runs `cms:build` before `next build`. Generated CMS files are build artifacts and are ignored by git.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
