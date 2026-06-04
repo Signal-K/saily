@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/lib/pocketbase/client";
 import { getRobotAvatarDataUri } from "@/lib/avatar";
 import { getDataChipsBalance } from "@/lib/economy";
 
@@ -15,7 +15,7 @@ type AuthState = {
 } | null;
 
 export function AuthStatus() {
-  const supabase = useMemo(() => createClient(), []);
+  const pocketbase = useMemo(() => createClient(), []);
   const [auth, setAuth] = useState<AuthState>(null);
   const [loading, setLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -30,7 +30,7 @@ export function AuthStatus() {
       // then validate with getUser() in the background.
       const {
         data: { session },
-      } = await supabase.auth.getSession();
+      } = await pocketbase.auth.getSession();
 
       if (!mounted) return;
 
@@ -57,7 +57,7 @@ export function AuthStatus() {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    } = pocketbase.auth.onAuthStateChange(async (_event, session) => {
       const user = session?.user;
       if (!user?.email) {
         setAuth(null);
@@ -77,7 +77,7 @@ export function AuthStatus() {
       mounted = false;
       subscription.unsubscribe();
     };
-  }, [supabase]);
+  }, [pocketbase]);
 
   useEffect(() => {
     function onDocumentClick(event: MouseEvent) {
@@ -94,7 +94,7 @@ export function AuthStatus() {
     setSigningOut(true);
     setMenuOpen(false);
 
-    await supabase.auth.signOut();
+    await pocketbase.auth.signOut();
     window.location.assign("/auth/sign-in?status=signed-out");
   }
 

@@ -1,7 +1,7 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/pocketbase/server";
 import { getMelbourneDateKey } from "@/lib/melbourne-date";
 
-type ServerSupabase = Awaited<ReturnType<typeof createClient>>;
+type ServerPocketBase = Awaited<ReturnType<typeof createClient>>;
 
 export type DayAccess = {
   date: string;
@@ -14,7 +14,7 @@ export type DayAccess = {
 };
 
 export async function getDayAccessForUser(
-  supabase: ServerSupabase,
+  pocketbase: ServerPocketBase,
   userId: string | null | undefined,
   date: string,
 ): Promise<DayAccess> {
@@ -46,8 +46,8 @@ export async function getDayAccessForUser(
   }
 
   const [{ data: play }, { data: unlock }] = await Promise.all([
-    supabase.from("daily_plays").select("game_date").eq("user_id", userId).eq("game_date", date).maybeSingle(),
-    supabase.from("archive_unlocks").select("game_date").eq("user_id", userId).eq("game_date", date).maybeSingle(),
+    pocketbase.from("daily_plays").select("game_date").eq("user_id", userId).eq("game_date", date).maybeSingle(),
+    pocketbase.from("archive_unlocks").select("game_date").eq("user_id", userId).eq("game_date", date).maybeSingle(),
   ]);
 
   const completed = Boolean(play);

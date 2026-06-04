@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { isPastGameDate, resolveGameDate } from "@/lib/game";
 import { getDayAccessForUser } from "@/lib/day-access";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/pocketbase/server";
 
 type CompleteBody = {
   completedPuzzles?: number;
@@ -16,10 +16,10 @@ function normalizeNumber(value: unknown, fallback: number, min: number, max: num
 }
 
 export async function POST(request: Request) {
-  const supabase = await createClient();
+  const pocketbase = await createClient();
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await pocketbase.auth.getUser();
 
   if (!user) {
     return NextResponse.json({ error: "Sign in required" }, { status: 401 });
@@ -29,7 +29,7 @@ export async function POST(request: Request) {
   const completedPuzzles = normalizeNumber(payload.completedPuzzles, 3, 1, 3);
   const confidence = 100;
   const date = resolveGameDate(payload.date);
-  const access = await getDayAccessForUser(supabase, user.id, date);
+  const access = await getDayAccessForUser(pocketbase, user.id, date);
 
   if (!access.allowed) {
     return NextResponse.json({ error: "Unlock this archived mission before playing it." }, { status: 403 });
@@ -54,7 +54,7 @@ export async function POST(request: Request) {
     });
   }
 
-  const { data, error } = await supabase.rpc("submit_daily_result", {
+  const { data, error } = await pocketbase.rpc("submit_daily_result", {
     p_game_date: date,
     p_attempts: attempts,
     p_won: true,

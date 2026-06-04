@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import posthog from "posthog-js";
 import { DisplaySurveyType } from "posthog-js/lib/src/posthog-surveys-types";
-import { createClient as createSupabaseClient } from "@/lib/supabase/client";
+import { createClient as createPocketBaseClient } from "@/lib/pocketbase/client";
 import { dequeueSurveyTrigger, markSurveyShown, type SurveyTriggerSource } from "@/lib/posthog/survey-queue";
 
 function getPosthogHost() {
@@ -43,8 +43,8 @@ export function PostHogRuntime() {
       disable_surveys_automatic_display: true,
     });
 
-    const supabase = createSupabaseClient();
-    void supabase.auth.getUser().then(({ data }) => {
+    const pocketbase = createPocketBaseClient();
+    void pocketbase.auth.getUser().then(({ data }) => {
       if (!data.user) return;
       posthog.identify(data.user.id, {
         email: data.user.email,
@@ -52,7 +52,7 @@ export function PostHogRuntime() {
     });
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = pocketbase.auth.onAuthStateChange((_event, session) => {
       if (!session?.user) return;
       posthog.identify(session.user.id, {
         email: session.user.email,
@@ -72,8 +72,8 @@ export function PostHogRuntime() {
     const queued = dequeueSurveyTrigger();
     if (!queued) return;
 
-    const supabase = createSupabaseClient();
-    void supabase.auth.getUser().then(({ data }) => {
+    const pocketbase = createPocketBaseClient();
+    void pocketbase.auth.getUser().then(({ data }) => {
       if (!data.user) return;
 
       const properties = {

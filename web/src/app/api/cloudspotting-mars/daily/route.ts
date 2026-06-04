@@ -6,22 +6,22 @@ import {
   toCloudspottingMarsSubject,
   type CloudspottingMarsCacheRow,
 } from "@/lib/cloudspotting-mars";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/pocketbase/server";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const date = resolveGameDate(url.searchParams.get("date"));
 
-  const supabase = await createClient();
+  const pocketbase = await createClient();
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await pocketbase.auth.getUser();
 
   let source: "cache" | "fallback" = "fallback";
   let subject = getDailyCloudspottingMarsSubject(date);
 
   try {
-    const { data, error } = await supabase
+    const { data, error } = await pocketbase
       .from("cloudspotting_mars_daily")
       .select("game_date,subject_id,image_url,caption,season_or_context,workflow_version,source_metadata")
       .eq("game_date", date)

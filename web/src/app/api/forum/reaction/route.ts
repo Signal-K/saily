@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getDayAccessForUser } from "@/lib/day-access";
 import { isDailyLiveThreadLocked } from "@/lib/forum";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/pocketbase/server";
 
 type PostThreadMeta = {
   post_id: number;
@@ -11,8 +11,8 @@ type PostThreadMeta = {
   continue_thread_id: number | null;
 };
 
-async function getPostThreadMeta(supabase: Awaited<ReturnType<typeof createClient>>, postId: number) {
-  const { data, error } = await supabase
+async function getPostThreadMeta(pocketbase: Awaited<ReturnType<typeof createClient>>, postId: number) {
+  const { data, error } = await pocketbase
     .from("forum_posts")
     .select("id,thread_id,forum_threads!inner(id,kind,puzzle_date,continue_thread_id)")
     .eq("id", postId)
@@ -36,10 +36,10 @@ async function getPostThreadMeta(supabase: Awaited<ReturnType<typeof createClien
 }
 
 export async function POST(request: Request) {
-  const supabase = await createClient();
+  const pocketbase = await createClient();
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await pocketbase.auth.getUser();
 
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -53,13 +53,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "postId and emoji are required" }, { status: 400 });
   }
 
-  const { data: meta, error: metaError } = await getPostThreadMeta(supabase, postId);
+  const { data: meta, error: metaError } = await getPostThreadMeta(pocketbase, postId);
 
   if (metaError || !meta) {
     return NextResponse.json({ error: "Post not found" }, { status: 404 });
   }
 
-  const access = await getDayAccessForUser(supabase, user.id, meta.puzzle_date);
+  const access = await getDayAccessForUser(pocketbase, user.id, meta.puzzle_date);
   if (!access.allowed) {
     return NextResponse.json({ error: "Complete or unlock this day before interacting.", access }, { status: 403 });
   }
@@ -74,7 +74,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const { data: existing } = await supabase
+  const { data: existing } = await pocketbase
     .from("forum_post_reactions")
     .select("post_id")
     .eq("post_id", postId)
@@ -83,7 +83,7 @@ export async function POST(request: Request) {
     .maybeSingle();
 
   if (existing) {
-    const { error: deleteError } = await supabase
+    const { error: deleteError } = await pocketbase
       .from("forum_post_reactions")
       .delete()
       .eq("post_id", postId)
@@ -94,14 +94,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: deleteError.message }, { status: 400 });
     }
   } else {
-    const { error: insertError } = await supabase.from("forum_post_reactions").insert({ post_id: postId, user_id: user.id, emoji });
+    const { error: insertError } = await pocketbase.from("forum_post_reactions").insert({ post_id: postId, user_id: user.id, emoji });
 
     if (insertError) {
       return NextResponse.json({ error: insertError.message }, { status: 400 });
     }
   }
 
-  const { count } = await supabase
+  const { count } = await pocketbase
     .from("forum_post_reactions")
     .select("post_id", { count: "exact", head: true })
     .eq("post_id", postId)

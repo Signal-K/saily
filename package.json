@@ -13,7 +13,6 @@
     "audit:placeholders": "node scripts/audit-placeholder-content.mjs"
   },
   "devDependencies": {
-    "@supabase/supabase-js": "^2.39.0",
     "dotenv": "^16.3.1",
     "node-fetch": "^3.3.2"
   }

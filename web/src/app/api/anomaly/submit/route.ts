@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getDayAccessForUser } from "@/lib/day-access";
 import { resolveGameDate } from "@/lib/game";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/pocketbase/server";
 
 type Annotation = {
   xStart: number;
@@ -74,10 +74,10 @@ function normalizeAnnotations(value: unknown): Array<Annotation & { confidence: 
 }
 
 export async function POST(request: Request) {
-  const supabase = await createClient();
+  const pocketbase = await createClient();
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await pocketbase.auth.getUser();
 
   if (!user) {
     return NextResponse.json({ error: "Sign in required" }, { status: 401 });
@@ -85,7 +85,7 @@ export async function POST(request: Request) {
 
   const payload = (await request.json().catch(() => ({}))) as SubmitBody;
   const date = resolveGameDate(payload.date);
-  const access = await getDayAccessForUser(supabase, user.id, date);
+  const access = await getDayAccessForUser(pocketbase, user.id, date);
   if (!access.allowed) {
     return NextResponse.json({ error: "Unlock this archived mission before saving evidence." }, { status: 403 });
   }
@@ -116,7 +116,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "At least one annotation is required" }, { status: 400 });
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await pocketbase
     .from("anomaly_submissions")
     .upsert(
       {
@@ -154,10 +154,10 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: Request) {
-  const supabase = await createClient();
+  const pocketbase = await createClient();
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await pocketbase.auth.getUser();
 
   if (!user) {
     return NextResponse.json({ error: "Sign in required" }, { status: 401 });
@@ -165,7 +165,7 @@ export async function GET(request: Request) {
 
   const requestUrl = new URL(request.url);
   const date = resolveGameDate(requestUrl.searchParams.get("date"));
-  const access = await getDayAccessForUser(supabase, user.id, date);
+  const access = await getDayAccessForUser(pocketbase, user.id, date);
   if (!access.allowed) {
     return NextResponse.json({ error: "Unlock this archived mission before viewing evidence." }, { status: 403 });
   }
@@ -175,7 +175,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Invalid anomalyId" }, { status: 400 });
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await pocketbase
     .from("anomaly_submissions")
     .select("id,annotations,note,status,updated_at,hint_flags,reward_multiplier,period_days")
     .eq("user_id", user.id)

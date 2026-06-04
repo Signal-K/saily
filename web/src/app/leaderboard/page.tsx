@@ -1,15 +1,15 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/pocketbase/server";
 import Link from "next/link";
 
 export const metadata = { title: "Leaderboard — Saily" };
 
 export default async function LeaderboardPage() {
-  const supabase = await createClient();
+  const pocketbase = await createClient();
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await pocketbase.auth.getUser();
 
-  const { data: rows } = await supabase
+  const { data: rows } = await pocketbase
     .from("user_stats")
     .select("user_id, total_score, current_streak, wins, profiles(username)")
     .order("total_score", { ascending: false })

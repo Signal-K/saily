@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/pocketbase/server";
 
 type QueryContext = {
   raw: string;
@@ -109,10 +109,10 @@ export async function GET(request: Request) {
     return NextResponse.json({ results: [] });
   }
 
-  const supabase = await createClient();
+  const pocketbase = await createClient();
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await pocketbase.auth.getUser();
 
   const pattern = `%${q}%`;
   const fetchLimit = 20;
@@ -120,34 +120,34 @@ export async function GET(request: Request) {
   const ctx = toQueryContext(q);
 
   const [profilesRes, threadsRes, postsRes, commentsRes, gamesRes, badgesRes, anomaliesRes, playsRes] = await Promise.all([
-    supabase.from("profiles").select("id,username,created_at").ilike("username", pattern).order("created_at", { ascending: false }).limit(fetchLimit),
-    supabase.from("forum_threads").select("id,puzzle_date,kind,title,created_at").or(`title.ilike.${pattern},puzzle_date.ilike.${pattern}`).order("puzzle_date", { ascending: false }).limit(fetchLimit),
-    supabase
+    pocketbase.from("profiles").select("id,username,created_at").ilike("username", pattern).order("created_at", { ascending: false }).limit(fetchLimit),
+    pocketbase.from("forum_threads").select("id,puzzle_date,kind,title,created_at").or(`title.ilike.${pattern},puzzle_date.ilike.${pattern}`).order("puzzle_date", { ascending: false }).limit(fetchLimit),
+    pocketbase
       .from("forum_posts")
       .select("id,body,created_at,forum_threads!forum_posts_thread_id_fkey(puzzle_date,title)")
       .ilike("body", pattern)
       .order("created_at", { ascending: false })
       .limit(fetchLimit),
-    supabase
+    pocketbase
       .from("comments")
       .select("id,body,game_date,created_at")
       .or(`body.ilike.${pattern},game_date.ilike.${pattern}`)
       .order("created_at", { ascending: false })
       .limit(fetchLimit),
-    supabase.from("daily_games").select("game_date,game_key,created_at").or(`game_key.ilike.${pattern},game_date.ilike.${pattern}`).order("game_date", { ascending: false }).limit(fetchLimit),
-    supabase
+    pocketbase.from("daily_games").select("game_date,game_key,created_at").or(`game_key.ilike.${pattern},game_date.ilike.${pattern}`).order("game_date", { ascending: false }).limit(fetchLimit),
+    pocketbase
       .from("badges")
       .select("id,name,description,kind,threshold")
       .or(`name.ilike.${pattern},description.ilike.${pattern},kind.ilike.${pattern}`)
       .limit(fetchLimit),
-    supabase
+    pocketbase
       .from("anomalies")
       .select('id,content,ticId,anomalytype,created_at,"anomalySet"')
       .or(`content.ilike.${pattern},ticId.ilike.${pattern},anomalytype.ilike.${pattern},anomalySet.ilike.${pattern}`)
       .order("created_at", { ascending: false })
       .limit(fetchLimit),
     user
-      ? supabase
+      ? pocketbase
           .from("daily_plays")
           .select("id,game_date,won,score,attempts,played_at")
           .eq("user_id", user.id)

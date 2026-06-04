@@ -1,5 +1,4 @@
 import "dotenv/config";
-import { createClient } from "@supabase/supabase-js";
 
 function cleanEnv(value) {
   return (value ?? "").trim().replace(/^"+|"+$/g, "");
@@ -24,19 +23,6 @@ export function parseArgs(argv = process.argv.slice(2)) {
   }
 
   return options;
-}
-
-export function getSupabaseAdminClient() {
-  const url = cleanEnv(process.env.SUPABASE_URL) || cleanEnv(process.env.NEXT_PUBLIC_SUPABASE_URL);
-  const key = cleanEnv(process.env.SUPABASE_SERVICE_ROLE) || cleanEnv(process.env.SUPABASE_SERVICE_ROLE_KEY);
-
-  if (!url || !key) {
-    throw new Error("Missing SUPABASE_URL/NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE/SUPABASE_SERVICE_ROLE_KEY");
-  }
-
-  return createClient(url, key, {
-    auth: { autoRefreshToken: false, persistSession: false },
-  });
 }
 
 export function parseInteger(value, fallback) {
@@ -66,15 +52,12 @@ export function cycleDailyRows(subjects, days, startDate, rowBuilder) {
 }
 
 export async function upsertRows({ table, rows, onConflict }) {
+  void table;
+  void onConflict;
+
   if (!rows.length) {
     return { count: 0 };
   }
 
-  const supabase = getSupabaseAdminClient();
-  const { error } = await supabase.from(table).upsert(rows, { onConflict });
-  if (error) {
-    throw new Error(`${table}: ${error.message}`);
-  }
-
-  return { count: rows.length };
+  throw new Error("Science feed ingestion is pending PocketBase migration.");
 }

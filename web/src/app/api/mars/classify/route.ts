@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getDayAccessForUser } from "@/lib/day-access";
 import { isPastGameDate } from "@/lib/game";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/pocketbase/server";
 import { resolveGameDate } from "@/lib/game";
 
 type ClassifyBody = {
@@ -15,10 +15,10 @@ type ClassifyBody = {
 };
 
 export async function POST(request: Request) {
-  const supabase = await createClient();
+  const pocketbase = await createClient();
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await pocketbase.auth.getUser();
 
   if (!user) {
     return NextResponse.json({ error: "Sign in required" }, { status: 401 });
@@ -26,7 +26,7 @@ export async function POST(request: Request) {
 
   const payload = (await request.json().catch(() => ({}))) as ClassifyBody;
   const date = resolveGameDate(payload.date);
-  const access = await getDayAccessForUser(supabase, user.id, date);
+  const access = await getDayAccessForUser(pocketbase, user.id, date);
   if (!access.allowed) {
     return NextResponse.json({ error: "Unlock this archived mission before submitting it." }, { status: 403 });
   }
@@ -56,7 +56,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "No valid classifications" }, { status: 400 });
   }
 
-  const { error } = await supabase
+  const { error } = await pocketbase
     .from("mars_classifications")
     .upsert(rows, { onConflict: "user_id,game_date,image_id" });
 
@@ -74,10 +74,10 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: Request) {
-  const supabase = await createClient();
+  const pocketbase = await createClient();
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await pocketbase.auth.getUser();
 
   if (!user) {
     return NextResponse.json({ error: "Sign in required" }, { status: 401 });
@@ -85,12 +85,12 @@ export async function GET(request: Request) {
 
   const url = new URL(request.url);
   const date = resolveGameDate(url.searchParams.get("date"));
-  const access = await getDayAccessForUser(supabase, user.id, date);
+  const access = await getDayAccessForUser(pocketbase, user.id, date);
   if (!access.allowed) {
     return NextResponse.json({ error: "Unlock this archived mission before viewing it." }, { status: 403 });
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await pocketbase
     .from("mars_classifications")
     .select("image_id,classification,confidence,annotations,note,created_at")
     .eq("user_id", user.id)

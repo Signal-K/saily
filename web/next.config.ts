@@ -14,9 +14,8 @@ const nextConfig: NextConfig = {
     ],
   },
   env: {
-    // Support Vercel env names without NEXT_PUBLIC_ prefix.
-    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL ?? process.env.SUPABASE_URL,
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? process.env.SUPABASE_ANON,
+    NEXT_PUBLIC_SHARED_PB_URL: process.env.NEXT_PUBLIC_SHARED_PB_URL ?? "http://127.0.0.1:8090",
+    NEXT_PUBLIC_SAILY_PB_URL: process.env.NEXT_PUBLIC_SAILY_PB_URL ?? "http://127.0.0.1:8092",
   },
   async headers() {
     return [

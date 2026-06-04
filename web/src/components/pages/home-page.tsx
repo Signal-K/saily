@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/pocketbase/server";
 import { getStorylineForDate, getCharacterForStoryline } from "@/lib/mission";
 import { getRobotAvatarDataUri } from "@/lib/avatar";
 import { getMelbourneDateKey } from "@/lib/melbourne-date";
@@ -51,7 +51,7 @@ const dataLabelClass = "font-[var(--font-data)] text-[0.72rem] font-bold upperca
 const navLinkClass = "font-[var(--font-data)] text-[0.78rem] font-bold uppercase tracking-[0.08em] text-[var(--muted)] no-underline whitespace-nowrap hover:text-[var(--primary)]";
 
 export default async function Home() {
-  const supabase = await createClient();
+  const pocketbase = await createClient();
   const today = getMelbourneDateKey();
   const todayDate = new Date();
   const tomorrowDate = new Date(todayDate);
@@ -59,7 +59,7 @@ export default async function Home() {
 
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await pocketbase.auth.getUser();
 
   if (!user) {
     return <LandingPage />;
@@ -74,18 +74,18 @@ export default async function Home() {
   const tomorrowAvatarSrc = getRobotAvatarDataUri(tomorrowCharacter.avatarSeed, 40);
 
   const [profileRes, statsRes, badgesRes, playsRes, commentsRes, todayPlayRes, storyProgressRes] = await Promise.all([
-    supabase.from("profiles").select("data_chips").eq("id", user.id).maybeSingle(),
-    supabase.from("user_stats").select("games_played,wins,current_streak,best_streak,total_score").eq("user_id", user.id).maybeSingle(),
-    supabase
+    pocketbase.from("profiles").select("data_chips").eq("id", user.id).maybeSingle(),
+    pocketbase.from("user_stats").select("games_played,wins,current_streak,best_streak,total_score").eq("user_id", user.id).maybeSingle(),
+    pocketbase
       .from("user_badges")
       .select("awarded_at,badges(name,slug,description)")
       .eq("user_id", user.id)
       .order("awarded_at", { ascending: false })
       .limit(4),
-    supabase.from("daily_plays").select("game_date,won,score,attempts,played_at").eq("user_id", user.id).order("played_at", { ascending: false }).limit(5),
-    supabase.from("comments").select("id,game_date,body,created_at,profiles(username)").order("created_at", { ascending: false }).limit(5),
-    supabase.from("daily_plays").select("score,won").eq("user_id", user.id).eq("game_date", today).maybeSingle(),
-    supabase.from("user_story_progress").select("chapter_index").eq("user_id", user.id).eq("storyline_id", todayStoryline.id).maybeSingle(),
+    pocketbase.from("daily_plays").select("game_date,won,score,attempts,played_at").eq("user_id", user.id).order("played_at", { ascending: false }).limit(5),
+    pocketbase.from("comments").select("id,game_date,body,created_at,profiles(username)").order("created_at", { ascending: false }).limit(5),
+    pocketbase.from("daily_plays").select("score,won").eq("user_id", user.id).eq("game_date", today).maybeSingle(),
+    pocketbase.from("user_story_progress").select("chapter_index").eq("user_id", user.id).eq("storyline_id", todayStoryline.id).maybeSingle(),
   ]);
 
   const profile = profileRes.data;

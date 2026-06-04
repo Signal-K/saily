@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/pocketbase/server";
 
 type SearchParams = {
   q?: string;
@@ -235,10 +235,10 @@ export default async function SearchPage({
     );
   }
 
-  const supabase = await createClient();
+  const pocketbase = await createClient();
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await pocketbase.auth.getUser();
 
   const ctx = toQueryContext(query);
   const pattern = `%${query}%`;
@@ -261,36 +261,36 @@ export default async function SearchPage({
     statsRes,
     userBadgesRes,
   ] = await Promise.all([
-    supabase.from("profiles").select("id,username,created_at").ilike("username", pattern).order("created_at", { ascending: false }).limit(fetchLimit),
-    supabase
+    pocketbase.from("profiles").select("id,username,created_at").ilike("username", pattern).order("created_at", { ascending: false }).limit(fetchLimit),
+    pocketbase
       .from("comments")
       .select("id,game_date,body,created_at,profiles(username)")
       .ilike("body", pattern)
       .order("created_at", { ascending: false })
       .limit(fetchLimit),
     ctx.isoDate
-      ? supabase
+      ? pocketbase
           .from("comments")
           .select("id,game_date,body,created_at,profiles(username)")
           .eq("game_date", query)
           .order("created_at", { ascending: false })
           .limit(fetchLimit)
       : Promise.resolve({ data: [] as CommentResult[], error: null }),
-    supabase
+    pocketbase
       .from("forum_threads")
       .select("id,puzzle_date,kind,title,created_at")
       .ilike("title", pattern)
       .order("puzzle_date", { ascending: false })
       .limit(fetchLimit),
     ctx.isoDate
-      ? supabase
+      ? pocketbase
           .from("forum_threads")
           .select("id,puzzle_date,kind,title,created_at")
           .eq("puzzle_date", query)
           .order("puzzle_date", { ascending: false })
           .limit(fetchLimit)
       : Promise.resolve({ data: [] as { id: number; puzzle_date: string; kind: "daily_live" | "ongoing"; title: string; created_at: string }[], error: null }),
-    supabase
+    pocketbase
       .from("forum_posts")
       .select(
         "id,thread_id,body,created_at,profiles!forum_posts_user_id_fkey(username),forum_threads!forum_posts_thread_id_fkey(puzzle_date,kind,title)",
@@ -298,30 +298,30 @@ export default async function SearchPage({
       .ilike("body", pattern)
       .order("created_at", { ascending: false })
       .limit(fetchLimit),
-    supabase
+    pocketbase
       .from("badges")
       .select("id,slug,name,description,kind,threshold")
       .or(`slug.ilike.${pattern},name.ilike.${pattern},description.ilike.${pattern}`)
       .order("id", { ascending: true })
       .limit(fetchLimit),
-    supabase
+    pocketbase
       .from("anomalies")
       .select('id,content,ticId,anomalytype,created_at,"anomalySet"')
       .or(`content.ilike.${pattern},ticId.ilike.${pattern},anomalytype.ilike.${pattern},anomalySet.ilike.${pattern}`)
       .order("created_at", { ascending: false })
       .limit(fetchLimit),
-    supabase.from("daily_games").select("game_date,game_key,created_at").ilike("game_key", pattern).order("game_date", { ascending: false }).limit(fetchLimit),
+    pocketbase.from("daily_games").select("game_date,game_key,created_at").ilike("game_key", pattern).order("game_date", { ascending: false }).limit(fetchLimit),
     ctx.isoDate
-      ? supabase.from("daily_games").select("game_date,game_key,created_at").eq("game_date", query).limit(fetchLimit)
+      ? pocketbase.from("daily_games").select("game_date,game_key,created_at").eq("game_date", query).limit(fetchLimit)
       : ctx.monthKey
-        ? supabase
+        ? pocketbase
             .from("daily_games")
             .select("game_date,game_key,created_at")
             .gte("game_date", `${ctx.raw}-01`)
             .lte("game_date", `${ctx.raw}-31`)
             .limit(fetchLimit)
         : ctx.yearKey
-          ? supabase
+          ? pocketbase
               .from("daily_games")
               .select("game_date,game_key,created_at")
               .gte("game_date", `${ctx.raw}-01-01`)
@@ -329,13 +329,13 @@ export default async function SearchPage({
               .limit(fetchLimit)
           : Promise.resolve({ data: [] as DailyGameRow[], error: null }),
     user
-      ? supabase.from("daily_plays").select("id,game_date,attempts,won,score,played_at").eq("user_id", user.id).order("played_at", { ascending: false }).limit(250)
+      ? pocketbase.from("daily_plays").select("id,game_date,attempts,won,score,played_at").eq("user_id", user.id).order("played_at", { ascending: false }).limit(250)
       : Promise.resolve({ data: [] as DailyPlayRow[], error: null }),
     user
-      ? supabase.from("user_stats").select("games_played,wins,current_streak,best_streak,total_score,updated_at").eq("user_id", user.id).maybeSingle()
+      ? pocketbase.from("user_stats").select("games_played,wins,current_streak,best_streak,total_score,updated_at").eq("user_id", user.id).maybeSingle()
       : Promise.resolve({ data: null as UserStatsRow | null, error: null }),
     user
-      ? supabase
+      ? pocketbase
           .from("user_badges")
           .select("awarded_at,badges(slug,name,description,kind,threshold)")
           .eq("user_id", user.id)

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/lib/pocketbase/client";
 import { repairStreak, getDataChipsBalance } from "@/lib/economy";
 import { shiftDateKey } from "@/lib/melbourne-date";
 import Image from "next/image";
@@ -25,13 +25,13 @@ export function StreakRepairPrompt({ userId, gameDate, onRepairComplete }: Strea
     let mounted = true;
 
     async function checkRepairStatus() {
-      const supabase = createClient();
+      const pocketbase = createClient();
       
       const yesterdayStr = shiftDateKey(gameDate, -1);
       const dayBeforeStr = shiftDateKey(gameDate, -2);
 
       // Fetch plays
-      const { data: plays, error: playsError } = await supabase
+      const { data: plays, error: playsError } = await pocketbase
         .from("daily_plays")
         .select("game_date")
         .eq("user_id", userId)

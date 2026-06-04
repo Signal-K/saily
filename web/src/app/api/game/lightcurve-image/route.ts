@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/pocketbase/server";
 import { toDailyAnomaly } from "@/lib/anomaly";
 
 function clamp01(value: number) {
@@ -19,8 +19,8 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Invalid anomalyId" }, { status: 400 });
   }
 
-  const supabase = await createClient();
-  const { data: rows, error } = await supabase
+  const pocketbase = await createClient();
+  const { data: rows, error } = await pocketbase
     .from("anomalies")
     .select('id,content,"ticId",anomalytype,"anomalySet","anomalyConfiguration"')
     .eq("id", anomalyId)
