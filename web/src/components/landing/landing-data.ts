@@ -28,16 +28,23 @@ export const returnOptions = [
 export const games = [
   {
     title: "Landnam",
-    status: "Star Sailors flagship",
+    status: "Flagship",
     body: "Hunt for real exoplanets, then manage the ship and crew that turns a signal into a journey.",
     href: "https://starsailors.space",
     image: "/puzzles/puzzle-1.svg",
   },
   {
+    title: "Coral Clicker",
+    status: "Coming Soon",
+    body: "Identify real reef species and replicate compositions in this relaxed puzzle game.",
+    href: "#",
+    image: "/puzzles/puzzle-2.svg",
+  },
+  {
     title: "Asteroid Hunters",
-    status: "Survey game",
+    status: "Planned",
     body: "Sweep survey frames for moving points of light and help track the rocks crossing our sky.",
-    href: "https://starsailors.space",
+    href: "#",
     image: "/puzzles/puzzle-3.svg",
   },
 ];

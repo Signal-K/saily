@@ -8,15 +8,13 @@ export function LandingFooter() {
         <Image src="/logo-icon.png" alt="" width={40} height={40} />
         <span>
           <strong>
-            The Daily <em>Transit</em>
+            Star <em>Sailors</em>
           </strong>
-          <span>Pre-launch &middot; Coming soon</span>
+          <span>The Universe in Play</span>
         </span>
       </div>
       <nav className="tx-footer-links" aria-label="Footer links">
-        <Link href="/games/today">Current puzzles</Link>
-        <Link href="/discuss">Consensus desk</Link>
-        <Link href="/calendar">Archive</Link>
+        <a href="https://starsailors.space" target="_blank" rel="noreferrer">Star Sailors Space</a>
       </nav>
     </footer>
   );
