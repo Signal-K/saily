@@ -1,27 +1,27 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/pocketbase/server";
 
 function normalizeId(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
 }
 
-async function countFollowers(supabase: Awaited<ReturnType<typeof createClient>>, userId: string) {
-  const { count, error } = await supabase.from("user_follows").select("follower_id", { count: "exact", head: true }).eq("following_id", userId);
+async function countFollowers(pocketbase: Awaited<ReturnType<typeof createClient>>, userId: string) {
+  const { count, error } = await pocketbase.from("user_follows").select("follower_id", { count: "exact", head: true }).eq("following_id", userId);
   if (error) throw error;
   return count ?? 0;
 }
 
-async function countFollowing(supabase: Awaited<ReturnType<typeof createClient>>, userId: string) {
-  const { count, error } = await supabase.from("user_follows").select("following_id", { count: "exact", head: true }).eq("follower_id", userId);
+async function countFollowing(pocketbase: Awaited<ReturnType<typeof createClient>>, userId: string) {
+  const { count, error } = await pocketbase.from("user_follows").select("following_id", { count: "exact", head: true }).eq("follower_id", userId);
   if (error) throw error;
   return count ?? 0;
 }
 
 export async function GET(request: Request) {
-  const supabase = await createClient();
+  const pocketbase = await createClient();
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await pocketbase.auth.getUser();
   const url = new URL(request.url);
   const targetUserId = normalizeId(url.searchParams.get("userId"));
 
@@ -30,11 +30,11 @@ export async function GET(request: Request) {
   }
 
   try {
-    const [followersCount, followingCount] = await Promise.all([countFollowers(supabase, targetUserId), countFollowing(supabase, targetUserId)]);
+    const [followersCount, followingCount] = await Promise.all([countFollowers(pocketbase, targetUserId), countFollowing(pocketbase, targetUserId)]);
 
     let isFollowing = false;
     if (user) {
-      const { data: relation } = await supabase
+      const { data: relation } = await pocketbase
         .from("user_follows")
         .select("follower_id")
         .eq("follower_id", user.id)
@@ -57,10 +57,10 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const supabase = await createClient();
+  const pocketbase = await createClient();
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await pocketbase.auth.getUser();
 
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -75,7 +75,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "You cannot follow yourself" }, { status: 400 });
   }
 
-  const { data: existing, error: relationError } = await supabase
+  const { data: existing, error: relationError } = await pocketbase
     .from("user_follows")
     .select("follower_id,following_id")
     .eq("follower_id", user.id)
@@ -88,13 +88,13 @@ export async function POST(request: Request) {
 
   let isFollowing = false;
   if (existing) {
-    const { error: deleteError } = await supabase.from("user_follows").delete().eq("follower_id", user.id).eq("following_id", targetUserId);
+    const { error: deleteError } = await pocketbase.from("user_follows").delete().eq("follower_id", user.id).eq("following_id", targetUserId);
     if (deleteError) {
       return NextResponse.json({ error: deleteError.message }, { status: 400 });
     }
     isFollowing = false;
   } else {
-    const { error: insertError } = await supabase.from("user_follows").insert({ follower_id: user.id, following_id: targetUserId });
+    const { error: insertError } = await pocketbase.from("user_follows").insert({ follower_id: user.id, following_id: targetUserId });
     if (insertError) {
       return NextResponse.json({ error: insertError.message }, { status: 400 });
     }
@@ -103,10 +103,10 @@ export async function POST(request: Request) {
 
   try {
     const [targetFollowersCount, targetFollowingCount, myFollowersCount, myFollowingCount] = await Promise.all([
-      countFollowers(supabase, targetUserId),
-      countFollowing(supabase, targetUserId),
-      countFollowers(supabase, user.id),
-      countFollowing(supabase, user.id),
+      countFollowers(pocketbase, targetUserId),
+      countFollowing(pocketbase, targetUserId),
+      countFollowers(pocketbase, user.id),
+      countFollowing(pocketbase, user.id),
     ]);
 
     return NextResponse.json({

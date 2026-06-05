@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/pocketbase/server";
 import { STORYLINES } from "@/lib/storylines";
 
 const VALID_STORYLINE_IDS = new Set(STORYLINES.map((s) => s.id));
 
 export async function GET(request: Request) {
-  const supabase = await createClient();
+  const pocketbase = await createClient();
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await pocketbase.auth.getUser();
 
   if (!user) {
     return NextResponse.json({ error: "Sign in required" }, { status: 401 });
@@ -21,7 +21,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Invalid storylineId" }, { status: 400 });
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await pocketbase
     .from("user_story_progress")
     .select("storyline_id,chapter_index,last_played_at")
     .eq("user_id", user.id)
@@ -40,10 +40,10 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const supabase = await createClient();
+  const pocketbase = await createClient();
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await pocketbase.auth.getUser();
 
   if (!user) {
     return NextResponse.json({ error: "Sign in required" }, { status: 401 });
@@ -69,7 +69,7 @@ export async function POST(request: Request) {
   const maxChapter = storyline.chapters.length;
 
   // Fetch current index before incrementing
-  const { data: existing } = await supabase
+  const { data: existing } = await pocketbase
     .from("user_story_progress")
     .select("chapter_index")
     .eq("user_id", user.id)
@@ -79,7 +79,7 @@ export async function POST(request: Request) {
   const currentIndex = existing?.chapter_index ?? 0;
   const nextIndex = Math.min(currentIndex + 1, maxChapter);
 
-  const { data, error } = await supabase
+  const { data, error } = await pocketbase
     .from("user_story_progress")
     .upsert(
       {
@@ -103,7 +103,7 @@ export async function POST(request: Request) {
 
   if (isComplete) {
     // Check if this storyline was already completed before to avoid double-rewarding
-    const { data: profile } = await supabase
+    const { data: profile } = await pocketbase
       .from("profiles")
       .select("completed_storylines, referral_code, data_chips")
       .eq("id", user.id)
@@ -115,7 +115,7 @@ export async function POST(request: Request) {
       awardedChips = 2;
       const newCompleted = [...profile.completed_storylines, storylineId];
       
-      await supabase
+      await pocketbase
         .from("profiles")
         .update({ 
           completed_storylines: newCompleted,

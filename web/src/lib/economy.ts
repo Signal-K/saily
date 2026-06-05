@@ -1,12 +1,12 @@
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/lib/pocketbase/client";
 
 /**
  * Repairs a broken streak for a specific date using a Data Chip.
  * Calls the `repair_streak` RPC function.
  */
 export async function repairStreak(date: string): Promise<boolean> {
-  const supabase = createClient();
-  const { error } = await supabase.rpc("repair_streak", { target_date: date });
+  const pocketbase = createClient();
+  const { error } = await pocketbase.rpc("repair_streak", { target_date: date });
   
   if (error) {
     throw new Error(error.message);
@@ -19,8 +19,8 @@ export async function repairStreak(date: string): Promise<boolean> {
  * Calls the `unlock_archive` RPC function.
  */
 export async function unlockArchive(date: string): Promise<boolean> {
-  const supabase = createClient();
-  const { error } = await supabase.rpc("unlock_archive", { target_date: date });
+  const pocketbase = createClient();
+  const { error } = await pocketbase.rpc("unlock_archive", { target_date: date });
 
   if (error) {
     throw new Error(error.message);
@@ -32,8 +32,8 @@ export async function unlockArchive(date: string): Promise<boolean> {
  * Fetches the current Data Chip balance for a user.
  */
 export async function getDataChipsBalance(userId: string): Promise<number> {
-  const supabase = createClient();
-  const { data, error } = await supabase
+  const pocketbase = createClient();
+  const { data, error } = await pocketbase
     .from("profiles")
     .select("data_chips")
     .eq("id", userId)

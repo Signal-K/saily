@@ -2,12 +2,12 @@ function cleanEnv(value) {
   return (value ?? "").trim().replace(/^"+|"+$/g, "");
 }
 
-const url = cleanEnv(process.env.SUPABASE_URL) || "http://127.0.0.1:54321";
-const serviceRole = cleanEnv(process.env.SUPABASE_SERVICE_ROLE) || cleanEnv(process.env.SUPABASE_SERVICE_ROLE_KEY);
+const url = cleanEnv(process.env.POCKETBASE_URL) || "http://127.0.0.1:54321";
+const serviceRole = cleanEnv(process.env.POCKETBASE_SERVICE_ROLE) || cleanEnv(process.env.POCKETBASE_SERVICE_ROLE_KEY);
 const userId = cleanEnv(process.env.TEST_USER_ID);
 
 if (!url || !serviceRole) {
-  console.error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE");
+  console.error("Missing POCKETBASE_URL or POCKETBASE_SERVICE_ROLE");
   process.exit(1);
 }
 if (!userId) {

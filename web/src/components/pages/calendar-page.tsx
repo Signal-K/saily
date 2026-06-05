@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/pocketbase/server";
 
 type DayState = "done" | "partial" | "none";
 
@@ -89,10 +89,10 @@ export default async function CalendarPage({
   const { start, startKey, endKey } = getMonthBounds(year, month);
   const firstDayIndex = start.getUTCDay();
 
-  const supabase = await createClient();
+  const pocketbase = await createClient();
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await pocketbase.auth.getUser();
 
   if (!user) {
     return (
@@ -108,7 +108,7 @@ export default async function CalendarPage({
     );
   }
 
-  const { data: plays, error } = await supabase
+  const { data: plays, error } = await pocketbase
     .from("daily_plays")
     .select("game_date,won")
     .eq("user_id", user.id)
@@ -140,7 +140,7 @@ export default async function CalendarPage({
         <div>
           <p className="eyebrow">Activity</p>
           <h1>Puzzle Calendar</h1>
-          <p className="muted">Track real completion from Supabase and open any previous day&apos;s puzzle directly.</p>
+          <p className="muted">Track real completion from PocketBase and open any previous day&apos;s puzzle directly.</p>
         </div>
       </header>
 

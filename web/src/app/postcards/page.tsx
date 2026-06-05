@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/pocketbase/server";
 import { STORYLINES } from "@/lib/storylines";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -6,16 +6,16 @@ import { redirect } from "next/navigation";
 export const metadata = { title: "Postcards — Saily" };
 
 export default async function PostcardsPage() {
-  const supabase = await createClient();
+  const pocketbase = await createClient();
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await pocketbase.auth.getUser();
 
   if (!user) {
     redirect("/auth/sign-in?next=/postcards");
   }
 
-  const { data: profile } = await supabase
+  const { data: profile } = await pocketbase
     .from("profiles")
     .select("completed_storylines, referral_code")
     .eq("id", user.id)

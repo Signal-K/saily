@@ -1,33 +1,16 @@
-.PHONY: up down logs lint build test test-e2e check-supabase cypress cypress-spec
+.PHONY: up start bootstrap down logs lint build unit test test-e2e cypress cypress-spec tour
 
-SUPABASE_DIR := $(shell pwd)/supabase
 ROOT_DIR := $(shell pwd)
 WEB_DIR := $(ROOT_DIR)/web
 
-define export_supabase_env
-	set -euo pipefail; \
-	supabase status -o env > /tmp/saily-supabase.env; \
-	API_URL="$$(grep '^API_URL=' /tmp/saily-supabase.env | cut -d= -f2- | sed 's/^"//;s/"$$//')"; \
-	ANON_KEY="$$(grep '^ANON_KEY=' /tmp/saily-supabase.env | cut -d= -f2- | sed 's/^"//;s/"$$//')"; \
-	SERVICE_ROLE_KEY="$$(grep '^SERVICE_ROLE_KEY=' /tmp/saily-supabase.env | cut -d= -f2- | sed 's/^"//;s/"$$//')"; \
-	export NEXT_PUBLIC_SUPABASE_URL="$$API_URL"; \
-	export SUPABASE_URL_INTERNAL="$$API_URL"; \
-	export SUPABASE_URL="$$API_URL"; \
-	export NEXT_PUBLIC_SUPABASE_ANON_KEY="$$ANON_KEY"; \
-	export SUPABASE_SERVICE_ROLE="$$SERVICE_ROLE_KEY"; \
-	export SUPABASE_SERVICE_ROLE_KEY="$$SERVICE_ROLE_KEY"; \
-	export NEXT_PUBLIC_AUTH_GOOGLE_ENABLED=false; \
-	export NEXT_PUBLIC_E2E_AUTH_BYPASS=true
-endef
+up:
+	docker compose up -d --no-deps web
 
-check-supabase:
-	@echo "Checking local Supabase is running for this project..."
-	@supabase status --workdir $(SUPABASE_DIR) > /dev/null 2>&1 || \
-		(echo "ERROR: Supabase is not running. Run: supabase start --workdir $(SUPABASE_DIR)" && exit 1)
-	@echo "Supabase OK"
+start: up
 
-up: check-supabase
-	docker compose --env-file .env.docker up --build -d
+bootstrap:
+	docker compose build web
+	docker compose up -d --no-deps web
 
 down:
 	docker compose down
@@ -39,25 +22,21 @@ lint:
 	docker compose run --rm web npm run lint
 
 build:
-	docker compose run --rm web npm run build
+	docker build --target build -t saily-web-build ./web
 
-test:
-	docker compose run --rm web npm run lint
+unit:
+	cd $(WEB_DIR) && npm run test:unit
+
+test: unit
+	$(MAKE) cypress-spec SPEC=cypress/e2e/mission-minigames.cy.ts
 
 test-e2e:
-	docker compose --env-file .env.docker run --rm cypress
+	docker compose run --rm cypress
 
 cypress:
 	@set -euo pipefail; \
 	cd "$(WEB_DIR)"; \
 	yarn install --frozen-lockfile; \
-	cd "$(ROOT_DIR)"; \
-	supabase start; \
-	supabase db reset --local; \
-	$(export_supabase_env); \
-	cd "$(WEB_DIR)"; \
-	yarn e2e:user:create; \
-	trap 'status=$$?; cd "$(WEB_DIR)"; yarn e2e:user:cleanup || true; cd "$(ROOT_DIR)"; supabase stop || true; exit $$status' EXIT; \
 	yarn test:e2e
 
 cypress-spec:
@@ -68,14 +47,7 @@ cypress-spec:
 	fi; \
 	cd "$(WEB_DIR)"; \
 	yarn install --frozen-lockfile; \
-	cd "$(ROOT_DIR)"; \
-	supabase start; \
-	supabase db reset --local; \
-	$(export_supabase_env); \
-	cd "$(WEB_DIR)"; \
-	yarn e2e:user:create; \
-	trap 'status=$$?; cd "$(WEB_DIR)"; yarn e2e:user:cleanup || true; cd "$(ROOT_DIR)"; supabase stop || true; exit $$status' EXIT; \
-	npx cypress run --spec "$$SPEC"
+	npx start-server-and-test "npm run dev" http://localhost:3000 "npm run cypress:run -- --spec $$SPEC"
 
 tour:
 	./scripts/run-tour.sh

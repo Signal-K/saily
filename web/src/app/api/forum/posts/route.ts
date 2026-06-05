@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getDayAccessForUser } from "@/lib/day-access";
 import { isDailyLiveThreadLocked } from "@/lib/forum";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/pocketbase/server";
 
 type ThreadMeta = {
   id: number;
@@ -10,8 +10,8 @@ type ThreadMeta = {
   continue_thread_id: number | null;
 };
 
-async function getThreadMeta(supabase: Awaited<ReturnType<typeof createClient>>, threadId: number) {
-  const { data, error } = await supabase
+async function getThreadMeta(pocketbase: Awaited<ReturnType<typeof createClient>>, threadId: number) {
+  const { data, error } = await pocketbase
     .from("forum_threads")
     .select("id,kind,puzzle_date,continue_thread_id")
     .eq("id", threadId)
@@ -32,25 +32,25 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "threadId is required" }, { status: 400 });
   }
 
-  const supabase = await createClient();
+  const pocketbase = await createClient();
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await pocketbase.auth.getUser();
 
-  const { data: threadMeta, error: threadError } = await getThreadMeta(supabase, threadId);
+  const { data: threadMeta, error: threadError } = await getThreadMeta(pocketbase, threadId);
 
   if (threadError || !threadMeta) {
     return NextResponse.json({ error: threadError?.message ?? "Thread not found" }, { status: 404 });
   }
 
-  const access = await getDayAccessForUser(supabase, user?.id, threadMeta.puzzle_date);
+  const access = await getDayAccessForUser(pocketbase, user?.id, threadMeta.puzzle_date);
   if (!access.allowed) {
     return NextResponse.json({ error: "Complete or unlock this day before opening the discussion.", access }, { status: 403 });
   }
 
   const isLocked = threadMeta.kind === "daily_live" ? isDailyLiveThreadLocked(threadMeta.puzzle_date) : false;
 
-  const { data: posts, error: postsError } = await supabase
+  const { data: posts, error: postsError } = await pocketbase
     .from("forum_posts")
     .select("id,thread_id,parent_post_id,user_id,body,result_payload,created_at,updated_at,profiles!forum_posts_user_id_fkey(username)")
     .eq("thread_id", threadId)
@@ -73,8 +73,8 @@ export async function GET(request: Request) {
   }
 
   const [{ data: votes, error: votesError }, { data: reactions, error: reactionsError }] = await Promise.all([
-    supabase.from("forum_post_votes").select("post_id,user_id").in("post_id", postIds),
-    supabase.from("forum_post_reactions").select("post_id,user_id,emoji").in("post_id", postIds),
+    pocketbase.from("forum_post_votes").select("post_id,user_id").in("post_id", postIds),
+    pocketbase.from("forum_post_reactions").select("post_id,user_id,emoji").in("post_id", postIds),
   ]);
 
   if (votesError || reactionsError) {
@@ -124,10 +124,10 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const supabase = await createClient();
+  const pocketbase = await createClient();
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await pocketbase.auth.getUser();
 
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -148,13 +148,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "threadId and body are required" }, { status: 400 });
   }
 
-  const { data: threadMeta, error: threadError } = await getThreadMeta(supabase, threadId);
+  const { data: threadMeta, error: threadError } = await getThreadMeta(pocketbase, threadId);
 
   if (threadError || !threadMeta) {
     return NextResponse.json({ error: threadError?.message ?? "Thread not found" }, { status: 404 });
   }
 
-  const access = await getDayAccessForUser(supabase, user.id, threadMeta.puzzle_date);
+  const access = await getDayAccessForUser(pocketbase, user.id, threadMeta.puzzle_date);
   if (!access.allowed) {
     return NextResponse.json({ error: "Complete or unlock this day before posting.", access }, { status: 403 });
   }
@@ -171,7 +171,7 @@ export async function POST(request: Request) {
   }
 
   if (parentPostId) {
-    const { data: parentPost, error: parentError } = await supabase
+    const { data: parentPost, error: parentError } = await pocketbase
       .from("forum_posts")
       .select("id,thread_id")
       .eq("id", parentPostId)
@@ -182,7 +182,7 @@ export async function POST(request: Request) {
     }
   }
 
-  const { data: inserted, error: insertError } = await supabase
+  const { data: inserted, error: insertError } = await pocketbase
     .from("forum_posts")
     .insert({
       thread_id: threadId,

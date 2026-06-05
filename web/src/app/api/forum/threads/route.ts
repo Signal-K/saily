@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getDayAccessForUser } from "@/lib/day-access";
 import { isDailyLiveThreadLocked } from "@/lib/forum";
 import { normalizeDateKey } from "@/lib/melbourne-date";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/pocketbase/server";
 
 type ThreadRow = {
   id: number;
@@ -20,12 +20,12 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "date is required (YYYY-MM-DD)" }, { status: 400 });
   }
 
-  const supabase = await createClient();
+  const pocketbase = await createClient();
   const {
     data: { user },
-  } = await supabase.auth.getUser();
-  const access = await getDayAccessForUser(supabase, user?.id, date);
-  const { data, error } = await supabase.rpc("ensure_forum_threads", {
+  } = await pocketbase.auth.getUser();
+  const access = await getDayAccessForUser(pocketbase, user?.id, date);
+  const { data, error } = await pocketbase.rpc("ensure_forum_threads", {
     p_puzzle_date: date,
   });
 

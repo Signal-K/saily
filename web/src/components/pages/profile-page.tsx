@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/pocketbase/server";
 import { getRobotAvatarDataUri } from "@/lib/avatar";
 import { ProfileFollowList } from "@/components/profile-follow-list";
 
@@ -22,10 +22,10 @@ function getThreadRef(value: ForumPost["forum_threads"]) {
 }
 
 export default async function ProfilePage() {
-  const supabase = await createClient();
+  const pocketbase = await createClient();
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await pocketbase.auth.getUser();
 
   if (!user) {
     return (
@@ -40,23 +40,23 @@ export default async function ProfilePage() {
   }
 
   const [{ data: stats }, { data: badges }, { data: profile }, { data: posts }, { data: discoverUsers }, { data: followingRows }, followersCountRes, followingCountRes] = await Promise.all([
-    supabase.from("user_stats").select("games_played,wins,current_streak,best_streak,total_score").eq("user_id", user.id).maybeSingle(),
-    supabase
+    pocketbase.from("user_stats").select("games_played,wins,current_streak,best_streak,total_score").eq("user_id", user.id).maybeSingle(),
+    pocketbase
       .from("user_badges")
       .select("awarded_at,badges(name,description,slug)")
       .eq("user_id", user.id)
       .order("awarded_at", { ascending: false }),
-    supabase.from("profiles").select("username").eq("id", user.id).maybeSingle(),
-    supabase
+    pocketbase.from("profiles").select("username").eq("id", user.id).maybeSingle(),
+    pocketbase
       .from("forum_posts")
       .select("id,body,created_at,forum_threads!forum_posts_thread_id_fkey(puzzle_date,kind,title)")
       .eq("user_id", user.id)
       .order("created_at", { ascending: false })
       .limit(20),
-    supabase.from("profiles").select("id,username").neq("id", user.id).order("created_at", { ascending: false }).limit(20),
-    supabase.from("user_follows").select("following_id").eq("follower_id", user.id),
-    supabase.from("user_follows").select("follower_id", { count: "exact", head: true }).eq("following_id", user.id),
-    supabase.from("user_follows").select("following_id", { count: "exact", head: true }).eq("follower_id", user.id),
+    pocketbase.from("profiles").select("id,username").neq("id", user.id).order("created_at", { ascending: false }).limit(20),
+    pocketbase.from("user_follows").select("following_id").eq("follower_id", user.id),
+    pocketbase.from("user_follows").select("follower_id", { count: "exact", head: true }).eq("following_id", user.id),
+    pocketbase.from("user_follows").select("following_id", { count: "exact", head: true }).eq("follower_id", user.id),
   ]);
 
   const displayName = profile?.username ?? user.email ?? "player";

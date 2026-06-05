@@ -2,17 +2,17 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "The Daily Sail",
-    short_name: "Saily",
-    description: "Daily space science missions — hunt planets, survey asteroids, classify Mars",
+    name: "The Daily Transit",
+    short_name: "Transit",
+    description: "Daily space science missions — hunt planets and classify Mars",
     id: "/",
     scope: "/",
     start_url: "/",
     display: "standalone",
     display_override: ["window-controls-overlay", "standalone"],
     orientation: "portrait",
-    background_color: "#faf8f5",
-    theme_color: "#2f8f83",
+    background_color: "#f7f5ee",
+    theme_color: "#0a82b3",
     icons: [
       {
         src: "/icons/icon-192.png",

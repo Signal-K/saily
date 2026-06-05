@@ -1,6 +1,6 @@
 # Saily
 
-Grounded daily citizen science puzzles — hunt planets, survey asteroids, classify Mars. Built with Next.js and Supabase.
+Grounded daily citizen science puzzles — hunt planets, survey asteroids, classify Mars. Built with Next.js and PocketBase.
 
 Saily is a Wordle-style daily app where you help characters in simple, multi-chapter stories solve real-world scientific mysteries by classifying actual astronomical and planetary data.
 
@@ -26,7 +26,7 @@ Saily is a Wordle-style daily app where you help characters in simple, multi-cha
 ## Architecture
 
 - **Frontend**: Next.js 16 with TypeScript, App Router
-- **Backend**: Supabase (PostgreSQL + Auth + Storage) 
+- **Backend**: Shared Star Sailors PocketBase auth plus the Saily PocketBase backend
 - **Container Orchestration**: Docker Compose
 - **Development**: Hot reloading with volume mounts
 
@@ -35,8 +35,8 @@ Saily is a Wordle-style daily app where you help characters in simple, multi-cha
 When running `make up`, these services start:
 
 - **Web App**: http://localhost:3000
-- **Supabase Studio**: http://localhost:54323  
-- **Email Testing (Mailpit)**: http://localhost:54324
+- **Shared PocketBase**: http://localhost:8090
+- **Saily PocketBase**: http://localhost:8092
 
 ## Documentation
 

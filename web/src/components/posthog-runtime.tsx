@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import posthog from "posthog-js";
 import { DisplaySurveyType } from "posthog-js/lib/src/posthog-surveys-types";
-import { createClient as createSupabaseClient } from "@/lib/supabase/client";
+import { createClient as createPocketBaseClient } from "@/lib/pocketbase/client";
 import { dequeueSurveyTrigger, markSurveyShown, type SurveyTriggerSource } from "@/lib/posthog/survey-queue";
 
 function getPosthogHost() {
@@ -22,7 +22,6 @@ export function PostHogRuntime() {
     const map: Record<SurveyTriggerSource, string> = {
       planet_transit: process.env.NEXT_PUBLIC_POSTHOG_SURVEY_PLANET_ID?.trim() || "",
       planet_no_detection: process.env.NEXT_PUBLIC_POSTHOG_SURVEY_NO_PLANET_ID?.trim() || "",
-      asteroid_mapping: process.env.NEXT_PUBLIC_POSTHOG_SURVEY_ASTEROID_ID?.trim() || "",
       mars_classification: process.env.NEXT_PUBLIC_POSTHOG_SURVEY_MARS_ID?.trim() || "",
       narrative_flow: process.env.NEXT_PUBLIC_POSTHOG_SURVEY_NARRATIVE_ID?.trim() || "",
       archive_unlock: process.env.NEXT_PUBLIC_POSTHOG_SURVEY_ARCHIVE_ID?.trim() || "",
@@ -44,8 +43,8 @@ export function PostHogRuntime() {
       disable_surveys_automatic_display: true,
     });
 
-    const supabase = createSupabaseClient();
-    void supabase.auth.getUser().then(({ data }) => {
+    const pocketbase = createPocketBaseClient();
+    void pocketbase.auth.getUser().then(({ data }) => {
       if (!data.user) return;
       posthog.identify(data.user.id, {
         email: data.user.email,
@@ -53,7 +52,7 @@ export function PostHogRuntime() {
     });
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = pocketbase.auth.onAuthStateChange((_event, session) => {
       if (!session?.user) return;
       posthog.identify(session.user.id, {
         email: session.user.email,
@@ -73,8 +72,8 @@ export function PostHogRuntime() {
     const queued = dequeueSurveyTrigger();
     if (!queued) return;
 
-    const supabase = createSupabaseClient();
-    void supabase.auth.getUser().then(({ data }) => {
+    const pocketbase = createPocketBaseClient();
+    void pocketbase.auth.getUser().then(({ data }) => {
       if (!data.user) return;
 
       const properties = {

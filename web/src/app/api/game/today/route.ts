@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { getPuzzleForDate, resolveGameDate } from "@/lib/game";
+import { resolveGameDate } from "@/lib/game";
 import { getDateSeed, toDailyAnomaly } from "@/lib/anomaly";
 import { getDayAccessForUser } from "@/lib/day-access";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/pocketbase/server";
 
 function median(values: number[]) {
   if (values.length === 0) return 0;
@@ -32,18 +32,16 @@ function estimateSignalStrength(lightcurve: Array<{ y: number }>) {
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
   const date = resolveGameDate(requestUrl.searchParams.get("date"));
-  const puzzle = getPuzzleForDate(date);
 
-  const supabase = await createClient();
+  const pocketbase = await createClient();
   const {
     data: { user },
-  } = await supabase.auth.getUser();
-  const access = await getDayAccessForUser(supabase, user?.id, date);
+  } = await pocketbase.auth.getUser();
+  const access = await getDayAccessForUser(pocketbase, user?.id, date);
 
   if (!access.allowed) {
     return NextResponse.json({
       date,
-      puzzle: null,
       anomaly: null,
       anomalies: [],
       access,
@@ -54,14 +52,14 @@ export async function GET(request: Request) {
     });
   }
 
-  const { count } = await supabase.from("anomalies").select("id", { count: "exact", head: true });
+  const { count } = await pocketbase.from("anomalies").select("id", { count: "exact", head: true });
   let anomaly = null;
   let anomalies: ReturnType<typeof toDailyAnomaly>[] = [];
   if (count && count > 0) {
     const offset = getDateSeed(date) % count;
     const sampleSize = Math.min(count, 24);
     const end = Math.min(count - 1, offset + sampleSize - 1);
-    const { data: rows } = await supabase
+    const { data: rows } = await pocketbase
       .from("anomalies")
       .select('id,content,"ticId",anomalytype,"anomalySet","anomalyConfiguration"')
       .order("id", { ascending: true })
@@ -72,7 +70,7 @@ export async function GET(request: Request) {
       const expandedRows = [...selectedRows];
       if (expandedRows.length < 3) {
         const missing = 3 - expandedRows.length;
-        const { data: headRows } = await supabase
+        const { data: headRows } = await pocketbase
           .from("anomalies")
           .select('id,content,"ticId",anomalytype,"anomalySet","anomalyConfiguration"')
           .order("id", { ascending: true })
@@ -95,18 +93,18 @@ export async function GET(request: Request) {
   }
 
   if (!user) {
-    return NextResponse.json({ date, puzzle, anomaly, anomalies, access, user: null, stats: null, play: null, badges: [] });
+    return NextResponse.json({ date, anomaly, anomalies, access, user: null, stats: null, play: null, badges: [] });
   }
 
   const [{ data: stats }, { data: play }, { data: badges }] = await Promise.all([
-    supabase.from("user_stats").select("games_played,wins,current_streak,best_streak,total_score").eq("user_id", user.id).maybeSingle(),
-    supabase.from("daily_plays").select("attempts,won,score,played_at").eq("user_id", user.id).eq("game_date", date).maybeSingle(),
-    supabase
+    pocketbase.from("user_stats").select("games_played,wins,current_streak,best_streak,total_score").eq("user_id", user.id).maybeSingle(),
+    pocketbase.from("daily_plays").select("attempts,won,score,played_at").eq("user_id", user.id).eq("game_date", date).maybeSingle(),
+    pocketbase
       .from("user_badges")
       .select("awarded_at,badges(name,slug,description)")
       .eq("user_id", user.id)
       .order("awarded_at", { ascending: false }),
   ]);
 
-  return NextResponse.json({ date, puzzle, anomaly, anomalies, access, user: { id: user.id, email: user.email }, stats, play, badges: badges ?? [] });
+  return NextResponse.json({ date, anomaly, anomalies, access, user: { id: user.id, email: user.email }, stats, play, badges: badges ?? [] });
 }

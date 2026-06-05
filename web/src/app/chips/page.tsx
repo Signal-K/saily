@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/lib/pocketbase/client";
 import { repairStreak, unlockArchive, getDataChipsBalance } from "@/lib/economy";
 import { shiftDateKey, getMelbourneDateKey } from "@/lib/melbourne-date";
 import Image from "next/image";
@@ -26,8 +26,8 @@ export default function ChipsPage() {
 
   useEffect(() => {
     async function load() {
-      const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
+      const pocketbase = createClient();
+      const { data: { user } } = await pocketbase.auth.getUser();
       if (!user) return;
       setUserId(user.id);
 
@@ -37,7 +37,7 @@ export default function ChipsPage() {
 
       // Find repairable dates: last 7 days where user missed but has a surrounding play
       const candidates = Array.from({ length: 7 }, (_, i) => shiftDateKey(today, -(i + 1)));
-      const { data: plays } = await supabase
+      const { data: plays } = await pocketbase
         .from("daily_plays")
         .select("game_date")
         .eq("user_id", user.id)
@@ -59,7 +59,7 @@ export default function ChipsPage() {
 
       // Archive dates: last 30 days not yet played or unlocked
       const archiveCandidates = Array.from({ length: 30 }, (_, i) => shiftDateKey(today, -(i + 1)));
-      const { data: unlocks } = await supabase
+      const { data: unlocks } = await pocketbase
         .from("archive_unlocks")
         .select("game_date")
         .eq("user_id", user.id)
