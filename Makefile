@@ -1,16 +1,19 @@
-.PHONY: up start bootstrap down logs lint build unit test test-e2e cypress cypress-spec tour
+.PHONY: up web start bootstrap down logs lint build unit test test-e2e cypress cypress-spec tour
 
 ROOT_DIR := $(shell pwd)
 WEB_DIR := $(ROOT_DIR)/web
 
 up:
-	docker compose up -d --no-deps web
+	docker compose up -d pocketbase web
+
+web:
+	cd $(WEB_DIR) && npm run dev
 
 start: up
 
 bootstrap:
-	docker compose build web
-	docker compose up -d --no-deps web
+	docker compose build web pocketbase
+	docker compose up -d pocketbase web
 
 down:
 	docker compose down

@@ -31,6 +31,17 @@
       "done",
       "in-review"
     ],
-    "serverPort": 6420
+    "serverPort": 6420,
+    "lsp": {
+      "enabled": true,
+      "languages": {
+        "c_cpp": {
+          "enabled": true
+        },
+        "go": {
+          "enabled": true
+        }
+      }
+    }
   }
 }

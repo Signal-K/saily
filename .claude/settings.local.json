@@ -13,5 +13,9 @@
       "Skill(schedule)",
       "mcp__stitch__get_screen"
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "stitch",
+    "knowns"
+  ]
 }

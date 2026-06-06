@@ -1,4 +1,12 @@
 services:
+  pocketbase:
+    build:
+      context: ./backend
+    ports:
+      - "8092:8092"
+    volumes:
+      - ./backend/pb_data:/pb/pb_data
+
   web:
     build:
       context: ./web

@@ -22,7 +22,8 @@ export function NotifySection() {
         puzzles: interestedGames, // Repurposing puzzles field for game interests
       });
       setNotifyState("sent");
-    } catch {
+    } catch (error) {
+      console.error("[landing-interest] notify signup failed", error);
       setNotifyState("error");
     }
   }

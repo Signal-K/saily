@@ -1,10 +1,9 @@
 "use client";
 
-import { GamesSection } from "@/components/landing/games-section";
 import { LandingFooter } from "@/components/landing/landing-footer";
 import { LandingHero } from "@/components/landing/landing-hero";
 import { LandingStyles } from "@/components/landing/landing-styles";
-import { NotifySection } from "@/components/landing/notify-section";
+import { ProjectSurvey } from "@/components/landing/project-survey";
 
 export default function LandingPage() {
   return (
@@ -12,8 +11,7 @@ export default function LandingPage() {
       <LandingStyles />
       <main id="top" className="tx-landing">
         <LandingHero />
-        <GamesSection />
-        <NotifySection />
+        <ProjectSurvey />
         <LandingFooter />
       </main>
     </>

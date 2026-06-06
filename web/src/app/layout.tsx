@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import Link from "next/link";
 import { cookies } from "next/headers";
 import { Analytics } from "@vercel/analytics/react";
 import { SWRegister } from "@/components/sw-register";
@@ -341,22 +340,6 @@ export default async function RootLayout({
         <PostHogRuntime />
         <SWRegister />
         <DailyTransitMasthead initialTheme={initialTheme} />
-
-        {/* Fixed bottom tab bar — visible only on mobile via CSS */}
-        <nav className="mobile-bottom-nav" aria-label="Mobile navigation">
-          <Link href="/" className="mobile-tab" data-cy="nav-home-mobile">
-            <span className="mobile-tab-icon" aria-hidden>◌</span>
-            <span>Home</span>
-          </Link>
-          <Link href="/games/today" className="mobile-tab" data-cy="nav-today-mobile">
-            <span className="mobile-tab-icon" aria-hidden>◎</span>
-            <span>Mission</span>
-          </Link>
-          <Link href="/discuss" className="mobile-tab" data-cy="nav-discuss-mobile">
-            <span className="mobile-tab-icon" aria-hidden>§</span>
-            <span>Discuss</span>
-          </Link>
-        </nav>
 
         <main className="dt-page-shell">
           <BreadcrumbsNav />

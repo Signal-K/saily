@@ -8,5 +8,9 @@
       "mcp__knowns__project",
       "mcp__knowns__tasks"
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "stitch",
+    "knowns"
+  ]
 }

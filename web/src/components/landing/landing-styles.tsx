@@ -203,6 +203,35 @@ export function LandingStyles() {
         margin-top: 1.35rem;
       }
 
+      .tx-hero-signup {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 0.8rem;
+        max-width: 500px;
+        margin-top: 1.8rem;
+      }
+
+      .tx-hero-input {
+        min-height: 48px;
+        border: 1px solid var(--rule, #d9dde3);
+        background: var(--bg-surface, #fff);
+        padding: 0 1rem;
+        font-family: inherit;
+        font-size: 1rem;
+      }
+
+      .tx-hero-signup-success {
+        margin-top: 1.8rem;
+        border-left: 3px solid var(--primary, #0a82b3);
+        background: var(--bg-surface-cool, #eaf6fb);
+        padding: 1rem;
+      }
+
+      .tx-hero-signup-success p {
+        margin: 0;
+        color: var(--primary, #0a82b3);
+      }
+
       .tx-tag-row {
         display: flex;
         flex-wrap: wrap;
@@ -398,6 +427,56 @@ export function LandingStyles() {
         color: var(--primary, #0a82b3);
       }
 
+      .tx-question.is-chosen {
+        border-color: var(--primary, #0a82b3);
+        background: var(--bg-surface-cool, #eaf6fb);
+      }
+
+      @keyframes txFadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      .tx-fade-in {
+        animation: txFadeIn 0.45s ease both;
+      }
+
+      .tx-landnam-invite {
+        margin-top: 1.5rem;
+        border: 1px solid var(--primary, #0a82b3);
+        background: var(--bg-surface-cool, #eaf6fb);
+        padding: clamp(1.1rem, 3vw, 1.6rem);
+      }
+
+      .tx-play-reveal {
+        margin-top: 1.25rem;
+        border: 1px solid var(--ink, #16181c);
+        border-top: 3px solid var(--ink, #16181c);
+        background: var(--ink, #16181c);
+        color: #fff;
+        padding: clamp(1.1rem, 3vw, 1.6rem);
+      }
+
+      .tx-play-reveal em {
+        color: var(--primary, #0a82b3);
+        font-style: italic;
+      }
+
+      .tx-play-reveal .tx-kicker {
+        color: var(--bg-surface-cool, #eaf6fb);
+        opacity: 0.7;
+      }
+
+      .tx-play-reveal p {
+        color: var(--fg-faded, #9099a4);
+      }
+
+      .tx-play-reveal .button-primary {
+        border-color: var(--primary, #0a82b3);
+        background: var(--primary, #0a82b3);
+        color: #fff;
+      }
+
       .tx-survey textarea,
       .tx-survey input,
       .tx-notify input {
@@ -573,7 +652,8 @@ export function LandingStyles() {
         .tx-public-mast-inner,
         .tx-hero-public,
         .tx-citizen-grid,
-        .tx-notify {
+        .tx-notify,
+        .tx-hero-signup {
           grid-template-columns: 1fr;
         }
 
