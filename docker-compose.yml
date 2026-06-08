@@ -16,9 +16,13 @@ services:
     volumes:
       - ./web:/app
       - web_node_modules:/app/node_modules
+      - ../.knowns:/knowns:ro
+      - ./.knowns-outbox:/knowns-outbox
     ports:
       - "3000:3000"
     environment:
+      KNOWNS_CANONICAL_ROOT: /knowns
+      KNOWNS_OUTBOX: /knowns-outbox
       NEXT_PUBLIC_SHARED_PB_URL: ${NEXT_PUBLIC_SHARED_PB_URL:-http://127.0.0.1:8090}
       NEXT_PUBLIC_SAILY_PB_URL: ${NEXT_PUBLIC_SAILY_PB_URL:-http://127.0.0.1:8092}
       NEXT_PUBLIC_AUTH_GOOGLE_ENABLED: "false"
@@ -43,8 +47,12 @@ services:
     volumes:
       - ./web:/e2e
       - web_node_modules:/e2e/node_modules
+      - ../.knowns:/knowns:ro
+      - ./.knowns-outbox:/knowns-outbox
     environment:
       CYPRESS_baseUrl: http://web:3000
+      KNOWNS_CANONICAL_ROOT: /knowns
+      KNOWNS_OUTBOX: /knowns-outbox
       CYPRESS_E2E_TEST_EMAIL: ${E2E_TEST_EMAIL:-}
       CYPRESS_E2E_TEST_PASSWORD: ${E2E_TEST_PASSWORD:-}
       CYPRESS_E2E_TEST_RUN_TAG: ${E2E_TEST_RUN_TAG:-e2e-run}
@@ -61,8 +69,12 @@ services:
       - ./web:/e2e
       - web_node_modules:/e2e/node_modules
       - ./:/project
+      - ../.knowns:/knowns:ro
+      - ./.knowns-outbox:/knowns-outbox
     environment:
       CYPRESS_baseUrl: http://web:3000
+      KNOWNS_CANONICAL_ROOT: /knowns
+      KNOWNS_OUTBOX: /knowns-outbox
     depends_on:
       web:
         condition: service_healthy

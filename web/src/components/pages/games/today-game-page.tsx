@@ -6,8 +6,8 @@ import { queueSurveyTrigger } from "@/lib/posthog/survey-queue";
 import { trackGameplayEvent } from "@/lib/analytics/events";
 import { StreakRepairPrompt } from "@/components/streak-repair-prompt";
 import { getMelbourneDateKey, resolveMelbourneDateKey } from "@/lib/melbourne-date";
+import ErrorBoundary from "@/components/ui/ErrorBoundary";
 import {
-  type LightcurvePoint,
   type Annotation,
   TOTAL_DAYS,
   clamp01,
@@ -15,50 +15,26 @@ import {
   toDisplayPoints,
   projectAnnotationToView,
 } from "@/lib/planet-logic";
-
-type DailyAnomaly = {
-  id: number;
-  ticId: string;
-  label: string;
-  anomalyType: string | null;
-  anomalySet: string | null;
-  lightcurve: LightcurvePoint[];
-  sourceName?: string | null;
-  sourceUrl?: string | null;
-  sourceMission?: string | null;
-  sourceSector?: number | null;
-  isSynthetic?: boolean;
-};
-
-type SavedAnnotation = Omit<Annotation, "id" | "coordinateMode" | "sourcePeriodDays"> & {
-  coordinateMode?: "time" | "phase";
-  sourcePeriodDays?: number;
-};
-type SavedHintFlags = {
-  phaseFold?: boolean;
-  bin?: boolean;
-};
-
-const TAGS = ["Transit dip", "Periodic pattern", "Noise/uncertain", "Other"] as const;
-const STAGE_DIFFICULTIES = ["Easy", "Medium", "Hard"] as const;
-
-const TAG_COLORS: Record<string, { fill: string; stroke: string; chip: string }> = {
-  "Transit dip": { fill: "rgba(14, 165, 233, 0.2)", stroke: "#0284c7", chip: "#e0f2fe" },
-  "Periodic pattern": { fill: "rgba(20, 184, 166, 0.2)", stroke: "#0f766e", chip: "#ccfbf1" },
-  "Noise/uncertain": { fill: "rgba(245, 158, 11, 0.24)", stroke: "#b45309", chip: "#ffedd5" },
-  Other: { fill: "rgba(168, 85, 247, 0.2)", stroke: "#6d28d9", chip: "#ede9fe" },
-};
-
-function xToSvg(x: number) {
-  return 40 + clamp01(x) * 920;
-}
+import {
+  type DailyAnomaly,
+  type SavedAnnotation,
+  type SavedHintFlags,
+  type Tag,
+  TAGS,
+  TAG_COLORS,
+  STAGE_DIFFICULTIES
+} from "@/lib/game/types";
 
 type TodayGamePageProps = {
   onMissionComplete?: (result: { score: number; terminatedEarly?: boolean }) => void;
   gameDate?: string;
 };
 
-export default function TodayGamePage({ onMissionComplete, gameDate: gameDateProp }: TodayGamePageProps = {}) {
+function xToSvg(x: number) {
+  return 40 + clamp01(x) * 920;
+}
+
+function TodayGameContent({ onMissionComplete, gameDate: gameDateProp }: TodayGamePageProps = {}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [dailyAnomalies, setDailyAnomalies] = useState<DailyAnomaly[]>([]);
@@ -301,7 +277,7 @@ export default function TodayGamePage({ onMissionComplete, gameDate: gameDatePro
           sourceId: annotation.id,
           xStart: segment.xStart,
           xEnd: segment.xEnd,
-          color: TAG_COLORS[annotation.tag] ?? TAG_COLORS.Other,
+          color: TAG_COLORS[annotation.tag as Tag] ?? TAG_COLORS.Other,
           tag: annotation.tag,
           confidence: annotation.confidence,
           note: annotation.note,
@@ -818,7 +794,7 @@ export default function TodayGamePage({ onMissionComplete, gameDate: gameDatePro
                 <div
                   key={annotation.id}
                   className="puzzle-annotation-item"
-                  style={{ borderLeft: `4px solid ${(TAG_COLORS[annotation.tag] ?? TAG_COLORS.Other).stroke}` }}
+                  style={{ borderLeft: `4px solid ${(TAG_COLORS[annotation.tag as Tag] ?? TAG_COLORS.Other).stroke}` }}
                 >
                   <p>
                     #{idx + 1} {annotation.tag} • {annotation.xStart.toFixed(3)}-{annotation.xEnd.toFixed(3)}
@@ -885,4 +861,12 @@ export default function TodayGamePage({ onMissionComplete, gameDate: gameDatePro
       </div>
     </section>
   );
+}
+
+export default function TodayGamePage(props: TodayGamePageProps) {
+  return (
+    <ErrorBoundary>
+      <TodayGameContent {...props} />
+    </ErrorBoundary>
+  )
 }
