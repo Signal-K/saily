@@ -9,6 +9,16 @@ If the parent Knowns project is not writable, write proposed task/doc/context up
 
 <!-- KNOWNS BRIDGE END -->
 
+## Backend Architecture
+
+Saily uses three PocketBase instances. If parent repo is accessible, read `@doc/backend-architecture` for full detail. If sandboxed:
+
+- **Shared backend** (port 8090) — auth + astronomy (celestial_bodies, classifications, ecosystem_profiles)
+- **Landnam backend** (port 8091 Docker / 8093 local) — Landnam game state
+- **Saily backend** (this service, port 8092) — this service's game state
+
+Auth is centralized: shared backend owns user accounts; Saily verifies tokens via `internal/sharedauth/verifier.go` which calls `POST /api/collections/users/auth-refresh` on the shared backend.
+
 <!-- KNOWNS GUIDELINES START -->
 # Core Rules
 
