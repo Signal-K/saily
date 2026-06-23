@@ -3,7 +3,7 @@
 import { FormEvent, useState } from "react";
 import { puzzleOptions, returnOptions, storyOptions } from "@/components/landing/landing-data";
 import { generateCallsign, submitInterest, toggleValue } from "@/components/landing/landing-interest";
-import { Chip, Kicker, StatusPill } from "@/components/landing/landing-shared";
+import { Chip, InterestSuccessNote, Kicker, StatusPill } from "@/components/landing/landing-shared";
 
 export function ReaderBriefingSection() {
   const [puzzles, setPuzzles] = useState<string[]>([]);
@@ -88,7 +88,7 @@ export function ReaderBriefingSection() {
             {briefingState === "sending" ? "Transmitting..." : "Transmit briefing"}
           </button>
         </div>
-        {briefingState === "sent" && <p className="tx-form-note">Transmission received. Callsign {callsign} logged.</p>}
+        {briefingState === "sent" && <InterestSuccessNote>Callsign {callsign} logged.</InterestSuccessNote>}
         {briefingState === "error" && <p className="tx-form-note is-error">The signal did not send. Please try again.</p>}
       </form>
     </section>

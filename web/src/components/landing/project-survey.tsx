@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import posthog from "posthog-js";
-import { Kicker } from "@/components/landing/landing-shared";
+import { InterestSuccessNote, Kicker } from "@/components/landing/landing-shared";
 import { games } from "@/components/landing/landing-data";
 import { submitInterest } from "@/components/landing/landing-interest";
 
@@ -165,9 +165,7 @@ export function ProjectSurvey() {
               )}
             </form>
           ) : (
-            <p style={{ marginTop: "1rem", color: "var(--primary, #0a82b3)", fontFamily: "var(--font-data, ui-monospace, monospace)", fontSize: "0.78rem", fontWeight: 900, letterSpacing: "0.1em", textTransform: "uppercase" }}>
-              You&apos;re on the Landnam list.
-            </p>
+            <InterestSuccessNote>Welcome aboard — we&apos;ll be in touch about Landnam.</InterestSuccessNote>
           )}
         </div>
       )}

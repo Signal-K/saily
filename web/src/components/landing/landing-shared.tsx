@@ -23,6 +23,16 @@ export function StatusPill({ children, href }: { children: ReactNode; href?: str
   return <span className="tx-status">{content}</span>;
 }
 
+export function InterestSuccessNote({ children }: { children: ReactNode }) {
+  return (
+    <div className="tx-interest-success">
+      <p>
+        <strong>You&apos;re on the list.</strong> {children}
+      </p>
+    </div>
+  );
+}
+
 export function Chip({
   label,
   active,

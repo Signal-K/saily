@@ -6,6 +6,11 @@ services:
       - "8092:8092"
     volumes:
       - ./backend/pb_data:/pb/pb_data
+    environment:
+      SHARED_PB_URL: ${SHARED_PB_URL:-http://host.docker.internal:8090}
+      SAILY_PB_ENCRYPTION_KEY: ${SAILY_PB_ENCRYPTION_KEY:-}
+      CMS_EDITOR_EMAILS: ${CMS_EDITOR_EMAILS:-}
+      CMS_EDITOR_USER_IDS: ${CMS_EDITOR_USER_IDS:-}
 
   web:
     build:
@@ -33,6 +38,11 @@ services:
       POSTHOG_PERSONAL_API_KEY: ${POSTHOG_PERSONAL_API_KEY:-}
       POSTHOG_CAPTURE_HOST: ${POSTHOG_CAPTURE_HOST:-https://us.i.posthog.com}
       POSTHOG_HOST: ${POSTHOG_HOST:-https://us.posthog.com}
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      RESEND_AUDIENCE_ID: ${RESEND_AUDIENCE_ID:-}
+      SAILY_PB_SUPERUSER_EMAIL: ${SAILY_PB_SUPERUSER_EMAIL:-}
+      SAILY_PB_SUPERUSER_PASSWORD: ${SAILY_PB_SUPERUSER_PASSWORD:-}
+      ADMIN_SYNC_SECRET: ${ADMIN_SYNC_SECRET:-}
       WATCHPACK_POLLING: "true"
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000"]

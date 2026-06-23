@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 "use client";
 
-import { getBrowserSharedPocketBaseUrl, POCKETBASE_STORAGE_KEY, type PocketBaseSession } from "./config";
+import { getBrowserSharedPocketBaseUrl, getBrowserSailyPocketBaseUrl, POCKETBASE_STORAGE_KEY, type PocketBaseSession } from "./config";
 
 type AuthChangeCallback = (_event: string, session: PocketBaseSession | null) => void;
 type PocketBaseQueryResult = { data: any[]; error: any; count: number };
@@ -45,6 +45,21 @@ async function requestSharedAuth(path: string, body: unknown) {
   return payload;
 }
 
+async function sailyFetch(method: string, path: string, body?: unknown): Promise<any> {
+  const session = readSession();
+  const headers: Record<string, string> = {};
+  if (session?.token) headers["Authorization"] = `Bearer ${session.token}`;
+  if (body !== undefined) headers["Content-Type"] = "application/json";
+  const response = await fetch(`${getBrowserSailyPocketBaseUrl()}${path}`, {
+    method,
+    headers,
+    ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
+  });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(payload?.error || "Saily backend request failed");
+  return payload;
+}
+
 function mapAuthPayload(payload: any): PocketBaseSession {
   const record = payload?.record ?? {};
   return {
@@ -61,7 +76,14 @@ function emptyQueryResult(): PocketBaseQueryResult {
 }
 
 class PocketBaseQuery {
-  select(..._args: any[]) { return this; }
+  private _collection: string;
+  private _selectStr = "";
+
+  constructor(collection: string) {
+    this._collection = collection;
+  }
+
+  select(fields: any, ..._rest: any[]) { this._selectStr = typeof fields === "string" ? fields : ""; return this; }
   insert(..._args: any[]) { return this; }
   upsert(..._args: any[]) { return this; }
   update(..._args: any[]) { return this; }
@@ -82,7 +104,14 @@ class PocketBaseQuery {
   limit(..._args: any[]) { return this; }
   range(..._args: any[]) { return this; }
   maybeSingle(..._args: any[]): Promise<any> { return Promise.resolve({ data: null, error: null }); }
-  single(..._args: any[]): Promise<any> { return Promise.resolve({ data: null, error: null }); }
+  single(..._args: any[]): Promise<any> {
+    if (this._collection === "profiles" && this._selectStr.includes("data_chips")) {
+      return sailyFetch("GET", "/api/saily/chips/balance")
+        .then((res: any) => ({ data: { data_chips: res.balance ?? 0 }, error: null }))
+        .catch((err: Error) => ({ data: null, error: { message: err.message } }));
+    }
+    return Promise.resolve({ data: null, error: null });
+  }
   then<TResult1 = PocketBaseQueryResult, TResult2 = never>(
     onfulfilled?: ((value: PocketBaseQueryResult) => TResult1 | PromiseLike<TResult1>) | null,
     onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null,
@@ -155,10 +184,20 @@ export function createClient() {
         };
       },
     },
-    from(..._args: any[]) {
-      return new PocketBaseQuery();
+    from(collection: string) {
+      return new PocketBaseQuery(collection);
     },
-    rpc(..._args: any[]): Promise<any> {
+    rpc(fn: string, params?: any): Promise<any> {
+      if (fn === "repair_streak") {
+        return sailyFetch("POST", "/api/saily/chips/repair-streak", { target_date: params?.target_date })
+          .then((res: any) => ({ data: res, error: null }))
+          .catch((err: Error) => ({ data: null, error: { message: err.message } }));
+      }
+      if (fn === "unlock_archive") {
+        return sailyFetch("POST", "/api/saily/chips/unlock-archive", { target_date: params?.target_date })
+          .then((res: any) => ({ data: res, error: null }))
+          .catch((err: Error) => ({ data: null, error: { message: err.message } }));
+      }
       return Promise.resolve({ data: null, error: null });
     },
   };

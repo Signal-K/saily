@@ -21,7 +21,7 @@ export function LandingMasthead() {
           <a href="#games">Games</a>
           <a href="#team">Team</a>
         </nav>
-        <StatusPill href="#notify">Launching soon</StatusPill>
+        <StatusPill href="#top">Launching soon</StatusPill>
       </div>
     </header>
   );

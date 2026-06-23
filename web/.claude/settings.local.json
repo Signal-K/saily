@@ -6,7 +6,8 @@
       "mcp__stitch__generate_screen_from_text",
       "mcp__stitch__get_screen",
       "mcp__knowns__project",
-      "mcp__knowns__tasks"
+      "mcp__knowns__tasks",
+      "Skill(run)"
     ]
   },
   "enabledMcpjsonServers": [

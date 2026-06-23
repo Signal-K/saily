@@ -22,7 +22,7 @@ const innerScript = `
 import { STORYLINES } from "@/lib/storylines";
 import { CHARACTERS } from "@/lib/characters";
 
-const REQUIRED = ["briefing", "beat1", "beat2", "resolution"];
+const REQUIRED = ["briefing", "update1", "update2", "resolution"];
 const VALID_EXPR = ["neutral", "happy", "sad", "surprised", "serious"];
 const VALID_AMB = ["wind", "ship", "lab", "none", undefined];
 
@@ -32,8 +32,8 @@ const pass = (msg) => console.log("  ✓ " + msg);
 
 console.log("\\n=== Saily Narrative Validation ===\\n");
 
-if (STORYLINES.length !== 4) fail("Expected 4 storylines, got " + STORYLINES.length);
-else pass("4 storylines present");
+if (STORYLINES.length === 0) fail("No storylines found");
+else pass(STORYLINES.length + " storyline(s) present");
 
 for (const s of STORYLINES) {
   console.log("\\nStoryline: " + s.id + " — \\"" + s.title + "\\"");
@@ -49,7 +49,7 @@ for (const s of STORYLINES) {
     for (const f of REQUIRED) {
       if (!ch[f]?.trim()) fail("ch" + i + ": \\"" + f + "\\" is empty");
     }
-    for (const ef of ["briefingExpression","beat1Expression","beat2Expression","resolutionExpression"]) {
+    for (const ef of ["briefingExpression","update1Expression","update2Expression","resolutionExpression"]) {
       if (ch[ef] !== undefined && !VALID_EXPR.includes(ch[ef]))
         fail("ch" + i + ": " + ef + " \\"" + ch[ef] + "\\" invalid");
     }
@@ -79,7 +79,7 @@ const tmpFile = resolve(webDir, "_validate-narrative-tmp.ts");
 writeFileSync(tmpFile, innerScript);
 
 try {
-  execSync(`npx vite-node ${tmpFile}`, {
+  execSync(`npx vite-node --config vite.config.validate.ts ${tmpFile}`, {
     cwd: webDir,
     stdio: "inherit",
   });

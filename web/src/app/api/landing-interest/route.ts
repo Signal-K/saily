@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getSailyPocketBaseUrl } from "@/lib/pocketbase/config";
+import { isResendConfigured, upsertResendContact } from "@/lib/resend";
 
 type LandingInterestPayload = {
   kind?: unknown;
@@ -12,6 +14,32 @@ type LandingInterestPayload = {
 const allowedKinds = new Set(["briefing", "notify"]);
 const posthogEventName = "daily_transit_landing_interest";
 
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const RATE_LIMIT_MAX_REQUESTS = 5;
+const rateLimitHits = new Map<string, { count: number; resetAt: number }>();
+
+function getClientIp(request: NextRequest) {
+  const forwardedFor = request.headers.get("x-forwarded-for");
+  return forwardedFor?.split(",")[0]?.trim() || "unknown";
+}
+
+function isRateLimited(ip: string) {
+  const now = Date.now();
+  const entry = rateLimitHits.get(ip);
+
+  if (!entry || entry.resetAt <= now) {
+    rateLimitHits.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return false;
+  }
+
+  if (entry.count >= RATE_LIMIT_MAX_REQUESTS) {
+    return true;
+  }
+
+  entry.count += 1;
+  return false;
+}
+
 function maskEmail(email: string) {
   if (!email) return "";
   const [local = "", domain = ""] = email.split("@");
@@ -24,9 +52,15 @@ function asStringArray(value: unknown) {
   return value.filter((item): item is string => typeof item === "string").slice(0, 20);
 }
 
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 function normalizeEmail(value: unknown) {
   if (typeof value !== "string") return "";
   return value.trim().slice(0, 240);
+}
+
+function isValidEmail(email: string) {
+  return emailPattern.test(email);
 }
 
 function normalizeNote(value: unknown) {
@@ -109,7 +143,56 @@ async function capturePosthogEvent(record: Record<string, unknown>, request: Nex
   return { captured: true, status: response.status };
 }
 
+async function persistLandingInterest(record: {
+  kind: string;
+  email: string;
+  puzzles: string[];
+  story_hooks: string[];
+  return_drivers: string[];
+  note: string;
+  source: string;
+}) {
+  const baseUrl = getSailyPocketBaseUrl().replace(/\/$/, "");
+  const response = await fetch(`${baseUrl}/api/collections/landing_interest/records`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(record),
+    cache: "no-store",
+  });
+
+  if (response.ok) {
+    return { stored: true, duplicate: false };
+  }
+
+  // The (kind, email) unique index rejects repeat sign-ups for the same email;
+  // treat that as "already on the list" rather than an error.
+  if (response.status === 400) {
+    const body = await response.json().catch(() => null) as { data?: Record<string, unknown> } | null;
+    const hasUniqueViolation = body?.data
+      ? Object.values(body.data).some(
+          (fieldError) =>
+            typeof fieldError === "object" &&
+            fieldError !== null &&
+            "code" in fieldError &&
+            (fieldError as { code?: string }).code === "validation_not_unique",
+        )
+      : false;
+
+    if (hasUniqueViolation) {
+      return { stored: true, duplicate: true };
+    }
+  }
+
+  const errorText = await response.text().catch(() => "");
+  throw new Error(`PocketBase landing_interest insert failed (${response.status}): ${errorText}`);
+}
+
 export async function POST(request: NextRequest) {
+  const clientIp = getClientIp(request);
+  if (isRateLimited(clientIp)) {
+    return NextResponse.json({ error: "rate_limited" }, { status: 429 });
+  }
+
   let payload: LandingInterestPayload;
   const requestId = crypto.randomUUID();
 
@@ -156,10 +239,38 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "email_required", debug }, { status: 400 });
   }
 
+  if (record.email && !isValidEmail(record.email)) {
+    console.error("[landing-interest] invalid email format", debug);
+    return NextResponse.json({ error: "invalid_email", debug }, { status: 400 });
+  }
+
+  let stored: { stored: boolean; duplicate: boolean } | null = null;
+  try {
+    stored = await persistLandingInterest(record);
+  } catch (error) {
+    console.error("[landing-interest] PocketBase persist failed", {
+      ...debug,
+      error: error instanceof Error ? { name: error.name, message: error.message, stack: error.stack } : error,
+    });
+    return NextResponse.json({ error: "persist_failed", debug }, { status: 502 });
+  }
+
+  if (record.email && isResendConfigured()) {
+    try {
+      await upsertResendContact(record.email);
+    } catch (error) {
+      // Newsletter sync is best-effort - PocketBase remains the source of truth.
+      console.error("[landing-interest] Resend contact upsert failed", {
+        ...debug,
+        error: error instanceof Error ? { name: error.name, message: error.message } : error,
+      });
+    }
+  }
+
   try {
     const result = await capturePosthogEvent(record, request);
-    console.info("[landing-interest] PostHog capture succeeded", { ...debug, posthogStatus: result.status });
-    return NextResponse.json({ ok: true, ...result, debug });
+    console.info("[landing-interest] PostHog capture succeeded", { ...debug, posthogStatus: result.status, stored });
+    return NextResponse.json({ ok: true, ...result, ...stored, debug });
   } catch (error) {
     console.error("[landing-interest] PostHog capture failed", {
       ...debug,

@@ -1,19 +1,38 @@
 "use client";
 
-import { LandingFooter } from "@/components/landing/landing-footer";
-import { LandingHero } from "@/components/landing/landing-hero";
+import { VariantProvider, useVariant } from "@/components/landing/landing-variant-context";
+import { LandingVariantSwitcher } from "@/components/landing/landing-variant-switcher";
 import { LandingStyles } from "@/components/landing/landing-styles";
-import { ProjectSurvey } from "@/components/landing/project-survey";
+import { LandingFooter } from "@/components/landing/landing-footer";
+import { ReaderBriefingSection } from "@/components/landing/reader-briefing-section";
+import { VariantEditorial } from "@/components/landing/variant-editorial";
+import { VariantCosmic } from "@/components/landing/variant-cosmic";
+import { VariantTerminal } from "@/components/landing/variant-terminal";
+import { VariantSolar } from "@/components/landing/variant-solar";
+import { VariantMinimal } from "@/components/landing/variant-minimal";
+
+function LandingPageInner() {
+  const { variant } = useVariant();
+
+  return (
+    <div className={`tx-variant-root tx-v-${variant}`}>
+      <LandingStyles />
+      {variant === "editorial" && <VariantEditorial />}
+      {variant === "deep-space" && <VariantCosmic />}
+      {variant === "terminal" && <VariantTerminal />}
+      {variant === "solar" && <VariantSolar />}
+      {variant === "minimal" && <VariantMinimal />}
+      <ReaderBriefingSection />
+      <LandingFooter />
+      <LandingVariantSwitcher />
+    </div>
+  );
+}
 
 export default function LandingPage() {
   return (
-    <>
-      <LandingStyles />
-      <main id="top" className="tx-landing">
-        <LandingHero />
-        <ProjectSurvey />
-        <LandingFooter />
-      </main>
-    </>
+    <VariantProvider>
+      <LandingPageInner />
+    </VariantProvider>
   );
 }
