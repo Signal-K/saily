@@ -142,6 +142,307 @@ export function LandingStyles() {
       .tx-form-note { font-size: 0.8rem; color: #6b7280; }
       .tx-form-note.is-error { color: #dc2626; }
 
+      /* ── Placeholder / lorem sections ──────────────────────────────── */
+
+      .tx-ph-steps {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 2rem;
+      }
+
+      .tx-ph-step {
+        display: grid;
+        grid-template-columns: 3rem 1fr;
+        gap: 1.25rem;
+        align-items: start;
+      }
+
+      .tx-ph-step-n {
+        font-family: ui-monospace, monospace;
+        font-size: 0.65rem;
+        font-weight: 900;
+        letter-spacing: 0.1em;
+        color: var(--primary, #0a82b3);
+        padding-top: 0.2rem;
+      }
+
+      .tx-ph-step-head {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin: 0 0 0.45rem;
+        color: var(--fg-1, #16181c);
+      }
+
+      .tx-ph-step-body {
+        font-size: 0.95rem;
+        line-height: 1.7;
+        color: var(--fg-2, #3d4149);
+        margin: 0;
+      }
+
+      .tx-ph-see-all {
+        font-family: ui-monospace, monospace;
+        font-size: 0.65rem;
+        font-weight: 900;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--primary, #0a82b3);
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      .tx-ph-card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .tx-ph-card {
+        border: 1px solid var(--rule, #d9dde3);
+        border-top: 3px solid var(--fg-1, #16181c);
+        padding: 1.25rem;
+        display: grid;
+        gap: 0.5rem;
+        background: var(--surface, #fff);
+      }
+
+      .tx-ph-card-meta {
+        display: flex;
+        gap: 0.65rem;
+        align-items: center;
+      }
+
+      .tx-ph-card-tag {
+        font-family: ui-monospace, monospace;
+        font-size: 0.58rem;
+        font-weight: 900;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--primary, #0a82b3);
+      }
+
+      .tx-ph-card-date {
+        font-family: ui-monospace, monospace;
+        font-size: 0.58rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        color: var(--fg-muted, #9099a4);
+      }
+
+      .tx-ph-card-head {
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1.35;
+        margin: 0;
+        color: var(--fg-1, #16181c);
+      }
+
+      .tx-ph-card-body {
+        font-size: 0.88rem;
+        line-height: 1.65;
+        color: var(--fg-2, #5b636f);
+        margin: 0;
+      }
+
+      .tx-ph-card-read {
+        font-family: ui-monospace, monospace;
+        font-size: 0.58rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--fg-muted, #9099a4);
+        margin-top: 0.25rem;
+      }
+
+      .tx-ph-two-col {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(240px, 0.65fr);
+        gap: 3rem;
+        align-items: start;
+      }
+
+      .tx-ph-prose p {
+        font-size: 1rem;
+        line-height: 1.75;
+        color: var(--fg-2, #2b2f36);
+        margin: 0 0 1rem;
+      }
+
+      .tx-ph-aside { display: grid; gap: 1.5rem; }
+
+      .tx-ph-aside-block {
+        border: 1px solid var(--rule, #d9dde3);
+        padding: 1rem;
+        background: var(--surface-alt, #f7f5ee);
+      }
+
+      .tx-ph-aside-label {
+        font-family: ui-monospace, monospace;
+        font-size: 0.6rem;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--fg-muted, #9099a4);
+        margin: 0 0 0.75rem;
+      }
+
+      .tx-ph-stat-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 0.85rem;
+      }
+
+      .tx-ph-stat-item { display: grid; gap: 0.1rem; }
+
+      .tx-ph-stat-n {
+        font-family: ui-monospace, monospace;
+        font-size: 1.4rem;
+        font-weight: 900;
+        color: var(--primary, #0a82b3);
+        display: block;
+      }
+
+      .tx-ph-stat-label {
+        font-family: ui-monospace, monospace;
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--fg-muted, #9099a4);
+        display: block;
+      }
+
+      .tx-ph-link-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 0.55rem;
+      }
+
+      .tx-ph-link-list li { font-size: 0.88rem; }
+
+      .tx-ph-fake-link {
+        color: var(--primary, #0a82b3);
+        font-size: 0.85rem;
+        line-height: 1.5;
+        cursor: pointer;
+      }
+
+      .tx-ph-faq-list {
+        display: grid;
+        gap: 0;
+        border-top: 1px solid var(--rule, #d9dde3);
+      }
+
+      .tx-ph-faq-item {
+        border-bottom: 1px solid var(--rule, #d9dde3);
+        padding: 1.25rem 0;
+        display: grid;
+        grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+        gap: 2rem;
+        align-items: start;
+      }
+
+      .tx-ph-faq-q {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--fg-1, #16181c);
+        line-height: 1.4;
+        padding-top: 0.1rem;
+      }
+
+      .tx-ph-faq-a {
+        font-size: 0.92rem;
+        line-height: 1.7;
+        color: var(--fg-2, #3d4149);
+        margin: 0;
+      }
+
+      /* dark mode for placeholder sections */
+      [data-theme="dark"] .tx-ph-step-head,
+      [data-theme="dark"] .tx-ph-card-head,
+      [data-theme="dark"] .tx-ph-faq-q { color: #ecedf0; }
+
+      [data-theme="dark"] .tx-ph-step-body,
+      [data-theme="dark"] .tx-ph-card-body,
+      [data-theme="dark"] .tx-ph-prose p,
+      [data-theme="dark"] .tx-ph-faq-a { color: #c5c9d2; }
+
+      [data-theme="dark"] .tx-ph-card {
+        background: #1a1d22;
+        border-color: #2a2f37;
+        border-top-color: #6ec0e3;
+      }
+
+      [data-theme="dark"] .tx-ph-aside-block {
+        background: #1a1d22;
+        border-color: #2a2f37;
+      }
+
+      [data-theme="dark"] .tx-ph-faq-list,
+      [data-theme="dark"] .tx-ph-faq-item { border-color: #2a2f37; }
+
+      /* Cosmic (deep-space) placeholder overrides */
+      .tx-v-deep-space .tx-ph-step-head,
+      .tx-v-deep-space .tx-ph-card-head,
+      .tx-v-deep-space .tx-ph-faq-q { color: #e2e8f0; }
+
+      .tx-v-deep-space .tx-ph-step-body,
+      .tx-v-deep-space .tx-ph-card-body,
+      .tx-v-deep-space .tx-ph-prose p,
+      .tx-v-deep-space .tx-ph-faq-a { color: #94a3b8; }
+
+      .tx-v-deep-space .tx-ph-card {
+        background: rgba(255,255,255,0.03);
+        border-color: rgba(255,255,255,0.08);
+        border-top-color: #7c3aed;
+      }
+
+      .tx-v-deep-space .tx-ph-aside-block {
+        background: rgba(255,255,255,0.02);
+        border-color: rgba(255,255,255,0.07);
+      }
+
+      .tx-v-deep-space .tx-ph-faq-list,
+      .tx-v-deep-space .tx-ph-faq-item { border-color: rgba(255,255,255,0.07); }
+
+      .tx-v-deep-space .tx-ph-stat-n,
+      .tx-v-deep-space .tx-ph-see-all,
+      .tx-v-deep-space .tx-ph-card-tag,
+      .tx-v-deep-space .tx-ph-fake-link { color: #a78bfa; }
+
+      /* Solar placeholder overrides */
+      .tx-v-solar .tx-ph-card { border-top-color: #c27a0e; }
+      .tx-v-solar .tx-ph-stat-n,
+      .tx-v-solar .tx-ph-see-all,
+      .tx-v-solar .tx-ph-card-tag,
+      .tx-v-solar .tx-ph-step-n,
+      .tx-v-solar .tx-ph-fake-link { color: #c27a0e; }
+      .tx-v-solar .tx-ph-aside-block { background: #fff8ee; border-color: #d4a76a; }
+      .tx-v-solar .tx-ph-faq-list,
+      .tx-v-solar .tx-ph-faq-item { border-color: #d4a76a; }
+
+      /* Minimal placeholder overrides */
+      .tx-v-minimal .tx-ph-card { border-top-color: #000; }
+      .tx-v-minimal .tx-ph-aside-block { background: #f5f5f5; border-color: #ddd; }
+      .tx-v-minimal .tx-ph-faq-list,
+      .tx-v-minimal .tx-ph-faq-item { border-color: #ddd; }
+
+      /* Responsive for placeholder sections */
+      @media (max-width: 720px) {
+        .tx-ph-two-col { grid-template-columns: 1fr; gap: 2rem; }
+        .tx-ph-faq-item { grid-template-columns: 1fr; gap: 0.65rem; }
+      }
+
+      @media (max-width: 520px) {
+        .tx-ph-step { grid-template-columns: 2.25rem 1fr; gap: 0.75rem; }
+      }
+
       /* ── Sticky bottom tab bar ──────────────────────────────────────── */
 
       .tx-tab-bar {
