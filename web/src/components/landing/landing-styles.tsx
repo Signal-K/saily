@@ -16,7 +16,7 @@ export function LandingStyles() {
         font-weight: 700;
         letter-spacing: 0.12em;
         text-transform: uppercase;
-        color: #6b7280;
+        color: var(--fg-muted);
         margin: 0 0 0.4rem;
       }
 
@@ -29,7 +29,7 @@ export function LandingStyles() {
         padding: 0.25rem 0.65rem;
         border: 1px solid currentColor;
         border-radius: 999px;
-        color: #374151;
+        color: var(--fg-2);
         text-decoration: none;
         white-space: nowrap;
       }
@@ -45,8 +45,8 @@ export function LandingStyles() {
 
       .tx-interest-success {
         padding: 0.75rem 1rem;
-        border-left: 3px solid #2563eb;
-        background: #eff6ff;
+        border-left: 3px solid var(--primary);
+        background: var(--primary-soft);
         border-radius: 0 4px 4px 0;
         font-size: 0.875rem;
       }
@@ -60,17 +60,17 @@ export function LandingStyles() {
         padding: 0.35rem 0.75rem;
         font-size: 0.78rem;
         font-family: ui-monospace, monospace;
-        border: 1px solid #d1d5db;
+        border: 1px solid var(--rule);
         border-radius: 4px;
         background: transparent;
         cursor: pointer;
-        color: #374151;
+        color: var(--fg-2);
         transition: background 0.1s, border-color 0.1s;
       }
-      .tx-chip:hover { background: #f3f4f6; }
+      .tx-chip:hover { background: var(--newsprint); }
       .tx-chip.is-active {
-        background: #111827;
-        border-color: #111827;
+        background: var(--ink);
+        border-color: var(--ink);
         color: #fff;
       }
 
@@ -112,23 +112,25 @@ export function LandingStyles() {
         gap: 0.4rem;
         font-size: 0.875rem;
         font-weight: 600;
-        color: #374151;
+        color: var(--fg-2);
       }
       .tx-label textarea,
       .tx-label input[type="email"] {
-        border: 1px solid #d1d5db;
+        border: 1px solid var(--rule);
         border-radius: 4px;
         padding: 0.5rem 0.75rem;
         font-size: 0.875rem;
         font-family: inherit;
         resize: vertical;
+        background: var(--bg-surface);
+        color: var(--ink);
       }
       .tx-label textarea { min-height: 80px; }
       .tx-label textarea:focus,
       .tx-label input[type="email"]:focus {
-        outline: 2px solid #111827;
+        outline: 2px solid var(--ink);
         outline-offset: 1px;
-        border-color: #111827;
+        border-color: var(--ink);
       }
 
       .tx-form-row {
@@ -139,7 +141,7 @@ export function LandingStyles() {
       }
       .tx-form-row .tx-label { flex: 1 1 200px; }
 
-      .tx-form-note { font-size: 0.8rem; color: #6b7280; }
+      .tx-form-note { font-size: 0.8rem; color: var(--fg-muted); }
       .tx-form-note.is-error { color: #dc2626; }
 
       /* ── Placeholder / lorem sections ──────────────────────────────── */
@@ -363,30 +365,6 @@ export function LandingStyles() {
         margin: 0;
       }
 
-      /* dark mode for placeholder sections */
-      [data-theme="dark"] .tx-ph-step-head,
-      [data-theme="dark"] .tx-ph-card-head,
-      [data-theme="dark"] .tx-ph-faq-q { color: #ecedf0; }
-
-      [data-theme="dark"] .tx-ph-step-body,
-      [data-theme="dark"] .tx-ph-card-body,
-      [data-theme="dark"] .tx-ph-prose p,
-      [data-theme="dark"] .tx-ph-faq-a { color: #c5c9d2; }
-
-      [data-theme="dark"] .tx-ph-card {
-        background: #1a1d22;
-        border-color: #2a2f37;
-        border-top-color: #6ec0e3;
-      }
-
-      [data-theme="dark"] .tx-ph-aside-block {
-        background: #1a1d22;
-        border-color: #2a2f37;
-      }
-
-      [data-theme="dark"] .tx-ph-faq-list,
-      [data-theme="dark"] .tx-ph-faq-item { border-color: #2a2f37; }
-
       /* Cosmic (deep-space) placeholder overrides */
       .tx-v-deep-space .tx-ph-step-head,
       .tx-v-deep-space .tx-ph-card-head,
@@ -480,7 +458,7 @@ export function LandingStyles() {
         font-weight: 900;
         letter-spacing: 0.14em;
         text-transform: uppercase;
-        color: #9099a4;
+        color: var(--fg-muted);
         white-space: nowrap;
       }
 
@@ -534,11 +512,11 @@ export function LandingStyles() {
         font-weight: 800;
         letter-spacing: 0.1em;
         text-transform: uppercase;
-        color: #5b636f;
+        color: var(--fg-muted);
         white-space: nowrap;
       }
 
-      .tx-tab.is-active .tx-tab-label { color: #16181c; }
+      .tx-tab.is-active .tx-tab-label { color: var(--ink); }
 
       .tx-v-deep-space .tx-tab-label { color: #6b7a99; }
       .tx-v-deep-space .tx-tab.is-active .tx-tab-label { color: #e2e8f0; }
@@ -546,7 +524,7 @@ export function LandingStyles() {
       .tx-tab-rate-btn {
         border: 1px solid rgba(0,0,0,0.18);
         background: transparent;
-        color: #16181c;
+        color: var(--ink);
         padding: 0.4rem 0.85rem;
         font-family: ui-monospace, monospace;
         font-size: 0.65rem;
@@ -582,8 +560,8 @@ export function LandingStyles() {
         width: 100%;
         max-height: 85vh;
         overflow-y: auto;
-        background: #fff;
-        border-top: 3px solid #16181c;
+        background: var(--bg-surface);
+        border-top: 3px solid var(--ink);
         padding: 1.5rem;
         padding-bottom: calc(1.5rem + 64px);
       }
@@ -605,9 +583,9 @@ export function LandingStyles() {
       }
 
       .tx-rank-close {
-        border: 1px solid #d9dde3;
+        border: 1px solid var(--rule);
         background: transparent;
-        color: #5b636f;
+        color: var(--fg-muted);
         padding: 0.25rem 0.6rem;
         font-size: 0.8rem;
         cursor: pointer;
@@ -615,7 +593,7 @@ export function LandingStyles() {
       }
 
       .tx-rank-sheet-sub {
-        color: #5b636f;
+        color: var(--fg-muted);
         font-family: ui-monospace, monospace;
         font-size: 0.65rem;
         font-weight: 700;
@@ -637,14 +615,14 @@ export function LandingStyles() {
         grid-template-columns: 1.75rem 2rem 1fr auto auto;
         align-items: center;
         gap: 0.65rem;
-        border: 1px solid #d9dde3;
-        background: #f7f5ee;
+        border: 1px solid var(--rule);
+        background: var(--bg-surface-warm);
         padding: 0.6rem 0.85rem;
       }
 
       .tx-rank-item.is-viewing {
-        border-color: #16181c;
-        background: #fff;
+        border-color: var(--ink);
+        background: var(--bg-surface);
       }
 
       .tx-rank-pos {
@@ -670,26 +648,26 @@ export function LandingStyles() {
         font-weight: 700;
         letter-spacing: 0.06em;
         text-transform: uppercase;
-        color: #5b636f;
+        color: var(--fg-muted);
       }
 
       .tx-rank-arrows { display: flex; flex-direction: column; gap: 0.15rem; }
       .tx-rank-arrows button {
-        border: 1px solid #d9dde3;
-        background: #fff;
-        color: #16181c;
+        border: 1px solid var(--rule);
+        background: var(--bg-surface);
+        color: var(--ink);
         padding: 0.08rem 0.4rem;
         font-size: 0.75rem;
         cursor: pointer;
         line-height: 1.2;
       }
       .tx-rank-arrows button:disabled { opacity: 0.28; cursor: not-allowed; }
-      .tx-rank-arrows button:not(:disabled):hover { border-color: #16181c; }
+      .tx-rank-arrows button:not(:disabled):hover { border-color: var(--ink); }
 
       .tx-rank-preview-btn {
-        border: 1px solid #d9dde3;
-        background: #fff;
-        color: #5b636f;
+        border: 1px solid var(--rule);
+        background: var(--bg-surface);
+        color: var(--fg-muted);
         padding: 0.28rem 0.55rem;
         font-family: ui-monospace, monospace;
         font-size: 0.58rem;
@@ -700,17 +678,17 @@ export function LandingStyles() {
         white-space: nowrap;
       }
       .tx-rank-preview-btn.is-active {
-        border-color: #16181c;
-        background: #16181c;
+        border-color: var(--ink);
+        background: var(--ink);
         color: #fff;
         cursor: default;
       }
 
-      .tx-rank-sheet-foot { border-top: 1px solid #d9dde3; padding-top: 1rem; }
+      .tx-rank-sheet-foot { border-top: 1px solid var(--rule); padding-top: 1rem; }
 
       .tx-rank-submit-btn {
-        border: 2px solid #16181c;
-        background: #16181c;
+        border: 2px solid var(--ink);
+        background: var(--ink);
         color: #fff;
         padding: 0.75rem 1.5rem;
         font-family: ui-monospace, monospace;
@@ -2069,46 +2047,19 @@ export function LandingStyles() {
         background: rgba(17, 19, 22, 0.95);
         border-top-color: rgba(255,255,255,0.08);
       }
-      [data-theme="dark"] .tx-tab {
-        color: #9099a4;
-      }
       [data-theme="dark"] .tx-tab.is-active {
         background: rgba(255,255,255,0.08);
         border-color: rgba(255,255,255,0.15);
       }
-      [data-theme="dark"] .tx-tab.is-active .tx-tab-label { color: #ecedf0; }
       [data-theme="dark"] .tx-tab-rate-btn {
         border-color: rgba(255,255,255,0.15);
-        color: #ecedf0;
       }
       [data-theme="dark"] .tx-tab-rate-btn:hover { background: rgba(255,255,255,0.07); }
 
-      [data-theme="dark"] .tx-rank-sheet {
-        background: #181b20;
-        border-top-color: #ecedf0;
-      }
-      [data-theme="dark"] .tx-rank-sheet-title,
-      [data-theme="dark"] .tx-rank-sheet-sub { color: #ecedf0; }
-      [data-theme="dark"] .tx-rank-item {
-        border-color: #2a2f37;
-        background: #1a1d22;
-      }
+      [data-theme="dark"] .tx-chip.is-active { background: #ecedf0; border-color: #ecedf0; color: #111316; }
       [data-theme="dark"] .tx-rank-item.is-viewing { border-color: #6ec0e3; }
-      [data-theme="dark"] .tx-rank-pos { color: #5e6671; }
-      [data-theme="dark"] .tx-rank-meta strong { color: #ecedf0; }
-      [data-theme="dark"] .tx-rank-meta span { color: #8a93a0; }
-      [data-theme="dark"] .tx-rank-arrows button {
-        background: #22262d;
-        border-color: #2a2f37;
-        color: #c5c9d2;
-      }
-      [data-theme="dark"] .tx-rank-preview-btn { background: #22262d; color: #c5c9d2; border-color: #2a2f37; }
       [data-theme="dark"] .tx-rank-preview-btn.is-active { background: #0e2832; color: #6ec0e3; border-color: #6ec0e3; }
-      [data-theme="dark"] .tx-rank-submit-btn {
-        background: #ecedf0;
-        color: #111316;
-        border-color: #ecedf0;
-      }
+      [data-theme="dark"] .tx-rank-submit-btn { background: #ecedf0; border-color: #ecedf0; color: #111316; }
       [data-theme="dark"] .tx-rank-overlay { background: rgba(0,0,0,0.65); }
 
       /* Editorial dark */
