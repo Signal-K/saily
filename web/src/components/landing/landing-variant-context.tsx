@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
 
-export type VariantId = "editorial" | "deep-space" | "terminal" | "solar" | "minimal";
+export type VariantId = "editorial" | "deep-space" | "solar" | "minimal";
 
 export type Variant = {
   id: VariantId;
@@ -26,12 +26,6 @@ export const VARIANTS: Variant[] = [
     label: "Cosmic",
     tagline: "Dark cosmos · Mysterious",
     bodyBg: { light: "#eef7ff", dark: "#06061a" },
-  },
-  {
-    id: "terminal",
-    label: "Terminal",
-    tagline: "Green screen · Retro sci-fi",
-    bodyBg: { light: "#060d06", dark: "#060d06" },
   },
   {
     id: "solar",
@@ -66,7 +60,7 @@ export function VariantProvider({ children }: { children: ReactNode }) {
       const theme = document.documentElement.dataset.theme === "dark" ? "dark" : "light";
       if (found) {
         document.body.style.background = found.bodyBg[theme];
-        document.body.style.color = theme === "dark" || variant === "deep-space" || variant === "terminal" ? "#e2e8f0" : "";
+        document.body.style.color = theme === "dark" || variant === "deep-space" ? "#e2e8f0" : "";
       }
     }
 

@@ -5,7 +5,6 @@ import { SWRegister } from "@/components/sw-register";
 import { BreadcrumbsNav } from "@/components/breadcrumbs-nav";
 import { DailyTransitMasthead } from "@/components/daily-transit-masthead";
 import { PostHogRuntime } from "@/components/posthog-runtime";
-import { PwaInstallPrompt } from "@/components/pwa-install-prompt";
 import "./globals.css";
 
 const THEME_COOKIE = "cosmo_theme";
@@ -345,7 +344,6 @@ export default async function RootLayout({
           <BreadcrumbsNav />
           {children}
         </main>
-        <PwaInstallPrompt />
         <Analytics />
       </body>
     </html>

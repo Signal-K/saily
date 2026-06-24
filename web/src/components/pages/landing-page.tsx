@@ -5,9 +5,9 @@ import { LandingVariantSwitcher } from "@/components/landing/landing-variant-swi
 import { LandingStyles } from "@/components/landing/landing-styles";
 import { LandingFooter } from "@/components/landing/landing-footer";
 import { ReaderBriefingSection } from "@/components/landing/reader-briefing-section";
+import { LandingPlaceholderSections } from "@/components/landing/landing-placeholder-sections";
 import { VariantEditorial } from "@/components/landing/variant-editorial";
 import { VariantCosmic } from "@/components/landing/variant-cosmic";
-import { VariantTerminal } from "@/components/landing/variant-terminal";
 import { VariantSolar } from "@/components/landing/variant-solar";
 import { VariantMinimal } from "@/components/landing/variant-minimal";
 
@@ -19,9 +19,9 @@ function LandingPageInner() {
       <LandingStyles />
       {variant === "editorial" && <VariantEditorial />}
       {variant === "deep-space" && <VariantCosmic />}
-      {variant === "terminal" && <VariantTerminal />}
       {variant === "solar" && <VariantSolar />}
       {variant === "minimal" && <VariantMinimal />}
+      <LandingPlaceholderSections />
       <ReaderBriefingSection />
       <LandingFooter />
       <LandingVariantSwitcher />
