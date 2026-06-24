@@ -31,6 +31,13 @@
       "done",
       "in-review"
     ],
+    "semanticSearch": {
+      "enabled": true,
+      "model": "multilingual-e5-small",
+      "huggingFaceId": "Xenova/multilingual-e5-small",
+      "dimensions": 384,
+      "maxTokens": 512
+    },
     "serverPort": 6420,
     "lsp": {
       "enabled": true,

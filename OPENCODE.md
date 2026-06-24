@@ -1,12 +1,6 @@
-## Backend Architecture
+# OPENCODE
 
-This project is part of the Navigation monorepo with three PocketBase instances. If parent repo is accessible, read `@doc/backend-architecture` for full detail.
-
-**Shared backend** (port 8090) — auth + canonical astronomy data. Saily delegates auth via `internal/sharedauth/verifier.go` which calls `POST /api/collections/users/auth-refresh` on the shared backend.
-
-**Saily backend** (this repo, port 8092) — game-specific data. Environment: `SAILY_PB_ENCRYPTION_KEY`, `SHARED_PB_URL=http://backend:8090`.
-
-Auth flow: User authenticates on shared backend → gets JWT → sends to Saily API → Saily verifies via shared backend → returns user identity.
+Compatibility entrypoint for runtimes that auto-detect `OPENCODE.md`.
 
 <!-- KNOWNS GUIDELINES START -->
 
