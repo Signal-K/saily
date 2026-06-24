@@ -7,7 +7,6 @@ const NOTIFY_TO = process.env.LANDING_VOTE_NOTIFY_EMAIL ?? "liam@skinetics.tech"
 const VARIANT_LABELS: Record<string, string> = {
   editorial: "📰 Editorial",
   "deep-space": "🌌 Cosmic",
-  terminal: "⌨️ Terminal",
   solar: "☀️ Solar",
   minimal: "◻ Minimal",
 };

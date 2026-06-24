@@ -7,7 +7,6 @@ import { VARIANTS, useVariant, type VariantId } from "@/components/landing/landi
 const VARIANT_ICONS: Record<VariantId, string> = {
   editorial: "📰",
   "deep-space": "🌌",
-  terminal: "⌨️",
   solar: "☀️",
   minimal: "◻",
 };

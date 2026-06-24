@@ -7,7 +7,6 @@ import { LandingFooter } from "@/components/landing/landing-footer";
 import { ReaderBriefingSection } from "@/components/landing/reader-briefing-section";
 import { VariantEditorial } from "@/components/landing/variant-editorial";
 import { VariantCosmic } from "@/components/landing/variant-cosmic";
-import { VariantTerminal } from "@/components/landing/variant-terminal";
 import { VariantSolar } from "@/components/landing/variant-solar";
 import { VariantMinimal } from "@/components/landing/variant-minimal";
 
@@ -19,7 +18,6 @@ function LandingPageInner() {
       <LandingStyles />
       {variant === "editorial" && <VariantEditorial />}
       {variant === "deep-space" && <VariantCosmic />}
-      {variant === "terminal" && <VariantTerminal />}
       {variant === "solar" && <VariantSolar />}
       {variant === "minimal" && <VariantMinimal />}
       <ReaderBriefingSection />
