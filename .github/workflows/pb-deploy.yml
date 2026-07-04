@@ -1,0 +1,41 @@
+name: PocketBase Deploy
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "backend/**"
+      - ".github/workflows/pb-deploy.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pocketbase-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Fly deploy (signal-k-saily)
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Validate Fly token secret
+        run: |
+          if [ -z "$FLY_API_TOKEN" ]; then
+            echo "::error::FLY_API_TOKEN is not available to this workflow. Add it to the Signal-K/saily Actions secrets."
+            exit 1
+          fi
+
+      - name: Deploy PocketBase
+        working-directory: backend
+        run: flyctl deploy --remote-only

@@ -9,4 +9,5 @@ func Register(app core.App, verifier *sharedauth.Verifier) {
 	registerMeRoute(app, verifier)
 	registerCMSRoutes(app, verifier)
 	registerDataChipsRoutes(app, verifier)
+	registerConfirmedExoplanetRoutes(app)
 }
