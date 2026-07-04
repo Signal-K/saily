@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { DiscoveryHeadline } from "@/components/discovery-headline";
 
 type Crumb = {
   label: string;
@@ -33,9 +34,11 @@ export function BreadcrumbsNav() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  if (pathname === "/" || pathname.startsWith("/auth")) {
+  if (pathname.startsWith("/auth")) {
     return null;
   }
+
+  const showBreadcrumbs = pathname !== "/";
 
   const segments = pathname.split("/").filter(Boolean);
   const crumbs: Crumb[] = [{ label: "Terminal", href: "/" }];
@@ -85,29 +88,35 @@ export function BreadcrumbsNav() {
 
   return (
     <div className="breadcrumbs-shell" data-cy="breadcrumbs-shell">
-      <button type="button" className="breadcrumbs-back" onClick={onBack} data-cy="breadcrumbs-back">
-        ←
-        <span>Back</span>
-      </button>
+      <DiscoveryHeadline />
 
-      <nav aria-label="Breadcrumb" className="breadcrumbs-nav">
-        <ol>
-          {compactCrumbs.map((crumb, index) => {
-            const isCurrent = index === compactCrumbs.length - 1;
-            return (
-              <li key={`${crumb.href}-${index}`}>
-                {crumb.label === "…" ? (
-                  <span className="is-muted">…</span>
-                ) : isCurrent ? (
-                  <span className="is-current">{crumb.label}</span>
-                ) : (
-                  <Link href={crumb.href}>{crumb.label}</Link>
-                )}
-              </li>
-            );
-          })}
-        </ol>
-      </nav>
+      {showBreadcrumbs && (
+        <>
+          <button type="button" className="breadcrumbs-back" onClick={onBack} data-cy="breadcrumbs-back">
+            ←
+            <span>Back</span>
+          </button>
+
+          <nav aria-label="Breadcrumb" className="breadcrumbs-nav">
+            <ol>
+              {compactCrumbs.map((crumb, index) => {
+                const isCurrent = index === compactCrumbs.length - 1;
+                return (
+                  <li key={`${crumb.href}-${index}`}>
+                    {crumb.label === "…" ? (
+                      <span className="is-muted">…</span>
+                    ) : isCurrent ? (
+                      <span className="is-current">{crumb.label}</span>
+                    ) : (
+                      <Link href={crumb.href}>{crumb.label}</Link>
+                    )}
+                  </li>
+                );
+              })}
+            </ol>
+          </nav>
+        </>
+      )}
     </div>
   );
 }

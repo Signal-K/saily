@@ -24,3 +24,11 @@ export function getSailyPocketBaseUrl() {
 export function getBrowserSailyPocketBaseUrl() {
   return process.env.NEXT_PUBLIC_SAILY_PB_URL ?? "http://127.0.0.1:8092";
 }
+
+// Landnam's own web app (a separate deploy, not part of this Next.js app) —
+// the discoveries feed CTA links here. Falls back to a local dev URL; set
+// NEXT_PUBLIC_LANDNAM_APP_URL in production once Landnam's real domain is
+// assigned.
+export function getLandnamAppUrl() {
+  return process.env.NEXT_PUBLIC_LANDNAM_APP_URL ?? "http://127.0.0.1:5173";
+}

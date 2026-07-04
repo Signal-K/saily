@@ -4,9 +4,9 @@ import { STORYLINES, type Chapter, type Storyline } from "./storylines";
 import { CHARACTERS, type Character } from "./characters";
 import { getMelbourneDayIndex } from "./melbourne-date";
 
-export type MissionGame = "planet" | "mars";
+export type MissionGame = "planet" | "mars" | "rubin_comet_catchers" | "gaia_variables";
 
-export const MISSION_GAMES: MissionGame[] = ["planet", "mars"];
+export const MISSION_GAMES: MissionGame[] = ["planet", "mars", "rubin_comet_catchers", "gaia_variables"];
 
 const MISSION_GAME_COUNT = MISSION_GAMES.length;
 

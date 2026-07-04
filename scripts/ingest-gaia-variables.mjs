@@ -7,8 +7,8 @@ import {
   subjectMetadata,
 } from "./lib/zooniverse-panoptes.mjs";
 
-const PROJECT_SLUGS = ["gaia-vari", "gaia"];
-const PROJECT_URL = "https://www.zooniverse.org/projects?discipline=space";
+const PROJECT_SLUGS = ["gaia-zooniverse/gaia-vari", "gaia-vari", "gaia"];
+const PROJECT_URL = "https://www.zooniverse.org/projects/gaia-zooniverse/gaia-vari";
 
 function toNumericPoint(point, index) {
   if (Array.isArray(point) && point.length >= 2) {

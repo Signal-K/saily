@@ -31,7 +31,9 @@ const PROJECT_URL = "https://www.zooniverse.org/projects/orionnau/active-asteroi
 export const ACTIVE_ASTEROIDS_FALLBACK_SUBJECTS: ActiveAsteroidsSubject[] = [
   {
     id: "AA-001",
-    imageUrl: "https://www.zooniverse.org/assets/project-background.jpg", // Placeholder or real example URL if known
+    // NASA/JPL OSIRIS-REx PIA catalog image of asteroid Bennu (near-Earth asteroid).
+    // Stable PIA-catalog URL pattern; NOT verified live from this environment (no network access) — confirm resolves before shipping.
+    imageUrl: "https://photojournal.jpl.nasa.gov/jpeg/PIA22357.jpg",
     title: "Asteroid Candidate Review",
     prompt: "Is there convincing activity around this asteroid candidate?",
     caption: "A candidate asteroid for activity review.",

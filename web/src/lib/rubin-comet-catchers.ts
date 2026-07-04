@@ -27,7 +27,9 @@ const PROJECT_URL = "https://www.zooniverse.org/projects/orionnau/rubin-comet-ca
 export const RUBIN_COMET_CATCHERS_FALLBACK_SUBJECTS: RubinCometCatchersSubject[] = [
   {
     id: "RUBIN-001",
-    imageUrls: ["https://www.zooniverse.org/assets/project-background.jpg"], // Placeholder
+    // NASA/JPL PIA catalog image of Comet 67P/Churyumov-Gerasimenko (ESA Rosetta mission, NASA-mirrored PIA catalog entry).
+    // Stable PIA-catalog URL pattern; NOT verified live from this environment (no network access) — confirm resolves before shipping.
+    imageUrls: ["https://photojournal.jpl.nasa.gov/jpeg/PIA19867.jpg"],
     title: "Comet Activity Review",
     prompt: "Do these Rubin frames show a tail, coma, or other small-body activity?",
     objectLabel: "C/2023-X1",

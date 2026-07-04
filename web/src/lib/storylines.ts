@@ -98,6 +98,34 @@ const GIZMO_CHAPTERS: Chapter[] = [
     resolutionExpression: "happy",
     ambience: "lab",
   },
+  {
+    index: 5,
+    title: "Coma Watch",
+    briefing:
+      "Today's data comes from Rubin Comet Catchers — you're looking at tail and coma activity, checking for real cometary outbursts against dust and instrument noise.",
+    briefingExpression: "neutral",
+    update1: "First comet checked. The coma calls are subtle — trust what you see.",
+    update1Expression: "neutral",
+    update2: "Second one filed. One more comet to review.",
+    update2Expression: "neutral",
+    resolution: "All comets classified. Real activity gets flagged for the follow-up queue.",
+    resolutionExpression: "happy",
+    ambience: "lab",
+  },
+  {
+    index: 6,
+    title: "Variable Skies",
+    briefing:
+      "Today's mission is a Gaia Variables session — you're reading light curves, looking for genuine stellar variability in the brightness dips and rises.",
+    briefingExpression: "neutral",
+    update1: "First light curve classified. Keep an eye on the periodic ones.",
+    update1Expression: "neutral",
+    update2: "Second star done. One more light curve to go.",
+    update2Expression: "neutral",
+    resolution: "All light curves logged. A little more of the variable-star catalogue is settled.",
+    resolutionExpression: "happy",
+    ambience: "lab",
+  },
 ];
 
 // ---------------------------------------------------------------------------

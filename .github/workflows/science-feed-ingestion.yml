@@ -1,0 +1,99 @@
+name: Science Feed Daily Ingestion
+
+# Caching / refresh strategy (ticket ie7g9l AC #4):
+# Each of the four science feed cache tables (cloudspotting_mars_daily,
+# active_asteroids_daily, rubin_comet_catchers_daily, gaia_variables_daily)
+# is meant to hold one row per game_date per feed. Each ingestion script
+# pulls a batch of subjects from Zooniverse Panoptes and fans them out over
+# `--days` future calendar days via `cycleDailyRows()`, then upserts on
+# (game_date, subject_id) — or (game_date, source_id) for gaia — so re-running
+# the same day never creates a duplicate row (see AC #2, already implemented
+# in scripts/lib/science-feed-runtime.mjs::upsertRows). "Fresh" for these
+# tables means: a row exists for today's game_date; the daily cron below is
+# what keeps that true without a human running the script by hand.
+#
+# KNOWN BLOCKER (flagged in ticket ie7g9l evidence): as of this workflow being
+# authored, `upsertRows()` in scripts/lib/science-feed-runtime.mjs
+# unconditionally throws ("Science feed ingestion is pending PocketBase
+# migration") and web/src/lib/pocketbase/server.ts is a no-op stub. That means
+# every run below will currently fail at the upsert step regardless of
+# secrets being configured. The workflow wiring itself (cron, checkout, node
+# setup, script invocation, failure handling) is complete and correct; the
+# runtime data-write path it depends on is a separate, pre-existing gap that
+# is out of scope for this ticket to fully resolve.
+
+on:
+  schedule:
+    # 14:00 UTC = 00:00 AEST / 01:00 AEDT next day — lands as a fresh feed
+    # first thing in the Melbourne morning (AEST is UTC+10, AEDT is UTC+11).
+    - cron: "0 14 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  ingest:
+    name: Run science feed ingestion scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Sprint 2 priority per megadoc-2026-05-14 Section 7 H6 audit — run first
+      # so at least this feed satisfies AC #1 even if the others are blocked.
+      - name: Ingest Cloudspotting on Mars
+        env:
+          ZOONIVERSE_BEARER_TOKEN: ${{ secrets.ZOONIVERSE_BEARER_TOKEN }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/ingest-cloudspotting-mars.mjs
+
+      - name: Ingest Active Asteroids
+        env:
+          ZOONIVERSE_BEARER_TOKEN: ${{ secrets.ZOONIVERSE_BEARER_TOKEN }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/ingest-active-asteroids.mjs
+
+      - name: Ingest Rubin Comet Catchers
+        env:
+          ZOONIVERSE_BEARER_TOKEN: ${{ secrets.ZOONIVERSE_BEARER_TOKEN }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/ingest-rubin-comet-catchers.mjs
+
+      - name: Ingest Gaia Variables
+        env:
+          ZOONIVERSE_BEARER_TOKEN: ${{ secrets.ZOONIVERSE_BEARER_TOKEN }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/ingest-gaia-variables.mjs
+
+      # Repo secrets that must actually be configured for this workflow to do
+      # anything (none of these can be verified or created from this change):
+      #   - ZOONIVERSE_BEARER_TOKEN   (Panoptes API auth; scripts/lib/zooniverse-panoptes.mjs)
+      #   - SUPABASE_URL              (read via process.env in the runtime lib once the
+      #   - SUPABASE_SERVICE_ROLE_KEY  PocketBase-migration stub above is resolved)
+      #
+      # AC #3 (failure notification): this repo has no existing Slack/webhook
+      # notification pattern to match (checked .github/workflows/*.yml). v1
+      # relies on GitHub's built-in Actions failure notification (email /
+      # Actions tab / repo watch settings) triggered automatically by any
+      # step above failing — no fake integration invented. If/when a real
+      # webhook target exists, add a step here such as:
+      #
+      # - name: Notify on failure
+      #   if: failure()
+      #   run: |
+      #     curl -sf -X POST -H 'Content-type: application/json' \
+      #       --data '{"text":"Science feed ingestion failed: ${{ github.workflow }} run ${{ github.run_id }}"}' \
+      #       "${{ secrets.SLACK_WEBHOOK_URL }}"

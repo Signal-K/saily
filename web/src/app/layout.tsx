@@ -89,6 +89,53 @@ export default async function RootLayout({
                 border-top: 3px double var(--ink, #16181c);
                 background: var(--bg-surface, #fff);
                 padding: 0.65rem 0.8rem;
+                flex-wrap: wrap;
+              }
+
+              .breadcrumbs-shell:empty {
+                display: none;
+              }
+
+              .discovery-headline {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                min-width: 0;
+                color: inherit;
+                text-decoration: none;
+              }
+
+              .discovery-headline:hover .discovery-headline-text {
+                text-decoration: underline;
+                text-underline-offset: 3px;
+              }
+
+              .discovery-headline-dot {
+                width: 7px;
+                height: 7px;
+                border-radius: 50%;
+                background: var(--primary, #0a82b3);
+                flex: none;
+              }
+
+              .discovery-headline-label {
+                font-family: var(--font-data, ui-monospace, monospace);
+                font-size: 0.68rem;
+                font-weight: 700;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                color: var(--primary, #0a82b3);
+                flex: none;
+              }
+
+              .discovery-headline-text {
+                font-family: var(--font-display, "Turret Road", Georgia, serif);
+                font-size: 0.95rem;
+                color: var(--ink, #16181c);
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                min-width: 0;
               }
 
               .breadcrumbs-back {

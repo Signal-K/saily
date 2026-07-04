@@ -1,0 +1,345 @@
+[
+  {
+    "title": "You Can Hunt Kilonovae From Your Couch — And Scientists Actually Need You",
+    "category": "Citizen Science",
+    "hook": "Volunteers playing a 'spot the difference' game on their laptops found 20 new cosmic explosions in 2024 — the kind caused by two neutron stars smashing together. No telescope required.",
+    "reelAngle": "Side-by-side before/after telescope images of a kilonova flash appearing and disappearing. Cut to someone on a laptop clicking through the same interface. 'You could've found this.'",
+    "articleAngle": "Kilonova Seekers on Zooniverse feeds volunteers real-time images from the GOTO telescope network hours after a gravitational wave detection. Focus on the logistics of real-time citizen science — what it means to have 2,000 volunteers become the human filter between raw data and discovery, and the psychological tension of not knowing if what you're clicking on is alien fire or camera noise.",
+    "citizenScienceLink": "Kilonova Seekers on Zooniverse — zooniverse.org/projects/tkillestein/kilonova-seekers",
+    "sources": [
+      { "label": "MNRAS paper: 20 new astronomical discoveries", "url": "https://academic.oup.com/mnras/article/533/2/2113/7735340" },
+      { "label": "Monash: Citizen science identifies 20 new discoveries", "url": "https://www.monash.edu/science/news-events/news/2024/citizen-science-project-identifies-20-new-astronomical-discoveries" },
+      { "label": "Kilonova Seekers on Zooniverse", "url": "https://www.zooniverse.org/projects/tkillestein/kilonova-seekers" }
+    ],
+    "tags": ["kilonovae", "neutron-stars", "zooniverse", "gravitational-waves", "real-time"]
+  },
+  {
+    "title": "There Are Space Rocks Dissolving in Your Gutter Right Now",
+    "category": "Citizen Science",
+    "hook": "Every rooftop in every city catches micrometeorites — ancient particles from asteroid collisions — and you can collect them with a magnet and a bucket.",
+    "reelAngle": "Slow macro video of a magnet dragging through roof gutter sludge, pulling out tiny spherical metallic particles. Zoom in: these are billions of years old. Cross-section under microscope showing the glassy fusion crust.",
+    "articleAngle": "Urban collections now rival Antarctic reference collections in volume. Berlin Museum of Natural History has a formal citizen science program. Go deep on the actual methodology — mesh sizes, magnet strength, magnetic vs. optical sorting — and why cities are surprisingly good collection sites.",
+    "citizenScienceLink": "Project Stardust (Jon Larsen's network); Museum fur Naturkunde Berlin citizen micrometeorite program",
+    "sources": [
+      { "label": "PMC review: Micrometeorite collections", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11225958/" },
+      { "label": "Museum fur Naturkunde Berlin citizen science program", "url": "https://www.museumfuernaturkunde.berlin/en/research/origin-and-formation-micrometeorites-fundamental-research-citizen-science" }
+    ],
+    "tags": ["micrometeorites", "urban-science", "planetary-science", "DIY", "materials"]
+  },
+  {
+    "title": "LIGO Just Hit 390 Detections — and Volunteers Are Cleaning the Data",
+    "category": "Citizen Science",
+    "hook": "Every gravitational wave detection is buried in noise from 'glitches' — mysterious instrument burps. Volunteers on Gravity Spy are teaching the AI to tell the difference.",
+    "reelAngle": "Animate a spectrogram where a glitch looks almost identical to a real black hole merger signal. Show a volunteer making the call. Then cut to the confirmed merger announcement.",
+    "articleAngle": "LIGO's O4 run hit 390 total detections as of early 2025. Focus on Gravity Spy — how its 23 glitch categories were determined collaboratively between scientists and citizen scientists. Scientists didn't know what categories to use until volunteers started grouping things intuitively. The glitch types have great names: 'Blip', 'Koi Fish', 'Scattered Light'.",
+    "citizenScienceLink": "Gravity Spy on Zooniverse — zooniverse.org/projects/zooniverse/gravity-spy",
+    "sources": [
+      { "label": "LIGO 200th detection announcement", "url": "https://www.ligo.caltech.edu/news/ligo20250320" },
+      { "label": "Gravity Spy original arXiv paper", "url": "https://arxiv.org/abs/1611.04596" },
+      { "label": "Gravity Spy on Zooniverse", "url": "https://www.zooniverse.org/projects/zooniverse/gravity-spy" }
+    ],
+    "tags": ["ligo", "gravitational-waves", "citizen-science", "machine-learning", "signal-processing"]
+  },
+  {
+    "title": "STEVE Is a Real Aurora Citizen Scientists Discovered — Still Unexplained",
+    "category": "Citizen Science",
+    "hook": "In 2015, Facebook groups of aurora chasers kept posting images of a weird purple ribbon in the sky. Scientists had never cataloged it. It's now a peer-reviewed atmospheric phenomenon with its own acronym.",
+    "reelAngle": "Time-lapse of STEVE — a narrow mauve/purple arc cutting horizontally across the sky, sometimes with a green 'picket fence' below it. Contrast it with a normal aurora.",
+    "articleAngle": "Examine the epistemology of the discovery — how a Facebook group became the referent for a new class of optical phenomenon. The niche finding: a March 2023 STEVE event observed without any substorm, under quiet solar wind conditions, upending previous theories about its origin.",
+    "citizenScienceLink": "Aurorasaurus citizen science platform",
+    "sources": [
+      { "label": "NASA: Aurora-chasing citizen scientists discover STEVE", "url": "https://www.nasa.gov/science-research/heliophysics/aurora-chasing-citizen-scientists-help-discover-a-new-feature-of-steve/" }
+    ],
+    "tags": ["STEVE", "aurora", "space-weather", "citizen-science", "heliophysics"]
+  },
+  {
+    "title": "The May 2024 Solar Storm Was History — Phones Documented All of It",
+    "category": "Citizen Science",
+    "hook": "The Gannon Storm — strongest in 20 years — was photographed by 696 citizen reporters across 30+ countries using nothing but smartphones. The data is now in peer-reviewed papers.",
+    "reelAngle": "Compilation of citizen-submitted aurora photographs from places where aurora normally doesn't appear — Texas, Spain, New Zealand. The visceral quality is the wrongness: 'This isn't supposed to be here.'",
+    "articleAngle": "The scientific paper formally analyzing the 696-observer survey shows volunteer observations filled genuine gaps in the professional sensor network. GPS precision agriculture systems failed across the Midwest during this storm. What does a true Carrington-level event look like, using 2024 as a preview most people missed?",
+    "citizenScienceLink": "Aurorasaurus; SpaceWeatherLive; Skywarden database",
+    "sources": [
+      { "label": "EGUsphere preprint: Gannon Storm citizen science survey", "url": "https://egusphere.copernicus.org/preprints/2024/egusphere-2024-2174/" }
+    ],
+    "tags": ["solar-storm", "space-weather", "citizen-science", "infrastructure", "Carrington"]
+  },
+  {
+    "title": "A $1 Billion Camera Fires 800,000 Alerts Every Night — You Can Read Them",
+    "category": "Deep Sky",
+    "hook": "The Vera Rubin Observatory went live in early 2026 and immediately generated 800,000 transient alerts in a single night. A telescope this sensitive has never existed. Nobody can process this alone.",
+    "reelAngle": "Animate what 800,000 simultaneous astronomy alerts looks like — each one a star that flickered, exploded, moved, or blinked. Zoom in on one: a new supernova. It happened three seconds ago.",
+    "articleAngle": "Focus on the 'alert broker' infrastructure — Lasair, ALeRCE, ANTARES — software layers that sort and distribute Rubin's firehose. Rubin's most important discovery pipeline might be 10 million volunteers. Not data collection — human cognition is the bottleneck.",
+    "citizenScienceLink": "Lasair Zooniverse integration — lasair-ztf.lsst.ac.uk",
+    "sources": [
+      { "label": "UW News: Rubin Observatory real-time alerts", "url": "https://www.washington.edu/news/2026/02/25/rubin-observatory-real-time-alerts-dirac/" },
+      { "label": "LSST Community: Enabling citizen science with Rubin brokers", "url": "https://community.lsst.org/uploads/short-url/6lGhGQVmxuP0xXIeyxhevg5Q1vS.pdf" }
+    ],
+    "tags": ["Rubin", "LSST", "transients", "alert-brokers", "citizen-science"]
+  },
+  {
+    "title": "There's a Star About to Explode and You Can Watch It Happen",
+    "category": "Citizen Science",
+    "hook": "T Coronae Borealis — the 'Blaze Star' — is a recurrent nova that last exploded in 1946. When it does again, it'll be briefly as bright as the North Star.",
+    "reelAngle": "Animate the binary system: a white dwarf siphoning gas off a red giant until critical mass triggers a thermonuclear explosion visible to the naked eye 3,000 light-years away. Show exactly where to look.",
+    "articleAngle": "The AAVSO documented the signature 'pre-eruption dip' in April 2024 that historically precedes nova events. Examine the epistemics of prediction — how confident are astronomers, what the uncertainty distribution looks like, and what it means to have a global network of backyards pointed at one dim star waiting for fire.",
+    "citizenScienceLink": "AAVSO — aavso.org — binoculars are sufficient",
+    "sources": [
+      { "label": "AAVSO: T CrB pre-eruption dip", "url": "https://www.aavso.org/news/t-crb-pre-eruption-dip" }
+    ],
+    "tags": ["nova", "T-CrB", "variable-stars", "AAVSO", "binary-stars", "prediction"]
+  },
+  {
+    "title": "Your Old Laptop Hunted Aliens for 21 Years — Here's What It Found",
+    "category": "Citizen Science",
+    "hook": "SETI@home ran for 21 years, processed 14 billion signal candidates through 5 million home computers, and whittled it to 100 signals worth a second look. Scientists are reobserving them now with China's FAST telescope.",
+    "reelAngle": "Visualize the signal: a narrowband radio blip appearing twice on the same patch of sky, separated by years. Show the FAST telescope — five football fields wide — pointed at the same coordinates.",
+    "articleAngle": "Two 2025 papers in The Astronomical Journal describe the full SETI@home pipeline and final findings. None of the 100 signals were confirmed as extraterrestrial. Dig into which types made the final 100 and what that tells us about the false-positive landscape of SETI.",
+    "citizenScienceLink": "BOINC platform — boinc.berkeley.edu",
+    "sources": [
+      { "label": "SETI Institute: SETI@home 21 years update", "url": "https://www.seti.org/news/seti-at-home-update-21-years-of-citizen-science/" }
+    ],
+    "tags": ["SETI", "radio-astronomy", "distributed-computing", "FAST", "signal-detection"]
+  },
+  {
+    "title": "Active Asteroids: Finding Comets Where Comets Shouldn't Be",
+    "category": "Solar System",
+    "hook": "Asteroids are supposed to be inert rocks. But volunteers have found 16 that are actively venting gas and dust — behaving like comets in the asteroid belt. Nobody knows why, and this matters for understanding where Earth's water came from.",
+    "reelAngle": "Side-by-side: a normal asteroid (point of light) vs. an active asteroid with a faint visible tail. The tail moves. Zoom in on archive images where nobody caught the activity until volunteers spotted it months later.",
+    "articleAngle": "The Active Asteroids program uses 8,300 volunteers who've made 6.7 million classifications of 430,000 telescope images. Focus on 'TailNet' — the AI trained on volunteer data — and the April 2024 discovery of activity on Near-Earth Object 2012 DG61 and what its cometary behaviour means for models of water delivery to early Earth.",
+    "citizenScienceLink": "Active Asteroids on Zooniverse — activeasteroids.net",
+    "sources": [
+      { "label": "arXiv: Active Asteroids citizen science program", "url": "https://arxiv.org/abs/2403.09768" },
+      { "label": "Active Asteroids on Zooniverse", "url": "https://www.zooniverse.org/projects/chasitellus/active-asteroids" }
+    ],
+    "tags": ["active-asteroids", "comets", "water-delivery", "citizen-science", "solar-system"]
+  },
+  {
+    "title": "The First Private Asteroid-Prospecting Ship Just Launched",
+    "category": "Space Tech",
+    "hook": "AstroForge launched Odin in February 2025 — a 200kg spacecraft built in 10 months for $6.5 million — to photograph a metallic asteroid containing more platinum than has ever been mined on Earth.",
+    "reelAngle": "Animate the mission: Odin hitching a ride on a Falcon 9, separating, pointing cameras at a tumbling metallic rock in deep space. How do you build a prospecting probe for $6.5M vs $6.5B? What do you cut?",
+    "articleAngle": "Odin used commercial-off-the-shelf components wherever possible. Examine the specific industrial design choices that let AstroForge hit their cost target. Then: the follow-up 'Vestri' will attempt to dock with a metallic asteroid using magnetic anchors — never done before. What does a magnetic anchor for a tumbling 100-metre rock actually look like?",
+    "citizenScienceLink": "IASC asteroid hunting campaigns — iasc.net",
+    "sources": [
+      { "label": "AstroForge: Odin mission", "url": "https://www.astroforge.com/odin-mission" }
+    ],
+    "tags": ["asteroid-mining", "AstroForge", "commercial-space", "industrial-design", "platinum"]
+  },
+  {
+    "title": "NASA's New Moon Rover Must Drive 800 Miles Without Charging",
+    "category": "Spacecraft Design",
+    "hook": "The Artemis Lunar Terrain Vehicle needs to cover 800 miles a year on a battery charge at the lunar South Pole, where temperatures swing 500 degrees F between sunlight and shadow.",
+    "reelAngle": "Show three wildly different design concepts side-by-side: a retro-futuristic space truck (Lunar Outpost/GM/Goodyear), a nimble crustacean on wheels (Astrolab), a dune buggy (Intuitive Machines). Which one actually survives the Moon?",
+    "articleAngle": "Focus on the tire problem, which is genuinely unsolved. Goodyear is collaborating on a non-pneumatic tire for lunar regolith — simultaneously fine as flour and sharp as glass. Existing Apollo rover wheels were hand-woven from piano wire. What does 21st-century wheel design for the Moon actually look like?",
+    "citizenScienceLink": null,
+    "sources": [
+      { "label": "NASA: Lunar Terrain Vehicle", "url": "https://www.nasa.gov/suits-and-rovers/lunar-terrain-vehicle/" }
+    ],
+    "tags": ["lunar-rover", "Artemis", "wheel-design", "lunar-south-pole", "tires"]
+  },
+  {
+    "title": "Moon Dust Is Going to Kill the Artemis Program — Unless Someone Fixes It",
+    "category": "Spacecraft Design",
+    "hook": "Lunar regolith is electrostatically charged, razor-sharp, and clings to everything. It wrecked Apollo spacesuits, jammed equipment, and nearly blinded astronauts. NASA's 2024 roadmap calls it one of the highest-risk unresolved engineering challenges.",
+    "reelAngle": "Macro video of simulated lunar regolith particles — gorgeous and menacing, like crushed obsidian. Show particles clinging through static. Then show what 8 hours of walking on the Moon would do to a spacesuit's visor or seals.",
+    "articleAngle": "The 2024 NASA Lunar Dust Mitigation Roadmap lists specific solutions: acoustic levitation, material surface engineering, using the dust's own electrostatic charge against it. The niche angle: 2026 research suggests lunar dust could be sintered into structural bricks in-situ, turning the biggest hazard into a building material.",
+    "citizenScienceLink": null,
+    "sources": [
+      { "label": "NASA NTRS: Lunar Dust Mitigation Roadmap 2024 (PDF)", "url": "https://ntrs.nasa.gov/api/citations/20240013978/downloads/NASA%20Lunar%20Dust%20Mitigation%20Roadmap%20Fall%202024.pdf" }
+    ],
+    "tags": ["lunar-dust", "regolith", "Artemis", "materials-science", "electrostatics", "in-situ-resource"]
+  },
+  {
+    "title": "The 'Spot the Difference' Game Finding Radio Explosions in Space",
+    "category": "Citizen Science",
+    "hook": "MeerKAT, South Africa's giant radio telescope, generates more data than human astronomers can inspect. Volunteers playing a matching game found 142 new variable radio sources in three months.",
+    "reelAngle": "Show what a radio sky image actually looks like — not the pretty Hubble kind, but a monochrome grid of radio sources. Highlight a blinking source. Show the Zooniverse interface where anyone can do this from a phone.",
+    "articleAngle": "'Bursts from Space: MeerKAT' is the first citizen science project for radio transients. Among the 142 sources: a pulsar, an OH maser star, stellar flares, X-ray binary jets — different types of physics all found by people who clicked the right answer on a matching game. Why human pattern recognition still outperforms AI on low signal-to-noise detections.",
+    "citizenScienceLink": "Bursts from Space: MeerKAT on Zooniverse",
+    "sources": [
+      { "label": "MNRAS: Bursts from Space MeerKAT program", "url": "https://academic.oup.com/mnras/article/523/2/2219/7160473" }
+    ],
+    "tags": ["radio-astronomy", "MeerKAT", "transients", "citizen-science", "SKA"]
+  },
+  {
+    "title": "Origami Is Secretly Running the Space Industry",
+    "category": "Spacecraft Design",
+    "hook": "The James Webb Telescope's sunshield unfolds like a five-layer origami structure the size of a tennis court. Solar sails, deployable antennas, and future space solar power stations all depend on fold patterns borrowed from Japanese paper art.",
+    "reelAngle": "Film actual paper origami, then cut to animations of the same crease patterns deployed in space — JWST's sunshield, a solar sail inflating, a massive antenna expanding from a suitcase-sized box.",
+    "articleAngle": "The constraint origami solves that no other design discipline can: the fairing diameter of a rocket is fixed. Focus on the Miura fold (Japan's IKAROS solar sail) vs. newer Yoshimura pattern designs being tested for space solar power stations that could beam electricity from orbit to Earth.",
+    "citizenScienceLink": null,
+    "sources": [
+      { "label": "EurekAlert: Origami in space deployable structures", "url": "https://www.eurekalert.org/news-releases/1113926" }
+    ],
+    "tags": ["origami", "deployable-structures", "solar-sails", "JWST", "space-solar-power", "Miura-fold"]
+  },
+  {
+    "title": "NASA's New Solar Sail Is Already Slightly Broken — and That's Fine",
+    "category": "Space Tech",
+    "hook": "NASA's ACS3 solar sail deployed in August 2024 — the size of a small apartment packed into a toaster-oven-sized spacecraft. One boom bent slightly during deployment. It still works.",
+    "reelAngle": "Animate what a solar sail deployment looks like from space: a tiny silver square unfurling into something massive, catching photons and accelerating without any fuel. Then show the 'slightly bent boom' problem.",
+    "articleAngle": "Contrast three generations of solar sails: LightSail 2 (2019, first small spacecraft to change orbit using only sunlight), ACS3 (2024, composite booms replacing metal for weight), and upcoming interstellar precursor designs. The niche angle is the materials engineering problem with the boom: carbon fiber composite tubes deploying in vacuum at thermal extremes.",
+    "citizenScienceLink": "Planetary Society members can track LightSail; amateur radio operators decoded ACS3 telemetry",
+    "sources": [
+      { "label": "Planetary Society: ACS3 solar sail mission", "url": "https://www.planetary.org/space-missions/acs3" }
+    ],
+    "tags": ["solar-sail", "ACS3", "LightSail", "photon-propulsion", "composite-materials"]
+  },
+  {
+    "title": "Earthquake Sensors Are Tracking Falling Space Junk — and So Can You",
+    "category": "Space Tech",
+    "hook": "When the Shenzhou-15 module burned up over Southern California in 2024, 127 earthquake sensors picked up its sonic boom. Scientists reconstructed the entire reentry trajectory from the ground — without ever looking up.",
+    "reelAngle": "Show the spectrogram of the reentry signal — a seismic signature moving across 127 stations as the debris crossed the sky at Mach 25. Then show a Raspberry Pi seismograph generating similar signals.",
+    "articleAngle": "A 2026 paper in Science documents trajectory reconstruction to within 25 miles of Space Command predictions. Could a purpose-built citizen seismograph network become an orbital debris tracking tool? Cover the Raspberry Pi Shake network and what would need to change about sensor density and sampling rates.",
+    "citizenScienceLink": "Raspberry Shake citizen seismograph network — raspberryshake.org",
+    "sources": [
+      { "label": "Science: Reentry tracked via seismic network", "url": "https://www.science.org/doi/10.1126/science.adz4676" }
+    ],
+    "tags": ["space-debris", "reentry", "seismology", "citizen-science", "orbital-tracking"]
+  },
+  {
+    "title": "An AI Designed a Rocket Engine in Weeks — Then It Tested Itself",
+    "category": "Space Tech",
+    "hook": "LEAP 71 used an AI computational model to autonomously design a 20-kilonewton methane rocket engine, 3D-printed it in metal, and fire-tested it in under three weeks. No human engineer drew a single line.",
+    "reelAngle": "Timelapse of a metal powder-bed fusion printer building the engine interior — latticed cooling channels, converging-diverging nozzle geometry, in one continuous print. Cut to the fire test. It works.",
+    "articleAngle": "LEAP 71's 'Noyron' model treats the engine as a continuous optimization problem — exploring thousands of geometries simultaneously for manufacturability, thermal performance, and structural integrity. What design knowledge is actually being encoded? Also: Rocket Lab's Rutherford engine hit 1,000 units in 2025 — the first 3D-printed engine in mass production.",
+    "citizenScienceLink": null,
+    "sources": [
+      { "label": "LEAP 71: AI-designed aerospike engine at Formnext 2024", "url": "https://leap71.com/2024/11/21/leap-71-and-aconity3d-unveil-3d-printed-aerospike-rocket-engine-at-formnext-2024/" }
+    ],
+    "tags": ["AI-design", "rocket-engines", "additive-manufacturing", "3D-printing", "generative-engineering"]
+  },
+  {
+    "title": "Axiom's Moonwalking Suit Was Designed With Prada — Here's Why That's Serious Engineering",
+    "category": "Spacecraft Design",
+    "hook": "Axiom Space partnered with Prada to design the Artemis III moonwalking suit. Fashion Twitter laughed. But the outer-layer requirements — scratch resistance, thermal regulation, regolith repellency — are exactly what high-performance materials design solves.",
+    "reelAngle": "Show the AxEMU suit's outer layer. The design choices that look aesthetic but are engineering: layering system, helmet visor coatings, hip mobility design that Apollo suits completely lacked. Put it next to the Apollo A7L and show exactly what changed in 50 years.",
+    "articleAngle": "The outermost garment of a lunar EVA suit must survive razor-sharp regolith abrasion, temperatures from +120C to -170C, UV radiation, and micrometeorite impacts — while remaining flexible enough for a human to move in. That's a textile engineering problem as much as aerospace engineering. What did Prada's material science team actually contribute?",
+    "citizenScienceLink": null,
+    "sources": [
+      { "label": "Axiom Space: AxEMU spacesuit announcement", "url": "https://www.axiomspace.com/release/axemu" }
+    ],
+    "tags": ["spacesuit", "AxEMU", "Axiom", "Prada", "materials-engineering", "lunar-EVA"]
+  },
+  {
+    "title": "Euclid's Galaxy Zoo: Help Classify 380,000 Galaxies Nobody Has Seen Before",
+    "category": "Citizen Science",
+    "hook": "ESA's Euclid telescope released 380,000 galaxy images in 2025. Volunteers are sorting them by shape to train an AI that will eventually classify 100 million galaxies — to figure out why the universe is accelerating.",
+    "reelAngle": "Show raw Euclid images — the clarity is genuinely stunning. Cut between spiral, elliptical, disturbed, and merging galaxies. 'These are 10 billion light years away. What shape are they? That answer might explain dark energy.'",
+    "articleAngle": "Galaxy morphology correlates with dark matter halo properties and merger history. When the AI is trained on 500,000+ volunteer classifications, it can run on the full 100-million-galaxy Euclid survey to produce a morphological map of the universe at unprecedented depth. What galaxy shape actually tells you about cosmic history.",
+    "citizenScienceLink": "Galaxy Zoo: Euclid on Zooniverse",
+    "sources": [
+      { "label": "ESA: Euclid Galaxy Zoo citizen science launch", "url": "https://www.esa.int/Science_Exploration/Space_Science/Euclid/Euclid_Galaxy_Zoo_help_us_classify_the_shapes_of_galaxies" }
+    ],
+    "tags": ["Euclid", "galaxy-morphology", "dark-energy", "citizen-science", "deep-sky", "AI-training"]
+  },
+  {
+    "title": "A Network of Consumer Telescopes Just Confirmed Two New Exoplanets",
+    "category": "Citizen Science",
+    "hook": "In 2024, 133 citizen astronomers on 6 continents watched the same star dim for 4 hours in coordinated silence. Result: two confirmed new exoplanets.",
+    "reelAngle": "Animate the global network: 133 dots across a world map, all pointing at the same star simultaneously. Show the transit light curve — a tiny, reproducible dip in brightness — the signature of a planet crossing its star's face.",
+    "articleAngle": "The Unistellar Network confirmed TIC 393818343 b and TIC 24129530 b using consumer smart telescopes. How do you synchronize 133 observers across time zones to capture a 4-hour window? What precision is achievable with consumer optics? Also: Unistellar members discovered a binary asteroid in 2024 — a 12km rock with a companion.",
+    "citizenScienceLink": "Unistellar Network — science.unistellar.com",
+    "sources": [
+      { "label": "SETI Institute: Unistellar 2024 year in review", "url": "https://www.seti.org/news/unistellar-wrapped-2024-a-year-of-discoveries-and-a-look-ahead-to-2025/" }
+    ],
+    "tags": ["exoplanets", "transit-photometry", "Unistellar", "citizen-science", "TESS", "binary-asteroid"]
+  },
+  {
+    "title": "Starlink Is Quietly Leaking Into Radio Telescopes — And There Are No Laws Against It",
+    "category": "Space Tech",
+    "hook": "Scientists at Curtin University cataloged 112,000 unintended radio emissions from Starlink satellites in 2024 — leaking into radio frequencies internationally protected for astronomy. There are no laws against this.",
+    "reelAngle": "Show a radio telescope image contaminated by satellite RFI — streaks and halos wiping out the faint signal the telescope was built to find. Then show what a satellite constellation looks like in the sky in wide-field optical.",
+    "articleAngle": "Unlike optical brightness, unintended radio emission from satellite electronics has no enforceable international limits. The Curtin study is the first systematic catalog of Starlink's EM leakage across the SKA-Low frequency band. What 'unintended' emission means — it's leakage from onboard power electronics, not intentional transmissions. Can it be shielded?",
+    "citizenScienceLink": "Globe at Night measures optical light pollution; Darksky International accepts satellite interference reports",
+    "sources": [
+      { "label": "Astrobites: Starlink and SKA-Low interference", "url": "https://astrobites.org/2025/08/12/starlink-ska-low/" }
+    ],
+    "tags": ["Starlink", "radio-frequency-interference", "SKA", "light-pollution", "space-regulation"]
+  },
+  {
+    "title": "Your Phone Can Hear a Black Hole Merger — And That's Actually Science",
+    "category": "Cosmology",
+    "hook": "NASA turned a LIGO gravitational wave detection into sound you can listen to — a chirp rising in pitch representing two black holes spiraling into each other over billions of years, compressed into 0.2 seconds.",
+    "reelAngle": "Play the chirp over a visualization of two black holes merging. Viscerally physical in a way no image achieves. Contrast different merger sounds: neutron star vs. black hole, near vs. distant.",
+    "articleAngle": "A 2024 study from NASA Chandra showed trained volunteers listening to light curves detected signal patterns that visual inspection missed. The human auditory system processes frequency relationships differently than the visual system processes brightness patterns. Is sonification a scientific tool or an outreach trick? Answer: both, genuinely.",
+    "citizenScienceLink": "NASA Sonification archive is publicly accessible",
+    "sources": [
+      { "label": "Phys.org: Why scientists make space data into sounds", "url": "https://phys.org/news/2024-03-scientists-space.html" }
+    ],
+    "tags": ["gravitational-waves", "sonification", "LIGO", "black-holes", "sensory-science"]
+  },
+  {
+    "title": "Robots Going Into Lunar Caves Have One Specific Problem: No GPS",
+    "category": "Spacecraft Design",
+    "hook": "Lunar lava tubes could be humanity's best bet for a radiation-shielded Moon base. The problem: sending a robot in is a one-way trip unless it can navigate without GPS or radio contact with Earth.",
+    "reelAngle": "Aerial footage of Earth's lava tubes in Lanzarote, Spain, then overlay the proposed robot trio — SherpaTT rappelling Coyote III down a cliff on a tether while LUVMI-X maps the entrance. It looks like a heist.",
+    "articleAngle": "The 2025 Science Robotics paper on cooperative lunar lava tube exploration describes a three-robot system tested in Lanzarote's volcanic caves. Inside a lava tube: no GPS, no satellite link, possible radio blackout, total darkness. The robots use SLAM, acoustic ranging, and dead reckoning — techniques borrowed from submarine navigation. Why this is harder than Mars rover navigation.",
+    "citizenScienceLink": "ESA Open Space Innovation Platform (OSIP)",
+    "sources": [
+      { "label": "Science Robotics: Cooperative lunar lava tube exploration", "url": "https://www.science.org/doi/10.1126/scirobotics.adj9699" }
+    ],
+    "tags": ["lunar-lava-tubes", "robotics", "SLAM", "navigation", "Moon-base", "Coyote-III"]
+  },
+  {
+    "title": "This Space Material Is 99.8% Air — And It Came From Mars Research",
+    "category": "Space Tech",
+    "hook": "Aerogel — the lightest solid material in existence — was developed for Mars missions, is now used in Olympic ice rinks and building insulation, and a new 2025 dome-cell design just made it dramatically tougher.",
+    "reelAngle": "A translucent blue-glowing block that looks like solidified smoke, sitting on a flower without crushing it, while a blowtorch plays across the surface without the other side heating.",
+    "articleAngle": "The 2025 paper introduces dome-celled aerogels — 194 variants with different elemental compositions. The dome geometry increases load-bearing capacity while preserving thermal insulation. The niche: Curiosity rover used aerogel insulation; NASA spinoffs transferred this to civilian construction (used at the 2022 Beijing Winter Olympics). Why did space requirements produce the ideal building insulation?",
+    "citizenScienceLink": null,
+    "sources": [
+      { "label": "Phys.org: Dome aerogel architecture with superior toughness", "url": "https://phys.org/news/2025-07-dome-aerogel-architecture-superior-toughness.html" }
+    ],
+    "tags": ["aerogel", "materials-science", "Mars", "spinoff-technology", "thermal-insulation", "construction"]
+  },
+  {
+    "title": "The ISS Was Designed for Function — The Results Are Psychologically Brutal",
+    "category": "Spacecraft Design",
+    "hook": "Astronauts on the ISS report that after 6 months, the visual monotony — beige plastic modules with cables everywhere, no horizon, no weather — becomes a significant psychological stressor. Nobody designed for the long haul.",
+    "reelAngle": "Show actual ISS interior footage — the reality, not the NASA promotional shots. Then contrast it with a 2025 research-backed proposal for future station interiors: variable lighting cycles, plant walls, clear sight lines, color psychology. The gap is jarring.",
+    "articleAngle": "A 2024 Frontiers in VR paper and NASA Human Research Program reports identify 'visual monotony' and 'privacy deficit' as risk factors on long-duration missions. Window size correlates directly with mood metrics; lighting color temperature affects cortisol more than mission length. What does evidence-based habitat design for a lunar or Mars station actually require?",
+    "citizenScienceLink": "NASA's HI-SEAS and CHAPEA Mars analog programs occasionally recruit public participants",
+    "sources": [
+      { "label": "Frontiers in VR: Space habitat design and psychology (2024)", "url": "https://www.frontiersin.org/journals/virtual-reality/articles/10.3389/frvir.2024.1446796/full" }
+    ],
+    "tags": ["ISS", "space-psychology", "habitat-design", "human-factors", "long-duration", "circadian"]
+  },
+  {
+    "title": "Backyard Radio Astronomers Are Hearing Jupiter — and It's Scientifically Useful",
+    "category": "Citizen Science",
+    "hook": "Jupiter emits natural radio bursts audible at shortwave frequencies. You can hear them with a $20 receiver and a length of copper wire. Amateur radio astronomers have been collecting publishable data for decades.",
+    "reelAngle": "Film someone setting up a simple dipole antenna in a backyard, connecting it to a software-defined radio dongle, and playing the actual sound of Jovian radio bursts — a whooshing, crackling, alien static. Show the spectrogram: structured, patterned, unmistakably not terrestrial.",
+    "articleAngle": "NASA's Radio JOVE program coordinates amateur observations of Jupiter's decametric radio emissions. Professional observatories can't dedicate time to systematic Jupiter monitoring, but a distributed network of backyard antennas can. The niche finding: emissions correlate with Io's volcanic activity — when Io has eruptions, Jupiter's radio bursts change character. How to set up a working Jovian radio receiver for under $50.",
+    "citizenScienceLink": "NASA Radio JOVE Project — radiojove.gsfc.nasa.gov",
+    "sources": [
+      { "label": "NASA Radio JOVE Project", "url": "https://radiojove.gsfc.nasa.gov/" }
+    ],
+    "tags": ["radio-astronomy", "Jupiter", "Io", "citizen-science", "software-defined-radio", "DIY"]
+  },
+  {
+    "title": "This Robot Rappels Into Active Volcanoes — It's Practicing for the Moon",
+    "category": "Spacecraft Design",
+    "hook": "Scientists are sending robots into active lava tubes in Lanzarote and Iceland to test navigation systems for the Moon — because the geology is almost identical to what astronauts will find on the lunar surface.",
+    "reelAngle": "Footage of a robot descending on a tether into a volcanic cave: darkness, red walls, irregular terrain. Then the thermal camera view — heat variations from lunar day/night simulation. This looks like science fiction but it's happening in Spain right now.",
+    "articleAngle": "The ESA-funded CAVERNAUTE research uses terrestrial analogue sites to develop robotic capabilities for lunar subsurface access. The design constraint: a robot that can rappel on a tether, navigate in complete darkness, and return to the surface — while being weight-limited to 15kg. Specific design trade-offs in the Coyote III rover: folded-flat form factor, why wheels beat legs in this specific application.",
+    "citizenScienceLink": "ESA Open Space Innovation Platform (OSIP)",
+    "sources": [
+      { "label": "Science Robotics: Cooperative lunar lava tube exploration", "url": "https://www.science.org/doi/10.1126/scirobotics.adj9699" }
+    ],
+    "tags": ["lunar-caves", "robotics", "lava-tubes", "ESA", "planetary-analog", "CAVERNAUTE"]
+  },
+  {
+    "title": "A Circumbinary Planet Was Found in a Habitable Zone — By a Citizen",
+    "category": "Citizen Science",
+    "hook": "In 2024, Planet Hunters TESS volunteers found a record-breaking circumbinary exoplanet — a world orbiting two suns — sitting in the habitable zone. This is the most Tatooine-like planet ever confirmed, and a citizen spotted it first.",
+    "reelAngle": "Animate what a planet orbiting two suns looks like from the surface: two sunsets, irregular day lengths, chaotic seasons. Then show the actual light curve — the irregular transit timing that confused automated detection algorithms.",
+    "articleAngle": "Why humans found this and algorithms didn't: circumbinary planets transit at irregular intervals because the stars themselves move. The timing doesn't fit pattern-matching that automated pipelines use. Human volunteers, who don't assume regularity, noticed the signal. What the confirmed habitable-zone planet means for the SETI target list, and why citizen input recovered 74% of known planets in TESS test datasets.",
+    "citizenScienceLink": "Planet Hunters TESS on Zooniverse",
+    "sources": [
+      { "label": "Planet Hunters TESS on Zooniverse", "url": "https://www.zooniverse.org/projects/nora-dot-eisner/planet-hunters-tess" }
+    ],
+    "tags": ["exoplanets", "circumbinary", "habitable-zone", "TESS", "citizen-science", "pattern-recognition"]
+  }
+]

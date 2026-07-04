@@ -5,6 +5,8 @@ export const SURVEY_TRIGGER_SOURCES = [
   "planet_transit",
   "planet_no_detection",
   "mars_classification",
+  "rubin_comet_catchers_classification",
+  "gaia_variables_classification",
   "narrative_flow",
   "archive_unlock",
   "discussion_flow",

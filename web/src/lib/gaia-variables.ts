@@ -31,20 +31,32 @@ export type GaiaVariablesCacheRow = {
 
 const PROJECT_URL = "https://www.zooniverse.org/projects?discipline=space"; // Placeholder until specific project found
 
+// Synthetic representative light curve standing in for real Gaia Archive data
+// (per ticket gm9ltt AC #3: "representative variable-star data", not an image).
+// Shape: a classic Cepheid-style periodic brightness curve — fast rise, slow decline,
+// asymmetric sawtooth-ish profile — sampled at 20 phase points over one cycle (x: phase 0-1,
+// y: normalized relative brightness). This is NOT real Gaia photometry; it is a plausible
+// stand-in until real cache rows exist (see populate-rubin-gaia-cache-tables.md).
+const CEPHEID_LIKE_SERIES: GaiaVariablesPoint[] = Array.from({ length: 20 }, (_, i) => {
+  const phase = i / 20;
+  // Fast rise (steep sine rise for phase < 0.3), slower asymmetric decline after.
+  const y =
+    phase < 0.3
+      ? 0.6 + 0.4 * Math.sin((phase / 0.3) * (Math.PI / 2))
+      : 1.0 - 0.5 * ((phase - 0.3) / 0.7) ** 0.7;
+  return { x: Number(phase.toFixed(3)), y: Number(y.toFixed(3)) };
+});
+
 export const GAIA_VARIABLES_FALLBACK_SUBJECTS: GaiaVariablesSubject[] = [
   {
     id: "GAIA-001",
-    series: [
-      { x: 0, y: 1 },
-      { x: 0.5, y: 0.5 },
-      { x: 1, y: 1 },
-    ],
+    series: CEPHEID_LIKE_SERIES,
     title: "Gaia Light Curve",
     prompt: "What kind of variability pattern does this light curve show?",
-    summary: "A standard variable star pattern.",
+    summary: "A representative Cepheid-like periodic brightness curve (synthetic, not real Gaia photometry).",
     provenanceUrl: null,
     cadenceSummary: "Standard 27-day cadence",
-    classHints: ["eclipsing_binary"],
+    classHints: ["cepheid"],
     sourceName: "Gaia Archive",
     projectUrl: PROJECT_URL,
   },

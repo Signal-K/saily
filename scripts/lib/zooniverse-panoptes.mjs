@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://www.zooniverse.org/api";
+const API_BASE_URL = "https://www.zooniverse.org/api/";
 const API_ACCEPT = "application/vnd.api+json; version=1";
 
 function cleanEnv(value) {
@@ -6,7 +6,12 @@ function cleanEnv(value) {
 }
 
 export async function fetchPanoptes(pathname, searchParams = {}) {
-  const url = new URL(pathname, API_BASE_URL);
+  // API_BASE_URL must end with "/" and pathname must NOT start with "/" —
+  // otherwise WHATWG URL resolution treats the leading-slash path as
+  // absolute and drops the "/api" base segment entirely, silently hitting
+  // the Zooniverse frontend (which returns HTML, not JSON) instead of the
+  // Panoptes API.
+  const url = new URL(String(pathname).replace(/^\/+/, ""), API_BASE_URL);
   for (const [key, value] of Object.entries(searchParams)) {
     if (value == null || value === "") continue;
     url.searchParams.set(key, String(value));

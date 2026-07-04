@@ -11,7 +11,17 @@
       "mcp__knowns__list_tasks",
       "mcp__knowns__create_task",
       "Skill(schedule)",
-      "mcp__stitch__get_screen"
+      "mcp__stitch__get_screen",
+      "mcp__knowns__initial",
+      "WebSearch",
+      "mcp__knowns__search",
+      "mcp__zennotes__vault_info",
+      "mcp__zennotes__list_folders",
+      "mcp__zennotes__list_notes",
+      "mcp__zennotes__read_note",
+      "mcp__zennotes__create_note",
+      "mcp__zennotes__rename_note",
+      "mcp__zennotes__write_note"
     ]
   },
   "enabledMcpjsonServers": [
