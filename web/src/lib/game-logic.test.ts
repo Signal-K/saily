@@ -2,7 +2,6 @@ import { describe, it, expect } from 'vitest'
 import { 
   clamp01, 
   normalizePeriodDays, 
-  toDisplayPoints,
   mergeSegments,
   projectTimeIntervalToPhase
 } from './planet-logic'
