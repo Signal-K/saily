@@ -40,53 +40,54 @@ export function ReaderBriefingSection() {
 
   return (
     <section id="briefing" className="tx-section" aria-label="Reader briefing survey">
-      <form className="tx-survey" onSubmit={handleBriefingSubmit}>
-        <div className="tx-section-head">
+      <form className="tx-briefing-panel" onSubmit={handleBriefingSubmit}>
+        <div className="tx-briefing-head">
           <div>
-            <Kicker>Reader briefing &middot; Shape the first edition</Kicker>
-            <h2>What should The Daily Transit become?</h2>
-            <p>Pick anything that fits. Your answers help shape the first edition and the daily puzzle mix.</p>
+            <Kicker>Shape the next build</Kicker>
+            <h2>Tune the daily mix</h2>
+            <p>Quick signals only. Pick what should show up more often in The Daily Transit.</p>
           </div>
           <StatusPill>{totalAnswers} signals</StatusPill>
         </div>
 
-        <div className="tx-survey-grid">
+        <div className="tx-briefing-rows">
           <BriefingQuestion
             kicker="Q1"
-            title="Which puzzles should we run first?"
+            title="Puzzles"
             options={puzzleOptions}
             selected={puzzles}
             onToggle={(option) => setPuzzles(toggleValue(puzzles, option))}
           />
           <BriefingQuestion
             kicker="Q2"
-            title="What pulls you into a space story?"
+            title="Story hooks"
             options={storyOptions}
             selected={storyHooks}
             onToggle={(option) => setStoryHooks(toggleValue(storyHooks, option))}
           />
           <BriefingQuestion
             kicker="Q3"
-            title="What would bring you back each day?"
+            title="Return loops"
             options={returnOptions}
             selected={returnDrivers}
             onToggle={(option) => setReturnDrivers(toggleValue(returnDrivers, option))}
           />
         </div>
 
-        <label className="tx-label">
-          Anything specific you are hoping to see?
-          <textarea value={note} onChange={(event) => setNote(event.target.value)} placeholder="A column on exoplanet atmospheres, a weekly asteroid tournament, beginner explainers..." />
-        </label>
-
-        <div className="tx-form-row">
-          <label className="tx-label">
-            Notify me when it launches
-            <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="your@email" />
+        <div className="tx-briefing-submit">
+          <label className="tx-label tx-briefing-note">
+            Note
+            <textarea value={note} onChange={(event) => setNote(event.target.value)} placeholder="Anything missing from today's mix?" />
           </label>
-          <button className="button button-primary" type="submit" disabled={!canSendBriefing || briefingState === "sending"}>
-            {briefingState === "sending" ? "Transmitting..." : "Transmit briefing"}
-          </button>
+          <div className="tx-briefing-actions">
+            <label className="tx-label">
+              Email
+              <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="optional@email" />
+            </label>
+            <button className="button button-primary" type="submit" disabled={!canSendBriefing || briefingState === "sending"}>
+              {briefingState === "sending" ? "Saving..." : "Save signals"}
+            </button>
+          </div>
         </div>
         {briefingState === "sent" && <InterestSuccessNote>Callsign {callsign} logged.</InterestSuccessNote>}
         {briefingState === "error" && <p className="tx-form-note is-error">The signal did not send. Please try again.</p>}
@@ -109,9 +110,11 @@ function BriefingQuestion({
   onToggle: (option: string) => void;
 }) {
   return (
-    <div className="tx-question">
-      <Kicker>{kicker}</Kicker>
-      <h3>{title}</h3>
+    <div className="tx-question tx-briefing-question">
+      <div className="tx-briefing-question-head">
+        <Kicker>{kicker}</Kicker>
+        <h3>{title}</h3>
+      </div>
       <div className="tx-chip-row">
         {options.map((option) => (
           <Chip key={option} label={option} active={selected.includes(option)} onClick={() => onToggle(option)} />
