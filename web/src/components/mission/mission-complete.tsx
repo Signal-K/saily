@@ -103,11 +103,9 @@ export function MissionComplete({
           <p className="muted" style={{ fontSize: "0.8rem", lineHeight: 1.6, margin: "0 0 1rem" }}>
             {postcardMessage}
           </p>
-          {isStorylineComplete && (
-            <Link href="/postcards" className="button" style={{ fontSize: "0.7rem", padding: "0.4rem 0.75rem" }}>
-              View Postcard
-            </Link>
-          )}
+          <Link href="/postcards" className="button" style={{ fontSize: "0.7rem", padding: "0.4rem 0.75rem" }}>
+            View Gallery
+          </Link>
           {referralCode && (
             <div style={{ marginTop: "0.75rem" }}>
               <p className="eyebrow" style={{ margin: "0 0 0.3rem" }}>Secure Access Key</p>
@@ -142,6 +140,9 @@ export function MissionComplete({
       <div className="mission-complete-actions">
         <Link href="/" className="button">
           Return to Hub
+        </Link>
+        <Link href="/postcards" className="button">
+          Gallery &amp; History
         </Link>
         <Link href="/games/today" className="button button-primary">
           View Next Mission →

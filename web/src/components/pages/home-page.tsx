@@ -126,6 +126,7 @@ export default async function Home() {
         <nav className="flex gap-[clamp(1rem,4vw,3rem)] overflow-x-auto border-y border-[var(--outline-variant)] py-2 md:justify-center" aria-label="Mission sections">
           <Link href="/games/today" className={navLinkClass}>Mission Control</Link>
           <Link href="/calendar" className={navLinkClass}>Archives</Link>
+          <Link href="/postcards" className={navLinkClass}>Gallery</Link>
           <Link href="/discuss" className={navLinkClass}>Consensus</Link>
           <Link href="/profile" className={navLinkClass}>Fleet Log</Link>
         </nav>

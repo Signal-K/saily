@@ -2,12 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/pocketbase/client";
-import { repairStreak, unlockArchive, getDataChipsBalance } from "@/lib/economy";
+import { unlockArchive, getDataChipsBalance } from "@/lib/economy";
 import { shiftDateKey, getMelbourneDateKey } from "@/lib/melbourne-date";
 import Image from "next/image";
 import Link from "next/link";
 
-type RepairableDate = { date: string; label: string };
 type ArchiveDate = { date: string; label: string };
 
 function formatDateLabel(dateKey: string): string {
@@ -18,7 +17,6 @@ function formatDateLabel(dateKey: string): string {
 export default function ChipsPage() {
   const [chips, setChips] = useState<number | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
-  const [repairable, setRepairable] = useState<RepairableDate[]>([]);
   const [archiveDates, setArchiveDates] = useState<ArchiveDate[]>([]);
   const [pending, setPending] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -35,30 +33,15 @@ export default function ChipsPage() {
       const balance = await getDataChipsBalance(user.id);
       setChips(balance);
 
-      // Find repairable dates: last 7 days where user missed but has a surrounding play
-      const candidates = Array.from({ length: 7 }, (_, i) => shiftDateKey(today, -(i + 1)));
+      const archiveCandidates = Array.from({ length: 30 }, (_, i) => shiftDateKey(today, -(i + 1)));
       const { data: plays } = await pocketbase
         .from("daily_plays")
         .select("game_date")
         .eq("user_id", user.id)
-        .in("game_date", [today, ...candidates, shiftDateKey(today, -8)]);
+        .in("game_date", [today, ...archiveCandidates]);
 
       const playedSet = new Set((plays ?? []).map((p) => p.game_date as string));
 
-      // A date is repairable if it was missed and the day before it was played
-      const repairList: RepairableDate[] = [];
-      for (const date of candidates) {
-        if (!playedSet.has(date)) {
-          const dayBefore = shiftDateKey(date, -1);
-          if (playedSet.has(dayBefore) || playedSet.has(shiftDateKey(date, 1))) {
-            repairList.push({ date, label: formatDateLabel(date) });
-          }
-        }
-      }
-      setRepairable(repairList);
-
-      // Archive dates: last 30 days not yet played or unlocked
-      const archiveCandidates = Array.from({ length: 30 }, (_, i) => shiftDateKey(today, -(i + 1)));
       const { data: unlocks } = await pocketbase
         .from("archive_unlocks")
         .select("game_date")
@@ -74,22 +57,6 @@ export default function ChipsPage() {
     }
     void load();
   }, []);
-
-  async function handleRepair(date: string) {
-    if (pending) return;
-    setPending(date);
-    setError(null);
-    try {
-      await repairStreak(date);
-      setChips((c) => (c !== null ? c - 1 : c));
-      setDone((prev) => new Set(prev).add(date));
-      setRepairable((prev) => prev.filter((r) => r.date !== date));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to repair streak.");
-    } finally {
-      setPending(null);
-    }
-  }
 
   async function handleUnlock(date: string) {
     if (pending) return;
@@ -130,41 +97,18 @@ export default function ChipsPage() {
         <div>
           <p className="muted" style={{ margin: 0 }}>Balance</p>
           <p style={{ fontSize: "2rem", fontWeight: 800, margin: 0 }}>
-            {chips === null ? "—" : chips}
+            {chips === null ? "-" : chips}
           </p>
         </div>
       </div>
 
       {error && <p className="puzzle-feedback" style={{ marginBottom: "1rem" }}>{error}</p>}
 
-      {/* Streak Repair */}
-      <section style={{ marginBottom: "1.5rem" }}>
-        <h2 style={{ fontSize: "1rem", marginBottom: "0.75rem" }}>Repair a Missed Day</h2>
-        {repairable.length === 0 ? (
-          <p className="muted">No repairable days found.</p>
-        ) : (
-          <div style={{ display: "grid", gap: "0.5rem" }}>
-            {repairable.map(({ date, label }) => (
-              <div key={date} className="panel" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.75rem 1rem" }}>
-                <span>{label}</span>
-                <button
-                  className="button button-sm"
-                  disabled={pending === date || (chips ?? 0) < 1 || done.has(date)}
-                  onClick={() => void handleRepair(date)}
-                >
-                  {pending === date ? "Repairing…" : done.has(date) ? "Repaired ✓" : "Repair (−1 Chip)"}
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
-
       {/* Archive Unlock */}
       <section style={{ marginBottom: "1.5rem" }}>
         <h2 style={{ fontSize: "1rem", marginBottom: "0.75rem" }}>Unlock an Archive Day</h2>
         <p className="muted" style={{ marginBottom: "0.75rem", fontSize: "0.875rem" }}>
-          Replay a past mission. No score or streak — just the science.
+          Replay a past mission. No score is awarded; this is just the science archive.
         </p>
         {archiveDates.length === 0 ? (
           <p className="muted">No archive days available.</p>
@@ -178,7 +122,7 @@ export default function ChipsPage() {
                   disabled={pending === date || (chips ?? 0) < 1 || done.has(date)}
                   onClick={() => void handleUnlock(date)}
                 >
-                  {pending === date ? "Unlocking…" : done.has(date) ? "Unlocked ✓" : "Unlock (−1 Chip)"}
+                  {pending === date ? "Unlocking..." : done.has(date) ? "Unlocked" : "Unlock (-1 Chip)"}
                 </button>
               </div>
             ))}

@@ -1,9 +1,18 @@
+import Link from "next/link";
 import { createClient } from "@/lib/pocketbase/server";
 import { STORYLINES } from "@/lib/storylines";
-import Link from "next/link";
+import { getMelbourneDateKey } from "@/lib/melbourne-date";
 import { redirect } from "next/navigation";
 
-export const metadata = { title: "Postcards — Saily" };
+export const metadata = { title: "Gallery - The Daily Transit" };
+
+type PlayRow = {
+  game_date: string;
+  won: boolean;
+  score: number | null;
+  attempts: number | null;
+  played_at: string | null;
+};
 
 export default async function PostcardsPage() {
   const pocketbase = await createClient();
@@ -15,50 +24,127 @@ export default async function PostcardsPage() {
     redirect("/auth/sign-in?next=/postcards");
   }
 
-  const { data: profile } = await pocketbase
-    .from("profiles")
-    .select("completed_storylines, referral_code")
-    .eq("id", user.id)
-    .single();
+  const [{ data: profile }, { data: plays }] = await Promise.all([
+    pocketbase
+      .from("profiles")
+      .select("completed_storylines, referral_code")
+      .eq("id", user.id)
+      .single(),
+    pocketbase
+      .from("daily_plays")
+      .select("game_date,won,score,attempts,played_at")
+      .eq("user_id", user.id)
+      .order("game_date", { ascending: false })
+      .limit(18),
+  ]);
 
   const completedIds: string[] = profile?.completed_storylines ?? [];
   const referralCode: string | null = profile?.referral_code ?? null;
-
-  const earned = STORYLINES.filter((s) => completedIds.includes(s.id));
+  const earned = STORYLINES.filter((storyline) => completedIds.includes(storyline.id));
+  const fieldReports = ((plays ?? []) as PlayRow[]).filter((play) => play.game_date);
+  const today = getMelbourneDateKey();
 
   return (
-    <main style={{ maxWidth: "640px", margin: "2rem auto", padding: "0 1rem" }}>
-      <div style={{ marginBottom: "1.5rem" }}>
-        <p className="eyebrow">Your Collection</p>
-        <h1>Postcards</h1>
-        <p className="muted">Earned by completing a full story arc.</p>
-      </div>
+    <main className="gallery-page">
+      <header className="gallery-hero panel">
+        <div>
+          <p className="eyebrow">Your Collection</p>
+          <h1>Gallery &amp; History</h1>
+          <p className="muted">
+            Review completed Daily Transit field reports, reopen archived missions, and keep any earned postcards in one place.
+          </p>
+        </div>
+        <div className="gallery-hero-actions">
+          <Link href="/games/today" className="button button-primary">
+            {fieldReports.some((play) => play.game_date === today) ? "Review Today" : "Start Today"}
+          </Link>
+          <Link href="/calendar" className="button">
+            Open Archive
+          </Link>
+        </div>
+      </header>
 
-      {earned.length === 0 ? (
-        <div className="panel" style={{ textAlign: "center", padding: "2rem" }}>
-          <p>No postcards yet.</p>
-          <p className="muted" style={{ marginTop: "0.5rem" }}>Complete a 5-chapter story arc to earn your first one.</p>
-          <div style={{ marginTop: "1rem" }}>
-            <Link href="/games/today" className="button button-primary">Start Today&apos;s Mission</Link>
+      <section className="gallery-grid" aria-label="Gallery summary">
+        <article className="gallery-stat panel">
+          <span className="eyebrow">Reports</span>
+          <strong>{fieldReports.length}</strong>
+          <p className="muted">Recent field reports in your history.</p>
+        </article>
+        <article className="gallery-stat panel">
+          <span className="eyebrow">Postcards</span>
+          <strong>{earned.length}</strong>
+          <p className="muted">Milestone keepsakes collected so far.</p>
+        </article>
+        <article className="gallery-stat panel">
+          <span className="eyebrow">Access Key</span>
+          <strong>{referralCode ?? "None"}</strong>
+          <p className="muted">Share code shown after eligible missions.</p>
+        </article>
+      </section>
+
+      <section className="gallery-section">
+        <div className="gallery-section-head">
+          <div>
+            <p className="eyebrow">History</p>
+            <h2>Recent field reports</h2>
+          </div>
+          <Link href="/calendar" className="button">
+            Browse all dates
+          </Link>
+        </div>
+
+        {fieldReports.length === 0 ? (
+          <div className="panel gallery-empty">
+            <p>No field reports yet.</p>
+            <p className="muted">Complete today&apos;s mission to start building your history.</p>
+            <Link href="/games/today" className="button button-primary">
+              Start Today&apos;s Mission
+            </Link>
+          </div>
+        ) : (
+          <div className="gallery-report-list">
+            {fieldReports.map((play) => (
+              <Link
+                key={`${play.game_date}-${play.played_at ?? "report"}`}
+                href={`/games/today?date=${encodeURIComponent(play.game_date)}&returnTo=${encodeURIComponent("/postcards")}`}
+                className="gallery-report-card panel"
+              >
+                <span className="eyebrow">{play.won ? "Filed" : "Attempted"}</span>
+                <strong>{play.game_date}</strong>
+                <span className="muted">Score {play.score ?? 0} &middot; {play.attempts ?? 1} attempt{play.attempts === 1 ? "" : "s"}</span>
+              </Link>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <section className="gallery-section">
+        <div className="gallery-section-head">
+          <div>
+            <p className="eyebrow">Postcards</p>
+            <h2>Milestone keepsakes</h2>
           </div>
         </div>
-      ) : (
-        <div style={{ display: "grid", gap: "1.5rem" }}>
-          {earned.map((storyline) => (
-            <PostcardCard
-              key={storyline.id}
-              title={storyline.postcardTitle}
-              message={storyline.postcardMessage}
-              storylineTitle={storyline.title}
-              referralCode={referralCode}
-            />
-          ))}
-        </div>
-      )}
 
-      <div style={{ marginTop: "1.5rem" }}>
-        <Link href="/" className="button">Back to Home</Link>
-      </div>
+        {earned.length === 0 ? (
+          <div className="panel gallery-empty">
+            <p>No postcards yet.</p>
+            <p className="muted">Postcards appear here after major mission milestones.</p>
+          </div>
+        ) : (
+          <div className="postcard-grid">
+            {earned.map((storyline) => (
+              <PostcardCard
+                key={storyline.id}
+                title={storyline.postcardTitle}
+                message={storyline.postcardMessage}
+                storylineTitle={storyline.title}
+                referralCode={referralCode}
+              />
+            ))}
+          </div>
+        )}
+      </section>
     </main>
   );
 }
@@ -75,31 +161,16 @@ function PostcardCard({
   referralCode: string | null;
 }) {
   return (
-    <div
-      style={{
-        background: "#fff9f2",
-        color: "#43302b",
-        padding: "1.5rem",
-        borderRadius: "0.5rem",
-        border: "1px solid #e5d5c5",
-        boxShadow: "2px 2px 0 #e5d5c5",
-      }}
-    >
-      <p style={{ fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.05em", opacity: 0.7, marginBottom: "0.25rem" }}>
-        {storylineTitle}
-      </p>
-      <h2 style={{ margin: "0 0 0.75rem", fontFamily: "var(--font-brand)", fontSize: "1.25rem" }}>{title}</h2>
-      <p style={{ fontFamily: "var(--font-handwritten, cursive)", fontSize: "1.05rem", lineHeight: 1.5, margin: "0 0 1rem" }}>
-        {message}
-      </p>
-      {referralCode && (
-        <div style={{ background: "rgba(0,0,0,0.05)", padding: "0.75rem 1rem", borderRadius: "0.25rem" }}>
-          <p style={{ fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.05em", opacity: 0.7, margin: "0 0 0.25rem" }}>
-            Your Referral Code
-          </p>
-          <code style={{ fontSize: "1.4rem", fontWeight: 800, letterSpacing: "0.1em" }}>{referralCode}</code>
+    <article className="postcard-card">
+      <p className="eyebrow">{storylineTitle}</p>
+      <h3>{title}</h3>
+      <p>{message}</p>
+      {referralCode ? (
+        <div className="postcard-code">
+          <span className="eyebrow">Access Key</span>
+          <code>{referralCode}</code>
         </div>
-      )}
-    </div>
+      ) : null}
+    </article>
   );
 }

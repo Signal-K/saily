@@ -5,7 +5,6 @@ import { type MarsImage } from "@/lib/mars-images";
 import { MARS_TEMPLATE_DICTIONARY, type MarsTemplate } from "@/lib/mars-dictionary";
 import { queueSurveyTrigger } from "@/lib/posthog/survey-queue";
 import { trackGameplayEvent } from "@/lib/analytics/events";
-import { StreakRepairPrompt } from "@/components/streak-repair-prompt";
 import { getMelbourneDateKey, resolveMelbourneDateKey } from "@/lib/melbourne-date";
 
 type MarsAnnotation = {
@@ -34,7 +33,6 @@ export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePa
 
   const [images, setImages] = useState<MarsImage[]>([]);
   const [loading, setLoading] = useState(true);
-  const [userId, setUserId] = useState<string | null>(null);
   const [entries, setEntries] = useState<ClassificationEntry[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [selectedTemplate, setSelectedTemplate] = useState<MarsTemplate>(MARS_TEMPLATE_DICTIONARY[0]);
@@ -53,13 +51,8 @@ export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePa
       const res = await fetch(`/api/mars/daily?date=${date}`, { cache: "no-store" });
       const payload = (await res.json().catch(() => ({}))) as {
         images?: MarsImage[];
-        user?: { id: string };
         error?: string;
       };
-      
-      if (payload.user?.id) {
-        setUserId(payload.user.id);
-      }
 
       if (!res.ok || !Array.isArray(payload.images)) {
         setStatus(payload.error ?? "Could not load today's images.");
@@ -229,13 +222,6 @@ export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePa
 
   return (
     <section className="puzzle-screen">
-      {userId && !isArchiveDay ? (
-        <StreakRepairPrompt 
-          userId={userId} 
-          gameDate={date} 
-          onRepairComplete={() => void loadImages()} 
-        />
-      ) : null}
       <header className="puzzle-header panel">
         <p className="eyebrow">Daily Mission</p>
         <h1>Mars Surface Classification</h1>
@@ -247,7 +233,7 @@ export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePa
         </div>
         <div className="puzzle-context-row">
           <span className="puzzle-context-pill">Date {date}</span>
-          {isArchiveDay ? <span className="puzzle-context-pill">Archive day (no score/streak)</span> : null}
+          {isArchiveDay ? <span className="puzzle-context-pill">Archive replay (no score)</span> : null}
           <span className="puzzle-context-pill">
             Images tagged {annotatedCount}/{images.length}
           </span>
@@ -351,6 +337,12 @@ export default function MarsGamePage({ onMissionComplete, gameDate }: MarsGamePa
         )}
 
         <aside className="puzzle-sidebar panel">
+          <div className="puzzle-helper-card">
+            <p className="puzzle-control-label">How to classify Mars</p>
+            <p>
+              Pick the object type first, then tap every clear example in the photo. Switch images with the image chips and submit once at least one image has pins.
+            </p>
+          </div>
           <div className="puzzle-controls">
             <div className="mars-mobile-order">
               <p className="puzzle-control-label">Object Types</p>

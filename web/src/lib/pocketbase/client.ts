@@ -188,11 +188,6 @@ export function createClient() {
       return new PocketBaseQuery(collection);
     },
     rpc(fn: string, params?: any): Promise<any> {
-      if (fn === "repair_streak") {
-        return sailyFetch("POST", "/api/saily/chips/repair-streak", { target_date: params?.target_date })
-          .then((res: any) => ({ data: res, error: null }))
-          .catch((err: Error) => ({ data: null, error: { message: err.message } }));
-      }
       if (fn === "unlock_archive") {
         return sailyFetch("POST", "/api/saily/chips/unlock-archive", { target_date: params?.target_date })
           .then((res: any) => ({ data: res, error: null }))

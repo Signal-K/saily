@@ -5,7 +5,6 @@ import { type RubinCometCatchersSubject } from "@/lib/rubin-comet-catchers";
 import { RUBIN_CLASSIFICATION_DICTIONARY, type RubinClassificationChoice } from "@/lib/rubin-dictionary";
 import { queueSurveyTrigger } from "@/lib/posthog/survey-queue";
 import { trackGameplayEvent } from "@/lib/analytics/events";
-import { StreakRepairPrompt } from "@/components/streak-repair-prompt";
 import { getMelbourneDateKey, resolveMelbourneDateKey } from "@/lib/melbourne-date";
 
 type RubinCometCatchersGamePageProps = {
@@ -19,7 +18,6 @@ export default function RubinCometCatchersGamePage({ onMissionComplete, gameDate
 
   const [subject, setSubject] = useState<RubinCometCatchersSubject | null>(null);
   const [loading, setLoading] = useState(true);
-  const [userId, setUserId] = useState<string | null>(null);
   const [selectedChoice, setSelectedChoice] = useState<RubinClassificationChoice | null>(null);
   const [note, setNote] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -34,13 +32,8 @@ export default function RubinCometCatchersGamePage({ onMissionComplete, gameDate
       const res = await fetch(`/api/rubin-comet-catchers/daily?date=${date}`, { cache: "no-store" });
       const payload = (await res.json().catch(() => ({}))) as {
         subject?: RubinCometCatchersSubject;
-        user?: { id: string };
         error?: string;
       };
-
-      if (payload.user?.id) {
-        setUserId(payload.user.id);
-      }
 
       if (!res.ok || !payload.subject) {
         setStatus(payload.error ?? "Could not load today's subject.");
@@ -157,9 +150,6 @@ export default function RubinCometCatchersGamePage({ onMissionComplete, gameDate
 
   return (
     <section className="puzzle-screen">
-      {userId && !isArchiveDay ? (
-        <StreakRepairPrompt userId={userId} gameDate={date} onRepairComplete={() => void loadSubject()} />
-      ) : null}
       <header className="puzzle-header panel">
         <p className="eyebrow">Daily Mission</p>
         <h1>Comet Activity Review</h1>
@@ -171,7 +161,7 @@ export default function RubinCometCatchersGamePage({ onMissionComplete, gameDate
         </div>
         <div className="puzzle-context-row">
           <span className="puzzle-context-pill">Date {date}</span>
-          {isArchiveDay ? <span className="puzzle-context-pill">Archive day (no score/streak)</span> : null}
+          {isArchiveDay ? <span className="puzzle-context-pill">Archive replay (no score)</span> : null}
           {subject?.objectLabel ? <span className="puzzle-context-pill">Object {subject.objectLabel}</span> : null}
         </div>
       </header>
@@ -195,6 +185,12 @@ export default function RubinCometCatchersGamePage({ onMissionComplete, gameDate
         )}
 
         <aside className="puzzle-sidebar panel">
+          <div className="puzzle-helper-card">
+            <p className="puzzle-control-label">How to review comet activity</p>
+            <p>
+              Compare the frames for fuzzy coma, directional tail, or both. Choose neither when the object stays point-like or the apparent activity is image noise.
+            </p>
+          </div>
           <div className="puzzle-controls">
             <p className="puzzle-control-label">Classification</p>
             <div className="rubin-choice-grid">

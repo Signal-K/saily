@@ -139,8 +139,8 @@ export default async function CalendarPage({
       <header className="panel calendar-page-header">
         <div>
           <p className="eyebrow">Activity</p>
-          <h1>Puzzle Calendar</h1>
-          <p className="muted">Track real completion from PocketBase and open any previous day&apos;s puzzle directly.</p>
+          <h1>Archive Replay</h1>
+          <p className="muted">Track completed field reports and reopen previous Daily Transit missions as replay-only sessions.</p>
         </div>
       </header>
 

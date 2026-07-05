@@ -4,7 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { queueSurveyTrigger } from "@/lib/posthog/survey-queue";
 import { trackGameplayEvent } from "@/lib/analytics/events";
-import { StreakRepairPrompt } from "@/components/streak-repair-prompt";
 import { getMelbourneDateKey, resolveMelbourneDateKey } from "@/lib/melbourne-date";
 import ErrorBoundary from "@/components/ui/ErrorBoundary";
 import {
@@ -40,7 +39,6 @@ function TodayGameContent({ onMissionComplete, gameDate: gameDateProp }: TodayGa
   const [dailyAnomalies, setDailyAnomalies] = useState<DailyAnomaly[]>([]);
   const [loading, setLoading] = useState(true);
   const [minigameIndex, setMinigameIndex] = useState(0);
-  const [userId, setUserId] = useState<string | null>(null);
   const [tag, setTag] = useState<(typeof TAGS)[number]>(TAGS[0]);
   const [periodDays, setPeriodDays] = useState(2);
   const [phaseFoldHint, setPhaseFoldHint] = useState(false);
@@ -84,7 +82,6 @@ function TodayGameContent({ onMissionComplete, gameDate: gameDateProp }: TodayGa
     const payload = (await response.json()) as {
       anomaly: DailyAnomaly | null;
       anomalies?: DailyAnomaly[];
-      user?: { id: string } | null;
       error?: string;
     };
 
@@ -93,10 +90,6 @@ function TodayGameContent({ onMissionComplete, gameDate: gameDateProp }: TodayGa
       setDailyAnomalies([]);
       setLoading(false);
       return;
-    }
-
-    if (payload.user?.id) {
-      setUserId(payload.user.id);
     }
 
     const incoming =
@@ -570,7 +563,6 @@ function TodayGameContent({ onMissionComplete, gameDate: gameDateProp }: TodayGa
 
   return (
     <section className="puzzle-screen">
-      {userId && !isPastDay ? <StreakRepairPrompt userId={userId} gameDate={gameDate} onRepairComplete={loadToday} /> : null}
       <header className="puzzle-header panel">
         <div className="puzzle-header-row">
           <div>
@@ -698,12 +690,13 @@ function TodayGameContent({ onMissionComplete, gameDate: gameDateProp }: TodayGa
           <details className="puzzle-collapsible">
             <summary data-cy="puzzle-help-toggle">Help / Tutorial</summary>
             <aside className="puzzle-help" aria-live="polite">
-              <p className="puzzle-help-title">Quick Guide</p>
-              <p className="puzzle-help-context">Context: real exoplanet candidates show recurring dips at a consistent period, not random one-off noise.</p>
+              <p className="puzzle-help-title">How to mark a transit</p>
+              <p className="puzzle-help-context">Drag across each repeated dip in brightness. Real transit candidates recur at a stable period instead of appearing as random one-off noise.</p>
               <ol className="puzzle-help-compact-list">
                 <li>Draw suspected dip intervals.</li>
                 <li>Tag each interval.</li>
-                <li>Submit evidence to continue to the next signal.</li>
+                <li>Use hints only when the signal is hard to separate from noise.</li>
+                <li>Submit evidence to continue.</li>
               </ol>
               <p className="puzzle-help-hint">Strong evidence: repeatability, sharp dip profile, baseline recovery.</p>
             </aside>

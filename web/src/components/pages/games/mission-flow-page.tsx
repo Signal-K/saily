@@ -254,7 +254,7 @@ export default function MissionFlowPage() {
             <p className="eyebrow">Archive Access</p>
             <h1 style={{ marginBottom: "0.5rem" }}>Unlock {missionDate} to replay it.</h1>
             <p className="muted">
-              Past missions do not award score or advance the live storyline. Unlock this day with a Data Chip, or open a day you already completed.
+              Past missions are replay-only: they do not award score or advance the live mission record. Unlock this day with a Data Chip, or open a day you already completed.
             </p>
           </div>
           {access.signInRequired ? (

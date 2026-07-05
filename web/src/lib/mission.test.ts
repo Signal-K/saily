@@ -1,0 +1,17 @@
+import { describe, expect, it } from "vitest";
+import { getMissionGameOrder, MISSION_GAMES } from "./mission";
+
+describe("mission game order", () => {
+  it("includes every configured minigame in the mission flow", () => {
+    const order = getMissionGameOrder("gizmo", 3);
+
+    expect(order).toHaveLength(MISSION_GAMES.length);
+    expect(new Set(order)).toEqual(new Set(MISSION_GAMES));
+  });
+
+  it("starts new users on the planet transit puzzle", () => {
+    const order = getMissionGameOrder("gizmo", 0);
+
+    expect(order[0]).toBe("planet");
+  });
+});

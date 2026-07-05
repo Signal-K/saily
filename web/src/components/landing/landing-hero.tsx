@@ -55,22 +55,6 @@ const HERO_CONTENT: Record<VariantId, HeroContent> = {
     ctaLabel: "Enter the Dark",
     inputPlaceholder: "Your email · Receive mission briefings",
   },
-  terminal: {
-    kicker: "// STAR_SAILORS_NET // BUILD: v2.0 // SIGNAL: ONLINE //",
-    titleLine1: "Run",
-    titleLine2: "Mission_",
-    titleItalic: false,
-    lede: "> Citizen science interface online. Lightcurve transit detection: ENABLED. Data feeds: LIVE. Your classification queue is ready. Real signals. Real planets. Real history.",
-    tag1: "[TRANSIT_HUNT]",
-    tag2: "[DATA_FEED:LIVE]",
-    tag3: "[CREW:OPEN]",
-    consoleTitle: "// SIGNALS_DETECTED",
-    consoleStat: "LIVE",
-    consoleDarkTitle: "// SYSTEM_STATUS",
-    consoleDarkBody: "> AUTH: open | QUEUE: ready | EPOCH: now\n> join mission to begin classification",
-    ctaLabel: "$ ./join_crew.sh",
-    inputPlaceholder: "operator@email.com",
-  },
   solar: {
     kicker: "Chase the Light · Star Sailors",
     titleLine1: "Follow",
@@ -185,7 +169,7 @@ export function LandingHero() {
             <span>{content.consoleDarkTitle}</span>
             <span>Coming Soon</span>
           </div>
-          <p style={{ whiteSpace: variant === "terminal" ? "pre-line" : undefined }}>
+          <p>
             {content.consoleDarkBody}
           </p>
         </div>

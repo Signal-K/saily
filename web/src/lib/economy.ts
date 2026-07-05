@@ -1,20 +1,6 @@
 import { createClient } from "@/lib/pocketbase/client";
 
 /**
- * Repairs a broken streak for a specific date using a Data Chip.
- * Calls the `repair_streak` RPC function.
- */
-export async function repairStreak(date: string): Promise<boolean> {
-  const pocketbase = createClient();
-  const { error } = await pocketbase.rpc("repair_streak", { target_date: date });
-  
-  if (error) {
-    throw new Error(error.message);
-  }
-  return true;
-}
-
-/**
  * Unlocks a historical puzzle for play (no score) using a Data Chip.
  * Calls the `unlock_archive` RPC function.
  */
