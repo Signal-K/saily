@@ -61,6 +61,52 @@ async function persistLandingVote(record: {
   return { stored: true };
 }
 
+export async function GET() {
+  const baseUrl = getSailyPocketBaseUrl().replace(/\/$/, "");
+
+  try {
+    const response = await fetch(
+      `${baseUrl}/api/collections/landing_votes/records?sort=-created&perPage=20`,
+      { cache: "no-store" }
+    );
+
+    if (!response.ok) {
+      throw new Error(`PocketBase landing_votes list failed (${response.status})`);
+    }
+
+    const data = await response.json() as { items?: Array<Record<string, unknown>> };
+    const votes = (data.items ?? []).map((item) => ({
+      id: item.id,
+      ranking: item.ranking,
+      positions: item.positions,
+      active_variant: item.active_variant,
+      created: item.created,
+    }));
+
+    return NextResponse.json({ votes });
+  } catch (error) {
+    console.error("[landing-vote] PocketBase list failed", error instanceof Error ? error.message : error);
+    return NextResponse.json({ votes: [] });
+  }
+}
+
+function getPocketBaseDebug() {
+  const rawUrl = getSailyPocketBaseUrl();
+  let host = "invalid-url";
+
+  try {
+    host = new URL(rawUrl).host;
+  } catch {
+    host = rawUrl ? "invalid-url" : "empty";
+  }
+
+  return {
+    pocketbaseHost: host,
+    hasSailyPbUrl: Boolean(process.env.SAILY_PB_URL?.trim()),
+    hasNextPublicSailyPbUrl: Boolean(process.env.NEXT_PUBLIC_SAILY_PB_URL?.trim()),
+  };
+}
+
 export async function POST(request: NextRequest) {
   let body: { ranking?: unknown; positions?: unknown; active_variant?: unknown };
   try {
@@ -79,6 +125,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "ranking_required" }, { status: 400 });
   }
 
+  let stored = false;
+
   try {
     await persistLandingVote({
       ranking,
@@ -87,14 +135,25 @@ export async function POST(request: NextRequest) {
       user_agent: request.headers.get("user-agent") ?? "",
       referer: request.headers.get("referer") ?? "",
     });
+    stored = true;
   } catch (error) {
-    console.error("[landing-vote] PocketBase persist failed", error instanceof Error ? error.message : error);
-    return NextResponse.json({ error: "persist_failed" }, { status: 502 });
+    console.error("[landing-vote] PocketBase persist failed", {
+      error: error instanceof Error ? error.message : error,
+      ...getPocketBaseDebug(),
+    });
+  }
+
+  if (!stored) {
+    // Keep notification delivery independent from analytics persistence.
+    console.warn("[landing-vote] continuing to email despite PocketBase persist failure");
   }
 
   if (!isResendEmailConfigured()) {
     console.warn("[landing-vote] Resend not configured, skipping email");
-    return NextResponse.json({ ok: true, emailed: false });
+    if (!stored) {
+      return NextResponse.json({ error: "vote_not_recorded", stored: false, emailed: false }, { status: 502 });
+    }
+    return NextResponse.json({ ok: true, stored, emailed: false });
   }
 
   try {
@@ -103,9 +162,12 @@ export async function POST(request: NextRequest) {
       subject: `Landing page vote: #1 pick is ${VARIANT_LABELS[ranking[0] ?? ""] ?? ranking[0]}`,
       html: buildEmailHtml(ranking, positions, activeVariant),
     });
-    return NextResponse.json({ ok: true, emailed: true });
+    return NextResponse.json({ ok: true, stored, emailed: true });
   } catch (error) {
     console.error("[landing-vote] Resend send failed", error instanceof Error ? error.message : error);
-    return NextResponse.json({ error: "email_failed" }, { status: 502 });
+    if (stored) {
+      return NextResponse.json({ ok: true, stored, emailed: false, emailError: "email_failed" });
+    }
+    return NextResponse.json({ error: "email_failed", stored: false, emailed: false }, { status: 502 });
   }
 }

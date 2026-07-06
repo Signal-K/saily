@@ -5,7 +5,6 @@ export function LandingStyles() {
 
       .tx-variant-root {
         min-height: 100vh;
-        padding-bottom: 64px; /* reserve space for sticky tab bar */
       }
 
       /* ── Shared landing typography ──────────────────────────────────── */

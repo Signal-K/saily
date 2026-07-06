@@ -24,6 +24,13 @@ const archiveEntries = [
     href: "/calendar",
     tag: "planned",
   },
+  {
+    date: "Past decision",
+    title: "Landing page design vote",
+    summary: "We tested four landing page styles and committed to Editorial. See recent votes, cast your own, or browse the archived version with the full style switcher.",
+    href: "/vote",
+    tag: "design",
+  },
 ];
 
 export default function ArchivePage() {
