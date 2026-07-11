@@ -8,6 +8,8 @@ This project is part of the Navigation monorepo with three PocketBase instances.
 
 Auth flow: User authenticates on shared backend → gets JWT → sends to Saily API → Saily verifies via shared backend → returns user identity.
 
+Local PocketBase superuser login (both shared and Saily backends, local dev only): `liam@skinetics.tech` / `ThisIsATestPassword` — see `~/Navigation/CLAUDE.md` for the full monorepo-wide note. Create/update via `go run . superuser upsert liam@skinetics.tech ThisIsATestPassword` from `saily/backend`.
+
 <!-- KNOWNS GUIDELINES START -->
 
 **CRITICAL: Start with Knowns MCP `initial` when available. Use `help("tool.*")` or `help("workflow.*")` for domain details on demand.**

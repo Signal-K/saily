@@ -11,6 +11,8 @@ services:
       SAILY_PB_ENCRYPTION_KEY: ${SAILY_PB_ENCRYPTION_KEY:-}
       CMS_EDITOR_EMAILS: ${CMS_EDITOR_EMAILS:-}
       CMS_EDITOR_USER_IDS: ${CMS_EDITOR_USER_IDS:-}
+      SAILY_WEB_URL: ${SAILY_WEB_URL:-http://web:3000}
+      PUSH_NOTIFY_SECRET: ${PUSH_NOTIFY_SECRET:-}
 
   web:
     build:
@@ -24,11 +26,13 @@ services:
       - ../.knowns:/knowns:ro
       - ./.knowns-outbox:/knowns-outbox
     ports:
-      - "3000:3000"
+      - "${WEB_PORT:-3000}:3000"
     environment:
       KNOWNS_CANONICAL_ROOT: /knowns
       KNOWNS_OUTBOX: /knowns-outbox
+      SHARED_PB_URL: ${SHARED_PB_URL:-http://host.docker.internal:8090}
       NEXT_PUBLIC_SHARED_PB_URL: ${NEXT_PUBLIC_SHARED_PB_URL:-http://127.0.0.1:8090}
+      SAILY_PB_URL: ${SAILY_PB_URL:-http://host.docker.internal:8092}
       NEXT_PUBLIC_SAILY_PB_URL: ${NEXT_PUBLIC_SAILY_PB_URL:-http://127.0.0.1:8092}
       NEXT_PUBLIC_AUTH_GOOGLE_ENABLED: "false"
       NEXT_PUBLIC_POSTHOG_KEY: ${NEXT_PUBLIC_POSTHOG_KEY:-}

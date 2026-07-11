@@ -102,6 +102,8 @@ func extendDailyPlays(app core.App) error {
 		return err
 	}
 
+	relaxRequiredField(collection, "user")
+	relaxRequiredField(collection, "edition")
 	addTextIfMissing(collection, "user_id", false)
 	addTextIfMissing(collection, "game_date", false)
 	addNumberIfMissing(collection, "score", false)
@@ -122,12 +124,22 @@ func extendUserStats(app core.App) error {
 		return err
 	}
 
+	relaxRequiredField(collection, "user")
 	addTextIfMissing(collection, "user_id", false)
 	collection.Indexes = append(collection.Indexes,
 		"CREATE UNIQUE INDEX idx_user_stats_user_id ON user_stats (user_id)",
 	)
 
 	return app.Save(collection)
+}
+
+func relaxRequiredField(collection *core.Collection, name string) {
+	switch field := collection.Fields.GetByName(name).(type) {
+	case *core.TextField:
+		field.Required = false
+	case *core.RelationField:
+		field.Required = false
+	}
 }
 
 func createComments(app core.App) error {

@@ -74,7 +74,7 @@ export default async function Home() {
   const tomorrowAvatarSrc = getRobotAvatarDataUri(tomorrowCharacter.avatarSeed, 40);
 
   const [profileRes, statsRes, badgesRes, playsRes, commentsRes, todayPlayRes, storyProgressRes] = await Promise.all([
-    pocketbase.from("profiles").select("data_chips").eq("id", user.id).maybeSingle(),
+    pocketbase.from("profiles").select("data_chips").eq("shared_user_id", user.id).maybeSingle(),
     pocketbase.from("user_stats").select("games_played,wins,current_streak,best_streak,total_score").eq("user_id", user.id).maybeSingle(),
     pocketbase
       .from("user_badges")

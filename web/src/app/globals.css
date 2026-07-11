@@ -584,7 +584,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.25rem;
+  min-height: 2.75rem;
   border: 1px solid var(--rule);
   background: var(--bg-surface);
   color: var(--ink);
@@ -592,7 +592,7 @@
 
 .profile-skeleton,
 .profile-trigger {
-  width: 2.25rem;
+  width: 2.75rem;
 }
 
 .profile-trigger {
@@ -1616,14 +1616,14 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 2.25rem;
+    min-height: 2.75rem;
     border: 1px solid var(--rule);
     background: var(--bg-surface);
     color: var(--ink);
   }
 
   .profile-skeleton {
-    width: 2.25rem;
+    width: 2.75rem;
   }
 
   .profile-menu {
@@ -1631,7 +1631,7 @@
   }
 
   .profile-trigger {
-    width: 2.25rem;
+    width: 2.75rem;
     cursor: pointer;
     padding: 0.2rem;
   }
@@ -1811,7 +1811,7 @@
 
   .puzzle-lightcurve {
     display: block;
-    min-width: 720px;
+    min-width: 320px;
     width: 100%;
     height: auto;
     cursor: crosshair;
@@ -2598,10 +2598,13 @@
     }
 
     .tx-hero,
-    .tx-games-row,
+    .tx-games-row {
+      grid-template-columns: 1fr;
+    }
+
     .tx-article-grid,
     .gallery-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .gallery-hero {
@@ -2615,6 +2618,11 @@
   }
 
   @media (max-width: 640px) {
+    .tx-article-grid,
+    .gallery-grid {
+      grid-template-columns: 1fr;
+    }
+
     .dt-masthead-top {
       width: min(100% - 1rem, var(--spacing-content-max));
       grid-template-columns: minmax(0, 1fr) auto;

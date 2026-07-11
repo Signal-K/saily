@@ -7,7 +7,7 @@ import { useSearchParams } from "next/navigation";
 
 export default function SourceLightcurvePage() {
   const searchParams = useSearchParams();
-  const anomalyId = Number(searchParams.get("anomalyId"));
+  const anomalyId = searchParams.get("anomalyId") ?? "";
   const ticId = searchParams.get("ticId") ?? "";
   const label = searchParams.get("label") ?? "";
   const sourceName = searchParams.get("sourceName") ?? "MAST / TESS";
@@ -18,9 +18,9 @@ export default function SourceLightcurvePage() {
   const synthetic = searchParams.get("synthetic") === "1";
 
   const imageSrc = useMemo(() => {
-    if (!Number.isFinite(anomalyId) || anomalyId <= 0) return "";
+    if (!anomalyId) return "";
     const params = new URLSearchParams({
-      anomalyId: String(anomalyId),
+      anomalyId,
       label,
     });
     return `/api/game/lightcurve-image?${params.toString()}`;

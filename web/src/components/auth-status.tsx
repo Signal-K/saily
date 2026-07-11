@@ -40,7 +40,7 @@ export function AuthStatus() {
         return;
       }
 
-      const chips = await getDataChipsBalance(session.user.id);
+      const chips = await getDataChipsBalance();
 
       if (!mounted) return;
 
@@ -64,7 +64,7 @@ export function AuthStatus() {
         return;
       }
 
-      const chips = await getDataChipsBalance(user.id);
+      const chips = await getDataChipsBalance();
       setAuth({
         id: user.id,
         email: user.email,

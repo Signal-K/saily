@@ -12,10 +12,10 @@ function escapeXml(value: string) {
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
-  const anomalyId = Number(url.searchParams.get("anomalyId"));
+  const anomalyId = url.searchParams.get("anomalyId");
   const label = (url.searchParams.get("label") ?? "").trim();
 
-  if (!Number.isFinite(anomalyId) || anomalyId <= 0) {
+  if (!anomalyId) {
     return NextResponse.json({ error: "Invalid anomalyId" }, { status: 400 });
   }
 

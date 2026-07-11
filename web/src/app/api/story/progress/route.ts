@@ -106,7 +106,7 @@ export async function POST(request: Request) {
     const { data: profile } = await pocketbase
       .from("profiles")
       .select("completed_storylines, referral_code, data_chips")
-      .eq("id", user.id)
+      .eq("shared_user_id", user.id)
       .single();
     
     referralCode = profile?.referral_code;
@@ -121,7 +121,7 @@ export async function POST(request: Request) {
           completed_storylines: newCompleted,
           data_chips: profile.data_chips + awardedChips
         })
-        .eq("id", user.id);
+        .eq("shared_user_id", user.id);
     }
   }
 

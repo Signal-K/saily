@@ -12,15 +12,9 @@ name: Science Feed Daily Ingestion
 # tables means: a row exists for today's game_date; the daily cron below is
 # what keeps that true without a human running the script by hand.
 #
-# KNOWN BLOCKER (flagged in ticket ie7g9l evidence): as of this workflow being
-# authored, `upsertRows()` in scripts/lib/science-feed-runtime.mjs
-# unconditionally throws ("Science feed ingestion is pending PocketBase
-# migration") and web/src/lib/pocketbase/server.ts is a no-op stub. That means
-# every run below will currently fail at the upsert step regardless of
-# secrets being configured. The workflow wiring itself (cron, checkout, node
-# setup, script invocation, failure handling) is complete and correct; the
-# runtime data-write path it depends on is a separate, pre-existing gap that
-# is out of scope for this ticket to fully resolve.
+# scripts/lib/science-feed-runtime.mjs writes directly to the Saily PocketBase
+# cache tables using a superuser token. The shared auth PocketBase is not used
+# by this feed cache job.
 
 on:
   schedule:
@@ -53,36 +47,41 @@ jobs:
       - name: Ingest Cloudspotting on Mars
         env:
           ZOONIVERSE_BEARER_TOKEN: ${{ secrets.ZOONIVERSE_BEARER_TOKEN }}
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SAILY_PB_URL: ${{ secrets.SAILY_PB_URL }}
+          SAILY_PB_SUPERUSER_EMAIL: ${{ secrets.SAILY_PB_SUPERUSER_EMAIL }}
+          SAILY_PB_SUPERUSER_PASSWORD: ${{ secrets.SAILY_PB_SUPERUSER_PASSWORD }}
         run: node scripts/ingest-cloudspotting-mars.mjs
 
       - name: Ingest Active Asteroids
         env:
           ZOONIVERSE_BEARER_TOKEN: ${{ secrets.ZOONIVERSE_BEARER_TOKEN }}
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SAILY_PB_URL: ${{ secrets.SAILY_PB_URL }}
+          SAILY_PB_SUPERUSER_EMAIL: ${{ secrets.SAILY_PB_SUPERUSER_EMAIL }}
+          SAILY_PB_SUPERUSER_PASSWORD: ${{ secrets.SAILY_PB_SUPERUSER_PASSWORD }}
         run: node scripts/ingest-active-asteroids.mjs
 
       - name: Ingest Rubin Comet Catchers
         env:
           ZOONIVERSE_BEARER_TOKEN: ${{ secrets.ZOONIVERSE_BEARER_TOKEN }}
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SAILY_PB_URL: ${{ secrets.SAILY_PB_URL }}
+          SAILY_PB_SUPERUSER_EMAIL: ${{ secrets.SAILY_PB_SUPERUSER_EMAIL }}
+          SAILY_PB_SUPERUSER_PASSWORD: ${{ secrets.SAILY_PB_SUPERUSER_PASSWORD }}
         run: node scripts/ingest-rubin-comet-catchers.mjs
 
       - name: Ingest Gaia Variables
         env:
           ZOONIVERSE_BEARER_TOKEN: ${{ secrets.ZOONIVERSE_BEARER_TOKEN }}
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SAILY_PB_URL: ${{ secrets.SAILY_PB_URL }}
+          SAILY_PB_SUPERUSER_EMAIL: ${{ secrets.SAILY_PB_SUPERUSER_EMAIL }}
+          SAILY_PB_SUPERUSER_PASSWORD: ${{ secrets.SAILY_PB_SUPERUSER_PASSWORD }}
         run: node scripts/ingest-gaia-variables.mjs
 
       # Repo secrets that must actually be configured for this workflow to do
       # anything (none of these can be verified or created from this change):
       #   - ZOONIVERSE_BEARER_TOKEN   (Panoptes API auth; scripts/lib/zooniverse-panoptes.mjs)
-      #   - SUPABASE_URL              (read via process.env in the runtime lib once the
-      #   - SUPABASE_SERVICE_ROLE_KEY  PocketBase-migration stub above is resolved)
+      #   - SAILY_PB_URL
+      #   - SAILY_PB_SUPERUSER_EMAIL
+      #   - SAILY_PB_SUPERUSER_PASSWORD
       #
       # AC #3 (failure notification): this repo has no existing Slack/webhook
       # notification pattern to match (checked .github/workflows/*.yml). v1

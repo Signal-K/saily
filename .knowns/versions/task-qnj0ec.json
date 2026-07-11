@@ -1,0 +1,180 @@
+{
+  "taskId": "qnj0ec",
+  "currentVersion": 3,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "qnj0ec",
+      "version": 1,
+      "timestamp": "2026-07-06T09:24:45.135642Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": null,
+          "newValue": "todo"
+        },
+        {
+          "field": "priority",
+          "oldValue": null,
+          "newValue": "high"
+        }
+      ],
+      "snapshot": {
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "DailyTransitMasthead has a working responsive nav (hamburger on mobile, inline links on desktop) linking to Games/Calendar/Discuss/Search"
+          },
+          {
+            "completed": false,
+            "text": "Landing masthead nav wraps/scrolls cleanly with no magic-number padding hacks between 640-900px"
+          },
+          {
+            "completed": false,
+            "text": "tx-live-grid and tx-ed-stats stat row remain legible on narrow phones (\u003c360px)"
+          },
+          {
+            "completed": false,
+            "text": "Article and gallery grids have an intermediate tablet 2-column step instead of jumping 3-to-1"
+          },
+          {
+            "completed": false,
+            "text": "Calendar and search page headers/grids have an added breakpoint for phones under 360px"
+          },
+          {
+            "completed": false,
+            "text": "Game puzzle workspace lightcurve chart is usable on narrow viewports without relying solely on horizontal scroll"
+          },
+          {
+            "completed": false,
+            "text": "Small tap targets (e.g. profile trigger) meet ~44px minimum touch target size"
+          }
+        ],
+        "description": "Audit found: no site nav rendered on mobile/desktop (dead mega-menu CSS unused), landing nav fragile between 768-860px, article/gallery grids skip tablet 2-col step, calendar/search pages lack sub-360px handling, game lightcurve chart forces horizontal scroll, some tap targets under 44px.",
+        "labels": [
+          "project-saily,sprint-2026-07-11,frontend,responsive"
+        ],
+        "priority": "high",
+        "status": "todo",
+        "title": "Improve frontend mobile responsiveness"
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "qnj0ec",
+      "version": 2,
+      "timestamp": "2026-07-06T09:24:49.013801Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "in-progress"
+        },
+        {
+          "field": "assignee",
+          "oldValue": null,
+          "newValue": "@me"
+        }
+      ],
+      "snapshot": {
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "DailyTransitMasthead has a working responsive nav (hamburger on mobile, inline links on desktop) linking to Games/Calendar/Discuss/Search"
+          },
+          {
+            "completed": false,
+            "text": "Landing masthead nav wraps/scrolls cleanly with no magic-number padding hacks between 640-900px"
+          },
+          {
+            "completed": false,
+            "text": "tx-live-grid and tx-ed-stats stat row remain legible on narrow phones (\u003c360px)"
+          },
+          {
+            "completed": false,
+            "text": "Article and gallery grids have an intermediate tablet 2-column step instead of jumping 3-to-1"
+          },
+          {
+            "completed": false,
+            "text": "Calendar and search page headers/grids have an added breakpoint for phones under 360px"
+          },
+          {
+            "completed": false,
+            "text": "Game puzzle workspace lightcurve chart is usable on narrow viewports without relying solely on horizontal scroll"
+          },
+          {
+            "completed": false,
+            "text": "Small tap targets (e.g. profile trigger) meet ~44px minimum touch target size"
+          }
+        ],
+        "assignee": "@me",
+        "description": "Audit found: no site nav rendered on mobile/desktop (dead mega-menu CSS unused), landing nav fragile between 768-860px, article/gallery grids skip tablet 2-col step, calendar/search pages lack sub-360px handling, game lightcurve chart forces horizontal scroll, some tap targets under 44px.",
+        "labels": [
+          "project-saily,sprint-2026-07-11,frontend,responsive"
+        ],
+        "priority": "high",
+        "status": "in-progress",
+        "title": "Improve frontend mobile responsiveness"
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "qnj0ec",
+      "version": 3,
+      "timestamp": "2026-07-06T10:29:39.534492Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        },
+        {
+          "field": "implementationNotes",
+          "oldValue": null,
+          "newValue": "Implemented responsive pass: DailyTransitMasthead now has inline desktop nav plus mobile hamburger links for Games/Calendar/Discuss/Search; landing masthead no longer uses narrow-width padding hacks; tx-ed-stats stacks on sub-360px phones; article/gallery grids use a tablet 2-column step; calendar and search pages have under-380px handling; puzzle lightcurve SVGs no longer force a 720px minimum; profile trigger/touch target sizing raised to ~44px. Verification: npm run lint, npm run build, npm run test:unit; HTTP smoke checked /vote, /search?q=planet, invalid /api/landing-vote, and confirmed /calendar currently redirects under app guard instead of crashing."
+        }
+      ],
+      "snapshot": {
+        "acceptanceCriteria": [
+          {
+            "text": "DailyTransitMasthead has a working responsive nav (hamburger on mobile, inline links on desktop) linking to Games/Calendar/Discuss/Search",
+            "completed": true
+          },
+          {
+            "text": "Landing masthead nav wraps/scrolls cleanly with no magic-number padding hacks between 640-900px",
+            "completed": true
+          },
+          {
+            "text": "tx-live-grid and tx-ed-stats stat row remain legible on narrow phones (\u003c360px)",
+            "completed": true
+          },
+          {
+            "text": "Article and gallery grids have an intermediate tablet 2-column step instead of jumping 3-to-1",
+            "completed": true
+          },
+          {
+            "text": "Calendar and search page headers/grids have an added breakpoint for phones under 360px",
+            "completed": true
+          },
+          {
+            "text": "Game puzzle workspace lightcurve chart is usable on narrow viewports without relying solely on horizontal scroll",
+            "completed": true
+          },
+          {
+            "text": "Small tap targets (e.g. profile trigger) meet ~44px minimum touch target size",
+            "completed": true
+          }
+        ],
+        "assignee": "@me",
+        "description": "Audit found: no site nav rendered on mobile/desktop (dead mega-menu CSS unused), landing nav fragile between 768-860px, article/gallery grids skip tablet 2-col step, calendar/search pages lack sub-360px handling, game lightcurve chart forces horizontal scroll, some tap targets under 44px.",
+        "implementationNotes": "Implemented responsive pass: DailyTransitMasthead now has inline desktop nav plus mobile hamburger links for Games/Calendar/Discuss/Search; landing masthead no longer uses narrow-width padding hacks; tx-ed-stats stacks on sub-360px phones; article/gallery grids use a tablet 2-column step; calendar and search pages have under-380px handling; puzzle lightcurve SVGs no longer force a 720px minimum; profile trigger/touch target sizing raised to ~44px. Verification: npm run lint, npm run build, npm run test:unit; HTTP smoke checked /vote, /search?q=planet, invalid /api/landing-vote, and confirmed /calendar currently redirects under app guard instead of crashing.",
+        "labels": [
+          "project-saily,sprint-2026-07-11,frontend,responsive"
+        ],
+        "priority": "high",
+        "status": "done",
+        "title": "Improve frontend mobile responsiveness"
+      }
+    }
+  ]
+}

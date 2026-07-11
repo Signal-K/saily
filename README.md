@@ -42,8 +42,8 @@ When running `make up`, these services start:
 
 Copy `web/.env.example` to `web/.env.local` for local `npm run dev`, or copy
 `.env.docker.example` to `.env.docker` for `make up`/`make bootstrap`. Both
-files document every required var inline (Supabase-compat, PocketBase,
-PostHog, Resend, CMS allowlist, E2E credentials).
+files document every required var inline (PocketBase, PostHog, Resend, CMS
+allowlist, E2E credentials).
 
 ### Secret rotation
 
@@ -55,8 +55,9 @@ promoted (dev → staging → prod):
    `SAILY_PB_ENCRYPTION_KEY`, `ADMIN_SYNC_SECRET`, `SAILY_PB_SUPERUSER_PASSWORD`,
    `RESEND_API_KEY`, and `POSTHOG_PERSONAL_API_KEY`.
 2. Rotate the PocketBase superuser password on both the shared and Saily
-   backends, and update `SAILY_PB_SUPERUSER_EMAIL`/`SAILY_PB_SUPERUSER_PASSWORD`
-   wherever they're configured (Vercel, Docker secrets, CI).
+   backends, and update the `SHARED_PB_SUPERUSER_*` and
+   `SAILY_PB_SUPERUSER_*` credentials wherever they're configured (Vercel,
+   Docker secrets, CI).
 3. Confirm `NEXT_PUBLIC_APP_VERSION` is bumped for the release and is
    consistent across every environment config.
 4. Never commit a real `.env`, `.env.local`, or `.env.docker` file — only the

@@ -1,10 +1,23 @@
-.PHONY: up web start bootstrap down logs lint build unit test test-e2e cypress cypress-spec tour
+.PHONY: up pb-up pb-stop web start bootstrap down logs lint build unit test test-e2e cypress cypress-spec tour
 
 ROOT_DIR := $(shell pwd)
 WEB_DIR := $(ROOT_DIR)/web
+COMPOSE := docker compose
+PARENT_COMPOSE := docker compose -p navigation -f ../docker-compose.yml
+WEB_PORT ?= 3001
 
 up:
-	docker compose up -d pocketbase web
+	$(PARENT_COMPOSE) up -d backend saily-backend
+	WEB_PORT=$(WEB_PORT) $(COMPOSE) up -d web
+	@echo "The Daily Transit: http://localhost:$(WEB_PORT)"
+	@echo "Star Sailors PB:   http://localhost:8090/_/"
+	@echo "Saily PB:          http://localhost:8092/_/"
+
+pb-up:
+	$(PARENT_COMPOSE) up -d backend saily-backend
+
+pb-stop:
+	$(PARENT_COMPOSE) stop saily-backend backend
 
 web:
 	cd $(WEB_DIR) && npm run dev
@@ -12,17 +25,20 @@ web:
 start: up
 
 bootstrap:
-	docker compose build web pocketbase
-	docker compose up -d pocketbase web
+	$(PARENT_COMPOSE) build backend saily-backend
+	$(COMPOSE) build web
+	$(MAKE) up
 
 down:
-	docker compose down
+	$(COMPOSE) down --remove-orphans
+	$(PARENT_COMPOSE) stop saily-backend backend
+	@lsof -ti :$(WEB_PORT) | xargs kill -9 2>/dev/null && echo "Killed process on :$(WEB_PORT)" || true
 
 logs:
-	docker compose logs -f web
+	$(COMPOSE) logs -f web
 
 lint:
-	docker compose run --rm web npm run lint
+	$(COMPOSE) run --rm web npm run lint
 
 build:
 	docker build --target build -t saily-web-build ./web

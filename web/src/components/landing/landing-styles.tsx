@@ -2494,8 +2494,13 @@ export function LandingStyles() {
 
       @media (max-width: 860px) {
         .tx-public-title-row {
-          justify-content: flex-start;
-          padding-right: 9rem;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 0.75rem;
+        }
+        .tx-public-title-row .tx-status {
+          position: static;
+          transform: none;
         }
         .tx-public-nav-row {
           overflow-x: auto;
@@ -2555,9 +2560,6 @@ export function LandingStyles() {
         }
         .tx-brand-public span span {
           display: none;
-        }
-        .tx-public-title-row {
-          padding-right: 0;
         }
         .tx-public-title-row .tx-status {
           display: none;
@@ -2640,6 +2642,9 @@ export function LandingStyles() {
         .tx-tab-bar-inner { grid-template-columns: 1fr auto; }
         .tx-tab { padding: 0.35rem 0.4rem; }
         .tx-tab-label { font-size: 0.48rem; }
+        .tx-ed-stats { grid-template-columns: 1fr; }
+        .tx-ed-stat { border-right: none; border-bottom: 1px solid #d9dde3; }
+        .tx-ed-stat:last-child { border-bottom: none; }
       }
 
       /* ── Dark mode overrides ────────────────────────────────────────── */

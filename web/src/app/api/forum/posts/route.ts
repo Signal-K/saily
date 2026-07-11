@@ -4,13 +4,13 @@ import { isDailyLiveThreadLocked } from "@/lib/forum";
 import { createClient } from "@/lib/pocketbase/server";
 
 type ThreadMeta = {
-  id: number;
+  id: string;
   kind: "daily_live" | "ongoing";
   puzzle_date: string;
-  continue_thread_id: number | null;
+  continue_thread_id: string | null;
 };
 
-async function getThreadMeta(pocketbase: Awaited<ReturnType<typeof createClient>>, threadId: number) {
+async function getThreadMeta(pocketbase: Awaited<ReturnType<typeof createClient>>, threadId: string) {
   const { data, error } = await pocketbase
     .from("forum_threads")
     .select("id,kind,puzzle_date,continue_thread_id")
@@ -26,9 +26,9 @@ async function getThreadMeta(pocketbase: Awaited<ReturnType<typeof createClient>
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
-  const threadId = Number(url.searchParams.get("threadId"));
+  const threadId = url.searchParams.get("threadId");
 
-  if (!Number.isFinite(threadId) || threadId <= 0) {
+  if (!threadId) {
     return NextResponse.json({ error: "threadId is required" }, { status: 400 });
   }
 
@@ -52,7 +52,7 @@ export async function GET(request: Request) {
 
   const { data: posts, error: postsError } = await pocketbase
     .from("forum_posts")
-    .select("id,thread_id,parent_post_id,user_id,body,result_payload,created_at,updated_at,profiles!forum_posts_user_id_fkey(username)")
+    .select("id,thread_id,parent_post_id,user_id,body,result_payload,created_at,updated_at")
     .eq("thread_id", threadId)
     .order("created_at", { ascending: true });
 
@@ -72,17 +72,24 @@ export async function GET(request: Request) {
     });
   }
 
-  const [{ data: votes, error: votesError }, { data: reactions, error: reactionsError }] = await Promise.all([
-    pocketbase.from("forum_post_votes").select("post_id,user_id").in("post_id", postIds),
-    pocketbase.from("forum_post_reactions").select("post_id,user_id,emoji").in("post_id", postIds),
-  ]);
+  const authorIds = [...new Set((posts ?? []).map((post) => post.user_id))];
 
-  if (votesError || reactionsError) {
-    return NextResponse.json({ error: votesError?.message ?? reactionsError?.message ?? "Failed to load engagement" }, { status: 400 });
+  const [{ data: votes, error: votesError }, { data: reactions, error: reactionsError }, { data: profiles, error: profilesError }] =
+    await Promise.all([
+      pocketbase.from("forum_post_votes").select("post_id,user_id").in("post_id", postIds),
+      pocketbase.from("forum_post_reactions").select("post_id,user_id,emoji").in("post_id", postIds),
+      pocketbase.from("profiles").select("shared_user_id,username").in("shared_user_id", authorIds),
+    ]);
+
+  if (votesError || reactionsError || profilesError) {
+    return NextResponse.json(
+      { error: votesError?.message ?? reactionsError?.message ?? profilesError?.message ?? "Failed to load engagement" },
+      { status: 400 },
+    );
   }
 
-  const voteCountByPost = new Map<number, number>();
-  const upvotedSet = new Set<number>();
+  const voteCountByPost = new Map<string, number>();
+  const upvotedSet = new Set<string>();
 
   (votes ?? []).forEach((row) => {
     voteCountByPost.set(row.post_id, (voteCountByPost.get(row.post_id) ?? 0) + 1);
@@ -91,8 +98,8 @@ export async function GET(request: Request) {
     }
   });
 
-  const reactionCountByPost = new Map<number, Record<string, number>>();
-  const myReactionsByPost = new Map<number, string[]>();
+  const reactionCountByPost = new Map<string, Record<string, number>>();
+  const myReactionsByPost = new Map<string, string[]>();
 
   (reactions ?? []).forEach((row) => {
     const perPost = reactionCountByPost.get(row.post_id) ?? {};
@@ -106,8 +113,11 @@ export async function GET(request: Request) {
     }
   });
 
+  const usernameByUserId = new Map((profiles ?? []).map((profile) => [profile.shared_user_id, profile.username]));
+
   const normalizedPosts = (posts ?? []).map((post) => ({
     ...post,
+    profiles: { username: usernameByUserId.get(post.user_id) ?? null },
     vote_count: voteCountByPost.get(post.id) ?? 0,
     upvoted_by_me: upvotedSet.has(post.id),
     reaction_counts: reactionCountByPost.get(post.id) ?? {},
@@ -134,17 +144,17 @@ export async function POST(request: Request) {
   }
 
   const payload = (await request.json()) as {
-    threadId?: number;
-    parentPostId?: number | null;
+    threadId?: string;
+    parentPostId?: string | null;
     body?: string;
     resultPayload?: unknown;
   };
 
-  const threadId = Number(payload.threadId);
-  const parentPostId = payload.parentPostId ? Number(payload.parentPostId) : null;
+  const threadId = payload.threadId;
+  const parentPostId = payload.parentPostId || null;
   const body = payload.body?.trim();
 
-  if (!Number.isFinite(threadId) || threadId <= 0 || !body) {
+  if (!threadId || !body) {
     return NextResponse.json({ error: "threadId and body are required" }, { status: 400 });
   }
 
@@ -191,16 +201,23 @@ export async function POST(request: Request) {
       body,
       result_payload: payload.resultPayload ?? null,
     })
-    .select("id,thread_id,parent_post_id,user_id,body,result_payload,created_at,updated_at,profiles!forum_posts_user_id_fkey(username)")
+    .select("id,thread_id,parent_post_id,user_id,body,result_payload,created_at,updated_at")
     .single();
 
   if (insertError) {
     return NextResponse.json({ error: insertError.message }, { status: 400 });
   }
 
+  const { data: authorProfile } = await pocketbase
+    .from("profiles")
+    .select("username")
+    .eq("shared_user_id", user.id)
+    .maybeSingle();
+
   return NextResponse.json({
     post: {
       ...inserted,
+      profiles: { username: authorProfile?.username ?? null },
       vote_count: 0,
       upvoted_by_me: false,
       reaction_counts: {},

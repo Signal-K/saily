@@ -5,13 +5,14 @@ import Image from "next/image";
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { normalizeDateKey } from "@/lib/melbourne-date";
 import { queueSurveyTrigger } from "@/lib/posthog/survey-queue";
+import { getRobotAvatarDataUri } from "@/lib/avatar";
 
 type Thread = {
-  id: number;
+  id: string;
   puzzle_date: string;
   kind: "daily_live" | "ongoing";
   title: string;
-  continue_thread_id: number | null;
+  continue_thread_id: string | null;
   is_locked: boolean;
 };
 
@@ -25,9 +26,9 @@ type DayAccess = {
 };
 
 type Post = {
-  id: number;
-  thread_id: number;
-  parent_post_id: number | null;
+  id: string;
+  thread_id: string;
+  parent_post_id: string | null;
   user_id: string;
   body: string;
   result_payload: Record<string, unknown> | null;
@@ -73,7 +74,7 @@ function displayName(post: Post) {
 }
 
 function buildTree(posts: Post[]): PostNode[] {
-  const map = new Map<number, PostNode>();
+  const map = new Map<string, PostNode>();
   posts.forEach((post) => map.set(post.id, { ...post, children: [] }));
   const roots: PostNode[] = [];
   map.forEach((post) => {
@@ -177,7 +178,7 @@ function normalizeResultCard(payload: Record<string, unknown>): ResultCard {
 export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: string; isAuthenticated: boolean }) {
   const [date, setDate] = useState(initialDate);
   const [threads, setThreads] = useState<Thread[]>([]);
-  const [selectedThreadId, setSelectedThreadId] = useState<number | null>(null);
+  const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
   const [loadingThreads, setLoadingThreads] = useState(false);
   const [loadingPosts, setLoadingPosts] = useState(false);
@@ -188,8 +189,8 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
   const [sharedAnnotations, setSharedAnnotations] = useState<string[]>([]);
   const [sharedHintSummary, setSharedHintSummary] = useState<string>("");
   const [showShareDetails, setShowShareDetails] = useState(false);
-  const [replyBodyByPost, setReplyBodyByPost] = useState<Record<number, string>>({});
-  const [replyOpenByPost, setReplyOpenByPost] = useState<Record<number, boolean>>({});
+  const [replyBodyByPost, setReplyBodyByPost] = useState<Record<string, string>>({});
+  const [replyOpenByPost, setReplyOpenByPost] = useState<Record<string, boolean>>({});
   const [feedback, setFeedback] = useState<string | null>(null);
   const [dayAccess, setDayAccess] = useState<DayAccess | null>(null);
 
@@ -227,7 +228,7 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
     const payload = (await response.json()) as {
       error?: string;
       threads?: Thread[];
-      defaultThreadId?: number | null;
+      defaultThreadId?: string | null;
       access?: DayAccess;
     };
     setDayAccess(payload.access ?? null);
@@ -245,7 +246,7 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
     setLoadingThreads(false);
   }, []);
 
-  const loadPosts = useCallback(async (threadId: number) => {
+  const loadPosts = useCallback(async (threadId: string) => {
     setLoadingPosts(true);
     const response = await fetch(`/api/forum/posts?threadId=${threadId}`, { cache: "no-store" });
     const payload = (await response.json()) as { error?: string; posts?: Post[]; access?: DayAccess };
@@ -275,7 +276,7 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
     return () => window.clearTimeout(handle);
   }, [selectedThreadId, loadPosts, dayAccess]);
 
-  async function createPost(parentPostId: number | null) {
+  async function createPost(parentPostId: string | null) {
     if (!isAuthenticated) { setFeedback("Sign in to post comments and replies."); return; }
     if (!selectedThreadId) return;
     const body = parentPostId ? replyBodyByPost[parentPostId]?.trim() : composerBody.trim();
@@ -304,7 +305,7 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ threadId: selectedThreadId, parentPostId, body, resultPayload }),
     });
-    const payload = (await response.json()) as { error?: string; continueThreadId?: number; post?: Post };
+    const payload = (await response.json()) as { error?: string; continueThreadId?: string; post?: Post };
     if (!response.ok) {
       setFeedback(payload.error ?? "Could not post comment.");
       if (payload.continueThreadId) setSelectedThreadId(payload.continueThreadId);
@@ -337,13 +338,13 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
       if (!response.ok) return;
       const payload = (await response.json()) as {
         play?: { score?: number } | null;
-        anomaly?: { id?: number } | null;
+        anomaly?: { id?: string } | null;
       };
       const maybeScore = payload.play?.score;
       if (typeof maybeScore === "number" && Number.isFinite(maybeScore)) setSharedScore(maybeScore);
-      const anomalyId = Number(payload.anomaly?.id);
-      if (!Number.isFinite(anomalyId) || anomalyId <= 0) return;
-      const submissionResponse = await fetch(`/api/anomaly/submit?date=${encodeURIComponent(date)}&anomalyId=${anomalyId}`, { cache: "no-store" });
+      const anomalyId = payload.anomaly?.id;
+      if (!anomalyId) return;
+      const submissionResponse = await fetch(`/api/anomaly/submit?date=${encodeURIComponent(date)}&anomalyId=${encodeURIComponent(anomalyId)}`, { cache: "no-store" });
       if (!submissionResponse.ok) return;
       const submissionPayload = (await submissionResponse.json()) as {
         submission?: {
@@ -386,14 +387,14 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
     }
   }
 
-  async function toggleVote(postId: number) {
+  async function toggleVote(postId: string) {
     if (!isAuthenticated) { setFeedback("Sign in to vote on posts."); return; }
     const response = await fetch("/api/forum/vote", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ postId }),
     });
-    const payload = (await response.json()) as { upvoted?: boolean; voteCount?: number; continueThreadId?: number };
+    const payload = (await response.json()) as { upvoted?: boolean; voteCount?: number; continueThreadId?: string };
     if (!response.ok) {
       setFeedback("Could not update vote.");
       if (payload.continueThreadId) setSelectedThreadId(payload.continueThreadId);
@@ -409,14 +410,14 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
     );
   }
 
-  async function toggleReaction(postId: number, emoji: string) {
+  async function toggleReaction(postId: string, emoji: string) {
     if (!isAuthenticated) { setFeedback("Sign in to react on posts."); return; }
     const response = await fetch("/api/forum/reaction", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ postId, emoji }),
     });
-    const payload = (await response.json()) as { reacted?: boolean; emojiCount?: number; continueThreadId?: number };
+    const payload = (await response.json()) as { reacted?: boolean; emojiCount?: number; continueThreadId?: string };
     if (!response.ok) {
       setFeedback("Could not update reaction.");
       if (payload.continueThreadId) setSelectedThreadId(payload.continueThreadId);
@@ -504,8 +505,18 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
         style={{ marginLeft: `${depth * 1.25}rem`, background: "var(--surface-container-low)" }}
       >
         <div className="flex justify-between items-center mb-2">
-          <span style={{ ...dataText, fontSize: "0.75rem", color: "var(--primary)", letterSpacing: "0.04em" }}>
-            {displayName(node)}
+          <span className="flex items-center gap-2">
+            <Image
+              src={getRobotAvatarDataUri(node.user_id, 32)}
+              alt=""
+              width={24}
+              height={24}
+              unoptimized
+              style={{ borderRadius: "50%" }}
+            />
+            <span style={{ ...dataText, fontSize: "0.75rem", color: "var(--primary)", letterSpacing: "0.04em" }}>
+              {displayName(node)}
+            </span>
           </span>
           <span style={{ ...dataText, fontSize: "0.6rem", color: "var(--muted)", letterSpacing: "0.06em" }}>
             {timeStr}

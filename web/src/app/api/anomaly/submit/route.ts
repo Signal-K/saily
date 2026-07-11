@@ -14,7 +14,7 @@ type Annotation = {
 
 type SubmitBody = {
   date?: string;
-  anomalyId?: number;
+  anomalyId?: string;
   ticId?: string;
   note?: string;
   annotations: Array<{
@@ -89,7 +89,7 @@ export async function POST(request: Request) {
   if (!access.allowed) {
     return NextResponse.json({ error: "Unlock this archived mission before saving evidence." }, { status: 403 });
   }
-  const anomalyId = Number(payload.anomalyId);
+  const anomalyId = payload.anomalyId;
   const ticId = (payload.ticId ?? "").replace(/^TIC\s*/i, "").trim();
   const note = (payload.note ?? "").trim().slice(0, 2000);
   const annotations = normalizeAnnotations(payload.annotations);
@@ -104,7 +104,7 @@ export async function POST(request: Request) {
   const periodDaysRaw = Number(payload.periodDays);
   const periodDays = Number.isFinite(periodDaysRaw) ? Math.max(0.2, Math.min(30, Number(periodDaysRaw.toFixed(4)))) : null;
 
-  if (!Number.isFinite(anomalyId) || anomalyId <= 0) {
+  if (!anomalyId) {
     return NextResponse.json({ error: "Invalid anomalyId" }, { status: 400 });
   }
 
@@ -169,9 +169,9 @@ export async function GET(request: Request) {
   if (!access.allowed) {
     return NextResponse.json({ error: "Unlock this archived mission before viewing evidence." }, { status: 403 });
   }
-  const anomalyId = Number(requestUrl.searchParams.get("anomalyId"));
+  const anomalyId = requestUrl.searchParams.get("anomalyId");
 
-  if (!Number.isFinite(anomalyId) || anomalyId <= 0) {
+  if (!anomalyId) {
     return NextResponse.json({ error: "Invalid anomalyId" }, { status: 400 });
   }
 

@@ -6,7 +6,7 @@ export type LightcurvePoint = {
 };
 
 export type DailyAnomaly = {
-  id: number;
+  id: string;
   ticId: string;
   label: string;
   anomalyType: string | null;
@@ -20,7 +20,7 @@ export type DailyAnomaly = {
 };
 
 type AnomalyRow = {
-  id: number | string;
+  id: string;
   content: string | null;
   ticId: string | null;
   anomalytype: string | null;
@@ -159,7 +159,7 @@ function parseSourceInfo(value: unknown, ticId: string): SourceInfo {
 }
 
 export function toDailyAnomaly(row: AnomalyRow): DailyAnomaly {
-  const id = Number(row.id);
+  const id = row.id;
   const ticId = (row.ticId ?? String(row.id)).replace(/^TIC\s*/i, "").trim();
   const label = row.content?.trim() || `TIC ${ticId}`;
   const configuredLightcurve = toLightcurveFromConfig(row.anomalyConfiguration);

@@ -112,3 +112,132 @@ I[21:52:18.156] Starting LSP over stdin/stdout
 I[21:52:18.157] <-- initialize(1)
 I[21:52:18.170] --> reply:initialize(1) 12 ms
 I[21:52:18.170] <-- initialized
+I[16:25:06.996] Apple clangd version 17.0.0 (clang-1700.3.19.1)
+I[16:25:06.997] Features: mac+xpc
+I[16:25:06.997] PID: 20753
+I[16:25:06.997] Working directory: /Users/scroobz/Navigation/saily
+I[16:25:06.997] argv[0]: /Applications/Dev/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clangd
+I[16:25:06.997] Starting LSP over stdin/stdout
+I[16:25:06.999] <-- initialize(1)
+I[16:25:07.017] --> reply:initialize(1) 18 ms
+I[16:25:07.018] <-- initialized
+I[18:42:13.181] <-- shutdown(2)
+I[18:42:13.183] --> reply:shutdown(2) 2 ms
+I[18:42:13.185] <-- exit
+I[18:42:13.185] LSP finished, exiting with status 0
+I[18:42:22.806] Apple clangd version 17.0.0 (clang-1700.3.19.1)
+I[18:42:22.806] Features: mac+xpc
+I[18:42:22.806] PID: 42442
+I[18:42:22.806] Working directory: /Users/scroobz/Navigation/saily
+I[18:42:22.806] argv[0]: /Applications/Dev/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clangd
+I[18:42:22.806] Starting LSP over stdin/stdout
+I[18:42:22.807] <-- initialize(1)
+I[18:42:22.818] --> reply:initialize(1) 11 ms
+I[18:42:22.818] <-- initialized
+I[18:50:38.393] <-- shutdown(2)
+I[18:50:38.395] --> reply:shutdown(2) 2 ms
+I[18:50:38.397] <-- exit
+I[18:50:38.397] LSP finished, exiting with status 0
+I[19:17:19.016] Apple clangd version 17.0.0 (clang-1700.3.19.1)
+I[19:17:19.017] Features: mac+xpc
+I[19:17:19.017] PID: 57152
+I[19:17:19.017] Working directory: /Users/scroobz/Navigation/saily
+I[19:17:19.018] argv[0]: /Applications/Dev/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clangd
+I[19:17:19.018] Starting LSP over stdin/stdout
+I[19:17:19.019] <-- initialize(1)
+I[19:17:19.034] --> reply:initialize(1) 14 ms
+I[19:17:19.034] <-- initialized
+I[19:59:27.367] <-- shutdown(2)
+I[19:59:27.369] --> reply:shutdown(2) 2 ms
+I[19:59:27.371] <-- exit
+I[19:59:27.371] LSP finished, exiting with status 0
+I[20:04:30.911] Apple clangd version 17.0.0 (clang-1700.3.19.1)
+I[20:04:30.913] Features: mac+xpc
+I[20:04:30.913] PID: 76097
+I[20:04:30.913] Working directory: /Users/scroobz/Navigation/saily
+I[20:04:30.913] argv[0]: /Applications/Dev/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clangd
+I[20:04:30.914] Starting LSP over stdin/stdout
+I[20:04:30.915] <-- initialize(1)
+I[20:04:30.928] --> reply:initialize(1) 13 ms
+I[20:04:30.928] <-- initialized
+E[20:47:18.956] Transport error: Got signal, shutting down
+I[20:47:18.956] LSP finished, exiting with status 1
+I[22:25:44.239] Apple clangd version 17.0.0 (clang-1700.3.19.1)
+I[22:25:44.241] Features: mac+xpc
+I[22:25:44.241] PID: 86335
+I[22:25:44.241] Working directory: /Users/scroobz/Navigation/saily
+I[22:25:44.241] argv[0]: /Applications/Dev/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clangd
+I[22:25:44.241] Starting LSP over stdin/stdout
+I[22:25:44.242] <-- initialize(1)
+I[22:25:44.254] --> reply:initialize(1) 12 ms
+I[22:25:44.255] <-- initialized
+I[22:26:09.747] <-- shutdown(2)
+I[22:26:09.747] --> reply:shutdown(2) 0 ms
+I[22:26:09.747] <-- exit
+I[22:26:09.747] LSP finished, exiting with status 0
+I[11:08:52.439] Apple clangd version 17.0.0 (clang-1700.3.19.1)
+I[11:08:52.440] Features: mac+xpc
+I[11:08:52.440] PID: 59534
+I[11:08:52.440] Working directory: /Users/scroobz/Navigation/saily
+I[11:08:52.440] argv[0]: /Applications/Dev/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clangd
+I[11:08:52.441] Starting LSP over stdin/stdout
+I[11:08:52.442] <-- initialize(1)
+I[11:08:52.454] --> reply:initialize(1) 12 ms
+I[11:08:52.455] <-- initialized
+E[14:39:56.238] Transport error: Got signal, shutting down
+I[14:39:56.244] LSP finished, exiting with status 1
+I[00:45:03.759] Apple clangd version 17.0.0 (clang-1700.3.19.1)
+I[00:45:03.760] Features: mac+xpc
+I[00:45:03.760] PID: 62244
+I[00:45:03.760] Working directory: /Users/scroobz/Navigation/saily
+I[00:45:03.760] argv[0]: /Applications/Dev/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clangd
+I[00:45:03.760] Starting LSP over stdin/stdout
+I[00:45:03.760] <-- initialize(1)
+I[00:45:03.772] --> reply:initialize(1) 11 ms
+I[00:45:03.773] <-- initialized
+I[00:51:00.126] <-- shutdown(2)
+I[00:51:00.126] --> reply:shutdown(2) 0 ms
+I[00:51:00.127] <-- exit
+I[00:51:00.127] LSP finished, exiting with status 0
+I[07:58:40.972] Apple clangd version 17.0.0 (clang-1700.3.19.1)
+I[07:58:40.973] Features: mac+xpc
+I[07:58:40.973] PID: 3190
+I[07:58:40.973] Working directory: /Users/scroobz/Navigation/saily
+I[07:58:40.973] argv[0]: /Applications/Dev/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clangd
+I[07:58:40.973] Starting LSP over stdin/stdout
+I[07:58:40.973] <-- initialize(1)
+I[07:58:40.982] --> reply:initialize(1) 9 ms
+I[07:58:40.983] <-- initialized
+E[09:22:48.023] Transport error: Got signal, shutting down
+I[09:22:48.025] LSP finished, exiting with status 1
+I[09:22:53.600] Apple clangd version 17.0.0 (clang-1700.3.19.1)
+I[09:22:53.600] Features: mac+xpc
+I[09:22:53.600] PID: 36004
+I[09:22:53.600] Working directory: /Users/scroobz/Navigation/saily
+I[09:22:53.600] argv[0]: /Applications/Dev/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clangd
+I[09:22:53.600] Starting LSP over stdin/stdout
+I[09:22:53.600] <-- initialize(1)
+I[09:22:53.610] --> reply:initialize(1) 9 ms
+I[09:22:53.610] <-- initialized
+E[09:23:32.728] Transport error: Got signal, shutting down
+I[09:23:32.728] LSP finished, exiting with status 1
+I[09:23:48.325] Apple clangd version 17.0.0 (clang-1700.3.19.1)
+I[09:23:48.325] Features: mac+xpc
+I[09:23:48.325] PID: 36808
+I[09:23:48.325] Working directory: /Users/scroobz/Navigation/saily
+I[09:23:48.325] argv[0]: /Applications/Dev/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clangd
+I[09:23:48.325] Starting LSP over stdin/stdout
+I[09:23:48.326] <-- initialize(1)
+I[09:23:48.334] --> reply:initialize(1) 8 ms
+I[09:23:48.334] <-- initialized
+E[10:43:17.961] Transport error: Got signal, shutting down
+I[10:43:17.963] LSP finished, exiting with status 1
+I[05:28:44.398] Apple clangd version 17.0.0 (clang-1700.3.19.1)
+I[05:28:44.399] Features: mac+xpc
+I[05:28:44.399] PID: 96267
+I[05:28:44.399] Working directory: /Users/scroobz/Navigation/saily
+I[05:28:44.399] argv[0]: /Applications/Dev/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clangd
+I[05:28:44.400] Starting LSP over stdin/stdout
+I[05:28:44.400] <-- initialize(1)
+I[05:28:44.413] --> reply:initialize(1) 12 ms
+I[05:28:44.414] <-- initialized

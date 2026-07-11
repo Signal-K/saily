@@ -6,23 +6,12 @@ type SearchParams = {
 };
 
 type ForumPostResult = {
-  id: number;
-  thread_id: number;
+  id: string;
+  thread_id: string;
   body: string;
   created_at: string;
-  profiles: { username: string | null } | { username: string | null }[] | null;
-  forum_threads:
-    | {
-        puzzle_date: string;
-        kind: "daily_live" | "ongoing";
-        title: string;
-      }
-    | {
-        puzzle_date: string;
-        kind: "daily_live" | "ongoing";
-        title: string;
-      }[]
-    | null;
+  username: string | null;
+  thread: { puzzle_date: string; kind: "daily_live" | "ongoing"; title: string } | null;
 };
 
 type BadgeRef = {
@@ -110,16 +99,6 @@ function getDateKey(value: string | null | undefined) {
 }
 
 function getSingleBadge(value: UserBadgeResult["badges"]): BadgeRef | null {
-  if (!value) return null;
-  return Array.isArray(value) ? (value[0] ?? null) : value;
-}
-
-function getForumUsername(value: ForumPostResult["profiles"]) {
-  if (!value) return null;
-  return Array.isArray(value) ? (value[0]?.username ?? null) : value.username;
-}
-
-function getForumThread(value: ForumPostResult["forum_threads"]) {
   if (!value) return null;
   return Array.isArray(value) ? (value[0] ?? null) : value;
 }
@@ -292,9 +271,7 @@ export default async function SearchPage({
       : Promise.resolve({ data: [] as { id: number; puzzle_date: string; kind: "daily_live" | "ongoing"; title: string; created_at: string }[], error: null }),
     pocketbase
       .from("forum_posts")
-      .select(
-        "id,thread_id,body,created_at,profiles!forum_posts_user_id_fkey(username),forum_threads!forum_posts_thread_id_fkey(puzzle_date,kind,title)",
-      )
+      .select("id,thread_id,user_id,body,created_at")
       .ilike("body", pattern)
       .order("created_at", { ascending: false })
       .limit(fetchLimit),
@@ -350,10 +327,28 @@ export default async function SearchPage({
   const commentsMap = new Map<number, CommentResult>();
   [...((commentsRes.data ?? []) as CommentResult[]), ...((commentsByDateRes.data ?? []) as CommentResult[])].forEach((row) => commentsMap.set(row.id, row));
 
-  const threadsMap = new Map<number, { id: number; puzzle_date: string; kind: "daily_live" | "ongoing"; title: string; created_at: string }>();
+  const threadsMap = new Map<string, { id: string; puzzle_date: string; kind: "daily_live" | "ongoing"; title: string; created_at: string }>();
   [...(threadsRes.data ?? []), ...(threadsByDateRes.data ?? [])].forEach((row) => threadsMap.set(row.id, row));
 
-  const forumPostsRaw = (postsRes.data ?? []) as ForumPostResult[];
+  const rawForumPosts = (postsRes.data ?? []) as { id: string; thread_id: string; user_id: string; body: string; created_at: string }[];
+  const forumPostAuthorIds = [...new Set(rawForumPosts.map((post) => post.user_id))];
+  const forumPostThreadIds = [...new Set(rawForumPosts.map((post) => post.thread_id))];
+  const [{ data: forumPostAuthors }, { data: forumPostThreads }] = await Promise.all([
+    forumPostAuthorIds.length > 0
+      ? pocketbase.from("profiles").select("shared_user_id,username").in("shared_user_id", forumPostAuthorIds)
+      : Promise.resolve({ data: [] as { shared_user_id: string; username: string }[] }),
+    forumPostThreadIds.length > 0
+      ? pocketbase.from("forum_threads").select("id,puzzle_date,kind,title").in("id", forumPostThreadIds)
+      : Promise.resolve({ data: [] as { id: string; puzzle_date: string; kind: "daily_live" | "ongoing"; title: string }[] }),
+  ]);
+  const forumPostUsernameByUserId = new Map((forumPostAuthors ?? []).map((row) => [row.shared_user_id, row.username]));
+  const forumPostThreadById = new Map((forumPostThreads ?? []).map((row) => [row.id, row]));
+
+  const forumPostsRaw: ForumPostResult[] = rawForumPosts.map((post) => ({
+    ...post,
+    username: forumPostUsernameByUserId.get(post.user_id) ?? null,
+    thread: forumPostThreadById.get(post.thread_id) ?? null,
+  }));
   const commentRowsRaw = [...commentsMap.values()];
   const threadRowsRaw = [...threadsMap.values()];
   const gameRowsRaw = [...allGameRowsMap.values()];
@@ -374,8 +369,8 @@ export default async function SearchPage({
   const forumPosts = rankRows(
     forumPostsRaw,
     (post) => {
-      const thread = getForumThread(post.forum_threads);
-      const username = getForumUsername(post.profiles);
+      const thread = post.thread;
+      const username = post.username;
       return scoreByFields([post.body, username, thread?.title, thread?.kind], [post.created_at, thread?.puzzle_date], ctx, now);
     },
     displayLimit,
@@ -581,8 +576,8 @@ export default async function SearchPage({
           <h2 className="search-section-title">Forum Posts</h2>
           <ul className="search-list">
             {forumPosts.map((post) => {
-              const username = getForumUsername(post.profiles);
-              const thread = getForumThread(post.forum_threads);
+              const username = post.username;
+              const thread = post.thread;
               const puzzleDate = thread?.puzzle_date ?? "";
               return (
                 <li key={post.id} className="search-item search-item-stack">

@@ -4,30 +4,38 @@ import { isDailyLiveThreadLocked } from "@/lib/forum";
 import { createClient } from "@/lib/pocketbase/server";
 
 type PostThreadMeta = {
-  post_id: number;
-  thread_id: number;
+  post_id: string;
+  thread_id: string;
   kind: "daily_live" | "ongoing";
   puzzle_date: string;
-  continue_thread_id: number | null;
+  continue_thread_id: string | null;
 };
 
-async function getPostThreadMeta(pocketbase: Awaited<ReturnType<typeof createClient>>, postId: number) {
-  const { data, error } = await pocketbase
+async function getPostThreadMeta(pocketbase: Awaited<ReturnType<typeof createClient>>, postId: string) {
+  const { data: post, error: postError } = await pocketbase
     .from("forum_posts")
-    .select("id,thread_id,forum_threads!inner(id,kind,puzzle_date,continue_thread_id)")
+    .select("id,thread_id")
     .eq("id", postId)
     .maybeSingle();
 
-  if (error || !data) {
-    return { error: error ?? new Error("Post not found") };
+  if (postError || !post) {
+    return { error: postError ?? new Error("Post not found") };
   }
 
-  const thread = Array.isArray(data.forum_threads) ? data.forum_threads[0] : data.forum_threads;
+  const { data: thread, error: threadError } = await pocketbase
+    .from("forum_threads")
+    .select("id,kind,puzzle_date,continue_thread_id")
+    .eq("id", post.thread_id)
+    .maybeSingle();
+
+  if (threadError || !thread) {
+    return { error: threadError ?? new Error("Thread not found") };
+  }
 
   return {
     data: {
-      post_id: data.id,
-      thread_id: data.thread_id,
+      post_id: post.id,
+      thread_id: post.thread_id,
       kind: thread.kind,
       puzzle_date: thread.puzzle_date,
       continue_thread_id: thread.continue_thread_id,
@@ -45,10 +53,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const payload = (await request.json()) as { postId?: number };
-  const postId = Number(payload.postId);
+  const payload = (await request.json()) as { postId?: string };
+  const postId = payload.postId;
 
-  if (!Number.isFinite(postId) || postId <= 0) {
+  if (!postId) {
     return NextResponse.json({ error: "postId is required" }, { status: 400 });
   }
 

@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { getBrowserSharedPocketBaseUrl, getBrowserSailyPocketBaseUrl, POCKETBASE_STORAGE_KEY, type PocketBaseSession } from "./config";
+import { getBrowserSharedPocketBaseUrl, POCKETBASE_STORAGE_KEY, type PocketBaseSession } from "./config";
 
 type AuthChangeCallback = (_event: string, session: PocketBaseSession | null) => void;
-type PocketBaseQueryResult = { data: any[]; error: any; count: number };
 
 const listeners = new Set<AuthChangeCallback>();
 
@@ -45,21 +44,6 @@ async function requestSharedAuth(path: string, body: unknown) {
   return payload;
 }
 
-async function sailyFetch(method: string, path: string, body?: unknown): Promise<any> {
-  const session = readSession();
-  const headers: Record<string, string> = {};
-  if (session?.token) headers["Authorization"] = `Bearer ${session.token}`;
-  if (body !== undefined) headers["Content-Type"] = "application/json";
-  const response = await fetch(`${getBrowserSailyPocketBaseUrl()}${path}`, {
-    method,
-    headers,
-    ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
-  });
-  const payload = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(payload?.error || "Saily backend request failed");
-  return payload;
-}
-
 function mapAuthPayload(payload: any): PocketBaseSession {
   const record = payload?.record ?? {};
   return {
@@ -69,55 +53,6 @@ function mapAuthPayload(payload: any): PocketBaseSession {
       email: String(record.email ?? ""),
     },
   };
-}
-
-function emptyQueryResult(): PocketBaseQueryResult {
-  return { data: [], error: null, count: 0 };
-}
-
-class PocketBaseQuery {
-  private _collection: string;
-  private _selectStr = "";
-
-  constructor(collection: string) {
-    this._collection = collection;
-  }
-
-  select(fields: any, ..._rest: any[]) { this._selectStr = typeof fields === "string" ? fields : ""; return this; }
-  insert(..._args: any[]) { return this; }
-  upsert(..._args: any[]) { return this; }
-  update(..._args: any[]) { return this; }
-  delete(..._args: any[]) { return this; }
-  eq(..._args: any[]) { return this; }
-  neq(..._args: any[]) { return this; }
-  gt(..._args: any[]) { return this; }
-  gte(..._args: any[]) { return this; }
-  lt(..._args: any[]) { return this; }
-  lte(..._args: any[]) { return this; }
-  is(..._args: any[]) { return this; }
-  not(..._args: any[]) { return this; }
-  contains(..._args: any[]) { return this; }
-  ilike(..._args: any[]) { return this; }
-  or(..._args: any[]) { return this; }
-  in(..._args: any[]) { return this; }
-  order(..._args: any[]) { return this; }
-  limit(..._args: any[]) { return this; }
-  range(..._args: any[]) { return this; }
-  maybeSingle(..._args: any[]): Promise<any> { return Promise.resolve({ data: null, error: null }); }
-  single(..._args: any[]): Promise<any> {
-    if (this._collection === "profiles" && this._selectStr.includes("data_chips")) {
-      return sailyFetch("GET", "/api/saily/chips/balance")
-        .then((res: any) => ({ data: { data_chips: res.balance ?? 0 }, error: null }))
-        .catch((err: Error) => ({ data: null, error: { message: err.message } }));
-    }
-    return Promise.resolve({ data: null, error: null });
-  }
-  then<TResult1 = PocketBaseQueryResult, TResult2 = never>(
-    onfulfilled?: ((value: PocketBaseQueryResult) => TResult1 | PromiseLike<TResult1>) | null,
-    onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null,
-  ) {
-    return Promise.resolve(emptyQueryResult()).then(onfulfilled, onrejected);
-  }
 }
 
 export function createClient() {
@@ -183,17 +118,6 @@ export function createClient() {
           },
         };
       },
-    },
-    from(collection: string) {
-      return new PocketBaseQuery(collection);
-    },
-    rpc(fn: string, params?: any): Promise<any> {
-      if (fn === "unlock_archive") {
-        return sailyFetch("POST", "/api/saily/chips/unlock-archive", { target_date: params?.target_date })
-          .then((res: any) => ({ data: res, error: null }))
-          .catch((err: Error) => ({ data: null, error: { message: err.message } }));
-      }
-      return Promise.resolve({ data: null, error: null });
     },
   };
 }

@@ -1,6 +1,9 @@
 package extensions
 
 import (
+	"bytes"
+	"encoding/json"
+	"log"
 	"maps"
 	"net/http"
 	"os"
@@ -112,6 +115,50 @@ func applyFrontmatter(record *core.Record, frontmatter map[string]any) {
 	if record.GetString("status") == "published" && record.GetString("published_at") == "" {
 		record.Set("published_at", time.Now().UTC().Format(time.RFC3339))
 	}
+}
+
+// Fires a best-effort webhook to the Next.js app's push-notification sender
+// (web-push and the push_subscriptions store both live there, not in this
+// Go backend) whenever an article transitions into "published" for the
+// first time. Failures are logged, not surfaced to the editor — a missed
+// push notification shouldn't block or fail the publish action itself.
+func notifyArticlePublished(record *core.Record) {
+	webURL := strings.TrimRight(os.Getenv("SAILY_WEB_URL"), "/")
+	secret := os.Getenv("PUSH_NOTIFY_SECRET")
+	if webURL == "" || secret == "" {
+		return
+	}
+
+	body, err := json.Marshal(map[string]string{
+		"slug":    record.GetString("slug"),
+		"title":   record.GetString("title"),
+		"summary": record.GetString("summary"),
+	})
+	if err != nil {
+		log.Printf("[cms] failed to encode publish-notify payload: %v", err)
+		return
+	}
+
+	go func() {
+		req, err := http.NewRequest(http.MethodPost, webURL+"/api/push/notify-publish", bytes.NewReader(body))
+		if err != nil {
+			log.Printf("[cms] failed to build publish-notify request: %v", err)
+			return
+		}
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("x-push-notify-secret", secret)
+
+		client := &http.Client{Timeout: 5 * time.Second}
+		resp, err := client.Do(req)
+		if err != nil {
+			log.Printf("[cms] publish-notify request failed: %v", err)
+			return
+		}
+		defer resp.Body.Close()
+		if resp.StatusCode >= 300 {
+			log.Printf("[cms] publish-notify request returned status %d", resp.StatusCode)
+		}
+	}()
 }
 
 func splitAllowlist(value string) map[string]bool {
@@ -233,12 +280,17 @@ func registerCMSRoutes(app core.App, verifier *sharedauth.Verifier) {
 				}
 			}
 
+			previousStatus := record.GetString("status")
 			record.Set("body", payload.Body)
 			record.Set("updated_at", time.Now().UTC().Format(time.RFC3339))
 			applyFrontmatter(record, payload.Frontmatter)
 
 			if err := app.Save(record); err != nil {
 				return e.JSON(http.StatusInternalServerError, map[string]any{"error": err.Error()})
+			}
+
+			if previousStatus != "published" && record.GetString("status") == "published" {
+				notifyArticlePublished(record)
 			}
 
 			return e.JSON(http.StatusOK, docFromRecord(record))

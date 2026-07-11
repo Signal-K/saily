@@ -30,25 +30,16 @@ export default function ChipsPage() {
       setUserId(user.id);
 
       const today = getMelbourneDateKey();
-      const balance = await getDataChipsBalance(user.id);
+      const balance = await getDataChipsBalance();
       setChips(balance);
 
       const archiveCandidates = Array.from({ length: 30 }, (_, i) => shiftDateKey(today, -(i + 1)));
-      const { data: plays } = await pocketbase
-        .from("daily_plays")
-        .select("game_date")
-        .eq("user_id", user.id)
-        .in("game_date", [today, ...archiveCandidates]);
+      const allDates = [today, ...archiveCandidates];
+      const statusResponse = await fetch(`/api/chips/archive-status?dates=${encodeURIComponent(allDates.join(","))}`, { cache: "no-store" });
+      const status = (await statusResponse.json()) as { played?: string[]; unlocked?: string[] };
 
-      const playedSet = new Set((plays ?? []).map((p) => p.game_date as string));
-
-      const { data: unlocks } = await pocketbase
-        .from("archive_unlocks")
-        .select("game_date")
-        .eq("user_id", user.id)
-        .in("game_date", archiveCandidates);
-
-      const unlockedSet = new Set((unlocks ?? []).map((u) => u.game_date as string));
+      const playedSet = new Set(status.played ?? []);
+      const unlockedSet = new Set(status.unlocked ?? []);
       const archiveList = archiveCandidates
         .filter((d) => !playedSet.has(d) && !unlockedSet.has(d))
         .slice(0, 10)

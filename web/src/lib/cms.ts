@@ -44,6 +44,21 @@ export async function listPublishedArticles(): Promise<CmsArticle[]> {
   return data.items;
 }
 
+export async function getLatestPublishedArticle(): Promise<CmsArticle | null> {
+  const baseUrl = getSailyPocketBaseUrl().replace(/\/$/, "");
+  const url = `${baseUrl}/api/collections/cms_articles/records?filter=${encodeURIComponent(
+    'status = "published"',
+  )}&sort=-published_at&perPage=1`;
+
+  const response = await fetch(url, { cache: "no-store" });
+  if (!response.ok) {
+    return null;
+  }
+
+  const data = (await response.json()) as PocketBaseListResponse<CmsArticle>;
+  return data.items[0] ?? null;
+}
+
 export async function getPublishedArticle(slug: string): Promise<CmsArticle | null> {
   const baseUrl = getSailyPocketBaseUrl().replace(/\/$/, "");
   const filter = `status = "published" && slug = "${slug.replace(/"/g, '\\"')}"`;

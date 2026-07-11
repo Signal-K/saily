@@ -28,7 +28,7 @@ export default async function PostcardsPage() {
     pocketbase
       .from("profiles")
       .select("completed_storylines, referral_code")
-      .eq("id", user.id)
+      .eq("shared_user_id", user.id)
       .single(),
     pocketbase
       .from("daily_plays")

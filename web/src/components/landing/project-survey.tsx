@@ -1,18 +1,11 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import posthog from "posthog-js";
 import { InterestSuccessNote, Kicker } from "@/components/landing/landing-shared";
 import { games } from "@/components/landing/landing-data";
 import { submitInterest } from "@/components/landing/landing-interest";
-
-const SURVEY_ID = "citizen-science-projects-2026";
-
-const BASE_VOTES: Record<string, number> = {
-  Landnam: 312,
-  "Coral Clicker": 247,
-  "Asteroid Hunters": 189,
-};
+import { CITIZEN_SCIENCE_SURVEY_ID as SURVEY_ID } from "@/lib/posthog/survey-ids";
 
 const SPACE_PROJECTS = new Set(["Landnam", "Asteroid Hunters"]);
 
@@ -21,6 +14,22 @@ export function ProjectSurvey() {
   const [inviteEmail, setInviteEmail] = useState("");
   const [emailState, setEmailState] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [showPlay, setShowPlay] = useState(false);
+  const [liveVotes, setLiveVotes] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/project-survey/results")
+      .then((res) => res.json())
+      .then((data: { votes?: Record<string, number> }) => {
+        if (!cancelled && data.votes) setLiveVotes(data.votes);
+      })
+      .catch(() => {
+        // Leave liveVotes empty — real zero, not a fabricated fallback.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   function handleVote(projectTitle: string) {
     if (voted) return;
@@ -53,8 +62,8 @@ export function ProjectSurvey() {
   }
 
   const votes = voted
-    ? { ...BASE_VOTES, [voted]: (BASE_VOTES[voted] ?? 0) + 1 }
-    : BASE_VOTES;
+    ? { ...liveVotes, [voted]: (liveVotes[voted] ?? 0) + 1 }
+    : liveVotes;
   const totalVotes = Object.values(votes).reduce((sum, v) => sum + v, 0);
   const showSpaceInvite = voted !== null && SPACE_PROJECTS.has(voted);
 

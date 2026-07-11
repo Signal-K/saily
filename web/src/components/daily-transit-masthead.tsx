@@ -2,13 +2,29 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 type Props = {
   initialTheme: "light" | "dark";
 };
 
+const NAV_LINKS = [
+  { href: "/articles", label: "Stories" },
+  { href: "/games/today", label: "Missions" },
+  { href: "/games", label: "Games" },
+  { href: "/calendar", label: "Archive" },
+  { href: "/discuss", label: "Consensus" },
+  { href: "/leaderboard", label: "Stats" },
+  { href: "/search", label: "Registry" },
+  { href: "/about", label: "About" },
+];
+
 export function DailyTransitMasthead({ initialTheme }: Props) {
+  const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <>
       <style jsx global>{`
@@ -82,25 +98,119 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
           white-space: nowrap;
         }
 
+        .dt-primary-nav {
+          display: inline-flex;
+          align-items: center;
+          gap: 1.1rem;
+          min-width: 0;
+          overflow-x: auto;
+          scrollbar-width: none;
+        }
+
+        .dt-primary-nav::-webkit-scrollbar {
+          display: none;
+        }
+
+        .dt-primary-nav-link {
+          font-family: var(--font-data, ui-monospace, monospace);
+          font-size: 0.72rem;
+          font-weight: 600;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--fg-faded, #9099a4);
+          text-decoration: none;
+          white-space: nowrap;
+          padding: 0.35rem 0.1rem;
+        }
+
+        .dt-primary-nav-link:hover,
+        .dt-primary-nav-link.is-active {
+          color: var(--ink, #16181c);
+        }
+
         .dt-actions {
           display: inline-flex;
           align-items: center;
           justify-self: end;
-          gap: 0.45rem;
+          gap: 0.65rem;
           min-width: 0;
+        }
+
+        .dt-menu-toggle {
+          display: none;
+          align-items: center;
+          justify-content: center;
+          width: 2.75rem;
+          height: 2.75rem;
+          border: 1px solid var(--rule, #d9dde3);
+          background: var(--bg-surface, #fff);
+          color: var(--ink, #16181c);
+          cursor: pointer;
+        }
+
+        .dt-menu-toggle span,
+        .dt-menu-toggle span::before,
+        .dt-menu-toggle span::after {
+          display: block;
+          width: 18px;
+          height: 2px;
+          background: currentColor;
+          position: relative;
+          transition: transform 0.15s ease, opacity 0.15s ease;
+        }
+
+        .dt-menu-toggle span::before,
+        .dt-menu-toggle span::after {
+          content: "";
+          position: absolute;
+          left: 0;
+        }
+
+        .dt-menu-toggle span::before {
+          top: -6px;
+        }
+
+        .dt-menu-toggle span::after {
+          top: 6px;
+        }
+
+        .dt-menu-toggle.is-open span {
+          background: transparent;
+        }
+
+        .dt-menu-toggle.is-open span::before {
+          top: 0;
+          transform: rotate(45deg);
+        }
+
+        .dt-menu-toggle.is-open span::after {
+          top: 0;
+          transform: rotate(-45deg);
+        }
+
+        .dt-mobile-nav {
+          display: none;
         }
 
         @media (max-width: 900px) {
           .dt-masthead-top {
-            grid-template-columns: minmax(180px, 1fr) auto;
+            grid-template-columns: minmax(180px, 1fr) auto auto;
           }
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 760px) {
           .dt-masthead-top {
             width: min(100% - 1rem, var(--spacing-content-max, 1180px));
             grid-template-columns: minmax(0, 1fr) auto;
             gap: 0.5rem;
+          }
+
+          .dt-primary-nav {
+            display: none;
+          }
+
+          .dt-menu-toggle {
+            display: inline-flex;
           }
 
           .dt-actions {
@@ -110,6 +220,46 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
           .dt-brand-sub {
             display: none;
           }
+
+          .dt-mobile-nav.is-open {
+            display: flex;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .dt-masthead-top {
+            gap: 0.4rem;
+          }
+        }
+
+        .dt-mobile-nav {
+          flex-direction: column;
+          width: min(var(--spacing-content-max, 1180px), calc(100% - 2rem));
+          margin-inline: auto;
+          border-top: 1px solid var(--rule, #d9dde3);
+          padding: 0.5rem 0;
+        }
+
+        .dt-mobile-nav-link {
+          font-family: var(--font-data, ui-monospace, monospace);
+          font-size: 0.85rem;
+          font-weight: 600;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          color: var(--ink, #16181c);
+          text-decoration: none;
+          padding: 0.85rem 0.25rem;
+          min-height: 44px;
+          display: flex;
+          align-items: center;
+        }
+
+        .dt-mobile-nav-link.is-active {
+          color: var(--primary, #0a82b3);
+        }
+
+        .dt-mobile-nav-link + .dt-mobile-nav-link {
+          border-top: 1px solid var(--rule, #d9dde3);
         }
       `}</style>
       <header className="dt-masthead">
@@ -122,10 +272,49 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
             </span>
           </Link>
 
+          <nav className="dt-primary-nav" aria-label="Primary">
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`dt-primary-nav-link${pathname.startsWith(link.href) ? " is-active" : ""}`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
           <div className="dt-actions">
             <ThemeToggle initialTheme={initialTheme} />
+            <button
+              type="button"
+              className={`dt-menu-toggle${menuOpen ? " is-open" : ""}`}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+              aria-controls="dt-mobile-nav"
+              onClick={() => setMenuOpen((open) => !open)}
+            >
+              <span />
+            </button>
           </div>
         </div>
+
+        <nav
+          id="dt-mobile-nav"
+          className={`dt-mobile-nav${menuOpen ? " is-open" : ""}`}
+          aria-label="Primary"
+        >
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`dt-mobile-nav-link${pathname.startsWith(link.href) ? " is-active" : ""}`}
+              onClick={() => setMenuOpen(false)}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
       </header>
     </>
   );

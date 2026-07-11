@@ -4,6 +4,8 @@ import { Analytics } from "@vercel/analytics/react";
 import { SWRegister } from "@/components/sw-register";
 import { BreadcrumbsNav } from "@/components/breadcrumbs-nav";
 import { DailyTransitMasthead } from "@/components/daily-transit-masthead";
+import { BreakingNewsTicker } from "@/components/breaking-news-ticker";
+import { EcosystemBar } from "@/components/ecosystem-bar";
 import { PostHogRuntime } from "@/components/posthog-runtime";
 import "./globals.css";
 
@@ -136,6 +138,22 @@ export default async function RootLayout({
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 min-width: 0;
+              }
+
+              .dt-breaking-news {
+                display: flex;
+                align-items: center;
+                gap: 1.5rem;
+                flex-wrap: wrap;
+                width: min(var(--spacing-content-max, 1180px), calc(100% - 2rem));
+                margin-inline: auto;
+                padding: 0.5rem 0;
+                border-bottom: 1px solid var(--rule, #d9dde3);
+              }
+
+              .dt-breaking-news-item {
+                min-width: 0;
+                max-width: 100%;
               }
 
               .breadcrumbs-back {
@@ -380,12 +398,60 @@ export default async function RootLayout({
                   min-height: 48px;
                 }
               }
+
+              @media (max-width: 380px) {
+                .search-page-header h1 {
+                  overflow-wrap: anywhere;
+                }
+
+                .search-page-header .muted,
+                .search-empty-state .muted,
+                .search-error-panel .muted {
+                  font-size: 0.9rem;
+                  line-height: 1.45;
+                }
+
+                .search-meta-row {
+                  grid-template-columns: 1fr;
+                  gap: 0.5rem;
+                }
+
+                .search-meta-pill {
+                  min-width: 0;
+                }
+
+                .calendar-page-weekdays,
+                .calendar-page-grid {
+                  gap: 0.2rem;
+                }
+
+                .calendar-page-cell {
+                  min-height: 38px;
+                  font-size: 0.85rem;
+                }
+
+                .calendar-page-toolbar-right {
+                  gap: 0.35rem;
+                }
+
+                .calendar-page-nav-btn {
+                  padding: 0.4rem 0.55rem;
+                  font-size: 0.6rem;
+                }
+
+                .calendar-page-legend {
+                  gap: 0.6rem;
+                }
+              }
             `,
           }}
         />
         <PostHogRuntime />
         <SWRegister />
+
         <DailyTransitMasthead initialTheme={initialTheme} />
+        <BreakingNewsTicker />
+        <EcosystemBar />
 
         <main className="dt-page-shell">
           <BreadcrumbsNav />

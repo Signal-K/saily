@@ -1,7 +1,7 @@
 import { type LightcurvePoint, type Annotation } from "@/lib/planet-logic";
 
 export type DailyAnomaly = {
-  id: number;
+  id: string;
   ticId: string;
   label: string;
   anomalyType: string | null;

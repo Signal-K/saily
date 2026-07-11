@@ -18,21 +18,6 @@ export function LandingMasthead() {
         <StatusPill href="#top">Launching soon</StatusPill>
       </div>
 
-      <div className="tx-public-nav-row">
-        <nav className="tx-public-nav tx-public-nav-primary" aria-label="Primary menu">
-          <a href="#daily">Today</a>
-          <Link href="/archive">Archive</Link>
-          <Link href="/articles">Articles</Link>
-          <Link href="/discoveries">Discoveries</Link>
-          <Link href="/games/today">Play</Link>
-        </nav>
-        <nav className="tx-public-nav tx-public-nav-secondary" aria-label="Secondary menu">
-          <Link href="/calendar">Calendar</Link>
-          <Link href="/discuss">Discuss</Link>
-          <Link href="/search">Search</Link>
-        </nav>
-      </div>
-
       <div className="tx-update-ribbon" aria-label="Latest updates">
         <span>Updates</span>
         <a href="#daily">APOD image live</a>

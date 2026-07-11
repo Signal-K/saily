@@ -3,6 +3,8 @@ import Image from "next/image";
 import { createClient } from "@/lib/pocketbase/server";
 import { getRobotAvatarDataUri } from "@/lib/avatar";
 import { ProfileFollowList } from "@/components/profile-follow-list";
+import { getEcosystemStatsForUser } from "@/lib/pocketbase/shared-stats";
+import { PushOptIn } from "@/components/push-opt-in";
 
 type ThreadRef = {
   puzzle_date: string;
@@ -11,15 +13,11 @@ type ThreadRef = {
 };
 
 type ForumPost = {
-  id: number;
+  id: string;
   body: string;
   created_at: string;
-  forum_threads: ThreadRef | ThreadRef[] | null;
+  thread_id: string;
 };
-
-function getThreadRef(value: ForumPost["forum_threads"]) {
-  return Array.isArray(value) ? value[0] ?? null : value;
-}
 
 export default async function ProfilePage() {
   const pocketbase = await createClient();
@@ -46,14 +44,14 @@ export default async function ProfilePage() {
       .select("awarded_at,badges(name,description,slug)")
       .eq("user_id", user.id)
       .order("awarded_at", { ascending: false }),
-    pocketbase.from("profiles").select("username").eq("id", user.id).maybeSingle(),
+    pocketbase.from("profiles").select("username").eq("shared_user_id", user.id).maybeSingle(),
     pocketbase
       .from("forum_posts")
-      .select("id,body,created_at,forum_threads!forum_posts_thread_id_fkey(puzzle_date,kind,title)")
+      .select("id,body,created_at,thread_id")
       .eq("user_id", user.id)
       .order("created_at", { ascending: false })
       .limit(20),
-    pocketbase.from("profiles").select("id,username").neq("id", user.id).order("created_at", { ascending: false }).limit(20),
+    pocketbase.from("profiles").select("id,username").neq("shared_user_id", user.id).order("created_at", { ascending: false }).limit(20),
     pocketbase.from("user_follows").select("following_id").eq("follower_id", user.id),
     pocketbase.from("user_follows").select("follower_id", { count: "exact", head: true }).eq("following_id", user.id),
     pocketbase.from("user_follows").select("following_id", { count: "exact", head: true }).eq("follower_id", user.id),
@@ -65,6 +63,14 @@ export default async function ProfilePage() {
   const followingCount = followingCountRes.count ?? 0;
   const initialFollowingIds = (followingRows ?? []).map((row) => row.following_id);
   const forumPosts = (posts ?? []) as ForumPost[];
+
+  const threadIds = [...new Set(forumPosts.map((post) => post.thread_id))];
+  const { data: threads } =
+    threadIds.length > 0
+      ? await pocketbase.from("forum_threads").select("id,puzzle_date,kind,title").in("id", threadIds)
+      : { data: [] as (ThreadRef & { id: string })[] };
+  const threadById = new Map((threads ?? []).map((thread) => [thread.id, thread]));
+  const ecosystemStats = await getEcosystemStatsForUser(user.id);
 
   return (
     <section className="grid gap-4">
@@ -119,7 +125,7 @@ export default async function ProfilePage() {
         {forumPosts.length > 0 ? (
           <div className="profile-post-list">
             {forumPosts.map((post) => {
-              const thread = getThreadRef(post.forum_threads);
+              const thread = threadById.get(post.thread_id) ?? null;
               return (
                 <article key={post.id} className="profile-post-item">
                   <p className="profile-post-body">{post.body}</p>
@@ -136,6 +142,21 @@ export default async function ProfilePage() {
         ) : (
           <p className="muted">No forum posts yet.</p>
         )}
+      </div>
+      <div className="panel">
+        <h2>Across the Star Sailors Ecosystem</h2>
+        {ecosystemStats && (ecosystemStats.landnamBalance !== null || ecosystemStats.landnamMissions !== null) ? (
+          <div className="grid gap-2" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))" }}>
+            {ecosystemStats.landnamMissions !== null && <p>Landnam missions: {ecosystemStats.landnamMissions}</p>}
+            {ecosystemStats.landnamBalance !== null && <p>Landnam balance: {ecosystemStats.landnamBalance}</p>}
+          </div>
+        ) : (
+          <p className="muted">No cross-game activity yet — play Landnam to see stats here.</p>
+        )}
+      </div>
+      <div className="panel">
+        <h2>Notifications</h2>
+        <PushOptIn />
       </div>
       <div className="panel">
         <h2>Follow Players</h2>

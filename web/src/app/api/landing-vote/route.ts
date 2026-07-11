@@ -1,15 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isResendEmailConfigured, sendEmail } from "@/lib/resend";
 import { getSailyPocketBaseUrl } from "@/lib/pocketbase/config";
+import { VARIANT_LABELS, VARIANT_OPTIONS, type VariantId } from "@/components/landing/design-vote-data";
 
 const NOTIFY_TO = process.env.LANDING_VOTE_NOTIFY_EMAIL ?? "liam@skinetics.tech";
+const VALID_VARIANT_IDS = new Set<string>(VARIANT_OPTIONS.map((variant) => variant.id));
 
-const VARIANT_LABELS: Record<string, string> = {
-  editorial: "📰 Editorial",
-  "deep-space": "🌌 Cosmic",
-  solar: "☀️ Solar",
-  minimal: "◻ Minimal",
-};
+function isVariantId(value: unknown): value is VariantId {
+  return typeof value === "string" && VALID_VARIANT_IDS.has(value);
+}
 
 function buildEmailHtml(ranking: string[], positions: Record<string, number>, activeVariant: string) {
   const rows = ranking
@@ -115,15 +114,18 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "invalid_json" }, { status: 400 });
   }
 
-  const ranking = Array.isArray(body.ranking) ? body.ranking.filter((x): x is string => typeof x === "string") : [];
-  const positions = (body.positions && typeof body.positions === "object" && !Array.isArray(body.positions))
-    ? body.positions as Record<string, number>
-    : {};
-  const activeVariant = typeof body.active_variant === "string" ? body.active_variant : "";
+  const ranking = Array.isArray(body.ranking) ? body.ranking : [];
+  const activeVariant = isVariantId(body.active_variant) ? body.active_variant : "editorial";
 
-  if (ranking.length === 0) {
-    return NextResponse.json({ error: "ranking_required" }, { status: 400 });
+  if (
+    ranking.length !== VARIANT_OPTIONS.length ||
+    !ranking.every(isVariantId) ||
+    new Set(ranking).size !== VARIANT_OPTIONS.length
+  ) {
+    return NextResponse.json({ error: "invalid_ranking" }, { status: 400 });
   }
+
+  const positions = Object.fromEntries(ranking.map((id, index) => [id, index + 1])) as Record<string, number>;
 
   let stored = false;
 

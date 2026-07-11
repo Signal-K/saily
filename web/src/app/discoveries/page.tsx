@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { listDiscoveries } from "@/lib/discoveries";
 import { getLandnamAppUrl } from "@/lib/pocketbase/config";
+import { DiscoveryComments } from "@/components/discovery-comments";
 
 export const metadata = { title: "Discoveries — The Daily Transit" };
 
@@ -42,6 +43,7 @@ export default async function DiscoveriesPage() {
                   Log in to Landnam
                 </a>
               </div>
+              <DiscoveryComments discoveryId={discovery.id} />
             </div>
           ))}
         </div>

@@ -1,42 +1,43 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { cookies } from "next/headers";
 import { POCKETBASE_COOKIE_NAME, type PocketBaseSession } from "./config";
+import { RealPocketBaseQuery } from "./real-query";
 
-type PocketBaseQueryResult = { data: any[]; error: any; count: number };
+type BadgeRow = { id: string; slug: string; kind: string; threshold: number };
 
-function emptyQueryResult(): PocketBaseQueryResult {
-  return { data: [], error: null, count: 0 };
-}
+// Awards any "comments"-kind badge the user has newly crossed the comment-count
+// threshold for. Mirrors the wins/streak/games badge-award logic in
+// app/api/game/complete/route.ts, but keyed on total comment count instead of
+// game stats.
+async function awardCommentBadges(userId: string): Promise<{ badgesAwarded: number }> {
+  const { count } = await new RealPocketBaseQuery("comments")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", userId);
 
-class PocketBaseQuery {
-  select(..._args: any[]) { return this; }
-  insert(..._args: any[]) { return this; }
-  upsert(..._args: any[]) { return this; }
-  update(..._args: any[]) { return this; }
-  delete(..._args: any[]) { return this; }
-  eq(..._args: any[]) { return this; }
-  neq(..._args: any[]) { return this; }
-  gt(..._args: any[]) { return this; }
-  gte(..._args: any[]) { return this; }
-  lt(..._args: any[]) { return this; }
-  lte(..._args: any[]) { return this; }
-  is(..._args: any[]) { return this; }
-  not(..._args: any[]) { return this; }
-  contains(..._args: any[]) { return this; }
-  ilike(..._args: any[]) { return this; }
-  or(..._args: any[]) { return this; }
-  in(..._args: any[]) { return this; }
-  order(..._args: any[]) { return this; }
-  limit(..._args: any[]) { return this; }
-  range(..._args: any[]) { return this; }
-  maybeSingle(..._args: any[]): Promise<any> { return Promise.resolve({ data: null, error: null }); }
-  single(..._args: any[]): Promise<any> { return Promise.resolve({ data: null, error: null }); }
-  then<TResult1 = PocketBaseQueryResult, TResult2 = never>(
-    onfulfilled?: ((value: PocketBaseQueryResult) => TResult1 | PromiseLike<TResult1>) | null,
-    onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null,
-  ) {
-    return Promise.resolve(emptyQueryResult()).then(onfulfilled, onrejected);
+  const [{ data: badges }, { data: earnedBadges }] = await Promise.all([
+    new RealPocketBaseQuery("badges").select("id,slug,kind,threshold").eq("kind", "comments"),
+    new RealPocketBaseQuery("user_badges").select("badge").eq("user_id", userId),
+  ]);
+
+  const earnedBadgeIds = new Set((earnedBadges ?? []).map((row: { badge: string }) => row.badge));
+  const commentCount = count ?? 0;
+  const toAward = ((badges ?? []) as BadgeRow[]).filter(
+    (badge) => !earnedBadgeIds.has(badge.id) && commentCount >= badge.threshold,
+  );
+
+  if (toAward.length > 0) {
+    await Promise.all(
+      toAward.map((badge) =>
+        new RealPocketBaseQuery("user_badges").insert({
+          user_id: userId,
+          badge: badge.id,
+          awarded_at: new Date().toISOString(),
+        }),
+      ),
+    );
   }
+
+  return { badgesAwarded: toAward.length };
 }
 
 async function readSession(): Promise<PocketBaseSession | null> {
@@ -63,10 +64,23 @@ export async function createClient() {
         return { error: null };
       },
     },
-    from(..._args: any[]) {
-      return new PocketBaseQuery();
+    from(collection: string) {
+      return new RealPocketBaseQuery(collection);
     },
-    rpc(..._args: any[]): Promise<any> {
+    async rpc(fn: string, params?: any): Promise<any> {
+      if (fn === "award_comment_badges") {
+        const userId = params?.user_id;
+        if (!userId) {
+          return { data: null, error: { message: "award_comment_badges requires user_id" } };
+        }
+        try {
+          const data = await awardCommentBadges(userId);
+          return { data, error: null };
+        } catch (error) {
+          return { data: null, error: { message: error instanceof Error ? error.message : "award_comment_badges failed" } };
+        }
+      }
+      console.warn(`[pocketbase] rpc("${fn}") called but is unknown — no-op.`);
       return Promise.resolve({ data: null, error: null });
     },
   };

@@ -124,7 +124,7 @@ export async function GET(request: Request) {
     pocketbase.from("forum_threads").select("id,puzzle_date,kind,title,created_at").or(`title.ilike.${pattern},puzzle_date.ilike.${pattern}`).order("puzzle_date", { ascending: false }).limit(fetchLimit),
     pocketbase
       .from("forum_posts")
-      .select("id,body,created_at,forum_threads!forum_posts_thread_id_fkey(puzzle_date,title)")
+      .select("id,body,created_at,thread_id")
       .ilike("body", pattern)
       .order("created_at", { ascending: false })
       .limit(fetchLimit),
@@ -156,6 +156,13 @@ export async function GET(request: Request) {
       : Promise.resolve({ data: [], error: null }),
   ]);
 
+  const postThreadIds = [...new Set((postsRes.data ?? []).map((row) => row.thread_id))];
+  const { data: postThreads } =
+    postThreadIds.length > 0
+      ? await pocketbase.from("forum_threads").select("id,puzzle_date,title").in("id", postThreadIds)
+      : { data: [] as { id: string; puzzle_date: string; title: string }[] };
+  const postThreadById = new Map((postThreads ?? []).map((thread) => [thread.id, thread]));
+
   const suggestions: SearchSuggestion[] = [];
 
   (profilesRes.data ?? []).forEach((row) => {
@@ -183,7 +190,7 @@ export async function GET(request: Request) {
   });
 
   (postsRes.data ?? []).forEach((row) => {
-    const thread = Array.isArray(row.forum_threads) ? row.forum_threads[0] : row.forum_threads;
+    const thread = postThreadById.get(row.thread_id) ?? null;
     const score = scoreByFields([row.body, thread?.title], [row.created_at, thread?.puzzle_date], ctx, now);
     if (score <= 0) return;
     suggestions.push({
