@@ -5,6 +5,39 @@ import { VARIANT_LABELS, VARIANT_OPTIONS, type VariantId } from "@/components/la
 
 const NOTIFY_TO = process.env.LANDING_VOTE_NOTIFY_EMAIL ?? "liam@skinetics.tech";
 const VALID_VARIANT_IDS = new Set<string>(VARIANT_OPTIONS.map((variant) => variant.id));
+const posthogPersistFailureEvent = "daily_transit_landing_vote_persist_failed";
+
+function getPosthogHost() {
+  return process.env.POSTHOG_CAPTURE_HOST?.trim() || process.env.NEXT_PUBLIC_POSTHOG_HOST?.trim() || "https://us.i.posthog.com";
+}
+
+function getPosthogProjectToken() {
+  return process.env.POSTHOG_PROJECT_TOKEN?.trim() || process.env.NEXT_PUBLIC_POSTHOG_KEY?.trim() || "";
+}
+
+// Best-effort: makes a PocketBase persist failure visible in PostHog so a
+// misconfigured/missing SAILY_PB_URL doesn't silently degrade until someone
+// notices a 500 or greps Vercel logs (see STS-157).
+async function capturePersistFailureEvent(debug: ReturnType<typeof getPocketBaseDebug>, errorMessage: string) {
+  const apiKey = getPosthogProjectToken();
+  if (!apiKey) return;
+
+  try {
+    await fetch(`${getPosthogHost().replace(/\/$/, "")}/capture/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        api_key: apiKey,
+        event: posthogPersistFailureEvent,
+        distinct_id: `landing-vote-persist-failure:${debug.pocketbaseHost}`,
+        properties: { ...debug, errorMessage },
+      }),
+      cache: "no-store",
+    });
+  } catch (captureError) {
+    console.error("[landing-vote] PostHog failure capture itself failed", captureError instanceof Error ? captureError.message : captureError);
+  }
+}
 
 function isVariantId(value: unknown): value is VariantId {
   return typeof value === "string" && VALID_VARIANT_IDS.has(value);
@@ -139,10 +172,10 @@ export async function POST(request: NextRequest) {
     });
     stored = true;
   } catch (error) {
-    console.error("[landing-vote] PocketBase persist failed", {
-      error: error instanceof Error ? error.message : error,
-      ...getPocketBaseDebug(),
-    });
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const debug = getPocketBaseDebug();
+    console.error("[landing-vote] PocketBase persist failed", { error: errorMessage, ...debug });
+    await capturePersistFailureEvent(debug, errorMessage);
   }
 
   if (!stored) {
