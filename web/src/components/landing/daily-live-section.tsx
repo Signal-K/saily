@@ -67,7 +67,6 @@ const fallbackBriefing: Briefing = {
   network: [
     { label: "transit intervals marked", value: 143 },
     { label: "Mars surface pins placed", value: 92 },
-    { label: "Gaia light curves classified", value: 77 },
   ],
 };
 

@@ -5,7 +5,7 @@ import posthog from "posthog-js";
 import { InterestSuccessNote, Kicker } from "@/components/landing/landing-shared";
 import { games } from "@/components/landing/landing-data";
 import { submitInterest } from "@/components/landing/landing-interest";
-import { CITIZEN_SCIENCE_SURVEY_ID as SURVEY_ID } from "@/lib/posthog/survey-ids";
+import { CITIZEN_SCIENCE_VOTE_KEY as SURVEY_ID } from "@/lib/posthog/survey-ids";
 
 const SPACE_PROJECTS = new Set(["Landnam", "Asteroid Hunters"]);
 

@@ -13,16 +13,6 @@ const MISSIONS = [
     title: "Mars",
     body: "Spot surface features in real Mars imagery for the Cloudspotting on Mars project.",
   },
-  {
-    href: "/games/gaia-variables",
-    title: "Gaia Variables",
-    body: "Classify variable-star light curves from ESA's Gaia mission.",
-  },
-  {
-    href: "/games/rubin-comet-catchers",
-    title: "Rubin Comet Catchers",
-    body: "Sweep Rubin Observatory survey frames for comets and other moving objects.",
-  },
 ];
 
 export default function GamesPage() {

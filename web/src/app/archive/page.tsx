@@ -13,7 +13,7 @@ const archiveEntries = [
   {
     date: "This week",
     title: "Citizen-science activity",
-    summary: "A rolling index of transit classifications, Mars surface pins, comet calls, and Gaia light-curve checks.",
+    summary: "A rolling index of transit classifications and Mars surface pins.",
     href: "/discoveries",
     tag: "network",
   },

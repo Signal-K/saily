@@ -24,8 +24,6 @@ type BriefingEvent = {
 const NETWORK_EVENTS = [
   "transit intervals marked",
   "Mars surface pins placed",
-  "comet activity calls filed",
-  "Gaia light curves classified",
   "archive replays opened",
   "candidate notes added",
 ];

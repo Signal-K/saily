@@ -11,8 +11,6 @@ import { MissionStatusBanner } from "@/components/mission/mission-status-banner"
 import { MissionAmbience } from "@/components/mission/mission-ambience";
 import TodayGamePage from "@/components/pages/games/today-game-page";
 import MarsGamePage from "@/components/pages/games/mars-game-page";
-import RubinCometCatchersGamePage from "@/components/pages/games/rubin-comet-catchers-game-page";
-import GaiaVariablesGamePage from "@/components/pages/games/gaia-variables-game-page";
 import { queueSurveyTrigger } from "@/lib/posthog/survey-queue";
 import { trackGameplayEvent } from "@/lib/analytics/events";
 import { unlockArchive } from "@/lib/economy";
@@ -33,26 +31,20 @@ type MissionAccess = {
 const DEFAULT_SCORES: Record<MissionGame, number> = {
   planet: 0,
   mars: 0,
-  rubin_comet_catchers: 0,
-  gaia_variables: 0,
 };
 
 // Fallback narrative text used for update transitions beyond what a chapter's
-// authored update1/update2 copy covers (chapters were written for a 2-game
-// rotation; growing to 4 games needs more transition slots than there is
-// bespoke copy for — see decision doc multi-puzzle-mission-flow-stays-multi-game).
+// authored update1/update2 copy covers.
 const GENERIC_UPDATE_TEXT = "Nice work. On to the next dataset.";
 
 function getContinueLabel(game: MissionGame | undefined) {
   if (game === "planet") return "Continue to Transit Analysis";
   if (game === "mars") return "Continue to Surface Survey";
-  if (game === "rubin_comet_catchers") return "Continue to Comet Review";
-  if (game === "gaia_variables") return "Continue to Light Curve Review";
   return "Continue";
 }
 
 function isMissionGame(value: string): value is MissionGame {
-  return value === "planet" || value === "mars" || value === "rubin_comet_catchers" || value === "gaia_variables";
+  return value === "planet" || value === "mars";
 }
 
 export default function MissionFlowPage() {
@@ -196,12 +188,6 @@ export default function MissionFlowPage() {
     }
     if (activeGame === "mars") {
       return <MarsGamePage onMissionComplete={(score) => handleGameComplete({ score })} gameDate={missionDate} />;
-    }
-    if (activeGame === "rubin_comet_catchers") {
-      return <RubinCometCatchersGamePage onMissionComplete={(score) => handleGameComplete({ score })} gameDate={missionDate} />;
-    }
-    if (activeGame === "gaia_variables") {
-      return <GaiaVariablesGamePage onMissionComplete={(score) => handleGameComplete({ score })} gameDate={missionDate} />;
     }
     return null;
   }
