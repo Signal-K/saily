@@ -2,7 +2,6 @@ import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/pocketbase/middleware";
 
 const retiredPagePrefixes = [
-  "/games",
   "/calendar",
   "/chips",
   "/leaderboard",
