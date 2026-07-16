@@ -32,4 +32,14 @@ const x = 1;
     expect(nodes.some((node) => node.type === "link" && node.href === "javascript:alert(1)")).toBe(false);
     expect(nodes.some((node) => node.type === "link" && node.href === "https://example.com")).toBe(true);
   });
+
+  it("embeds the puzzle widget at a lone {{puzzle}} marker", () => {
+    const blocks = parseMarkdown(`Intro paragraph.
+
+{{puzzle}}
+
+Closing paragraph.`);
+
+    expect(blocks.map((block) => block.type)).toEqual(["paragraph", "puzzle-widget", "paragraph"]);
+  });
 });

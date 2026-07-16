@@ -6,12 +6,7 @@ const MISSIONS = [
   {
     href: "/games/today",
     title: "Today's Mission",
-    body: "Mark real transit signals in TESS light curves, Planet-Hunters-style — the daily rotating classification mission, a new real dataset every day.",
-  },
-  {
-    href: "/games/mars",
-    title: "Mars",
-    body: "Spot surface features in real Mars imagery for the Cloudspotting on Mars project.",
+    body: "A new science crossword and a real transit-spotting round every day — the daily rotating puzzle, built from real data.",
   },
 ];
 

@@ -9,8 +9,8 @@ import { NarrativeUpdate } from "@/components/mission/narrative-update";
 import { MissionComplete } from "@/components/mission/mission-complete";
 import { MissionStatusBanner } from "@/components/mission/mission-status-banner";
 import { MissionAmbience } from "@/components/mission/mission-ambience";
-import TodayGamePage from "@/components/pages/games/today-game-page";
-import MarsGamePage from "@/components/pages/games/mars-game-page";
+import CrosswordGamePage from "@/components/pages/games/crossword-game-page";
+import TransitSpotterGamePage from "@/components/pages/games/transit-spotter-game-page";
 import { queueSurveyTrigger } from "@/lib/posthog/survey-queue";
 import { trackGameplayEvent } from "@/lib/analytics/events";
 import { unlockArchive } from "@/lib/economy";
@@ -29,8 +29,8 @@ type MissionAccess = {
 };
 
 const DEFAULT_SCORES: Record<MissionGame, number> = {
-  planet: 0,
-  mars: 0,
+  crossword: 0,
+  dsmr: 0,
 };
 
 // Fallback narrative text used for update transitions beyond what a chapter's
@@ -38,13 +38,13 @@ const DEFAULT_SCORES: Record<MissionGame, number> = {
 const GENERIC_UPDATE_TEXT = "Nice work. On to the next dataset.";
 
 function getContinueLabel(game: MissionGame | undefined) {
-  if (game === "planet") return "Continue to Transit Analysis";
-  if (game === "mars") return "Continue to Surface Survey";
+  if (game === "crossword") return "Continue to Crossword";
+  if (game === "dsmr") return "Continue to Transit Spotter";
   return "Continue";
 }
 
 function isMissionGame(value: string): value is MissionGame {
-  return value === "planet" || value === "mars";
+  return value === "crossword" || value === "dsmr";
 }
 
 export default function MissionFlowPage() {
@@ -109,7 +109,7 @@ export default function MissionFlowPage() {
     .map((value) => value.trim())
     .filter(isMissionGame)
     .filter((g) => MISSION_GAMES.includes(g));
-  // Allow e2e tests to pin the first game via ?firstGame=planet|mars
+  // Allow e2e tests to pin the first game via ?firstGame=crossword|dsmr
   const firstGameParam = searchParams.get("firstGame");
   const firstGameOverride = firstGameParam && isMissionGame(firstGameParam) && MISSION_GAMES.includes(firstGameParam) ? firstGameParam : null;
   const gameOrder: MissionGame[] = firstGameOverride
@@ -183,11 +183,11 @@ export default function MissionFlowPage() {
   }
 
   function renderActiveGame() {
-    if (activeGame === "planet") {
-      return <TodayGamePage onMissionComplete={handleGameComplete} gameDate={missionDate} />;
+    if (activeGame === "crossword") {
+      return <CrosswordGamePage onMissionComplete={handleGameComplete} gameDate={missionDate} />;
     }
-    if (activeGame === "mars") {
-      return <MarsGamePage onMissionComplete={(score) => handleGameComplete({ score })} gameDate={missionDate} />;
+    if (activeGame === "dsmr") {
+      return <TransitSpotterGamePage onMissionComplete={handleGameComplete} gameDate={missionDate} />;
     }
     return null;
   }

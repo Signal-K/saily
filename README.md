@@ -34,7 +34,7 @@ Saily is a Wordle-style daily app where you help characters in simple, multi-cha
 
 When running `make up`, these services start:
 
-- **Web App**: http://localhost:3000
+- **Web App**: http://localhost:3127
 - **Shared PocketBase**: http://localhost:8090
 - **Saily PocketBase**: http://localhost:8092
 

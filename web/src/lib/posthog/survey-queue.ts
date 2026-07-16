@@ -2,9 +2,6 @@ export const SURVEY_QUEUE_KEY = "posthog:survey:queue";
 const SURVEY_SHOWN_KEY = "posthog:survey:shown";
 
 export const SURVEY_TRIGGER_SOURCES = [
-  "planet_transit",
-  "planet_no_detection",
-  "mars_classification",
   "narrative_flow",
   "archive_unlock",
   "discussion_flow",

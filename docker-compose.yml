@@ -26,7 +26,7 @@ services:
       - ../.knowns:/knowns:ro
       - ./.knowns-outbox:/knowns-outbox
     ports:
-      - "${WEB_PORT:-3000}:3000"
+      - "${WEB_PORT:-3127}:3000"
     environment:
       KNOWNS_CANONICAL_ROOT: /knowns
       KNOWNS_OUTBOX: /knowns-outbox

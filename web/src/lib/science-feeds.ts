@@ -1,6 +1,7 @@
 export type ScienceFeedId =
   | "cloudspotting_mars"
-  | "active_asteroids";
+  | "active_asteroids"
+  | "planet_hunters_tess";
 
 export type ScienceFeedKind = "image_subject" | "time_series";
 
@@ -66,6 +67,18 @@ export const SCIENCE_FEEDS: Record<ScienceFeedId, ScienceFeedDefinition> = {
     cacheTable: "active_asteroids_daily",
     dailyQuestion: "Is there convincing activity around this asteroid candidate?",
     notes: "Closest fit to the existing asteroid review interaction.",
+  },
+  planet_hunters_tess: {
+    id: "planet_hunters_tess",
+    label: "Planet Hunters TESS",
+    shortLabel: "PHT",
+    provider: "Zooniverse",
+    projectUrl: "https://www.zooniverse.org/projects/nora-dot-eisner/planet-hunters-tess",
+    ingestPriority: 3,
+    kind: "image_subject",
+    cacheTable: "planet_hunters_tess_daily",
+    dailyQuestion: "Does this real TESS light curve show a transit dip?",
+    notes: "Backs the daily transit-spotter minigame (STS-303) — a bite-sized round, distinct from the retired internal `planet` mission's own anomaly table.",
   },
 };
 

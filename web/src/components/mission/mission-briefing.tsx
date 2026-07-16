@@ -17,7 +17,14 @@ type Props = {
 export function MissionBriefing({ character, chapter, storylineTitle, chapterNumber, totalChapters, onBegin }: Props) {
   const avatarSrc = getRobotAvatarDataUri(character.avatarSeed, 96, chapter.briefingExpression);
   const briefingText = chapter.briefing
-    .replace("three different surveys — planet transits, asteroid images, and Mars surface data", "two active desks: planet transits and Mars surface data")
+    .replace(
+      "three different surveys — planet transits, asteroid images, and Mars surface data",
+      "two active desks: today's science crossword and a real transit-spotting round",
+    )
+    .replace(
+      "two active desks: planet transits and Mars surface data",
+      "two active desks: today's science crossword and a real transit-spotting round",
+    )
     .replace("Work through each one and I'll check in between.", "Work through the live pair and I'll check in between.");
 
   return (
@@ -253,7 +260,7 @@ export function MissionBriefing({ character, chapter, storylineTitle, chapterNum
           line-height: 1.4;
         }
 
-        .mission-briefing-mission.is-mars strong {
+        .mission-briefing-mission.is-dsmr strong {
           color: var(--color-rust-400, #d76131);
         }
 
@@ -338,12 +345,12 @@ export function MissionBriefing({ character, chapter, storylineTitle, chapterNum
             </div>
             <div className="mission-briefing-missions">
               <div className="mission-briefing-mission">
-                <strong>Transit Spotting</strong>
-                <span>TESS lightcurve scan · periodic dip annotation</span>
+                <strong>Science Crossword</strong>
+                <span>real night-sky events &amp; today's discoveries · clue solving</span>
               </div>
-              <div className="mission-briefing-mission is-mars">
-                <strong>Water-Ice on Mars</strong>
-                <span>MRO surface classification · frost patch mapping</span>
+              <div className="mission-briefing-mission is-dsmr">
+                <strong>Transit Spotter</strong>
+                <span>Planet Hunters TESS lightcurve · dip spotting</span>
               </div>
             </div>
           </aside>

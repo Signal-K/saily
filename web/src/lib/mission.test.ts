@@ -9,9 +9,9 @@ describe("mission game order", () => {
     expect(new Set(order)).toEqual(new Set(MISSION_GAMES));
   });
 
-  it("starts new users on the planet transit puzzle", () => {
+  it("starts new users on the crossword puzzle", () => {
     const order = getMissionGameOrder("gizmo", 0);
 
-    expect(order[0]).toBe("planet");
+    expect(order[0]).toBe("crossword");
   });
 });
