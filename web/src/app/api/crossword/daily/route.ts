@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { resolveGameDate } from "@/lib/game";
 import { createClient } from "@/lib/pocketbase/server";
+import { getDayAccessForUser } from "@/lib/day-access";
 import { buildClueBank } from "@/lib/crossword-clues";
 import { buildDailyCrossword, type CrosswordGrid } from "@/lib/crossword-generator";
 
@@ -36,6 +37,14 @@ export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
   const date = resolveGameDate(requestUrl.searchParams.get("date"));
   const pocketbase = await createClient();
+
+  const {
+    data: { user },
+  } = await pocketbase.auth.getUser();
+  const access = await getDayAccessForUser(pocketbase, user?.id, date);
+  if (!access.allowed) {
+    return NextResponse.json({ error: "Unlock this archived mission before playing it." }, { status: 403 });
+  }
 
   const { data: existing } = await pocketbase.from("crossword_daily").select("game_date,grid").eq("game_date", date).maybeSingle();
 

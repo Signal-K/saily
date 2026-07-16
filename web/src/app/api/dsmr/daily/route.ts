@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { resolveGameDate } from "@/lib/game";
 import { createClient } from "@/lib/pocketbase/server";
+import { getDayAccessForUser } from "@/lib/day-access";
 
 type TransitSpotterRow = {
   subject_id: string;
@@ -20,6 +21,14 @@ export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
   const date = resolveGameDate(requestUrl.searchParams.get("date"));
   const pocketbase = await createClient();
+
+  const {
+    data: { user },
+  } = await pocketbase.auth.getUser();
+  const access = await getDayAccessForUser(pocketbase, user?.id, date);
+  if (!access.allowed) {
+    return NextResponse.json({ error: "Unlock this archived mission before playing it." }, { status: 403 });
+  }
 
   const { data: rows } = await pocketbase
     .from("planet_hunters_tess_daily")

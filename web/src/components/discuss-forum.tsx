@@ -332,56 +332,19 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
     });
   }
 
+  // Only pulls the day's score — the old auto-imported annotations/hints
+  // sourced from the now-deleted `planet` mission's /api/anomaly/submit
+  // route, which had no crossword/dsmr equivalent (neither game persists a
+  // per-round submission). The "Imported annotations"/"Hint summary" fields
+  // in the composer below stay manually editable and degrade gracefully to
+  // their empty state.
   async function preloadSharedResult() {
     try {
       const response = await fetch(`/api/game/today?date=${encodeURIComponent(date)}`, { cache: "no-store" });
       if (!response.ok) return;
-      const payload = (await response.json()) as {
-        play?: { score?: number } | null;
-        anomaly?: { id?: string } | null;
-      };
+      const payload = (await response.json()) as { play?: { score?: number } | null };
       const maybeScore = payload.play?.score;
       if (typeof maybeScore === "number" && Number.isFinite(maybeScore)) setSharedScore(maybeScore);
-      const anomalyId = payload.anomaly?.id;
-      if (!anomalyId) return;
-      const submissionResponse = await fetch(`/api/anomaly/submit?date=${encodeURIComponent(date)}&anomalyId=${encodeURIComponent(anomalyId)}`, { cache: "no-store" });
-      if (!submissionResponse.ok) return;
-      const submissionPayload = (await submissionResponse.json()) as {
-        submission?: {
-          annotations?: Array<{ tag?: string; xStart?: number; xEnd?: number; confidence?: number; note?: string }>;
-          note?: string | null;
-          hint_flags?: { phaseFold?: boolean; bin?: boolean } | null;
-          reward_multiplier?: number | null;
-          period_days?: number | null;
-        } | null;
-      };
-      const submission = submissionPayload.submission;
-      if (!submission) return;
-      const annotations = Array.isArray(submission.annotations)
-        ? submission.annotations.map((item) => {
-            const tag = typeof item.tag === "string" ? item.tag : "Annotation";
-            const range =
-              typeof item.xStart === "number" && typeof item.xEnd === "number"
-                ? `${item.xStart.toFixed(3)}-${item.xEnd.toFixed(3)}`
-                : "";
-            const base = [tag, range].filter(Boolean).join(" • ");
-            const note = typeof item.note === "string" ? item.note.trim() : "";
-            return note ? `${base} — ${note}` : base;
-          })
-        : [];
-      setSharedAnnotations(annotations);
-      setSharedAnswers((current) => {
-        const next = [...current];
-        if (annotations.length > 0) next[0] = `Transit evidence: ${annotations.length} interval${annotations.length > 1 ? "s" : ""}`;
-        if (typeof submission.note === "string" && submission.note.trim().length > 0) next[2] = submission.note.trim();
-        return next;
-      });
-      const hintParts: string[] = [];
-      if (submission.hint_flags?.phaseFold) hintParts.push("phase fold");
-      if (submission.hint_flags?.bin) hintParts.push("binning");
-      if (typeof submission.period_days === "number") hintParts.push(`period ${submission.period_days.toFixed(2)}d`);
-      if (typeof submission.reward_multiplier === "number") hintParts.push(`reward x${submission.reward_multiplier.toFixed(2)}`);
-      setSharedHintSummary(hintParts.join(" • "));
     } catch {
       // keep composer usable even if preload fails
     }
