@@ -19,6 +19,13 @@ type ForumPost = {
   thread_id: string;
 };
 
+type AuthoredArticle = {
+  slug: string;
+  title: string;
+  status: string;
+  published_at: string;
+};
+
 export default async function ProfilePage() {
   const pocketbase = await createClient();
   const {
@@ -37,7 +44,7 @@ export default async function ProfilePage() {
     );
   }
 
-  const [{ data: stats }, { data: badges }, { data: profile }, { data: posts }, { data: discoverUsers }, { data: followingRows }, followersCountRes, followingCountRes] = await Promise.all([
+  const [{ data: stats }, { data: badges }, { data: profile }, { data: posts }, { data: discoverUsers }, { data: followingRows }, followersCountRes, followingCountRes, { data: authoredArticles }] = await Promise.all([
     pocketbase.from("user_stats").select("games_played,wins,current_streak,best_streak,total_score").eq("user_id", user.id).maybeSingle(),
     pocketbase
       .from("user_badges")
@@ -55,6 +62,11 @@ export default async function ProfilePage() {
     pocketbase.from("user_follows").select("following_id").eq("follower_id", user.id),
     pocketbase.from("user_follows").select("follower_id", { count: "exact", head: true }).eq("following_id", user.id),
     pocketbase.from("user_follows").select("following_id", { count: "exact", head: true }).eq("follower_id", user.id),
+    pocketbase
+      .from("cms_articles")
+      .select("slug,title,status,published_at")
+      .eq("author_id", user.id)
+      .order("updated_at", { ascending: false }),
   ]);
 
   const displayName = profile?.username ?? user.email ?? "player";
@@ -63,6 +75,7 @@ export default async function ProfilePage() {
   const followingCount = followingCountRes.count ?? 0;
   const initialFollowingIds = (followingRows ?? []).map((row) => row.following_id);
   const forumPosts = (posts ?? []) as ForumPost[];
+  const articles = (authoredArticles ?? []) as AuthoredArticle[];
 
   const threadIds = [...new Set(forumPosts.map((post) => post.thread_id))];
   const { data: threads } =
@@ -141,6 +154,31 @@ export default async function ProfilePage() {
           </div>
         ) : (
           <p className="muted">No forum posts yet.</p>
+        )}
+      </div>
+      <div className="panel">
+        <h2>Authored Articles</h2>
+        {articles.length > 0 ? (
+          <div className="grid gap-2">
+            {articles.map((article) => (
+              <div className="card" key={article.slug}>
+                {article.status === "published" ? (
+                  <Link href={`/articles/${article.slug}`} style={{ fontWeight: 600 }}>
+                    {article.title}
+                  </Link>
+                ) : (
+                  <p style={{ margin: 0, fontWeight: 600 }}>{article.title}</p>
+                )}
+                <p className="muted" style={{ margin: "0.3rem 0 0" }}>
+                  {article.status === "published"
+                    ? `Published ${new Date(article.published_at).toLocaleDateString()}`
+                    : `Status: ${article.status}`}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="muted">No authored articles yet.</p>
         )}
       </div>
       <div className="panel">

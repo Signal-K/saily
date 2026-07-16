@@ -247,7 +247,8 @@ func registerCMSRoutes(app core.App, verifier *sharedauth.Verifier) {
 		})
 
 		se.Router.PUT("/api/saily/cms/articles/{slug}", func(e *core.RequestEvent) error {
-			if _, ok := requireEditor(e); !ok {
+			user, ok := requireEditor(e)
+			if !ok {
 				return nil
 			}
 
@@ -275,6 +276,10 @@ func registerCMSRoutes(app core.App, verifier *sharedauth.Verifier) {
 				}
 				record = core.NewRecord(collection)
 				record.Set("slug", slug)
+				// Stamped once, only on creation (STS-146) — an article's
+				// original author survives later edits by another allowed
+				// CMS_EDITOR, matching every other author-attribution system.
+				record.Set("author_id", user.ID)
 				if _, ok := payload.Frontmatter["status"]; !ok {
 					payload.Frontmatter["status"] = "draft"
 				}
