@@ -51,6 +51,19 @@ export default function GamesPage() {
         ))}
       </div>
 
+      <div className="panel" style={{ padding: "1.25rem", marginTop: "1rem" }}>
+        <p className="eyebrow">Flagship &middot; Star Sailors</p>
+        <h2 style={{ margin: "0 0 0.35rem" }}>Landnam</h2>
+        <p className="muted" style={{ margin: "0 0 1rem" }}>
+          Hunt real exoplanet signals from TESS data, then manage the crew
+          and resources needed to follow up on the best candidates — the
+          full Star Sailors flagship game, live now.
+        </p>
+        <a href="https://playlandnam.space" target="_blank" rel="noreferrer" className="button button-primary">
+          Play Landnam now →
+        </a>
+      </div>
+
       <div style={{ marginTop: "1.5rem" }}>
         <Link href="/" className="button">Back to Home</Link>
       </div>

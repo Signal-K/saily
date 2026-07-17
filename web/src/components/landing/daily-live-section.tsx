@@ -64,10 +64,9 @@ const fallbackBriefing: Briefing = {
       tag: "satellite",
     },
   ],
-  network: [
-    { label: "transit intervals marked", value: 143 },
-    { label: "Mars surface pins placed", value: 92 },
-  ],
+  // Real zero, not a fabricated placeholder count — filled in once
+  // /api/daily-briefing responds with real PocketBase totals.
+  network: [],
 };
 
 function getHemisphereCopy(location: LocationState) {
@@ -223,14 +222,18 @@ export function DailyLiveSection() {
 
         <section className="tx-live-network" aria-label="Star Sailors network activity">
           <Kicker>Star Sailors network</Kicker>
-          <div className="tx-live-ticker">
-            {briefing.data.network.map((item) => (
-              <div className="tx-live-ticker-item" key={item.label}>
-                <strong>{item.value}</strong>
-                <span>{item.label}</span>
-              </div>
-            ))}
-          </div>
+          {briefing.data.network.length > 0 ? (
+            <div className="tx-live-ticker">
+              {briefing.data.network.map((item) => (
+                <div className="tx-live-ticker-item" key={item.label}>
+                  <strong>{item.value}</strong>
+                  <span>{item.label}</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="muted">Loading real activity counts…</p>
+          )}
         </section>
       </div>
     </main>
