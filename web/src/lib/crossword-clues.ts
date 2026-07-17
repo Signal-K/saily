@@ -53,10 +53,14 @@ function toAnswerWord(raw: string): string | null {
 // Real astronomy/mission terms worth surfacing as clues when they appear in
 // a sky event's target/title or an article's tags — no invented facts, this
 // only recognizes real vocabulary already present in the source content.
+// Definitions stay timeless/evergreen on purpose: a term matched against a
+// real, currently-live sky event gets a "— visible tonight" suffix appended
+// at the match site below, rather than baking a time claim into the base
+// definition that also gets reused as a no-live-event fallback.
 const KNOWN_TERMS: Record<string, string> = {
-  jupiter: "Largest planet in the Solar System, visible tonight per current sky events",
-  saturn: "Ringed planet, a late-night telescope target",
-  venus: "Second planet from the Sun, bright in evening twilight",
+  jupiter: "Largest planet in the Solar System",
+  saturn: "Ringed planet, a favorite late-night telescope target",
+  venus: "Second planet from the Sun, often bright in evening twilight",
   mars: "The Red Planet",
   scorpius: "Southern-sky constellation anchoring the Milky Way core",
   transit: "What a planet does when it crosses in front of its star, dimming it",
@@ -84,7 +88,7 @@ export async function buildClueBank(): Promise<CrosswordClueSource[]> {
       if (!known) continue;
       const answer = toAnswerWord(word);
       if (!answer || bank.has(answer)) continue;
-      bank.set(answer, { answer, clue: known, sourceUrl: null });
+      bank.set(answer, { answer, clue: `${known} — visible tonight per current sky events`, sourceUrl: null });
     }
   }
 

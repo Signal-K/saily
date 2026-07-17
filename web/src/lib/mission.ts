@@ -95,9 +95,12 @@ export function getMissionGameOrder(storylineId: string, chapterIndex: number): 
   const idx = Math.abs(hash) % GAME_ORDER_PERMUTATIONS.length;
   let games = [...GAME_ORDER_PERMUTATIONS[idx]].slice(0, MISSION_GAME_COUNT);
 
-  // For new users (Chapter 1 / index 0), ensure "crossword" (the simplest puzzle) is first.
-  if (chapterIndex === 0 && games.includes("crossword") && games[0] !== "crossword") {
-    games = ["crossword", ...games.filter((g) => g !== "crossword")];
+  // For new users (Chapter 1 / index 0), ensure the simplest puzzle — the
+  // first entry in MISSION_GAMES — goes first, so this doesn't need a
+  // hand-edit every time the game pool changes.
+  const firstGame = MISSION_GAMES[0];
+  if (chapterIndex === 0 && games.includes(firstGame) && games[0] !== firstGame) {
+    games = [firstGame, ...games.filter((g) => g !== firstGame)];
   }
 
   return games;

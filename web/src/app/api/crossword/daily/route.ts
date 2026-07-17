@@ -53,13 +53,28 @@ export async function GET(request: Request) {
     return NextResponse.json({ date, ...toPublicPayload(row.grid) });
   }
 
-  const clueBank = await buildClueBank();
-  const grid = buildDailyCrossword(clueBank, date);
+  let grid: CrosswordGrid;
+  try {
+    const clueBank = await buildClueBank();
+    grid = buildDailyCrossword(clueBank, date);
+    if (grid.placements.length === 0) {
+      throw new Error("No real clue sources were available to build today's crossword.");
+    }
+  } catch (error) {
+    console.error("[crossword/daily] generation failed", error);
+    return NextResponse.json({ error: "Could not generate today's crossword. Try again shortly." }, { status: 503 });
+  }
 
-  await pocketbase.from("crossword_daily").upsert(
-    { game_date: date, grid, clues: grid.placements.map((p) => ({ number: p.number, answer: p.answer })) },
-    { onConflict: "game_date" },
-  );
+  try {
+    await pocketbase.from("crossword_daily").upsert(
+      { game_date: date, grid, clues: grid.placements.map((p) => ({ number: p.number, answer: p.answer })) },
+      { onConflict: "game_date" },
+    );
+  } catch (error) {
+    // Not fatal — a concurrent request may have already cached this date's
+    // row; the generated grid is still valid to return either way.
+    console.warn("[crossword/daily] caching the generated grid failed", error);
+  }
 
   return NextResponse.json({ date, ...toPublicPayload(grid) });
 }

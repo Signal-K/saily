@@ -1,13 +1,24 @@
 export const SURVEY_QUEUE_KEY = "posthog:survey:queue";
 const SURVEY_SHOWN_KEY = "posthog:survey:shown";
 
-export const SURVEY_TRIGGER_SOURCES = [
-  "narrative_flow",
-  "archive_unlock",
-  "discussion_flow",
-] as const;
+// Single source of truth for which trigger sources exist and which env var
+// holds each one's real PostHog survey ID — adding a source here is now the
+// only edit needed (previously this list and the env-var lookup lived in
+// two separate files, posthog-runtime.tsx duplicating the enumeration).
+const SURVEY_ENV_VAR_BY_SOURCE = {
+  narrative_flow: "NEXT_PUBLIC_POSTHOG_SURVEY_NARRATIVE_ID",
+  archive_unlock: "NEXT_PUBLIC_POSTHOG_SURVEY_ARCHIVE_ID",
+  discussion_flow: "NEXT_PUBLIC_POSTHOG_SURVEY_DISCUSS_ID",
+} as const;
 
-export type SurveyTriggerSource = (typeof SURVEY_TRIGGER_SOURCES)[number];
+export const SURVEY_TRIGGER_SOURCES = Object.keys(SURVEY_ENV_VAR_BY_SOURCE) as SurveyTriggerSource[];
+
+export type SurveyTriggerSource = keyof typeof SURVEY_ENV_VAR_BY_SOURCE;
+
+export function getSurveyIdForSource(source: SurveyTriggerSource): string {
+  const envVarName = SURVEY_ENV_VAR_BY_SOURCE[source];
+  return process.env[envVarName]?.trim() || "";
+}
 
 export type SurveyTriggerPayload = {
   source: SurveyTriggerSource;

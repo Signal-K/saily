@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import posthog from "posthog-js";
 import { DisplaySurveyType } from "posthog-js/lib/src/posthog-surveys-types";
 import { createClient as createPocketBaseClient } from "@/lib/pocketbase/client";
-import { dequeueSurveyTrigger, markSurveyShown, type SurveyTriggerSource } from "@/lib/posthog/survey-queue";
+import { dequeueSurveyTrigger, getSurveyIdForSource, markSurveyShown } from "@/lib/posthog/survey-queue";
 
 function getPosthogHost() {
   return process.env.NEXT_PUBLIC_POSTHOG_HOST?.trim() || "https://us.i.posthog.com";
@@ -17,15 +17,6 @@ function getPosthogKey() {
 
 export function PostHogRuntime() {
   const pathname = usePathname();
-
-  function surveyIdForSource(source: SurveyTriggerSource) {
-    const map: Record<SurveyTriggerSource, string> = {
-      narrative_flow: process.env.NEXT_PUBLIC_POSTHOG_SURVEY_NARRATIVE_ID?.trim() || "",
-      archive_unlock: process.env.NEXT_PUBLIC_POSTHOG_SURVEY_ARCHIVE_ID?.trim() || "",
-      discussion_flow: process.env.NEXT_PUBLIC_POSTHOG_SURVEY_DISCUSS_ID?.trim() || "",
-    };
-    return map[source] || "";
-  }
 
   useEffect(() => {
     const key = getPosthogKey();
@@ -82,7 +73,7 @@ export function PostHogRuntime() {
       };
 
       posthog.capture("mechanic_feedback_triggered", properties);
-      const surveyId = surveyIdForSource(queued.source);
+      const surveyId = getSurveyIdForSource(queued.source);
       if (!surveyId) return;
 
       posthog.surveys.displaySurvey(surveyId, {

@@ -1,4 +1,5 @@
 import type { CrosswordClueSource } from "@/lib/crossword-clues";
+import { hashString } from "@/lib/date-seed";
 
 export type CrosswordDirection = "across" | "down";
 
@@ -22,15 +23,6 @@ export type CrosswordGrid = {
 
 const TARGET_WORD_COUNT = 8;
 const MAX_CANDIDATES = 40;
-
-function hashString(input: string): number {
-  let hash = 0;
-  for (let i = 0; i < input.length; i += 1) {
-    hash = (hash << 5) - hash + input.charCodeAt(i);
-    hash |= 0;
-  }
-  return Math.abs(hash);
-}
 
 // Deterministic shuffle seeded by the game date, so the same day always
 // produces the same puzzle (needed since this runs per-request until cached
