@@ -346,7 +346,7 @@ export function MissionBriefing({ character, chapter, storylineTitle, chapterNum
             <div className="mission-briefing-missions">
               <div className="mission-briefing-mission">
                 <strong>Science Crossword</strong>
-                <span>real night-sky events &amp; today's discoveries · clue solving</span>
+                <span>real night-sky events &amp; today&apos;s discoveries · clue solving</span>
               </div>
               <div className="mission-briefing-mission is-dsmr">
                 <strong>Transit Spotter</strong>

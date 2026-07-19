@@ -8,6 +8,11 @@ const MISSIONS = [
     title: "Today's Mission",
     body: "A new science crossword and a real transit-spotting round every day — the daily rotating puzzle, built from real data.",
   },
+  {
+    href: "/games/close-approaches",
+    title: "Close Approach Ranker",
+    body: "An experimental Sprint 10 puzzle: rank real NASA/JPL near-Earth flybys by closest approach before it graduates into the daily rotation.",
+  },
 ];
 
 export default function GamesPage() {

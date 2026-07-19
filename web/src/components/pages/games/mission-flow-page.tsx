@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { getStorylineForDate, getCharacterForStoryline, getChapterForIndex, getMissionGameOrder, getGameOrderOverrideForDate, isStorylineComplete, type MissionGame, MISSION_GAMES } from "@/lib/mission";
+import { getStorylineForDate, getCharacterForStoryline, getChapterForIndex, getMissionGameOrder, getGameOrderOverrideForDate, isStorylineComplete, type MissionGame, MISSION_GAMES, MISSION_GAME_REGISTRY } from "@/lib/mission";
 import { MissionBriefing } from "@/components/mission/mission-briefing";
 import { NarrativeUpdate } from "@/components/mission/narrative-update";
 import { MissionComplete } from "@/components/mission/mission-complete";
@@ -11,6 +11,7 @@ import { MissionStatusBanner } from "@/components/mission/mission-status-banner"
 import { MissionAmbience } from "@/components/mission/mission-ambience";
 import CrosswordGamePage from "@/components/pages/games/crossword-game-page";
 import TransitSpotterGamePage from "@/components/pages/games/transit-spotter-game-page";
+import CloseApproachRankerGamePage from "@/components/pages/games/close-approach-ranker-game-page";
 import { queueSurveyTrigger } from "@/lib/posthog/survey-queue";
 import { trackGameplayEvent } from "@/lib/analytics/events";
 import { unlockArchive } from "@/lib/economy";
@@ -31,6 +32,7 @@ type MissionAccess = {
 const DEFAULT_SCORES: Record<MissionGame, number> = {
   crossword: 0,
   dsmr: 0,
+  close_approach: 0,
 };
 
 // Fallback narrative text used for update transitions beyond what a chapter's
@@ -40,11 +42,12 @@ const GENERIC_UPDATE_TEXT = "Nice work. On to the next dataset.";
 function getContinueLabel(game: MissionGame | undefined) {
   if (game === "crossword") return "Continue to Crossword";
   if (game === "dsmr") return "Continue to Transit Spotter";
+  if (game === "close_approach") return "Continue to Close Approach Ranker";
   return "Continue";
 }
 
 function isMissionGame(value: string): value is MissionGame {
-  return value === "crossword" || value === "dsmr";
+  return MISSION_GAME_REGISTRY.includes(value as MissionGame);
 }
 
 export default function MissionFlowPage() {
@@ -108,17 +111,20 @@ export default function MissionFlowPage() {
     ?.split(",")
     .map((value) => value.trim())
     .filter(isMissionGame)
-    .filter((g) => MISSION_GAMES.includes(g));
-  // Allow e2e tests to pin the first game via ?firstGame=crossword|dsmr
+    .filter((g) => MISSION_GAME_REGISTRY.includes(g));
+  // Allow e2e tests to pin the first game via ?firstGame=crossword|dsmr|close_approach.
+  // close_approach is registered but not in the default rotation until its
+  // cache and end-to-end path are intentionally enabled.
   const firstGameParam = searchParams.get("firstGame");
-  const firstGameOverride = firstGameParam && isMissionGame(firstGameParam) && MISSION_GAMES.includes(firstGameParam) ? firstGameParam : null;
+  const firstGameOverride = firstGameParam && isMissionGame(firstGameParam) && MISSION_GAME_REGISTRY.includes(firstGameParam) ? firstGameParam : null;
   const gameOrder: MissionGame[] = firstGameOverride
     ? [firstGameOverride, ...baseGameOrder.filter((g) => g !== firstGameOverride)].slice(0, MISSION_GAMES.length)
     : gameOrderOverride && new Set(gameOrderOverride).size === MISSION_GAMES.length
       ? gameOrderOverride.slice(0, MISSION_GAMES.length)
       : baseGameOrder;
   const activeGame = gameOrder[gameCursor];
-  const totalScore = Object.values(scores).reduce((sum, value) => sum + value, 0);
+  const completedScoreCount = endedEarly ? Math.max(1, gameCursor + 1) : Math.max(1, gameOrder.length);
+  const totalScore = Math.round(Object.values(scores).reduce((sum, value) => sum + value, 0) / completedScoreCount);
 
   async function handleGameComplete(result: { score: number; terminatedEarly?: boolean }) {
     if (!activeGame) return;
@@ -188,6 +194,9 @@ export default function MissionFlowPage() {
     }
     if (activeGame === "dsmr") {
       return <TransitSpotterGamePage onMissionComplete={handleGameComplete} gameDate={missionDate} />;
+    }
+    if (activeGame === "close_approach") {
+      return <CloseApproachRankerGamePage onMissionComplete={handleGameComplete} gameDate={missionDate} />;
     }
     return null;
   }

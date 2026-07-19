@@ -133,6 +133,7 @@ export default function SignInPage() {
                 </label>
                 <input
                   className="auth-input"
+                  data-cy="auth-first-name"
                   id="first-name"
                   value={firstName}
                   onChange={(event) => setFirstName(event.target.value)}
@@ -147,6 +148,7 @@ export default function SignInPage() {
                 </label>
                 <input
                   className="auth-input"
+                  data-cy="auth-last-name"
                   id="last-name"
                   value={lastName}
                   onChange={(event) => setLastName(event.target.value)}
@@ -195,6 +197,7 @@ export default function SignInPage() {
           {mode === "sign-up" ? (
             <label className="auth-check">
               <input
+                data-cy="auth-terms"
                 type="checkbox"
                 checked={acceptedTerms}
                 onChange={(event) => setAcceptedTerms(event.target.checked)}

@@ -96,10 +96,19 @@ export async function GET(request: Request) {
   const dailyLive = rows.find((thread) => thread.kind === "daily_live");
   const ongoing = rows.find((thread) => thread.kind === "ongoing");
 
+  const defaultThread =
+    access.allowed
+      ? dailyLive && !dailyLive.is_locked && !dailyLive.is_hidden
+        ? dailyLive
+        : ongoing && !ongoing.is_hidden
+          ? ongoing
+          : null
+      : null;
+
   return NextResponse.json({
     date,
     access,
     threads: rows,
-    defaultThreadId: access.allowed ? (dailyLive && !dailyLive.is_locked ? dailyLive.id : ongoing?.id ?? rows[0]?.id ?? null) : null,
+    defaultThreadId: defaultThread?.id ?? null,
   });
 }

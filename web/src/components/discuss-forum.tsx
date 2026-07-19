@@ -14,6 +14,7 @@ type Thread = {
   title: string;
   continue_thread_id: string | null;
   is_locked: boolean;
+  is_hidden: boolean;
 };
 
 type DayAccess = {
@@ -201,6 +202,7 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
   const dayRestrictedThread = selectedThread?.kind === "daily_live";
   const interactionLocked =
     Boolean(selectedThread?.is_locked) ||
+    Boolean(selectedThread?.is_hidden) ||
     !isAuthenticated ||
     (dayRestrictedThread && dayAccess ? !dayAccess.allowed : false);
   const tree = useMemo(() => buildTree(posts), [posts]);
@@ -271,10 +273,12 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
 
   useEffect(() => {
     if (!selectedThreadId) return;
+    const selectedThread = threads.find((thread) => thread.id === selectedThreadId);
     if (dayAccess && !dayAccess.allowed) return;
+    if (selectedThread?.is_hidden) return;
     const handle = window.setTimeout(() => { void loadPosts(selectedThreadId); }, 0);
     return () => window.clearTimeout(handle);
-  }, [selectedThreadId, loadPosts, dayAccess]);
+  }, [selectedThreadId, loadPosts, dayAccess, threads]);
 
   async function createPost(parentPostId: string | null) {
     if (!isAuthenticated) { setFeedback("Sign in to post comments and replies."); return; }
@@ -749,6 +753,18 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
           </div>
         ) : null}
 
+        {dayAccess?.allowed && selectedThread?.is_hidden ? (
+          <div className="flex justify-between items-center flex-wrap gap-3 border border-[var(--outline-variant)] p-4 text-sm" style={{ background: "var(--surface-container-low)" }}>
+            <p className="m-0">Finish today&apos;s mission before opening this puzzle discussion.</p>
+            <div className="flex gap-2">
+              <Link className="button button-primary" href={`/games/today?date=${date}&returnTo=${returnTo}`}>
+                Open Mission
+              </Link>
+              <Link className="button" href="/calendar">Calendar</Link>
+            </div>
+          </div>
+        ) : null}
+
         {!isAuthenticated ? (
           <div className="flex justify-between items-center flex-wrap gap-3 border border-[var(--outline-variant)] p-4 text-sm" style={{ background: "var(--surface-container-low)" }}>
             <p className="m-0">Sign in to comment, reply, upvote, and react.</p>
@@ -800,7 +816,11 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
               </div>
             ) : null}
 
-            {selectedThreadId === liveThread.id ? (
+            {selectedThreadId === liveThread.id && liveThread.is_hidden ? (
+              <div className="border border-[var(--outline-variant)] p-4 text-sm" style={{ background: "var(--surface-container-low)" }}>
+                <p className="m-0">Discussion opens after this day&apos;s mission is complete.</p>
+              </div>
+            ) : selectedThreadId === liveThread.id ? (
               <>
                 {loadingPosts ? <p className="muted text-sm">Loading posts...</p> : null}
                 {!loadingPosts && tree.length === 0 ? <p className="muted text-sm">No posts yet. Start the discussion.</p> : null}
@@ -846,7 +866,11 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
                 </span>
               </div>
 
-              {isSelected ? (
+              {isSelected && thread.is_hidden ? (
+                <div className="border border-[var(--outline-variant)] p-4 text-sm" style={{ background: "var(--surface-container-low)" }}>
+                  <p className="m-0">Discussion opens after this day&apos;s mission is complete.</p>
+                </div>
+              ) : isSelected ? (
                 <>
                   {loadingPosts ? <p className="muted text-sm">Loading posts...</p> : null}
                   {!loadingPosts && tree.length === 0 ? <p className="muted text-sm">No posts yet.</p> : null}

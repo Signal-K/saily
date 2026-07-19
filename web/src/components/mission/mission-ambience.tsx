@@ -56,8 +56,9 @@ export function MissionAmbience({ type }: Props) {
     <div className="mission-ambience-control">
       <audio
         ref={audioRef}
-        src={AUDIO_URLS[type as keyof typeof AUDIO_URLS]}
+        src={isEnabled ? AUDIO_URLS[type as keyof typeof AUDIO_URLS] : undefined}
         loop
+        preload="none"
         autoPlay={isEnabled && !isMuted}
       />
       

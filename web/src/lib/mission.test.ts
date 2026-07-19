@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getMissionGameOrder, MISSION_GAMES } from "./mission";
+import { getMissionGameOrder, MISSION_GAME_REGISTRY, MISSION_GAMES } from "./mission";
 
 describe("mission game order", () => {
   it("includes every configured minigame in the mission flow", () => {
@@ -13,5 +13,10 @@ describe("mission game order", () => {
     const order = getMissionGameOrder("gizmo", 0);
 
     expect(order[0]).toBe("crossword");
+  });
+
+  it("registers close approach ranker without enabling it in the default daily rotation", () => {
+    expect(MISSION_GAME_REGISTRY).toContain("close_approach");
+    expect(MISSION_GAMES).not.toContain("close_approach");
   });
 });

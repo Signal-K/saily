@@ -71,6 +71,13 @@ export default async function ProfilePage() {
 
   const displayName = profile?.username ?? user.email ?? "player";
   const avatarUrl = getRobotAvatarDataUri(user.id, 96);
+  const visibleStats = stats ?? {
+    games_played: 0,
+    wins: 0,
+    current_streak: 0,
+    best_streak: 0,
+    total_score: 0,
+  };
   const followersCount = followersCountRes.count ?? 0;
   const followingCount = followingCountRes.count ?? 0;
   const initialFollowingIds = (followingRows ?? []).map((row) => row.following_id);
@@ -101,17 +108,14 @@ export default async function ProfilePage() {
       </div>
       <div className="panel">
         <h2>Stats</h2>
-        {stats ? (
-          <div className="grid gap-2" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))" }}>
-            <p>Games played: {stats.games_played}</p>
-            <p>Wins: {stats.wins}</p>
-            <p>Current streak: {stats.current_streak}</p>
-            <p>Best streak: {stats.best_streak}</p>
-            <p>Total score: {stats.total_score}</p>
-          </div>
-        ) : (
-          <p className="muted">No stats yet.</p>
-        )}
+        {!stats ? <p className="muted">No games played yet. Complete today&apos;s mission to start your streak.</p> : null}
+        <div className="grid gap-2" data-cy="profile-stats" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))" }}>
+          <p>Games played: {visibleStats.games_played}</p>
+          <p>Wins: {visibleStats.wins}</p>
+          <p>Current streak: {visibleStats.current_streak}</p>
+          <p>Best streak: {visibleStats.best_streak}</p>
+          <p>Total score: {visibleStats.total_score}</p>
+        </div>
       </div>
       <div className="panel">
         <h2>Badges</h2>

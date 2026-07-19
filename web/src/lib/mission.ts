@@ -4,8 +4,9 @@ import { STORYLINES, type Chapter, type Storyline } from "./storylines";
 import { CHARACTERS, type Character } from "./characters";
 import { getMelbourneDayIndex } from "./melbourne-date";
 
-export type MissionGame = "crossword" | "dsmr";
+export type MissionGame = "crossword" | "dsmr" | "close_approach";
 
+export const MISSION_GAME_REGISTRY: MissionGame[] = ["crossword", "dsmr", "close_approach"];
 export const MISSION_GAMES: MissionGame[] = ["crossword", "dsmr"];
 
 const MISSION_GAME_COUNT = MISSION_GAMES.length;
