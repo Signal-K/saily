@@ -72,7 +72,7 @@ npm run test:e2e           # start-server-and-test + cypress
 3. See "Standing product rules" above for terminology, Docker-offline, PostHog-survey, and Rubin/Gaia requirements — these bind every agent, not just Claude
 4. Read workspace docs/decisions for game design context before changing narrative or mission-selection logic
 
-## Tickets & Sprints
+## Backend architecture
 
 **Canonical source: `~/Navigation/workspace/` (ZenNotes-backed).** Knowns is being phased out for planning — do not create or edit `knowns task` entries for new Saily work. Read `~/Navigation/CLAUDE.md` for the full workflow; the short version:
 

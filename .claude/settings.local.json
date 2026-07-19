@@ -65,7 +65,13 @@
       "mcp__plate__create_task",
       "Skill(artifact-design)",
       "Artifact",
-      "WebFetch(domain:plate.to)"
+      "WebFetch(domain:plate.to)",
+      "mcp__plate__create_comment",
+      "mcp__desk__list_tickets",
+      "mcp__desk__update_ticket",
+      "mcp__desk__add_comment",
+      "mcp__desk__reconcile_statuses",
+      "mcp__desk__get_ticket"
     ]
   },
   "enabledMcpjsonServers": [

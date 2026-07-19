@@ -17,6 +17,7 @@ type Props = {
   endedEarly?: boolean;
   awardedChips?: number;
   referralCode?: string | null;
+  gameDate?: string;
 };
 
 function StarRating({ score }: { score: number }) {
@@ -40,6 +41,7 @@ export function MissionComplete({
   endedEarly = false,
   awardedChips = 0,
   referralCode = null,
+  gameDate,
 }: Props) {
   const [copied, setCopied] = useState(false);
   const expression = endedEarly ? "sad" : chapter.resolutionExpression;
@@ -144,6 +146,11 @@ export function MissionComplete({
         <Link href="/postcards" className="button">
           Gallery &amp; History
         </Link>
+        {gameDate && (
+          <Link href={`/discuss?date=${encodeURIComponent(gameDate)}`} className="button">
+            Discuss Today&apos;s Puzzle
+          </Link>
+        )}
         <Link href="/games/today" className="button button-primary">
           View Next Mission →
         </Link>
