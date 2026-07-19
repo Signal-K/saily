@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { createClient } from "@/lib/pocketbase/server";
 
 export const dynamic = "force-dynamic";
 
@@ -21,25 +22,31 @@ type BriefingEvent = {
   tag: string;
 };
 
-const NETWORK_EVENTS = [
-  "transit intervals marked",
-  "Mars surface pins placed",
-  "comet activity calls filed",
-  "Gaia light curves classified",
-  "archive replays opened",
-  "candidate notes added",
-];
+// Real counts against Saily's PocketBase collections — no fabricated or
+// seeded-random numbers. Zero counts show as zero rather than a plausible
+// fake fallback (see the "Never fake stats" standing rule).
+async function getNetworkActivity(): Promise<Array<{ label: string; value: number }>> {
+  const pocketbase = await createClient();
 
-function dayOfYear(date: Date) {
-  const start = new Date(date.getFullYear(), 0, 0);
-  const diff = date.getTime() - start.getTime();
-  return Math.floor(diff / 86400000);
-}
+  const queries: Array<[string, () => PromiseLike<{ count: number | null }>]> = [
+    ["daily missions completed", () => pocketbase.from("daily_plays").select("id", { count: "exact", head: true })],
+    ["classifications posted", () => pocketbase.from("forum_posts").select("id", { count: "exact", head: true }).neq("result_payload", null)],
+    ["archive replays opened", () => pocketbase.from("archive_unlocks").select("id", { count: "exact", head: true })],
+    ["community replies", () => pocketbase.from("comments").select("id", { count: "exact", head: true })],
+  ];
 
-function seededNumber(seed: number, min: number, max: number) {
-  const x = Math.sin(seed * 999) * 10000;
-  const t = x - Math.floor(x);
-  return Math.floor(min + t * (max - min + 1));
+  const results = await Promise.all(
+    queries.map(async ([label, run]) => {
+      try {
+        const { count } = await run();
+        return { label, value: count ?? 0 };
+      } catch {
+        return { label, value: 0 };
+      }
+    }),
+  );
+
+  return results.sort((a, b) => b.value - a.value);
 }
 
 function getMoonPhaseName(date: Date) {
@@ -167,10 +174,10 @@ export async function GET(request: Request) {
   const rawLat = Number(searchParams.get("lat"));
   const latitude = Number.isFinite(rawLat) && Math.abs(rawLat) <= 90 ? rawLat : null;
   const now = new Date();
-  const day = dayOfYear(now);
   const apod = await fetchApod();
   const mediaType = apod?.media_type ?? null;
   const imageUrl = mediaType === "image" ? apod?.url ?? null : apod?.thumbnail_url ?? null;
+  const network = await getNetworkActivity();
 
   return NextResponse.json(
     {
@@ -194,12 +201,7 @@ export async function GET(request: Request) {
           }
         : null,
       events: buildEvents(now, latitude),
-      network: NETWORK_EVENTS.map((label, index) => ({
-        label,
-        value: seededNumber(day + index * 11, 18, 240),
-      }))
-        .sort((a, b) => b.value - a.value)
-        .slice(0, 4),
+      network,
     },
     {
       headers: {

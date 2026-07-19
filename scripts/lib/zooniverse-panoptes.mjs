@@ -1,8 +1,55 @@
 const API_BASE_URL = "https://www.zooniverse.org/api/";
+const TOKEN_URL = "https://panoptes.zooniverse.org/oauth/token";
 const API_ACCEPT = "application/vnd.api+json; version=1";
+// Client-credentials tokens expire in ~2h (confirmed against the live
+// endpoint) — refresh a little early rather than right at expiry.
+const TOKEN_REFRESH_MARGIN_SECONDS = 60;
 
 function cleanEnv(value) {
   return (value ?? "").trim().replace(/^"+|"+$/g, "");
+}
+
+let cachedToken = null; // { accessToken, expiresAt } — process-lifetime cache only.
+
+async function fetchClientCredentialsToken() {
+  const clientId = cleanEnv(process.env.ZOONIVERSE_CLIENT_ID);
+  const clientSecret = cleanEnv(process.env.ZOONIVERSE_CLIENT_SECRET);
+  if (!clientId || !clientSecret) return null;
+
+  const response = await fetch(TOKEN_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: API_ACCEPT },
+    body: JSON.stringify({ grant_type: "client_credentials", client_id: clientId, client_secret: clientSecret, scope: "public" }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Panoptes OAuth token exchange failed with ${response.status}`);
+  }
+
+  const payload = await response.json();
+  if (!payload?.access_token) {
+    throw new Error("Panoptes OAuth token exchange did not return an access_token.");
+  }
+
+  return { accessToken: payload.access_token, expiresAt: Date.now() + Math.max(0, (payload.expires_in ?? 0) - TOKEN_REFRESH_MARGIN_SECONDS) * 1000 };
+}
+
+// Client_id/secret (long-lived) are preferred — this exchanges them for a
+// fresh access token every run, since a static ZOONIVERSE_BEARER_TOKEN
+// secret would silently expire (~2h) between a scheduled cron job's runs.
+// Falls back to a raw ZOONIVERSE_BEARER_TOKEN for quick local dry-runs.
+async function getAuthToken() {
+  if (cachedToken && cachedToken.expiresAt > Date.now()) {
+    return cachedToken.accessToken;
+  }
+
+  const exchanged = await fetchClientCredentialsToken();
+  if (exchanged) {
+    cachedToken = exchanged;
+    return exchanged.accessToken;
+  }
+
+  return cleanEnv(process.env.ZOONIVERSE_BEARER_TOKEN);
 }
 
 export async function fetchPanoptes(pathname, searchParams = {}) {
@@ -17,7 +64,7 @@ export async function fetchPanoptes(pathname, searchParams = {}) {
     url.searchParams.set(key, String(value));
   }
 
-  const token = cleanEnv(process.env.ZOONIVERSE_BEARER_TOKEN);
+  const token = await getAuthToken();
   const response = await fetch(url, {
     headers: {
       Accept: API_ACCEPT,

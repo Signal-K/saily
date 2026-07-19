@@ -30,7 +30,7 @@ export const games = [
     title: "Landnam",
     status: "Flagship",
     body: "Hunt for real exoplanets, then manage the ship and crew that turns a signal into a journey.",
-    href: "https://starsailors.space",
+    href: "https://playlandnam.space",
     image: "/puzzles/puzzle-1.svg",
   },
   {

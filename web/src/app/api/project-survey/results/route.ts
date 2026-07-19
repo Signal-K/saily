@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { runHogQLQuery, isPostHogQueryConfigured } from "@/lib/posthog/query";
-import { CITIZEN_SCIENCE_SURVEY_ID } from "@/lib/posthog/survey-ids";
+import { CITIZEN_SCIENCE_VOTE_KEY } from "@/lib/posthog/survey-ids";
 
 export const revalidate = 60;
 
@@ -15,7 +15,7 @@ export async function GET() {
       `SELECT properties.$survey_response AS project, count() AS votes
        FROM events
        WHERE event = 'survey sent'
-         AND properties.$survey_id = '${CITIZEN_SCIENCE_SURVEY_ID}'
+         AND properties.$survey_id = '${CITIZEN_SCIENCE_VOTE_KEY}'
          AND timestamp >= now() - INTERVAL 2 YEAR
        GROUP BY project`
     );

@@ -100,16 +100,6 @@ create_survey "mars_classification" "Cosmo Feedback: Surface Classification" \
   "\"Very intuitive\", \"Mostly\", \"Needs clarity\"" \
   "What confused you in surface classification?"
 
-create_survey "rubin_comet_catchers_classification" "Cosmo Feedback: Comet Catchers Classification" \
-  "How satisfying was marking comet candidates?" \
-  "\"Very satisfying\", \"Okay\", \"Too fiddly\"" \
-  "What would improve the Comet Catchers classification flow?"
-
-create_survey "gaia_variables_classification" "Cosmo Feedback: Gaia Variables Classification" \
-  "How clear was the variable-star classification task?" \
-  "\"Very clear\", \"Mostly clear\", \"Confusing\"" \
-  "What would improve the Gaia variables classification flow?"
-
 create_survey "narrative_flow" "Cosmo Feedback: Mission Story Flow" \
   "Did the mission story pacing work for this session?" \
   "\"Great pacing\", \"Okay\", \"Too repetitive\"" \
@@ -130,8 +120,6 @@ echo "Set these env vars in web runtime:"
 echo "NEXT_PUBLIC_POSTHOG_SURVEY_PLANET_ID=<planet_transit id>"
 echo "NEXT_PUBLIC_POSTHOG_SURVEY_NO_PLANET_ID=<planet_no_detection id>"
 echo "NEXT_PUBLIC_POSTHOG_SURVEY_MARS_ID=<mars_classification id>"
-echo "NEXT_PUBLIC_POSTHOG_SURVEY_RUBIN_ID=<rubin_comet_catchers_classification id>"
-echo "NEXT_PUBLIC_POSTHOG_SURVEY_GAIA_ID=<gaia_variables_classification id>"
 echo "NEXT_PUBLIC_POSTHOG_SURVEY_NARRATIVE_ID=<narrative_flow id>"
 echo "NEXT_PUBLIC_POSTHOG_SURVEY_ARCHIVE_ID=<archive_unlock id>"
 echo "NEXT_PUBLIC_POSTHOG_SURVEY_DISCUSS_ID=<discussion_flow id>"

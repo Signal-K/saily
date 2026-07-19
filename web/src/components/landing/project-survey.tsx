@@ -5,9 +5,12 @@ import posthog from "posthog-js";
 import { InterestSuccessNote, Kicker } from "@/components/landing/landing-shared";
 import { games } from "@/components/landing/landing-data";
 import { submitInterest } from "@/components/landing/landing-interest";
-import { CITIZEN_SCIENCE_SURVEY_ID as SURVEY_ID } from "@/lib/posthog/survey-ids";
+import { CITIZEN_SCIENCE_VOTE_KEY as SURVEY_ID } from "@/lib/posthog/survey-ids";
 
-const SPACE_PROJECTS = new Set(["Landnam", "Asteroid Hunters"]);
+const SPACE_PROJECTS = new Set(["Asteroid Hunters"]);
+const LIVE_PROJECT_LINKS: Record<string, string> = {
+  Landnam: "https://playlandnam.space",
+};
 
 export function ProjectSurvey() {
   const [voted, setVoted] = useState<string | null>(null);
@@ -65,7 +68,8 @@ export function ProjectSurvey() {
     ? { ...liveVotes, [voted]: (liveVotes[voted] ?? 0) + 1 }
     : liveVotes;
   const totalVotes = Object.values(votes).reduce((sum, v) => sum + v, 0);
-  const showSpaceInvite = voted !== null && SPACE_PROJECTS.has(voted);
+  const livePlayHref = voted !== null ? LIVE_PROJECT_LINKS[voted] : undefined;
+  const showSpaceInvite = voted !== null && !livePlayHref && SPACE_PROJECTS.has(voted);
 
   return (
     <section id="survey" className="tx-section tx-survey">
@@ -124,7 +128,26 @@ export function ProjectSurvey() {
         })}
       </div>
 
-      {voted && !showSpaceInvite && (
+      {livePlayHref && (
+        <div className="tx-landnam-invite tx-fade-in">
+          <div>
+            <Kicker>Available now</Kicker>
+            <h3 style={{ margin: "0.35rem 0 0.5rem", fontFamily: "var(--font-display, 'Turret Road', Georgia, serif)", fontSize: "clamp(1.4rem, 3vw, 2rem)", lineHeight: 1.1 }}>
+              {voted} is live — jump in now
+            </h3>
+            <p style={{ margin: 0, color: "var(--fg-muted, #5b636f)", maxWidth: "52ch", lineHeight: "1.6" }}>
+              Hunt real exoplanet signals from TESS data, then manage the crew and resources needed to follow up on the best candidates. Built on live science.
+            </p>
+          </div>
+          <div style={{ marginTop: "1.25rem" }}>
+            <a href={livePlayHref} target="_blank" rel="noreferrer" className="button button-primary">
+              Play {voted} now →
+            </a>
+          </div>
+        </div>
+      )}
+
+      {voted && !showSpaceInvite && !livePlayHref && (
         <p style={{
           marginTop: "1.25rem",
           borderLeft: "3px solid var(--primary, #0a82b3)",

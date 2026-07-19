@@ -58,8 +58,22 @@ async function pbFetch(path: string, init?: RequestInit) {
   return response;
 }
 
+// PocketBase's filter parser doesn't treat `+` as an encoded space (unlike
+// application/x-www-form-urlencoded), so URLSearchParams' default encoding
+// silently breaks any filter containing spaces (e.g. `field = "value"`) —
+// PocketBase returns 200 with zero matches instead of an error, which made
+// every .eq()/.filter()-based read here silently return no rows once the
+// filter expression contained a space (i.e. always, since filters are built
+// as `col = "value"`). Percent-encode manually instead of relying on
+// URLSearchParams' toString().
+function buildQueryString(params: URLSearchParams) {
+  return Array.from(params.entries())
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+    .join("&");
+}
+
 async function pbList(collection: string, params: URLSearchParams) {
-  const response = await pbFetch(`/api/collections/${collection}/records?${params.toString()}`);
+  const response = await pbFetch(`/api/collections/${collection}/records?${buildQueryString(params)}`);
   if (!response.ok) {
     const text = await response.text().catch(() => "");
     throw new Error(`PocketBase list failed for ${collection} (${response.status}): ${text}`);

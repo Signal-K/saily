@@ -6,22 +6,7 @@ const MISSIONS = [
   {
     href: "/games/today",
     title: "Today's Mission",
-    body: "Mark real transit signals in TESS light curves, Planet-Hunters-style — the daily rotating classification mission, a new real dataset every day.",
-  },
-  {
-    href: "/games/mars",
-    title: "Mars",
-    body: "Spot surface features in real Mars imagery for the Cloudspotting on Mars project.",
-  },
-  {
-    href: "/games/gaia-variables",
-    title: "Gaia Variables",
-    body: "Classify variable-star light curves from ESA's Gaia mission.",
-  },
-  {
-    href: "/games/rubin-comet-catchers",
-    title: "Rubin Comet Catchers",
-    body: "Sweep Rubin Observatory survey frames for comets and other moving objects.",
+    body: "A new science crossword and a real transit-spotting round every day — the daily rotating puzzle, built from real data.",
   },
 ];
 
@@ -64,6 +49,19 @@ export default function GamesPage() {
             <p className="muted" style={{ margin: 0 }}>{mission.body}</p>
           </Link>
         ))}
+      </div>
+
+      <div className="panel" style={{ padding: "1.25rem", marginTop: "1rem" }}>
+        <p className="eyebrow">Flagship &middot; Star Sailors</p>
+        <h2 style={{ margin: "0 0 0.35rem" }}>Landnam</h2>
+        <p className="muted" style={{ margin: "0 0 1rem" }}>
+          Hunt real exoplanet signals from TESS data, then manage the crew
+          and resources needed to follow up on the best candidates — the
+          full Star Sailors flagship game, live now.
+        </p>
+        <a href="https://playlandnam.space" target="_blank" rel="noreferrer" className="button button-primary">
+          Play Landnam now →
+        </a>
       </div>
 
       <div style={{ marginTop: "1.5rem" }}>

@@ -1,8 +1,7 @@
 export type ScienceFeedId =
   | "cloudspotting_mars"
-  | "gaia_variables"
-  | "rubin_comet_catchers"
-  | "active_asteroids";
+  | "active_asteroids"
+  | "planet_hunters_tess";
 
 export type ScienceFeedKind = "image_subject" | "time_series";
 
@@ -31,18 +30,6 @@ export type CachedImageSubject = CachedSubjectCommon & {
   caption?: string | null;
 };
 
-export type CachedTimeSeriesPoint = {
-  x: number;
-  y: number;
-};
-
-export type CachedTimeSeriesSubject = CachedSubjectCommon & {
-  sourceId: string;
-  prompt: string;
-  series: CachedTimeSeriesPoint[];
-  summary?: string | null;
-};
-
 export type CloudspottingMarsDaily = CachedImageSubject & {
   projectSlug: "cloudspotting-on-mars";
   cropUrl?: string | null;
@@ -54,20 +41,6 @@ export type ActiveAsteroidsDaily = CachedImageSubject & {
   candidateId?: string | null;
   epochLabel?: string | null;
   sourceCollection?: string | null;
-};
-
-export type RubinCometCatchersDaily = CachedSubjectCommon & {
-  subjectId: string;
-  imageUrls: string[];
-  activityPrompt: string;
-  objectLabel?: string | null;
-  knownTrainingFlag?: boolean;
-};
-
-export type GaiaVariablesDaily = CachedTimeSeriesSubject & {
-  provenanceUrl?: string | null;
-  cadenceSummary?: string | null;
-  classHints?: string[] | null;
 };
 
 export const SCIENCE_FEEDS: Record<ScienceFeedId, ScienceFeedDefinition> = {
@@ -95,29 +68,17 @@ export const SCIENCE_FEEDS: Record<ScienceFeedId, ScienceFeedDefinition> = {
     dailyQuestion: "Is there convincing activity around this asteroid candidate?",
     notes: "Closest fit to the existing asteroid review interaction.",
   },
-  rubin_comet_catchers: {
-    id: "rubin_comet_catchers",
-    label: "Rubin Comet Catchers",
-    shortLabel: "Rubin",
+  planet_hunters_tess: {
+    id: "planet_hunters_tess",
+    label: "Planet Hunters TESS",
+    shortLabel: "PHT",
     provider: "Zooniverse",
-    projectUrl: "https://www.zooniverse.org/projects/orionnau/rubin-comet-catchers",
+    projectUrl: "https://www.zooniverse.org/projects/nora-dot-eisner/planet-hunters-tess",
     ingestPriority: 3,
     kind: "image_subject",
-    cacheTable: "rubin_comet_catchers_daily",
-    dailyQuestion: "Do these Rubin frames show a tail, coma, or other small-body activity?",
-    notes: "Normalize multi-image subjects into one stable card payload during ingestion.",
-  },
-  gaia_variables: {
-    id: "gaia_variables",
-    label: "Gaia Variables",
-    shortLabel: "Gaia",
-    provider: "Gaia / project-aligned intake",
-    projectUrl: "https://www.zooniverse.org/projects?discipline=space",
-    ingestPriority: 4,
-    kind: "time_series",
-    cacheTable: "gaia_variables_daily",
-    dailyQuestion: "What kind of variability pattern does this light curve show?",
-    notes: "Precompute compact series payloads; avoid live archive complexity in the client.",
+    cacheTable: "planet_hunters_tess_daily",
+    dailyQuestion: "Does this real TESS light curve show a transit dip?",
+    notes: "Backs the daily transit-spotter minigame (STS-303) — a bite-sized round, distinct from the retired internal `planet` mission's own anomaly table.",
   },
 };
 

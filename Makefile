@@ -4,7 +4,7 @@ ROOT_DIR := $(shell pwd)
 WEB_DIR := $(ROOT_DIR)/web
 COMPOSE := docker compose
 PARENT_COMPOSE := docker compose -p navigation -f ../docker-compose.yml
-WEB_PORT ?= 3001
+WEB_PORT ?= 3127
 
 up:
 	$(PARENT_COMPOSE) up -d backend saily-backend

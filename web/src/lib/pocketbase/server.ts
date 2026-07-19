@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { cookies } from "next/headers";
-import { POCKETBASE_COOKIE_NAME, type PocketBaseSession } from "./config";
+import { POCKETBASE_COOKIE_NAME, getSharedPocketBaseUrl, type PocketBaseSession } from "./config";
 import { RealPocketBaseQuery } from "./real-query";
 
 type BadgeRow = { id: string; slug: string; kind: string; threshold: number };
@@ -51,12 +51,39 @@ async function readSession(): Promise<PocketBaseSession | null> {
   }
 }
 
+// The cookie's `token` is client-supplied and its `user` field is derived
+// from it client-side (see pocketbase/client.ts) — nothing here can trust
+// either without checking. Mirrors backend/internal/sharedauth/verifier.go:
+// exchange the token with the shared PocketBase's own auth-refresh endpoint,
+// which validates the JWT signature/expiry and hands back the record that
+// token actually belongs to. Only that verified record may be trusted as
+// the acting user — never the cookie's embedded `user.id`/`email`, which a
+// client can set to anything.
+async function verifySharedAuthToken(token: string): Promise<{ id: string; email: string } | null> {
+  if (!token) return null;
+  try {
+    const baseUrl = getSharedPocketBaseUrl().replace(/\/$/, "");
+    const response = await fetch(`${baseUrl}/api/collections/users/auth-refresh`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    });
+    if (!response.ok) return null;
+    const payload = (await response.json()) as { record?: { id?: string; email?: string } };
+    if (!payload?.record?.id) return null;
+    return { id: payload.record.id, email: payload.record.email ?? "" };
+  } catch {
+    return null;
+  }
+}
+
 export async function createClient() {
   return {
     auth: {
       async getUser() {
         const session = await readSession();
-        return { data: { user: session?.user ?? null }, error: null };
+        const verified = session?.token ? await verifySharedAuthToken(session.token) : null;
+        return { data: { user: verified }, error: null };
       },
       async signOut() {
         const cookieStore = await cookies();

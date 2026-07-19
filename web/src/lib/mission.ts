@@ -4,9 +4,9 @@ import { STORYLINES, type Chapter, type Storyline } from "./storylines";
 import { CHARACTERS, type Character } from "./characters";
 import { getMelbourneDayIndex } from "./melbourne-date";
 
-export type MissionGame = "planet" | "mars" | "rubin_comet_catchers" | "gaia_variables";
+export type MissionGame = "crossword" | "dsmr";
 
-export const MISSION_GAMES: MissionGame[] = ["planet", "mars", "rubin_comet_catchers", "gaia_variables"];
+export const MISSION_GAMES: MissionGame[] = ["crossword", "dsmr"];
 
 const MISSION_GAME_COUNT = MISSION_GAMES.length;
 
@@ -95,9 +95,12 @@ export function getMissionGameOrder(storylineId: string, chapterIndex: number): 
   const idx = Math.abs(hash) % GAME_ORDER_PERMUTATIONS.length;
   let games = [...GAME_ORDER_PERMUTATIONS[idx]].slice(0, MISSION_GAME_COUNT);
 
-  // For new users (Chapter 1 / index 0), ensure "planet" (the simplest puzzle) is first.
-  if (chapterIndex === 0 && games.includes("planet") && games[0] !== "planet") {
-    games = ["planet", ...games.filter((g) => g !== "planet")];
+  // For new users (Chapter 1 / index 0), ensure the simplest puzzle — the
+  // first entry in MISSION_GAMES — goes first, so this doesn't need a
+  // hand-edit every time the game pool changes.
+  const firstGame = MISSION_GAMES[0];
+  if (chapterIndex === 0 && games.includes(firstGame) && games[0] !== firstGame) {
+    games = [firstGame, ...games.filter((g) => g !== firstGame)];
   }
 
   return games;

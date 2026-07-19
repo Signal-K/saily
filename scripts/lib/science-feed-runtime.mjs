@@ -50,9 +50,13 @@ async function findExistingRecord(baseUrl, token, table, conflictFields, row) {
     })
     .join(" && ");
 
-  const url = new URL(`${baseUrl}/api/collections/${table}/records`);
-  url.searchParams.set("filter", filter);
-  url.searchParams.set("perPage", "1");
+  // PocketBase's filter parser doesn't treat `+` as an encoded space (unlike
+  // application/x-www-form-urlencoded), so URLSearchParams' default encoding
+  // silently breaks any filter containing spaces (e.g. `field = "value"`) —
+  // it returns 200 with zero matches instead of an error, which made every
+  // upsert here always fall through to create-and-fail-on-conflict once a
+  // row already existed. Percent-encode manually instead.
+  const url = `${baseUrl}/api/collections/${table}/records?filter=${encodeURIComponent(filter)}&perPage=1`;
 
   const response = await fetch(url, {
     headers: { Authorization: `Bearer ${token}` },
@@ -64,20 +68,15 @@ async function findExistingRecord(baseUrl, token, table, conflictFields, row) {
   return Array.isArray(payload?.items) ? payload.items[0] : null;
 }
 
-async function writeRecord(baseUrl, token, table, row, existingId) {
-  const response = await fetch(
-    existingId
-      ? `${baseUrl}/api/collections/${table}/records/${existingId}`
-      : `${baseUrl}/api/collections/${table}/records`,
-    {
-      method: existingId ? "PATCH" : "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(row),
+async function createRecord(baseUrl, token, table, row) {
+  const response = await fetch(`${baseUrl}/api/collections/${table}/records`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     },
-  );
+    body: JSON.stringify(row),
+  });
   const payload = await readPocketBaseJson(response);
   if (!response.ok) {
     throw new Error(payload?.message || payload?.error || `${table} write failed (${response.status})`);
@@ -147,10 +146,18 @@ export async function upsertRows({ table, rows, onConflict }) {
   const baseUrl = (env("SAILY_PB_URL", "NEXT_PUBLIC_SAILY_PB_URL") || "http://127.0.0.1:8092").replace(/\/$/, "");
   const token = await authenticateSailySuperuser(baseUrl);
 
+  // One row per game_date is meant to be permanent once cached (see the
+  // ingestion workflow's caching-strategy comment) — there's no need to
+  // refresh an already-cached day, so a conflict here just means "already
+  // done," not "needs an update." This also sidesteps a real PocketBase bug
+  // where PATCH on this collection's composite unique index fails
+  // unconditionally (it revalidates uniqueness against the record's own
+  // unchanged row without excluding its own id).
   let count = 0;
   for (const row of rows) {
     const existing = await findExistingRecord(baseUrl, token, table, conflictFields, row);
-    await writeRecord(baseUrl, token, table, row, existing?.id);
+    if (existing) continue;
+    await createRecord(baseUrl, token, table, row);
     count += 1;
   }
 

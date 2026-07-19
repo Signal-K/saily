@@ -1,11 +1,11 @@
 /**
  * E2E coverage for the Saily core minigame paths.
- * Tests Planet Hunting (/games/today) and Mars classification (/games/mars)
+ * Tests the daily mission flow (/games/today — crossword + transit spotter)
  * at the route/render level — no authentication required for these assertions.
  */
 
 describe("Mission minigames", () => {
-  describe("/games/today — mission flow (Planet Hunt + Mars)", () => {
+  describe("/games/today — mission flow (crossword + transit spotter)", () => {
     it("page responds with 200 or redirect", () => {
       cy.request({ url: "/games/today", failOnStatusCode: false })
         .its("status")
@@ -32,35 +32,6 @@ describe("Mission minigames", () => {
 
     it("accepts an optional ?date query parameter without crashing", () => {
       cy.visit("/games/today?date=2026-06-01");
-      cy.get("body").should("exist");
-      cy.get("h2").should("not.contain", "Application error");
-    });
-  });
-
-  describe("/games/mars — Mars rover-photo classification game", () => {
-    it("page responds with 200 or redirect", () => {
-      cy.request({ url: "/games/mars", failOnStatusCode: false })
-        .its("status")
-        .should("be.oneOf", [200, 307, 302]);
-    });
-
-    it("renders the page body", () => {
-      cy.visit("/games/mars");
-      cy.get("body").should("exist");
-    });
-
-    it("does not crash with a fatal error boundary", () => {
-      cy.visit("/games/mars");
-      cy.get("h2").should("not.contain", "Application error");
-    });
-
-    it("shows game content or a loading/sign-in state without a hard crash", () => {
-      cy.visit("/games/mars");
-      cy.get("body").find("h1, h2, button, p, img").should("have.length.greaterThan", 0);
-    });
-
-    it("accepts an optional ?date parameter without crashing", () => {
-      cy.visit("/games/mars?date=2026-06-01");
       cy.get("body").should("exist");
       cy.get("h2").should("not.contain", "Application error");
     });

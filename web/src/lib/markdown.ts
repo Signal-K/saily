@@ -11,7 +11,8 @@ export type MarkdownBlock =
   | { type: "paragraph"; children: MarkdownInline[] }
   | { type: "blockquote"; children: MarkdownInline[] }
   | { type: "list"; ordered: boolean; items: MarkdownInline[][] }
-  | { type: "code"; code: string };
+  | { type: "code"; code: string }
+  | { type: "puzzle-widget" };
 
 function isSafeUrl(value: string): boolean {
   const trimmed = value.trim();
@@ -117,6 +118,14 @@ export function parseMarkdown(value: string): MarkdownBlock[] {
   while (index < lines.length) {
     const line = lines[index];
     if (!line.trim()) {
+      index += 1;
+      continue;
+    }
+
+    // A lone `{{puzzle}}` line embeds today's puzzle widget — CMS authors
+    // insert this marker where they want it to appear in the article body.
+    if (line.trim() === "{{puzzle}}") {
+      blocks.push({ type: "puzzle-widget" });
       index += 1;
       continue;
     }

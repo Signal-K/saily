@@ -15,6 +15,19 @@ name: Science Feed Daily Ingestion
 # scripts/lib/science-feed-runtime.mjs writes directly to the Saily PocketBase
 # cache tables using a superuser token. The shared auth PocketBase is not used
 # by this feed cache job.
+#
+# Panoptes auth: client_credentials tokens expire in ~2h (verified against
+# the live endpoint), so a static ZOONIVERSE_BEARER_TOKEN secret would work
+# once and then silently 401 on every scheduled run after the first.
+# scripts/lib/zooniverse-panoptes.mjs can exchange ZOONIVERSE_CLIENT_ID/
+# ZOONIVERSE_CLIENT_SECRET for a fresh token itself, but its in-memory cache
+# only lives for one `node` process — since this job runs 5 separate ingest
+# scripts as 5 separate steps/processes, that would mean 5 redundant OAuth
+# round-trips per run. Instead, the "Get Zooniverse token" step below
+# exchanges it once and writes the result to $GITHUB_ENV as
+# ZOONIVERSE_BEARER_TOKEN, which every later step inherits automatically —
+# each ingest script's existing ZOONIVERSE_BEARER_TOKEN fallback path picks
+# it up with zero code changes needed there.
 
 on:
   schedule:
@@ -42,11 +55,34 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Get Zooniverse token
+        env:
+          ZOONIVERSE_CLIENT_ID: ${{ secrets.ZOONIVERSE_CLIENT_ID }}
+          ZOONIVERSE_CLIENT_SECRET: ${{ secrets.ZOONIVERSE_CLIENT_SECRET }}
+          ZOONIVERSE_BEARER_TOKEN: ${{ secrets.ZOONIVERSE_BEARER_TOKEN }}
+        run: |
+          if [ -n "$ZOONIVERSE_CLIENT_ID" ] && [ -n "$ZOONIVERSE_CLIENT_SECRET" ]; then
+            TOKEN=$(node -e '
+              const body = JSON.stringify({ grant_type: "client_credentials", client_id: process.env.ZOONIVERSE_CLIENT_ID, client_secret: process.env.ZOONIVERSE_CLIENT_SECRET, scope: "public" });
+              fetch("https://panoptes.zooniverse.org/oauth/token", { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/vnd.api+json; version=1" }, body })
+                .then((res) => { if (!res.ok) throw new Error(`token exchange failed with ${res.status}`); return res.json(); })
+                .then((payload) => { if (!payload.access_token) throw new Error("no access_token in response"); process.stdout.write(payload.access_token); })
+                .catch((err) => { console.error(err); process.exit(1); });
+            ')
+            echo "::add-mask::$TOKEN"
+            echo "ZOONIVERSE_BEARER_TOKEN=$TOKEN" >> "$GITHUB_ENV"
+          elif [ -n "$ZOONIVERSE_BEARER_TOKEN" ]; then
+            echo "::add-mask::$ZOONIVERSE_BEARER_TOKEN"
+            echo "ZOONIVERSE_BEARER_TOKEN=$ZOONIVERSE_BEARER_TOKEN" >> "$GITHUB_ENV"
+          else
+            echo "::error::Neither ZOONIVERSE_CLIENT_ID/SECRET nor ZOONIVERSE_BEARER_TOKEN are configured."
+            exit 1
+          fi
+
       # Sprint 2 priority per megadoc-2026-05-14 Section 7 H6 audit — run first
       # so at least this feed satisfies AC #1 even if the others are blocked.
       - name: Ingest Cloudspotting on Mars
         env:
-          ZOONIVERSE_BEARER_TOKEN: ${{ secrets.ZOONIVERSE_BEARER_TOKEN }}
           SAILY_PB_URL: ${{ secrets.SAILY_PB_URL }}
           SAILY_PB_SUPERUSER_EMAIL: ${{ secrets.SAILY_PB_SUPERUSER_EMAIL }}
           SAILY_PB_SUPERUSER_PASSWORD: ${{ secrets.SAILY_PB_SUPERUSER_PASSWORD }}
@@ -54,15 +90,22 @@ jobs:
 
       - name: Ingest Active Asteroids
         env:
-          ZOONIVERSE_BEARER_TOKEN: ${{ secrets.ZOONIVERSE_BEARER_TOKEN }}
           SAILY_PB_URL: ${{ secrets.SAILY_PB_URL }}
           SAILY_PB_SUPERUSER_EMAIL: ${{ secrets.SAILY_PB_SUPERUSER_EMAIL }}
           SAILY_PB_SUPERUSER_PASSWORD: ${{ secrets.SAILY_PB_SUPERUSER_PASSWORD }}
         run: node scripts/ingest-active-asteroids.mjs
 
+      # Backs the daily transit-spotter minigame (STS-303), which replaced
+      # the old internal `planet` mission in MISSION_GAMES.
+      - name: Ingest Planet Hunters TESS
+        env:
+          SAILY_PB_URL: ${{ secrets.SAILY_PB_URL }}
+          SAILY_PB_SUPERUSER_EMAIL: ${{ secrets.SAILY_PB_SUPERUSER_EMAIL }}
+          SAILY_PB_SUPERUSER_PASSWORD: ${{ secrets.SAILY_PB_SUPERUSER_PASSWORD }}
+        run: node scripts/ingest-planet-hunters-tess.mjs
+
       - name: Ingest Rubin Comet Catchers
         env:
-          ZOONIVERSE_BEARER_TOKEN: ${{ secrets.ZOONIVERSE_BEARER_TOKEN }}
           SAILY_PB_URL: ${{ secrets.SAILY_PB_URL }}
           SAILY_PB_SUPERUSER_EMAIL: ${{ secrets.SAILY_PB_SUPERUSER_EMAIL }}
           SAILY_PB_SUPERUSER_PASSWORD: ${{ secrets.SAILY_PB_SUPERUSER_PASSWORD }}
@@ -70,7 +113,6 @@ jobs:
 
       - name: Ingest Gaia Variables
         env:
-          ZOONIVERSE_BEARER_TOKEN: ${{ secrets.ZOONIVERSE_BEARER_TOKEN }}
           SAILY_PB_URL: ${{ secrets.SAILY_PB_URL }}
           SAILY_PB_SUPERUSER_EMAIL: ${{ secrets.SAILY_PB_SUPERUSER_EMAIL }}
           SAILY_PB_SUPERUSER_PASSWORD: ${{ secrets.SAILY_PB_SUPERUSER_PASSWORD }}
@@ -78,7 +120,9 @@ jobs:
 
       # Repo secrets that must actually be configured for this workflow to do
       # anything (none of these can be verified or created from this change):
-      #   - ZOONIVERSE_BEARER_TOKEN   (Panoptes API auth; scripts/lib/zooniverse-panoptes.mjs)
+      #   - ZOONIVERSE_CLIENT_ID      (Panoptes OAuth app id; preferred auth path)
+      #   - ZOONIVERSE_CLIENT_SECRET  (Panoptes OAuth app secret)
+      #   - ZOONIVERSE_BEARER_TOKEN   (fallback only — expires ~2h, not safe as a lone secret)
       #   - SAILY_PB_URL
       #   - SAILY_PB_SUPERUSER_EMAIL
       #   - SAILY_PB_SUPERUSER_PASSWORD

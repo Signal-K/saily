@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { MarkdownBlock, MarkdownInline } from "@/lib/markdown";
+import { PuzzleWidget } from "@/components/puzzle-widget";
 
 function renderInline(nodes: MarkdownInline[]): ReactNode {
   return nodes.map((node, index) => {
@@ -60,6 +61,8 @@ export function MarkdownContent({ blocks }: { blocks: MarkdownBlock[] }) {
                 <code>{block.code}</code>
               </pre>
             );
+          case "puzzle-widget":
+            return <PuzzleWidget key={index} />;
         }
       })}
     </div>

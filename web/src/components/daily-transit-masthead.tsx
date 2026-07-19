@@ -136,6 +136,34 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
           min-width: 0;
         }
 
+        .dt-landnam-cta {
+          display: inline-flex;
+          align-items: center;
+          white-space: nowrap;
+          border: 1px solid var(--primary, #0a82b3);
+          background: var(--primary, #0a82b3);
+          color: #fff;
+          font-family: var(--font-data, ui-monospace, monospace);
+          font-size: 0.68rem;
+          font-weight: 700;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          text-decoration: none;
+          padding: 0.5rem 0.75rem;
+        }
+
+        .dt-landnam-cta:hover {
+          background: var(--primary-deep, #08658c);
+          border-color: var(--primary-deep, #08658c);
+          text-decoration: none;
+        }
+
+        @media (max-width: 640px) {
+          .dt-landnam-cta {
+            display: none;
+          }
+        }
+
         .dt-menu-toggle {
           display: none;
           align-items: center;
@@ -285,6 +313,14 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
           </nav>
 
           <div className="dt-actions">
+            <a
+              href="https://playlandnam.space"
+              target="_blank"
+              rel="noreferrer"
+              className="dt-landnam-cta"
+            >
+              Play Landnam
+            </a>
             <ThemeToggle initialTheme={initialTheme} />
             <button
               type="button"
@@ -314,6 +350,15 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
               {link.label}
             </Link>
           ))}
+          <a
+            href="https://playlandnam.space"
+            target="_blank"
+            rel="noreferrer"
+            className="dt-mobile-nav-link"
+            onClick={() => setMenuOpen(false)}
+          >
+            Play Landnam
+          </a>
         </nav>
       </header>
     </>
