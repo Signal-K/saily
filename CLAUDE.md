@@ -72,19 +72,27 @@ npm run test:e2e           # start-server-and-test + cypress
 3. See "Standing product rules" above for terminology, Docker-offline, PostHog-survey, and Rubin/Gaia requirements — these bind every agent, not just Claude
 4. Read workspace docs/decisions for game design context before changing narrative or mission-selection logic
 
-## Tickets & Sprints
+## Backend architecture
 
-As of 2026-07-18, **Desk (MCP server `desk`, registered globally — available in every repo, not just this one) is the live system of record for tickets, sprints, and board state.** Use its MCP tools directly (`projectId: "project-transit"`, workspace key `STS`):
+**Canonical source: `~/Navigation/workspace/` (ZenNotes-backed).** Knowns is being phased out for planning — do not create or edit `knowns task` entries for new Saily work. Read `~/Navigation/CLAUDE.md` for the full workflow; the short version:
 
-- `list_tickets` / `get_ticket` / `list_story_boards` to read tickets, filtered by project/sprint/status.
-- `create_ticket` / `update_ticket` to create tickets and change status, priority, sprint, epic, or labels.
-- `add_comment` for implementation evidence — write it as a comment on the ticket instead of a markdown "Implementation Evidence" heading.
-- `link_tickets` to relate or block tickets.
+```bash
+cd ~/Navigation
+cat workspace/Current.md                                  # active board: what's active/in-review/blocked/next
+python3 scripts/workspace_board.py                         # regenerate board after any frontmatter change
+python3 scripts/workspace_ticket.py list --project saily --sprint <active-sprint-slug>
+python3 scripts/workspace_ticket.py show <ticket-id-or-slug>
+python3 scripts/workspace_ticket.py update <ticket-id-or-slug> --status in-review --heading "Implementation Evidence" --note "..."
+```
 
-Status lifecycle: `Todo` → `In Progress` → `Done`. Desk trusts the status field directly rather than deriving it from anything else, so don't mark something `Done` with real work still outstanding — that's exactly the failure mode that made past sprints look complete when they weren't. **When Liam answers a question in chat, write it back to the relevant Desk ticket (as a comment or in the description) in the same turn** — an answer that only exists in conversation is not resolved.
+Tickets live at `workspace/projects/saily/tickets/<sprint>/*.md`, specs/docs at `workspace/projects/saily/docs/`.
 
-**Plate is archived.** Do not create or update tasks there, and do not treat its state as authoritative.
+**Sprint label format: `sprint-YYYY-MM-DD`** where the date is the Saturday ending the sprint (never numbered sprints like `sprint-6`). Sprint frontmatter must match a `workspace/sprints/<slug>/README.md` with `status: active` — check this fresh each session, there can be more than one active sprint across projects.
 
-**The old `workspace/projects/saily/tickets/<sprint>/*.md` + `workspace_ticket.py` / `workspace_board.py` / `Current.md` system is retired.** Don't create new ticket files there, don't run those scripts to change ticket state, and don't treat `Current.md` as the operational board (it's archived). `workspace/projects/saily/docs/` is unaffected — it remains the right place for long-form specs and decisions.
+Status lifecycle: `todo` → `in-progress` → `in-review` (only Liam marks `done`).
 
-**Compass** (`/Applications/Compass.app`) previously read `~/Navigation/.knowns/`; that board is superseded by Desk for ticket state of record.
+Open decisions needing Liam's input go in a `status: blocked` ticket, each question formatted as `**N. Question text` (no closing `**`) followed by a blank `> Answer:` line — `workspace_board.py` surfaces these under "Open Questions" in `Current.md`. **When Liam answers a question in chat, write the `> Answer:` line back into the ticket in the same turn** — an answer that only exists in conversation is not resolved.
+
+**Compass** (`/Applications/Compass.app`) reads `~/Navigation/.knowns/` for its board, but ticket state of record is the workspace ticket files above — Compass reflects them, it does not own them.
+
+To find the current sprint Saturday: run `date +%Y-%m-%d` and count to the nearest Saturday.
