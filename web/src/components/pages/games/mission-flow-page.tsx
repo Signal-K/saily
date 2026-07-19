@@ -323,6 +323,7 @@ export default function MissionFlowPage() {
         endedEarly={endedEarly}
         awardedChips={awardedChips}
         referralCode={referralCode}
+        gameDate={missionDate}
       />
     );
   }

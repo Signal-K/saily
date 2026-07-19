@@ -20,7 +20,7 @@ type PocketBaseQueryResult = { data: any[]; error: { message: string } | null; c
 
 type JoinConfig = { localField: string; targetCollection: string; targetField: string };
 
-// Extend this as more routes move off the stub (see the phase-2 ticket).
+// Extend this when a route needs additional embedded select support.
 // Key is `${collection}.${embedName}` from a select string like
 // "id,body,profiles(username)" -> "comments.profiles".
 const JOIN_CONFIG: Record<string, JoinConfig> = {
@@ -139,7 +139,7 @@ function parseSelect(collection: string, fields: string) {
     const join = JOIN_CONFIG[`${collection}.${embedName}`];
     if (!join) {
       throw new Error(
-        `Unsupported embedded select "${embedName}" on "${collection}" — not yet configured in JOIN_CONFIG (real-query.ts). This route hasn't been ported off the old stub client yet.`,
+        `Unsupported embedded select "${embedName}" on "${collection}" — not yet configured in JOIN_CONFIG (real-query.ts). Add the relation mapping before using this embedded select.`,
       );
     }
     embeds.push({ key: embedName, join });
