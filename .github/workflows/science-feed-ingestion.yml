@@ -127,7 +127,13 @@ jobs:
       # date range, so this step computes "today" (and a lookahead window) in
       # Melbourne time itself. No web/ npm install needed — the script only
       # imports Node built-ins and its own sibling normalizer module.
+      # Independent of the Zooniverse token step above — this feed pulls from
+      # NASA/JPL directly, no Zooniverse credentials involved, so it must not
+      # be skipped just because an earlier Zooniverse-dependent step failed
+      # (steps in this job run sequentially and a failure halts the rest by
+      # default).
       - name: Ingest Close Approach Ranker
+        if: ${{ !cancelled() }}
         working-directory: web
         env:
           SAILY_PB_URL: ${{ secrets.SAILY_PB_URL }}
