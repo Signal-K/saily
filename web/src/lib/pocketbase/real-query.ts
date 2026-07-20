@@ -356,7 +356,16 @@ export class RealPocketBaseQuery {
       if (this.op === "delete") return await this.executeDelete();
       throw new Error(`Unknown op: ${this.op}`);
     } catch (error) {
-      return { data: null as any, error: pbError(error instanceof Error ? error.message : String(error)), count: 0 };
+      const message = error instanceof Error ? error.message : String(error);
+      // This is the only place a failed PocketBase call is observable —
+      // callers get { data: null, error } back instead of a thrown
+      // exception (by design, so a missing row isn't treated as a crash),
+      // but that also means a genuine failure (bad auth, missing
+      // collection, network error) silently vanishes unless it's logged
+      // here. Found via a real production bug where superuser auth was
+      // failing for every call and nothing ever surfaced it.
+      console.error(`[RealPocketBaseQuery] ${this.op} on "${this.collection}" failed: ${message}`);
+      return { data: null as any, error: pbError(message), count: 0 };
     }
   }
 

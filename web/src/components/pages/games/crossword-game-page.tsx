@@ -148,7 +148,7 @@ export default function CrosswordGamePage({ onMissionComplete, gameDate: gameDat
            * whole game fits on screen without the page needing to scroll,
            * instead of a fixed 1.75rem cell blowing out to 500px+ tall.
            */
-          --cell-size: clamp(14px, min(calc(34dvh / var(--grid-rows)), calc(60vw / var(--grid-cols))), 24px);
+          --cell-size: clamp(20px, min(calc(44dvh / var(--grid-rows)), calc(70vw / var(--grid-cols))), 32px);
         }
 
         .crossword-grid {
@@ -164,26 +164,26 @@ export default function CrosswordGamePage({ onMissionComplete, gameDate: gameDat
           position: absolute;
           top: 0;
           left: 1px;
-          font-size: clamp(0.4rem, calc(var(--cell-size) * 0.32), 0.55rem);
+          font-size: clamp(0.45rem, calc(var(--cell-size) * 0.3), 0.65rem);
           line-height: 1;
         }
 
         .crossword-clues {
           display: grid;
-          gap: 0.4rem;
-          max-height: 34dvh;
+          gap: 0.6rem;
+          max-height: 42dvh;
           overflow-y: auto;
           padding-right: 0.25rem;
         }
 
         .crossword-clue-text {
-          font-size: 0.78rem;
-          line-height: 1.25;
+          font-size: 0.9rem;
+          line-height: 1.35;
         }
 
         .crossword-clue-input {
-          padding: 0.3rem 0.5rem;
-          font-size: 0.85rem;
+          padding: 0.45rem 0.65rem;
+          font-size: 1rem;
           border: 1px solid var(--color-border);
           border-radius: 4px;
           background: var(--color-paper);
@@ -217,7 +217,7 @@ export default function CrosswordGamePage({ onMissionComplete, gameDate: gameDat
           }
 
           .crossword-clues {
-            max-height: min(34dvh, calc(var(--grid-rows) * var(--cell-size)));
+            max-height: min(42dvh, calc(var(--grid-rows) * var(--cell-size)));
           }
 
           .crossword-shell > .crossword-feedback,

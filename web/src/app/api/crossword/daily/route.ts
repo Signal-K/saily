@@ -65,15 +65,20 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Could not generate today's crossword. Try again shortly." }, { status: 503 });
   }
 
-  try {
-    await pocketbase.from("crossword_daily").upsert(
-      { game_date: date, grid, clues: grid.placements.map((p) => ({ number: p.number, answer: p.answer })) },
-      { onConflict: "game_date" },
-    );
-  } catch (error) {
-    // Not fatal — a concurrent request may have already cached this date's
-    // row; the generated grid is still valid to return either way.
-    console.warn("[crossword/daily] caching the generated grid failed", error);
+  // RealPocketBaseQuery never throws (see real-query.ts) — a failed write
+  // comes back as { error }, not a rejected promise, so this must be
+  // checked explicitly or a persistent failure (e.g. superuser auth
+  // misconfigured) silently never caches anything, ever, and every request
+  // regenerates from scratch while /api/crossword/submit 404s because it
+  // can never find the row this was supposed to write.
+  const { error: cacheError } = await pocketbase.from("crossword_daily").upsert(
+    { game_date: date, grid, clues: grid.placements.map((p) => ({ number: p.number, answer: p.answer })) },
+    { onConflict: "game_date" },
+  );
+  if (cacheError) {
+    // Not fatal to this request — the generated grid is still valid to
+    // return either way — but this must be visible, not swallowed.
+    console.error("[crossword/daily] caching the generated grid failed", cacheError);
   }
 
   return NextResponse.json({ date, ...toPublicPayload(grid) });
