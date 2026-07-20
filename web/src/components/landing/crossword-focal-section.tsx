@@ -20,7 +20,10 @@ type State = { status: "loading" } | { status: "ready"; data: CrosswordPayload }
 
 // Focal landing entry point for the daily crossword (sprint-2026-07-25
 // priority) — previously the crossword had zero presence on the landing
-// page and was only reachable via /games -> /games/today.
+// page. Links to /games/crossword (a standalone route, same pattern as
+// /games/close-approaches) rather than /games/today, which wraps every game
+// in a narrative "mission briefing" intro and doesn't guarantee crossword
+// plays first now that Close Approach Ranker is also in the daily rotation.
 export function CrosswordFocalSection() {
   const [state, setState] = useState<State>({ status: "loading" });
 
@@ -66,7 +69,7 @@ export function CrosswordFocalSection() {
               </p>
             ))
           : null}
-        <Link href="/games/today" className="button button-primary" style={{ justifySelf: "start", marginTop: "0.5rem" }}>
+        <Link href="/games/crossword" className="button button-primary" style={{ justifySelf: "start", marginTop: "0.5rem" }}>
           Play today&apos;s crossword →
         </Link>
       </div>
