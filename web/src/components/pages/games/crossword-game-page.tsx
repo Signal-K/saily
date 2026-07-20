@@ -184,6 +184,22 @@ export default function CrosswordGamePage({ onMissionComplete, gameDate: gameDat
         .crossword-clue-input {
           padding: 0.3rem 0.5rem;
           font-size: 0.85rem;
+          border: 1px solid var(--color-border);
+          border-radius: 4px;
+          background: var(--color-paper);
+          color: var(--color-ink);
+          font-family: inherit;
+        }
+
+        .crossword-clue-input:focus {
+          outline: 2px solid var(--color-ink);
+          outline-offset: 1px;
+          border-color: var(--color-ink);
+        }
+
+        .crossword-clue-input:disabled {
+          background: var(--color-bg);
+          color: var(--color-ink-muted);
         }
 
         @media (min-width: 640px) {
