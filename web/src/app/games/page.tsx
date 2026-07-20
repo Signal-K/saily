@@ -6,12 +6,12 @@ const MISSIONS = [
   {
     href: "/games/today",
     title: "Today's Mission",
-    body: "A new science crossword and a real transit-spotting round every day — the daily rotating puzzle, built from real data.",
+    body: "A new science crossword, a real transit-spotting round, and a near-Earth close-approach ranking every day — the daily rotating puzzle, built from real data.",
   },
   {
     href: "/games/close-approaches",
     title: "Close Approach Ranker",
-    body: "An experimental Sprint 10 puzzle: rank real NASA/JPL near-Earth flybys by closest approach before it graduates into the daily rotation.",
+    body: "Rank real NASA/JPL near-Earth flybys by closest approach — play it standalone here, or as part of today's rotating mission.",
   },
 ];
 
@@ -66,6 +66,18 @@ export default function GamesPage() {
         </p>
         <a href="https://playlandnam.space" target="_blank" rel="noreferrer" className="button button-primary">
           Play Landnam now →
+        </a>
+      </div>
+
+      <div className="panel" style={{ padding: "1.25rem", marginTop: "1rem" }}>
+        <p className="eyebrow">Star Sailors</p>
+        <h2 style={{ margin: "0 0 0.35rem" }}>Atlas</h2>
+        <p className="muted" style={{ margin: "0 0 1rem" }}>
+          Track real sky events and plan your own observations — the
+          Star Sailors companion for going outside and looking up.
+        </p>
+        <a href="https://youratlas.cc" target="_blank" rel="noreferrer" className="button button-primary">
+          Visit Atlas →
         </a>
       </div>
 

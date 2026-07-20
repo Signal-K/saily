@@ -1,0 +1,18 @@
+name = "tdt-crossword-digest"
+main = "worker.js"
+compatibility_date = "2026-07-20"
+
+# Runs once daily, 30 minutes after Melbourne midnight (00:00 AEST = 14:00
+# UTC / 00:00 AEDT = 13:00 UTC) — matches the buffer already used by
+# .github/workflows/science-feed-ingestion.yml (14:00 UTC), so the completed
+# Melbourne day's crossword events have settled before this queries them.
+[triggers]
+crons = ["30 14 * * *"]
+
+[[send_email]]
+name = "EMAIL"
+destination_address = "liam@skinetics.tech"
+
+# Secrets (set via `wrangler secret put`, not committed):
+#   POSTHOG_PROJECT_ID       — 199773 (Default project)
+#   POSTHOG_PERSONAL_API_KEY — same server-side key used by web/src/lib/posthog/query.ts

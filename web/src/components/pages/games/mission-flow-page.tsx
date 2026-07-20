@@ -113,8 +113,9 @@ export default function MissionFlowPage() {
     .filter(isMissionGame)
     .filter((g) => MISSION_GAME_REGISTRY.includes(g));
   // Allow e2e tests to pin the first game via ?firstGame=crossword|dsmr|close_approach.
-  // close_approach is registered but not in the default rotation until its
-  // cache and end-to-end path are intentionally enabled.
+  // close_approach graduated into the default rotation (sprint-2026-07-25) — its
+  // cache job (ingest-close-approaches.mjs) now runs daily alongside the other
+  // science-feed ingestion scripts.
   const firstGameParam = searchParams.get("firstGame");
   const firstGameOverride = firstGameParam && isMissionGame(firstGameParam) && MISSION_GAME_REGISTRY.includes(firstGameParam) ? firstGameParam : null;
   const gameOrder: MissionGame[] = firstGameOverride

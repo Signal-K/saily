@@ -15,8 +15,8 @@ describe("mission game order", () => {
     expect(order[0]).toBe("crossword");
   });
 
-  it("registers close approach ranker without enabling it in the default daily rotation", () => {
+  it("has graduated close approach ranker into the default daily rotation", () => {
     expect(MISSION_GAME_REGISTRY).toContain("close_approach");
-    expect(MISSION_GAMES).not.toContain("close_approach");
+    expect(MISSION_GAMES).toContain("close_approach");
   });
 });

@@ -118,6 +118,26 @@ jobs:
           SAILY_PB_SUPERUSER_PASSWORD: ${{ secrets.SAILY_PB_SUPERUSER_PASSWORD }}
         run: node scripts/ingest-gaia-variables.mjs
 
+      # Close Approach Ranker (STS sprint-2026-07-25): unlike the four feeds
+      # above (Zooniverse Panoptes subjects, fanned out via cycleDailyRows()
+      # in scripts/lib/science-feed-runtime.mjs), this pulls real NASA/JPL
+      # close-approach data directly — no Zooniverse token needed. The script
+      # lives under web/scripts (not scripts/) and takes explicit
+      # --date-min/--date-max/--game-date args rather than computing its own
+      # date range, so this step computes "today" (and a lookahead window) in
+      # Melbourne time itself. No web/ npm install needed — the script only
+      # imports Node built-ins and its own sibling normalizer module.
+      - name: Ingest Close Approach Ranker
+        working-directory: web
+        env:
+          SAILY_PB_URL: ${{ secrets.SAILY_PB_URL }}
+          SAILY_PB_SUPERUSER_EMAIL: ${{ secrets.SAILY_PB_SUPERUSER_EMAIL }}
+          SAILY_PB_SUPERUSER_PASSWORD: ${{ secrets.SAILY_PB_SUPERUSER_PASSWORD }}
+        run: |
+          GAME_DATE=$(TZ=Australia/Melbourne date +%Y-%m-%d)
+          DATE_MAX=$(TZ=Australia/Melbourne date -d "+7 days" +%Y-%m-%d)
+          node scripts/ingest-close-approaches.mjs --date-min "$GAME_DATE" --date-max "$DATE_MAX" --game-date "$GAME_DATE" --write
+
       # Repo secrets that must actually be configured for this workflow to do
       # anything (none of these can be verified or created from this change):
       #   - ZOONIVERSE_CLIENT_ID      (Panoptes OAuth app id; preferred auth path)

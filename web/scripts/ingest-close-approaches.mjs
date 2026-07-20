@@ -89,7 +89,11 @@ function quotePocketBaseValue(value) {
 }
 
 async function upsertPocketBaseRows(rows, { collection }) {
-  const baseUrl = (process.env.SAILY_POCKETBASE_URL || process.env.NEXT_PUBLIC_POCKETBASE_URL || "http://127.0.0.1:8090").replace(/\/$/, "");
+  // Saily's own PocketBase (port 8092), matching the SAILY_PB_URL convention
+  // used by scripts/lib/science-feed-runtime.mjs and the GH Actions workflow
+  // secrets — not the shared backend (port 8090), which was the prior
+  // (unused-in-practice) default here.
+  const baseUrl = (process.env.SAILY_PB_URL || process.env.NEXT_PUBLIC_SAILY_PB_URL || "http://127.0.0.1:8092").replace(/\/$/, "");
   const token = await authenticatePocketBase(baseUrl);
   let created = 0;
   let updated = 0;
@@ -105,16 +109,23 @@ async function upsertPocketBaseRows(rows, { collection }) {
     const existingId = existing?.items?.[0]?.id;
 
     if (existingId) {
-      await pocketBaseJson(baseUrl, token, `/api/collections/${collection}/records/${existingId}`, {
+      const result = await pocketBaseJson(baseUrl, token, `/api/collections/${collection}/records/${existingId}`, {
         method: "PATCH",
         body: JSON.stringify(row),
       });
+      // pocketBaseJson() returns null on a 404 (e.g. the collection doesn't
+      // exist) instead of throwing, since a 404 is expected/harmless on the
+      // read-lookup call above — but a null result on a write means the
+      // write itself silently did nothing, which must not be counted as a
+      // success.
+      if (!result) throw new Error(`PocketBase update returned 404 for ${collection}/${existingId} — does the collection exist?`);
       updated += 1;
     } else {
-      await pocketBaseJson(baseUrl, token, `/api/collections/${collection}/records`, {
+      const result = await pocketBaseJson(baseUrl, token, `/api/collections/${collection}/records`, {
         method: "POST",
         body: JSON.stringify(row),
       });
+      if (!result) throw new Error(`PocketBase create returned 404 for collection "${collection}" — does it exist?`);
       created += 1;
     }
   }

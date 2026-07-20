@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import posthog from "posthog-js";
 import { getMelbourneDateKey, resolveMelbourneDateKey } from "@/lib/melbourne-date";
 import { trackGameplayEvent } from "@/lib/analytics/events";
 
@@ -45,6 +46,7 @@ export default function CrosswordGamePage({ onMissionComplete, gameDate: gameDat
   const [submitting, setSubmitting] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [result, setResult] = useState<{ correct: number; total: number; score: number } | null>(null);
+  const startedAtRef = useRef<number | null>(null);
 
   const loadPuzzle = useCallback(async () => {
     setLoading(true);
@@ -57,6 +59,8 @@ export default function CrosswordGamePage({ onMissionComplete, gameDate: gameDat
         setPuzzle(null);
       } else {
         setPuzzle(payload);
+        startedAtRef.current = Date.now();
+        posthog.capture("crossword_opened", { game_date: gameDate, clue_count: payload.clues.length });
       }
     } catch {
       setFeedback("Network error loading today's crossword.");
@@ -89,6 +93,15 @@ export default function CrosswordGamePage({ onMissionComplete, gameDate: gameDat
 
       setResult(payload);
       trackGameplayEvent("crossword_submitted", { game_date: gameDate, correct: payload.correct, total: payload.total });
+      const elapsedSeconds = startedAtRef.current ? Math.round((Date.now() - startedAtRef.current) / 1000) : undefined;
+      posthog.capture("crossword_submitted", {
+        game_date: gameDate,
+        correct: payload.correct,
+        total: payload.total,
+        score: payload.score,
+        all_correct: payload.correct === payload.total,
+        elapsed_seconds: elapsedSeconds,
+      });
       onMissionComplete?.({ score: payload.score });
     } catch {
       setFeedback("Network error checking your answers.");

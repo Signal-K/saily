@@ -158,8 +158,31 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
           text-decoration: none;
         }
 
+        .dt-atlas-cta {
+          display: inline-flex;
+          align-items: center;
+          white-space: nowrap;
+          border: 1px solid var(--primary, #0a82b3);
+          background: transparent;
+          color: var(--primary, #0a82b3);
+          font-family: var(--font-data, ui-monospace, monospace);
+          font-size: 0.68rem;
+          font-weight: 700;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          text-decoration: none;
+          padding: 0.5rem 0.75rem;
+        }
+
+        .dt-atlas-cta:hover {
+          background: var(--primary, #0a82b3);
+          color: #fff;
+          text-decoration: none;
+        }
+
         @media (max-width: 640px) {
-          .dt-landnam-cta {
+          .dt-landnam-cta,
+          .dt-atlas-cta {
             display: none;
           }
         }
@@ -314,6 +337,14 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
 
           <div className="dt-actions">
             <a
+              href="https://youratlas.cc"
+              target="_blank"
+              rel="noreferrer"
+              className="dt-atlas-cta"
+            >
+              Visit Atlas
+            </a>
+            <a
               href="https://playlandnam.space"
               target="_blank"
               rel="noreferrer"
@@ -358,6 +389,15 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
             onClick={() => setMenuOpen(false)}
           >
             Play Landnam
+          </a>
+          <a
+            href="https://youratlas.cc"
+            target="_blank"
+            rel="noreferrer"
+            className="dt-mobile-nav-link"
+            onClick={() => setMenuOpen(false)}
+          >
+            Visit Atlas
           </a>
         </nav>
       </header>
