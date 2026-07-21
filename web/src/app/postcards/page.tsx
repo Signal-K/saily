@@ -1,20 +1,31 @@
 import Link from "next/link";
 import { createClient } from "@/lib/pocketbase/server";
-import { STORYLINES } from "@/lib/storylines";
 import { getMelbourneDateKey } from "@/lib/melbourne-date";
 import { redirect } from "next/navigation";
 
-export const metadata = { title: "Gallery - The Daily Transit" };
+export const metadata = { title: "Stamps - The Daily Transit" };
 
 type PlayRow = {
   game_date: string;
+  game: string | null;
   won: boolean;
   score: number | null;
-  attempts: number | null;
   played_at: string | null;
 };
 
-export default async function PostcardsPage() {
+const GAME_LABELS: Record<string, string> = {
+  crossword: "Crossword",
+  dsmr: "Transit Spotter",
+  close_approach: "Close Approach Ranker",
+  cloudspotting_mars: "Cloudspotting on Mars",
+};
+
+type Stamp = {
+  gameDate: string;
+  games: string[];
+};
+
+export default async function StampsPage() {
   const pocketbase = await createClient();
   const {
     data: { user },
@@ -25,38 +36,48 @@ export default async function PostcardsPage() {
   }
 
   const [{ data: profile }, { data: plays }] = await Promise.all([
-    pocketbase
-      .from("profiles")
-      .select("completed_storylines, referral_code")
-      .eq("shared_user_id", user.id)
-      .single(),
+    pocketbase.from("profiles").select("referral_code").eq("shared_user_id", user.id).maybeSingle(),
     pocketbase
       .from("daily_plays")
-      .select("game_date,won,score,attempts,played_at")
+      .select("game_date,game,won,score,played_at")
       .eq("user_id", user.id)
       .order("game_date", { ascending: false })
-      .limit(18),
+      .limit(120),
   ]);
 
-  const completedIds: string[] = profile?.completed_storylines ?? [];
   const referralCode: string | null = profile?.referral_code ?? null;
-  const earned = STORYLINES.filter((storyline) => completedIds.includes(storyline.id));
-  const fieldReports = ((plays ?? []) as PlayRow[]).filter((play) => play.game_date);
+  const rows = ((plays ?? []) as PlayRow[]).filter((play) => play.game_date);
+
+  // Each day with at least one completed game is a stamp — collect which
+  // games were finished on each of those days.
+  const stampsByDate = new Map<string, Set<string>>();
+  for (const row of rows) {
+    if (!row.game) continue;
+    const existing = stampsByDate.get(row.game_date) ?? new Set<string>();
+    existing.add(row.game);
+    stampsByDate.set(row.game_date, existing);
+  }
+  const stamps: Stamp[] = Array.from(stampsByDate.entries())
+    .map(([gameDate, games]) => ({ gameDate, games: Array.from(games) }))
+    .sort((a, b) => (a.gameDate < b.gameDate ? 1 : -1));
+
   const today = getMelbourneDateKey();
+  const playedToday = stampsByDate.has(today);
 
   return (
     <main className="gallery-page">
       <header className="gallery-hero panel">
         <div>
           <p className="eyebrow">Your Collection</p>
-          <h1>Gallery &amp; History</h1>
+          <h1>Stamps</h1>
           <p className="muted">
-            Review completed Daily Transit field reports, reopen archived missions, and keep any earned postcards in one place.
+            One stamp per day — showing which games you completed that day. Reopen an archived day, or keep today&apos;s
+            streak going.
           </p>
         </div>
         <div className="gallery-hero-actions">
           <Link href="/games/today" className="button button-primary">
-            {fieldReports.some((play) => play.game_date === today) ? "Review Today" : "Start Today"}
+            {playedToday ? "Play Another Game" : "Play Today's Games"}
           </Link>
           <Link href="/calendar" className="button">
             Open Archive
@@ -64,21 +85,21 @@ export default async function PostcardsPage() {
         </div>
       </header>
 
-      <section className="gallery-grid" aria-label="Gallery summary">
+      <section className="gallery-grid" aria-label="Stamps summary">
         <article className="gallery-stat panel">
-          <span className="eyebrow">Reports</span>
-          <strong>{fieldReports.length}</strong>
-          <p className="muted">Recent field reports in your history.</p>
+          <span className="eyebrow">Stamps</span>
+          <strong>{stamps.length}</strong>
+          <p className="muted">Days with at least one completed game.</p>
         </article>
         <article className="gallery-stat panel">
-          <span className="eyebrow">Postcards</span>
-          <strong>{earned.length}</strong>
-          <p className="muted">Milestone keepsakes collected so far.</p>
+          <span className="eyebrow">Games logged</span>
+          <strong>{rows.filter((row) => row.game).length}</strong>
+          <p className="muted">Total individual game completions.</p>
         </article>
         <article className="gallery-stat panel">
           <span className="eyebrow">Access Key</span>
           <strong>{referralCode ?? "None"}</strong>
-          <p className="muted">Share code shown after eligible missions.</p>
+          <p className="muted">Share code shown after eligible days.</p>
         </article>
       </section>
 
@@ -86,91 +107,39 @@ export default async function PostcardsPage() {
         <div className="gallery-section-head">
           <div>
             <p className="eyebrow">History</p>
-            <h2>Recent field reports</h2>
+            <h2>Your stamps</h2>
           </div>
           <Link href="/calendar" className="button">
             Browse all dates
           </Link>
         </div>
 
-        {fieldReports.length === 0 ? (
+        {stamps.length === 0 ? (
           <div className="panel gallery-empty">
-            <p>No field reports yet.</p>
-            <p className="muted">Complete today&apos;s mission to start building your history.</p>
+            <p>No stamps yet.</p>
+            <p className="muted">Complete a game to earn today&apos;s stamp.</p>
             <Link href="/games/today" className="button button-primary">
-              Start Today&apos;s Mission
+              Play Today's Games
             </Link>
           </div>
         ) : (
-          <div className="gallery-report-list">
-            {fieldReports.map((play) => (
+          <div className="postcard-grid">
+            {stamps.map((stamp) => (
               <Link
-                key={`${play.game_date}-${play.played_at ?? "report"}`}
-                href={`/games/today?date=${encodeURIComponent(play.game_date)}&returnTo=${encodeURIComponent("/postcards")}`}
-                className="gallery-report-card panel"
+                key={stamp.gameDate}
+                href={`/games/today?date=${encodeURIComponent(stamp.gameDate)}&returnTo=${encodeURIComponent("/postcards")}`}
+                className="postcard-card"
               >
-                <span className="eyebrow">{play.won ? "Filed" : "Attempted"}</span>
-                <strong>{play.game_date}</strong>
-                <span className="muted">Score {play.score ?? 0} &middot; {play.attempts ?? 1} attempt{play.attempts === 1 ? "" : "s"}</span>
+                <p className="eyebrow">{stamp.gameDate}</p>
+                <h3>
+                  {stamp.games.length} of {Object.keys(GAME_LABELS).length} games
+                </h3>
+                <p>{stamp.games.map((game) => GAME_LABELS[game] ?? game).join(", ")}</p>
               </Link>
             ))}
           </div>
         )}
       </section>
-
-      <section className="gallery-section">
-        <div className="gallery-section-head">
-          <div>
-            <p className="eyebrow">Postcards</p>
-            <h2>Milestone keepsakes</h2>
-          </div>
-        </div>
-
-        {earned.length === 0 ? (
-          <div className="panel gallery-empty">
-            <p>No postcards yet.</p>
-            <p className="muted">Postcards appear here after major mission milestones.</p>
-          </div>
-        ) : (
-          <div className="postcard-grid">
-            {earned.map((storyline) => (
-              <PostcardCard
-                key={storyline.id}
-                title={storyline.postcardTitle}
-                message={storyline.postcardMessage}
-                storylineTitle={storyline.title}
-                referralCode={referralCode}
-              />
-            ))}
-          </div>
-        )}
-      </section>
     </main>
-  );
-}
-
-function PostcardCard({
-  title,
-  message,
-  storylineTitle,
-  referralCode,
-}: {
-  title: string;
-  message: string;
-  storylineTitle: string;
-  referralCode: string | null;
-}) {
-  return (
-    <article className="postcard-card">
-      <p className="eyebrow">{storylineTitle}</p>
-      <h3>{title}</h3>
-      <p>{message}</p>
-      {referralCode ? (
-        <div className="postcard-code">
-          <span className="eyebrow">Access Key</span>
-          <code>{referralCode}</code>
-        </div>
-      ) : null}
-    </article>
   );
 }

@@ -11,7 +11,7 @@ type PuzzleWidgetState = {
     signInRequired: boolean;
   };
   user?: { id: string; email: string } | null;
-  play?: { score?: number; played_at?: string } | null;
+  completedGames?: { game: string; score: number }[];
 };
 
 // Embedded within article body copy via a `{{puzzle}}` marker (see
@@ -40,18 +40,19 @@ export function PuzzleWidget() {
     };
   }, []);
 
-  const completed = Boolean(state?.play || state?.access?.completed);
+  const completedCount = state?.completedGames?.length ?? 0;
+  const completed = completedCount > 0 || Boolean(state?.access?.completed);
   const signedIn = Boolean(state?.user);
   const missionHref = state?.date ? `/games/today?date=${state.date}` : "/games/today";
 
   return (
     <section className="panel puzzle-grain puzzle-widget" aria-label="Daily puzzle" style={{ padding: "1.25rem", display: "grid", gap: "0.65rem" }}>
       <p className="eyebrow">The Daily Transit</p>
-      <p style={{ margin: 0, fontWeight: 600 }}>{completed ? "Today's puzzle is logged." : "Today's puzzle is live."}</p>
+      <p style={{ margin: 0, fontWeight: 600 }}>{completed ? "Today's games are underway." : "Today's games are live."}</p>
       <p className="muted" style={{ margin: 0 }}>
         {completed
-          ? `Score ${state?.play?.score ?? "recorded"}. Replay the route or join the discussion.`
-          : "A quick science crossword and a transit-spotting round, built from real data."}
+          ? `${completedCount} of today's games completed. Play another or join the discussion.`
+          : "A quick science crossword, transit spotting, and more — each built from real data."}
       </p>
       {!signedIn ? (
         <p className="muted" style={{ margin: 0 }}>

@@ -46,13 +46,9 @@ describe("Auth and profile sanity", () => {
       },
       user: null,
       stats: null,
-      play: null,
+      completedGames: [],
       badges: [],
     }).as("lockedArchive");
-    cy.intercept("GET", "/api/story/progress?storylineId=*", {
-      statusCode: 401,
-      body: { error: "Sign in required" },
-    });
 
     cy.visit("/games/today?date=2026-06-01");
     cy.wait("@lockedArchive");

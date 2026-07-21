@@ -18,6 +18,13 @@ type SearchSuggestion = {
   score: number;
 };
 
+const GAME_LABELS: Record<string, string> = {
+  crossword: "Crossword",
+  dsmr: "Transit Spotter",
+  close_approach: "Close Approach Ranker",
+  cloudspotting_mars: "Cloudspotting on Mars",
+};
+
 function isIsoDate(value: string) {
   return /^\d{4}-\d{2}-\d{2}$/.test(value);
 }
@@ -149,7 +156,7 @@ export async function GET(request: Request) {
     user
       ? pocketbase
           .from("daily_plays")
-          .select("id,game_date,won,score,attempts,played_at")
+          .select("id,game_date,game,won,score,attempts,played_at")
           .eq("user_id", user.id)
           .order("played_at", { ascending: false })
           .limit(120)
@@ -253,9 +260,10 @@ export async function GET(request: Request) {
   (playsRes.data ?? []).forEach((row) => {
     const score = scoreByFields([String(row.id), String(row.score), String(row.attempts), row.won ? "won" : "lost"], [row.game_date, row.played_at], ctx, now);
     if (score <= 0) return;
+    const gameLabel = row.game ? GAME_LABELS[row.game] ?? row.game : null;
     suggestions.push({
       kind: "play",
-      title: `${row.game_date} • ${row.won ? "Won" : "Lost"}`,
+      title: `${row.game_date}${gameLabel ? ` • ${gameLabel}` : ""} • ${row.won ? "Won" : "Lost"}`,
       subtitle: `Score ${row.score}, attempts ${row.attempts}`,
       href: `/discuss?date=${row.game_date}`,
       score,

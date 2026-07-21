@@ -1,10 +1,10 @@
 import { Suspense } from "react";
-import MissionFlowPage from "@/components/pages/games/mission-flow-page";
+import DailyGamesHubPage from "@/components/pages/games/daily-games-hub-page";
 
 export default function Page() {
   return (
-    <Suspense fallback={<p className="muted" style={{ padding: "1rem" }}>Loading mission…</p>}>
-      <MissionFlowPage />
+    <Suspense fallback={<p className="muted" style={{ padding: "1rem" }}>Loading today&apos;s games…</p>}>
+      <DailyGamesHubPage />
     </Suspense>
   );
 }

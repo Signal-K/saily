@@ -117,7 +117,7 @@ export default function CloseApproachRankerGamePage({
       <div className="panel puzzle-grain" style={{ padding: "1.5rem", display: "grid", gap: "1rem" }}>
         <p className="puzzle-feedback">{feedback ?? "No close-approach desk is cached for this date yet."}</p>
         <div className="cta-row">
-          <Link href="/games/today" className="button button-primary">Play today&apos;s mission</Link>
+          <Link href="/games/today" className="button button-primary">Play today&apos;s games</Link>
           <Link href="/games" className="button">Back to games</Link>
         </div>
       </div>

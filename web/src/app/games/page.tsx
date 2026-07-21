@@ -4,14 +4,24 @@ export const metadata = { title: "Games — The Daily Transit" };
 
 const MISSIONS = [
   {
-    href: "/games/today",
-    title: "Today's Mission",
-    body: "A new science crossword, a real transit-spotting round, and a near-Earth close-approach ranking every day — the daily rotating puzzle, built from real data.",
+    href: "/games/crossword",
+    title: "Crossword",
+    body: "A new science crossword every day, clued from real sky events and discoveries. Play it any time — completing it earns a Data Chip.",
+  },
+  {
+    href: "/games/transit-spotter",
+    title: "Transit Spotter",
+    body: "Spot real transit dips in genuine Planet Hunters TESS light curves. Play it any time — completing it earns a Data Chip.",
   },
   {
     href: "/games/close-approaches",
     title: "Close Approach Ranker",
-    body: "Rank real NASA/JPL near-Earth flybys by closest approach — play it standalone here, or as part of today's rotating mission.",
+    body: "Rank real NASA/JPL near-Earth flybys by closest approach. Play it any time — completing it earns a Data Chip.",
+  },
+  {
+    href: "/games/cloudspotting-mars",
+    title: "Cloudspotting on Mars",
+    body: "Classify real Mars surface imagery from Zooniverse's Cloudspotting on Mars project. Play it any time — completing it earns a Data Chip.",
   },
 ];
 
