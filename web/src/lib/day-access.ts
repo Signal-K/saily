@@ -21,25 +21,14 @@ export async function getDayAccessForUser(
   const today = getMelbourneDateKey();
   const isToday = date === today;
 
-  if (isToday) {
-    return {
-      date,
-      isToday,
-      allowed: true,
-      signInRequired: false,
-      requiresUnlock: false,
-      completed: false,
-      unlocked: false,
-    };
-  }
-
   if (!userId) {
     return {
       date,
       isToday,
-      allowed: false,
-      signInRequired: true,
-      requiresUnlock: true,
+      // Today's puzzle is never locked behind sign-in; only archived days are.
+      allowed: isToday,
+      signInRequired: !isToday,
+      requiresUnlock: !isToday,
       completed: false,
       unlocked: false,
     };
@@ -56,9 +45,11 @@ export async function getDayAccessForUser(
   return {
     date,
     isToday,
-    allowed: completed || unlocked,
+    // Today's puzzle is always playable regardless of completion; archived
+    // days require either a completion record or an explicit unlock.
+    allowed: isToday || completed || unlocked,
     signInRequired: false,
-    requiresUnlock: !completed && !unlocked,
+    requiresUnlock: !isToday && !completed && !unlocked,
     completed,
     unlocked,
   };
