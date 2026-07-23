@@ -604,7 +604,7 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
                 <p className="muted m-0 text-sm">Log preview</p>
                 <div className="flex gap-2">
                   <button className="button" type="button" onClick={() => void preloadSharedResult()} disabled={interactionLocked}>
-                    Sync from today's games
+                    Sync from today&apos;s games
                   </button>
                   <button className="button" type="button" onClick={() => setShowShareDetails((v) => !v)} disabled={interactionLocked}>
                     {showShareDetails ? "Hide fields" : "Edit fields"}
@@ -760,7 +760,7 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
             <p className="m-0">Finish a game today before opening this puzzle discussion.</p>
             <div className="flex gap-2">
               <Link className="button button-primary" href={`/games/today?date=${date}&returnTo=${returnTo}`}>
-                Play Today's Games
+                Play Today&apos;s Games
               </Link>
               <Link className="button" href="/calendar">Calendar</Link>
             </div>
@@ -967,7 +967,7 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
           className="button button-full"
           href={`/games/today?date=${date}&returnTo=${returnTo}`}
         >
-          Play Today's Games
+          Play Today&apos;s Games
         </Link>
       </aside>
     </div>

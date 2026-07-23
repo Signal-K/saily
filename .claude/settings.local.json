@@ -71,7 +71,11 @@
       "mcp__desk__update_ticket",
       "mcp__desk__add_comment",
       "mcp__desk__reconcile_statuses",
-      "mcp__desk__get_ticket"
+      "mcp__desk__get_ticket",
+      "mcp__desk__list_projects",
+      "mcp__desk__list_workflow_states",
+      "mcp__desk__create_ticket",
+      "mcp__desk__link_tickets"
     ]
   },
   "enabledMcpjsonServers": [

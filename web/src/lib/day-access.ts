@@ -34,12 +34,13 @@ export async function getDayAccessForUser(
     };
   }
 
-  const [{ data: play }, { data: unlock }] = await Promise.all([
+  const [{ data: play }, { data: unlock }, { data: repair }] = await Promise.all([
     pocketbase.from("daily_plays").select("game_date").eq("user_id", userId).eq("game_date", date).maybeSingle(),
     pocketbase.from("archive_unlocks").select("game_date").eq("user_id", userId).eq("game_date", date).maybeSingle(),
+    pocketbase.from("streak_repairs").select("game_date").eq("user_id", userId).eq("game_date", date).maybeSingle(),
   ]);
 
-  const completed = Boolean(play);
+  const completed = Boolean(play) || Boolean(repair);
   const unlocked = Boolean(unlock);
 
   return {

@@ -119,7 +119,7 @@ export default async function StampsPage() {
             <p>No stamps yet.</p>
             <p className="muted">Complete a game to earn today&apos;s stamp.</p>
             <Link href="/games/today" className="button button-primary">
-              Play Today's Games
+              Play Today&apos;s Games
             </Link>
           </div>
         ) : (
