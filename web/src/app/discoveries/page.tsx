@@ -18,6 +18,9 @@ export default async function DiscoveriesPage() {
           Real results, confirmed by the citizen-science community — as they happen, across every Star Sailors
           mission.
         </p>
+        <a href="https://youratlas.cc" target="_blank" rel="noreferrer" className="button" style={{ marginTop: "0.75rem", display: "inline-block" }}>
+          Track it in Atlas
+        </a>
       </div>
 
       {discoveries.length === 0 ? (

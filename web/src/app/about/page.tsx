@@ -22,7 +22,11 @@ export default function AboutPage() {
         <a href="https://playlandnam.space" target="_blank" rel="noreferrer">
           Landnam
         </a>{" "}
-        and the wider{" "}
+        and{" "}
+        <a href="https://youratlas.cc" target="_blank" rel="noreferrer">
+          Atlas
+        </a>{" "}
+        under the wider{" "}
         <a href="https://starsailors.space" target="_blank" rel="noreferrer">
           Star Sailors
         </a>{" "}
