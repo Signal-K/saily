@@ -2746,3 +2746,265 @@
     mix-blend-mode: screen;
   }
 }
+
+/* Podcast editorial layout. Uses the existing publication type and colour
+   tokens; these rules only establish hierarchy, spacing, and responsive flow. */
+.episode-index,
+.episode-page {
+  width: min(var(--spacing-content-max, 1180px), calc(100% - 2rem));
+  margin: 2rem auto;
+}
+
+.episode-index-header {
+  max-width: 68ch;
+  margin-bottom: 1.5rem;
+  padding: 1.25rem 0;
+  border-top: 3px double var(--ink);
+  border-bottom: 1px solid var(--rule);
+}
+
+.episode-index-header h1,
+.episode-story-header h1 {
+  margin-block: 0.35rem 0.75rem;
+}
+
+.episode-front {
+  display: grid;
+  grid-template-columns: 1fr;
+  border-top: 3px double var(--ink);
+  border-bottom: 1px solid var(--rule);
+}
+
+.episode-front.has-rail {
+  grid-template-columns: minmax(0, 1.65fr) minmax(260px, 0.75fr);
+}
+
+.episode-lead,
+.episode-rail-item,
+.episode-archive-item {
+  color: inherit;
+  text-decoration: none;
+}
+
+.episode-lead {
+  display: flex;
+  min-height: 17rem;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(1.5rem, 4vw, 3.5rem);
+}
+
+.episode-front.has-rail .episode-lead {
+  border-right: 1px solid var(--rule);
+}
+
+.episode-lead h2,
+.episode-rail-item h2,
+.episode-archive-item h2 {
+  margin-block: 0.35rem;
+}
+
+.episode-lead > .muted,
+.episode-rail-item > .muted,
+.episode-archive-item > .muted {
+  margin-block: 0.45rem;
+}
+
+.episode-link-label {
+  margin-top: auto;
+  padding-top: 1rem;
+  font-weight: 600;
+}
+
+.episode-rail {
+  display: grid;
+}
+
+.episode-rail-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1.25rem;
+}
+
+.episode-rail-item + .episode-rail-item {
+  border-top: 1px solid var(--rule);
+}
+
+.episode-archive-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.episode-archive-item {
+  display: flex;
+  min-height: 14rem;
+  flex-direction: column;
+  padding: 1.25rem;
+}
+
+.episode-index-atlas {
+  margin-top: 2rem;
+  padding: 1.25rem;
+}
+
+.episode-index-atlas h2,
+.episode-story-atlas h2 {
+  margin-block: 0.4rem;
+}
+
+.episode-index-atlas .button,
+.episode-story-atlas .button {
+  margin-top: 0.75rem;
+}
+
+.episode-index-back,
+.episode-page-back {
+  margin-top: 1.5rem;
+}
+
+.episode-story-header {
+  max-width: 900px;
+  margin-inline: auto;
+  padding: 1.25rem 0 1.5rem;
+  border-top: 3px double var(--ink);
+  border-bottom: 1px solid var(--rule);
+}
+
+.episode-player {
+  max-width: 900px;
+  margin: 1.5rem auto 2rem;
+  padding: 1rem;
+}
+
+.episode-player audio {
+  display: block;
+  width: 100%;
+  margin-top: 0.75rem;
+}
+
+.episode-story-layout {
+  display: grid;
+  grid-template-areas: "meta transcript actions";
+  grid-template-columns: minmax(130px, 0.55fr) minmax(0, 2fr) minmax(220px, 0.9fr);
+  align-items: start;
+  gap: clamp(1.5rem, 3vw, 3rem);
+}
+
+.episode-story-meta {
+  grid-area: meta;
+  position: sticky;
+  top: 6rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+}
+
+.episode-story-meta p {
+  overflow-wrap: anywhere;
+}
+
+.episode-story-meta p + p {
+  margin-top: 1rem;
+}
+
+.episode-transcript {
+  grid-area: transcript;
+  min-width: 0;
+}
+
+.episode-transcript-header {
+  margin-bottom: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+}
+
+.episode-transcript-header h2 {
+  margin-bottom: 1.25rem;
+}
+
+.episode-story-actions {
+  grid-area: actions;
+  position: sticky;
+  top: 6rem;
+  display: grid;
+  gap: 1.25rem;
+}
+
+.episode-involvement,
+.episode-story-atlas {
+  padding: 1rem;
+}
+
+.episode-involvement ul {
+  margin-bottom: 0;
+  padding-left: 1.1rem;
+}
+
+@media (max-width: 960px) {
+  .episode-story-layout {
+    grid-template-areas:
+      "meta transcript"
+      ". actions";
+    grid-template-columns: minmax(130px, 0.4fr) minmax(0, 1.6fr);
+  }
+
+  .episode-story-actions {
+    position: static;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .episode-front.has-rail {
+    grid-template-columns: 1fr;
+  }
+
+  .episode-front.has-rail .episode-lead {
+    border-right: 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .episode-lead {
+    min-height: 0;
+  }
+
+  .episode-archive-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .episode-story-layout {
+    grid-template-areas:
+      "meta"
+      "transcript"
+      "actions";
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .episode-story-meta,
+  .episode-story-actions {
+    position: static;
+  }
+}
+
+@media (max-width: 560px) {
+  .episode-index,
+  .episode-page {
+    width: min(100% - 1rem, var(--spacing-content-max, 1180px));
+    margin-top: 1rem;
+  }
+
+  .episode-lead,
+  .episode-rail-item,
+  .episode-archive-item,
+  .episode-index-atlas,
+  .episode-involvement,
+  .episode-story-atlas {
+    padding: 1rem;
+  }
+
+  .episode-story-actions {
+    grid-template-columns: 1fr;
+  }
+}

@@ -15,6 +15,16 @@ export type CmsArticle = {
   hero_image: string;
   published_at: string;
   updated_at: string;
+  episode_number: string | null;
+  audio_url: string | null;
+  audio_duration: string | null;
+};
+
+type RawCmsArticle = Omit<CmsArticle, "episode_number" | "audio_url" | "audio_duration"> & {
+  episode_number?: unknown;
+  audio_url?: unknown;
+  audio_duration?: unknown;
+  extra_frontmatter?: Record<string, unknown> | null;
 };
 
 type PocketBaseListResponse<T> = {
@@ -33,6 +43,30 @@ function parseArrayField(value: string | undefined): string[] | null {
     .split(",")
     .map((item) => item.trim())
     .filter(Boolean);
+}
+
+function parseOptionalText(value: unknown): string | null {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return String(value);
+  }
+  if (typeof value !== "string") return null;
+  const normalized = value.trim();
+  return normalized || null;
+}
+
+function normalizeArticle(article: RawCmsArticle): CmsArticle {
+  const extra = article.extra_frontmatter ?? {};
+
+  return {
+    ...article,
+    episode_number: parseOptionalText(
+      article.episode_number ?? extra.episodeNumber ?? extra.episode_number,
+    ),
+    audio_url: parseOptionalText(article.audio_url ?? extra.audioUrl ?? extra.audio_url),
+    audio_duration: parseOptionalText(
+      article.audio_duration ?? extra.audioDuration ?? extra.audio_duration,
+    ),
+  };
 }
 
 function parseFrontmatter(raw: string): { frontmatter: Record<string, string>; body: string } {
@@ -69,7 +103,7 @@ async function listFileArticles(): Promise<CmsArticle[]> {
         const { frontmatter, body } = parseFrontmatter(raw);
         const slug = frontmatter.slug || file.replace(/\.md$/, "");
         const publishedAt = frontmatter.publishedAt || "";
-        return {
+        return normalizeArticle({
           id: `file:${slug}`,
           slug,
           title: frontmatter.title || slug,
@@ -82,7 +116,10 @@ async function listFileArticles(): Promise<CmsArticle[]> {
           hero_image: frontmatter.heroImage || "",
           published_at: publishedAt,
           updated_at: frontmatter.updatedAt || publishedAt,
-        };
+          episode_number: frontmatter.episodeNumber,
+          audio_url: frontmatter.audioUrl,
+          audio_duration: frontmatter.audioDuration,
+        });
       }),
   );
 
@@ -108,8 +145,8 @@ export async function listPublishedArticles(): Promise<CmsArticle[]> {
     return listFileArticles();
   }
 
-  const data = (await response.json()) as PocketBaseListResponse<CmsArticle>;
-  return data.items.length > 0 ? data.items : listFileArticles();
+  const data = (await response.json()) as PocketBaseListResponse<RawCmsArticle>;
+  return data.items.length > 0 ? data.items.map(normalizeArticle) : listFileArticles();
 }
 
 export async function getLatestPublishedArticle(): Promise<CmsArticle | null> {
@@ -124,8 +161,8 @@ export async function getLatestPublishedArticle(): Promise<CmsArticle | null> {
     return articles[0] ?? null;
   }
 
-  const data = (await response.json()) as PocketBaseListResponse<CmsArticle>;
-  if (data.items[0]) return data.items[0];
+  const data = (await response.json()) as PocketBaseListResponse<RawCmsArticle>;
+  if (data.items[0]) return normalizeArticle(data.items[0]);
   const articles = await listFileArticles();
   return articles[0] ?? null;
 }
@@ -141,8 +178,8 @@ export async function getPublishedArticle(slug: string): Promise<CmsArticle | nu
     return articles.find((article) => article.slug === slug) ?? null;
   }
 
-  const data = (await response.json()) as PocketBaseListResponse<CmsArticle>;
-  if (data.items[0]) return data.items[0];
+  const data = (await response.json()) as PocketBaseListResponse<RawCmsArticle>;
+  if (data.items[0]) return normalizeArticle(data.items[0]);
   const articles = await listFileArticles();
   return articles.find((article) => article.slug === slug) ?? null;
 }

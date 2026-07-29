@@ -11,7 +11,7 @@ type Props = {
 };
 
 const NAV_LINKS = [
-  { href: "/articles", label: "Stories" },
+  { href: "/articles", label: "Episodes" },
   { href: "/games/today", label: "Missions" },
   { href: "/games", label: "Games" },
   { href: "/calendar", label: "Archive" },
@@ -315,11 +315,11 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
       `}</style>
       <header className="dt-masthead">
         <div className="dt-masthead-top">
-          <Link href="/" className="dt-brand" aria-label="The Daily Transit home">
+          <Link href="/" className="dt-brand" aria-label="The Daily Transit podcast home">
             <Image src="/logo-icon.png" alt="" width={34} height={34} className="dt-brand-mark" />
             <span className="dt-brand-copy">
               <span className="dt-brand-name">The Daily <em>Transit</em></span>
-              <span className="dt-brand-sub">Citizen Science Daily</span>
+              <span className="dt-brand-sub">A Star Sailors publication</span>
             </span>
           </Link>
 
@@ -342,7 +342,7 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
               rel="noreferrer"
               className="dt-atlas-cta"
             >
-              Visit Atlas
+              Explore Atlas
             </a>
             <a
               href="https://playlandnam.space"
@@ -397,7 +397,7 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
             className="dt-mobile-nav-link"
             onClick={() => setMenuOpen(false)}
           >
-            Visit Atlas
+            Explore Atlas
           </a>
         </nav>
       </header>
