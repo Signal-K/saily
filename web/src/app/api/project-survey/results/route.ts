@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { runHogQLQuery, isPostHogQueryConfigured } from "@/lib/posthog/query";
 import { CITIZEN_SCIENCE_VOTE_KEY } from "@/lib/posthog/survey-ids";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   if (!isPostHogQueryConfigured()) {

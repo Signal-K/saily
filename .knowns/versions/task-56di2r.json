@@ -1,0 +1,265 @@
+{
+  "taskId": "56di2r",
+  "currentVersion": 5,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "56di2r",
+      "version": 1,
+      "timestamp": "2026-07-29T20:44:54.668682Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": null,
+          "newValue": "todo"
+        },
+        {
+          "field": "priority",
+          "oldValue": null,
+          "newValue": "medium"
+        }
+      ],
+      "snapshot": {
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Navigation and publication copy present The Daily Transit as a podcast and a Star Sailors publication"
+          },
+          {
+            "completed": false,
+            "text": "The article index and detail experience are reframed as episodes and transcripts while remaining compatible with existing articles"
+          },
+          {
+            "completed": false,
+            "text": "Episode metadata can optionally describe an audio URL, episode number, and duration without a database migration"
+          },
+          {
+            "completed": false,
+            "text": "Atlas has a prominent contextual call to action from publication surfaces"
+          },
+          {
+            "completed": false,
+            "text": "Relevant tests, lint, and build checks pass"
+          }
+        ],
+        "description": "Begin repositioning The Daily Transit as a podcast-first Star Sailors publication: episodes are primary, transcript pages replace generic articles, and each editorial journey offers a clear next step into Atlas. Reuse the existing CMS extra_frontmatter capability rather than introducing a migration or audio vendor.",
+        "labels": [
+          "normal",
+          "frontend",
+          "editorial",
+          "podcast",
+          "atlas"
+        ],
+        "priority": "medium",
+        "status": "todo",
+        "title": "Orient The Daily Transit around podcast episodes and Atlas"
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "56di2r",
+      "version": 2,
+      "timestamp": "2026-07-29T20:44:59.823788Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "in-progress"
+        },
+        {
+          "field": "assignee",
+          "oldValue": null,
+          "newValue": "@me"
+        }
+      ],
+      "snapshot": {
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Navigation and publication copy present The Daily Transit as a podcast and a Star Sailors publication"
+          },
+          {
+            "completed": false,
+            "text": "The article index and detail experience are reframed as episodes and transcripts while remaining compatible with existing articles"
+          },
+          {
+            "completed": false,
+            "text": "Episode metadata can optionally describe an audio URL, episode number, and duration without a database migration"
+          },
+          {
+            "completed": false,
+            "text": "Atlas has a prominent contextual call to action from publication surfaces"
+          },
+          {
+            "completed": false,
+            "text": "Relevant tests, lint, and build checks pass"
+          }
+        ],
+        "assignee": "@me",
+        "description": "Begin repositioning The Daily Transit as a podcast-first Star Sailors publication: episodes are primary, transcript pages replace generic articles, and each editorial journey offers a clear next step into Atlas. Reuse the existing CMS extra_frontmatter capability rather than introducing a migration or audio vendor.",
+        "labels": [
+          "normal",
+          "frontend",
+          "editorial",
+          "podcast",
+          "atlas"
+        ],
+        "priority": "medium",
+        "status": "in-progress",
+        "title": "Orient The Daily Transit around podcast episodes and Atlas"
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "56di2r",
+      "version": 3,
+      "timestamp": "2026-07-29T20:45:41.220696Z",
+      "changes": [
+        {
+          "field": "implementationPlan",
+          "oldValue": null,
+          "newValue": "1. Extend `web/src/lib/cms.ts` to normalize optional `episodeNumber`, `audioUrl`, and `audioDuration` values from file frontmatter or PocketBase `extra_frontmatter`, preserving full compatibility with existing article records.\n2. Reframe `web/src/components/daily-transit-masthead.tsx` around Episodes and the exact brand line “A Star Sailors publication,” while retaining the existing Atlas destination.\n3. Turn `web/src/app/articles/page.tsx` into an Episodes \u0026 Transcripts index that handles podcast-enabled and legacy entries gracefully.\n4. Turn `web/src/app/articles/[slug]/page.tsx` into an episode page with optional native audio playback, a transcript-first reading structure, and a contextual Atlas continuation CTA.\n5. Run focused formatting/type checks, the relevant unit suite, lint, and a production build; record results before completing ACs.\n\nContext: @doc/saily-specs/saily-product-spec. No audio host, feed generation, URL migration, or CMS database migration is included in this first slice."
+        }
+      ],
+      "snapshot": {
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Navigation and publication copy present The Daily Transit as a podcast and a Star Sailors publication"
+          },
+          {
+            "completed": false,
+            "text": "The article index and detail experience are reframed as episodes and transcripts while remaining compatible with existing articles"
+          },
+          {
+            "completed": false,
+            "text": "Episode metadata can optionally describe an audio URL, episode number, and duration without a database migration"
+          },
+          {
+            "completed": false,
+            "text": "Atlas has a prominent contextual call to action from publication surfaces"
+          },
+          {
+            "completed": false,
+            "text": "Relevant tests, lint, and build checks pass"
+          }
+        ],
+        "assignee": "@me",
+        "description": "Begin repositioning The Daily Transit as a podcast-first Star Sailors publication: episodes are primary, transcript pages replace generic articles, and each editorial journey offers a clear next step into Atlas. Reuse the existing CMS extra_frontmatter capability rather than introducing a migration or audio vendor.",
+        "implementationPlan": "1. Extend `web/src/lib/cms.ts` to normalize optional `episodeNumber`, `audioUrl`, and `audioDuration` values from file frontmatter or PocketBase `extra_frontmatter`, preserving full compatibility with existing article records.\n2. Reframe `web/src/components/daily-transit-masthead.tsx` around Episodes and the exact brand line “A Star Sailors publication,” while retaining the existing Atlas destination.\n3. Turn `web/src/app/articles/page.tsx` into an Episodes \u0026 Transcripts index that handles podcast-enabled and legacy entries gracefully.\n4. Turn `web/src/app/articles/[slug]/page.tsx` into an episode page with optional native audio playback, a transcript-first reading structure, and a contextual Atlas continuation CTA.\n5. Run focused formatting/type checks, the relevant unit suite, lint, and a production build; record results before completing ACs.\n\nContext: @doc/saily-specs/saily-product-spec. No audio host, feed generation, URL migration, or CMS database migration is included in this first slice.",
+        "labels": [
+          "normal",
+          "frontend",
+          "editorial",
+          "podcast",
+          "atlas"
+        ],
+        "priority": "medium",
+        "status": "in-progress",
+        "title": "Orient The Daily Transit around podcast episodes and Atlas"
+      }
+    },
+    {
+      "id": "v4",
+      "taskId": "56di2r",
+      "version": 4,
+      "timestamp": "2026-07-29T20:52:43.507211Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "oldValue": null,
+          "newValue": "Done: Episodes/transcripts framing, optional episode/audio metadata via extra_frontmatter, native audio playback, exact Star Sailors publication line, and contextual Atlas CTAs. Verification: npm run lint; npm run test:unit (53/53); npm run build; git diff --check. Visual browser QA unavailable because no browser backend was connected."
+        }
+      ],
+      "snapshot": {
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "Navigation and publication copy present The Daily Transit as a podcast and a Star Sailors publication"
+          },
+          {
+            "completed": true,
+            "text": "The article index and detail experience are reframed as episodes and transcripts while remaining compatible with existing articles"
+          },
+          {
+            "completed": true,
+            "text": "Episode metadata can optionally describe an audio URL, episode number, and duration without a database migration"
+          },
+          {
+            "completed": true,
+            "text": "Atlas has a prominent contextual call to action from publication surfaces"
+          },
+          {
+            "completed": true,
+            "text": "Relevant tests, lint, and build checks pass"
+          }
+        ],
+        "assignee": "@me",
+        "description": "Begin repositioning The Daily Transit as a podcast-first Star Sailors publication: episodes are primary, transcript pages replace generic articles, and each editorial journey offers a clear next step into Atlas. Reuse the existing CMS extra_frontmatter capability rather than introducing a migration or audio vendor.",
+        "implementationNotes": "Done: Episodes/transcripts framing, optional episode/audio metadata via extra_frontmatter, native audio playback, exact Star Sailors publication line, and contextual Atlas CTAs. Verification: npm run lint; npm run test:unit (53/53); npm run build; git diff --check. Visual browser QA unavailable because no browser backend was connected.",
+        "implementationPlan": "1. Extend `web/src/lib/cms.ts` to normalize optional `episodeNumber`, `audioUrl`, and `audioDuration` values from file frontmatter or PocketBase `extra_frontmatter`, preserving full compatibility with existing article records.\n2. Reframe `web/src/components/daily-transit-masthead.tsx` around Episodes and the exact brand line “A Star Sailors publication,” while retaining the existing Atlas destination.\n3. Turn `web/src/app/articles/page.tsx` into an Episodes \u0026 Transcripts index that handles podcast-enabled and legacy entries gracefully.\n4. Turn `web/src/app/articles/[slug]/page.tsx` into an episode page with optional native audio playback, a transcript-first reading structure, and a contextual Atlas continuation CTA.\n5. Run focused formatting/type checks, the relevant unit suite, lint, and a production build; record results before completing ACs.\n\nContext: @doc/saily-specs/saily-product-spec. No audio host, feed generation, URL migration, or CMS database migration is included in this first slice.",
+        "labels": [
+          "normal",
+          "frontend",
+          "editorial",
+          "podcast",
+          "atlas"
+        ],
+        "priority": "medium",
+        "status": "in-progress",
+        "title": "Orient The Daily Transit around podcast episodes and Atlas"
+      }
+    },
+    {
+      "id": "v5",
+      "taskId": "56di2r",
+      "version": 5,
+      "timestamp": "2026-07-29T20:52:55.479182Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        }
+      ],
+      "snapshot": {
+        "acceptanceCriteria": [
+          {
+            "text": "Navigation and publication copy present The Daily Transit as a podcast and a Star Sailors publication",
+            "completed": true
+          },
+          {
+            "text": "The article index and detail experience are reframed as episodes and transcripts while remaining compatible with existing articles",
+            "completed": true
+          },
+          {
+            "text": "Episode metadata can optionally describe an audio URL, episode number, and duration without a database migration",
+            "completed": true
+          },
+          {
+            "text": "Atlas has a prominent contextual call to action from publication surfaces",
+            "completed": true
+          },
+          {
+            "text": "Relevant tests, lint, and build checks pass",
+            "completed": true
+          }
+        ],
+        "assignee": "@me",
+        "description": "Begin repositioning The Daily Transit as a podcast-first Star Sailors publication: episodes are primary, transcript pages replace generic articles, and each editorial journey offers a clear next step into Atlas. Reuse the existing CMS extra_frontmatter capability rather than introducing a migration or audio vendor.",
+        "implementationNotes": "Done: Episodes/transcripts framing, optional episode/audio metadata via extra_frontmatter, native audio playback, exact Star Sailors publication line, and contextual Atlas CTAs. Verification: npm run lint; npm run test:unit (53/53); npm run build; git diff --check. Visual browser QA unavailable because no browser backend was connected.",
+        "implementationPlan": "1. Extend `web/src/lib/cms.ts` to normalize optional `episodeNumber`, `audioUrl`, and `audioDuration` values from file frontmatter or PocketBase `extra_frontmatter`, preserving full compatibility with existing article records.\n2. Reframe `web/src/components/daily-transit-masthead.tsx` around Episodes and the exact brand line “A Star Sailors publication,” while retaining the existing Atlas destination.\n3. Turn `web/src/app/articles/page.tsx` into an Episodes \u0026 Transcripts index that handles podcast-enabled and legacy entries gracefully.\n4. Turn `web/src/app/articles/[slug]/page.tsx` into an episode page with optional native audio playback, a transcript-first reading structure, and a contextual Atlas continuation CTA.\n5. Run focused formatting/type checks, the relevant unit suite, lint, and a production build; record results before completing ACs.\n\nContext: @doc/saily-specs/saily-product-spec. No audio host, feed generation, URL migration, or CMS database migration is included in this first slice.",
+        "labels": [
+          "normal",
+          "frontend",
+          "editorial",
+          "podcast",
+          "atlas"
+        ],
+        "priority": "medium",
+        "status": "done",
+        "title": "Orient The Daily Transit around podcast episodes and Atlas"
+      }
+    }
+  ]
+}

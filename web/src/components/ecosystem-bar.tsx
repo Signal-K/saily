@@ -2,6 +2,7 @@
 
 const ECOSYSTEM_LINKS = [
   { href: "https://playlandnam.space", label: "Landnam" },
+  { href: "https://youratlas.cc", label: "Atlas" },
   { href: "https://starsailors.space", label: "Star Sailors" },
   { href: "https://github.com/signal-k", label: "GitHub" },
 ];

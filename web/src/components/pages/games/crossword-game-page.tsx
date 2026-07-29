@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import posthog from "posthog-js";
 import { getMelbourneDateKey, resolveMelbourneDateKey } from "@/lib/melbourne-date";
 import { trackGameplayEvent } from "@/lib/analytics/events";
 
@@ -45,6 +46,7 @@ export default function CrosswordGamePage({ onMissionComplete, gameDate: gameDat
   const [submitting, setSubmitting] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [result, setResult] = useState<{ correct: number; total: number; score: number } | null>(null);
+  const startedAtRef = useRef<number | null>(null);
 
   const loadPuzzle = useCallback(async () => {
     setLoading(true);
@@ -57,6 +59,8 @@ export default function CrosswordGamePage({ onMissionComplete, gameDate: gameDat
         setPuzzle(null);
       } else {
         setPuzzle(payload);
+        startedAtRef.current = Date.now();
+        posthog.capture("crossword_opened", { game_date: gameDate, clue_count: payload.clues.length });
       }
     } catch {
       setFeedback("Network error loading today's crossword.");
@@ -89,6 +93,15 @@ export default function CrosswordGamePage({ onMissionComplete, gameDate: gameDat
 
       setResult(payload);
       trackGameplayEvent("crossword_submitted", { game_date: gameDate, correct: payload.correct, total: payload.total });
+      const elapsedSeconds = startedAtRef.current ? Math.round((Date.now() - startedAtRef.current) / 1000) : undefined;
+      posthog.capture("crossword_submitted", {
+        game_date: gameDate,
+        correct: payload.correct,
+        total: payload.total,
+        score: payload.score,
+        all_correct: payload.correct === payload.total,
+        elapsed_seconds: elapsedSeconds,
+      });
       onMissionComplete?.({ score: payload.score });
     } catch {
       setFeedback("Network error checking your answers.");
@@ -114,22 +127,112 @@ export default function CrosswordGamePage({ onMissionComplete, gameDate: gameDat
   }
 
   return (
-    <div className="panel puzzle-grain" style={{ padding: "1.5rem", display: "grid", gap: "1.25rem" }}>
-      <div>
+    <div
+      className="panel puzzle-grain crossword-shell"
+      style={
+        {
+          "--grid-cols": puzzle.width,
+          "--grid-rows": puzzle.height,
+        } as React.CSSProperties
+      }
+    >
+      <style jsx>{`
+        .crossword-shell {
+          padding: 1rem 1.25rem;
+          display: grid;
+          gap: 0.75rem;
+          /*
+           * Cell size shrinks to fit whichever dimension is tighter — the
+           * available viewport height (crosswords can be up to ~18 rows on
+           * some dates) or the container width (up to ~15 cols) — so the
+           * whole game fits on screen without the page needing to scroll,
+           * instead of a fixed 1.75rem cell blowing out to 500px+ tall.
+           */
+          --cell-size: clamp(20px, min(calc(44dvh / var(--grid-rows)), calc(70vw / var(--grid-cols))), 32px);
+        }
+
+        .crossword-grid {
+          display: grid;
+          grid-template-columns: repeat(var(--grid-cols), var(--cell-size));
+          grid-template-rows: repeat(var(--grid-rows), var(--cell-size));
+          gap: 1px;
+          width: fit-content;
+          margin-inline: auto;
+        }
+
+        .crossword-cell-number {
+          position: absolute;
+          top: 0;
+          left: 1px;
+          font-size: clamp(0.45rem, calc(var(--cell-size) * 0.3), 0.65rem);
+          line-height: 1;
+        }
+
+        .crossword-clues {
+          display: grid;
+          gap: 0.6rem;
+          max-height: 42dvh;
+          overflow-y: auto;
+          padding-right: 0.25rem;
+        }
+
+        .crossword-clue-text {
+          font-size: 0.9rem;
+          line-height: 1.35;
+        }
+
+        .crossword-clue-input {
+          padding: 0.45rem 0.65rem;
+          font-size: 1rem;
+          border: 1px solid var(--color-border);
+          border-radius: 4px;
+          background: var(--color-paper);
+          color: var(--color-ink);
+          font-family: inherit;
+        }
+
+        .crossword-clue-input:focus {
+          outline: 2px solid var(--color-ink);
+          outline-offset: 1px;
+          border-color: var(--color-ink);
+        }
+
+        .crossword-clue-input:disabled {
+          background: var(--color-bg);
+          color: var(--color-ink-muted);
+        }
+
+        @media (min-width: 640px) {
+          .crossword-shell {
+            grid-template-columns: max-content 1fr;
+            align-items: start;
+          }
+
+          .crossword-shell > .crossword-header {
+            grid-column: 1 / -1;
+          }
+
+          .crossword-grid {
+            margin-inline: 0;
+          }
+
+          .crossword-clues {
+            max-height: min(42dvh, calc(var(--grid-rows) * var(--cell-size)));
+          }
+
+          .crossword-shell > .crossword-feedback,
+          .crossword-shell > .crossword-actions {
+            grid-column: 1 / -1;
+          }
+        }
+      `}</style>
+
+      <div className="crossword-header">
         <p className="eyebrow">Today&apos;s Crossword</p>
         <p className="muted">Clues drawn from real upcoming sky events and today&apos;s discoveries.</p>
       </div>
 
-      <div
-        aria-hidden
-        style={{
-          display: "grid",
-          gridTemplateColumns: `repeat(${puzzle.width}, 1.75rem)`,
-          gridTemplateRows: `repeat(${puzzle.height}, 1.75rem)`,
-          gap: "2px",
-          width: "fit-content",
-        }}
-      >
+      <div className="crossword-grid" aria-hidden>
         {Array.from({ length: puzzle.height }).map((_, row) =>
           Array.from({ length: puzzle.width }).map((_, col) => {
             const filled = filledCells.has(`${row},${col}`);
@@ -143,19 +246,17 @@ export default function CrosswordGamePage({ onMissionComplete, gameDate: gameDat
                   border: filled ? "1px solid var(--color-border)" : "none",
                 }}
               >
-                {startClue ? (
-                  <span style={{ position: "absolute", top: 1, left: 2, fontSize: "0.55rem" }}>{startClue.number}</span>
-                ) : null}
+                {startClue ? <span className="crossword-cell-number">{startClue.number}</span> : null}
               </div>
             );
           }),
         )}
       </div>
 
-      <div style={{ display: "grid", gap: "0.75rem" }}>
+      <div className="crossword-clues">
         {puzzle.clues.map((clue) => (
-          <label key={clueKey(clue)} style={{ display: "grid", gap: "0.25rem" }}>
-            <span className="muted">
+          <label key={clueKey(clue)} style={{ display: "grid", gap: "0.2rem" }}>
+            <span className="muted crossword-clue-text">
               {clue.number}
               {clue.direction === "across" ? "A" : "D"}. {clue.clue} ({clue.length} letters)
             </span>
@@ -167,20 +268,26 @@ export default function CrosswordGamePage({ onMissionComplete, gameDate: gameDat
               onChange={(event) =>
                 setAnswers((prev) => ({ ...prev, [clueKey(clue)]: event.target.value.toUpperCase() }))
               }
+              className="crossword-clue-input"
               style={{ textTransform: "uppercase", letterSpacing: "0.15em" }}
             />
           </label>
         ))}
       </div>
 
-      {feedback ? <p className="puzzle-feedback">{feedback}</p> : null}
+      {feedback ? <p className="puzzle-feedback crossword-feedback">{feedback}</p> : null}
 
       {result ? (
-        <p className="muted">
+        <p className="muted crossword-actions">
           {result.correct} of {result.total} correct — score {result.score}.
         </p>
       ) : (
-        <button type="button" className="button button-primary" onClick={() => void handleSubmit()} disabled={submitting}>
+        <button
+          type="button"
+          className="button button-primary crossword-actions"
+          onClick={() => void handleSubmit()}
+          disabled={submitting}
+        >
           {submitting ? "Checking..." : "Check answers"}
         </button>
       )}

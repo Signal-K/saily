@@ -11,7 +11,7 @@ type Props = {
 };
 
 const NAV_LINKS = [
-  { href: "/articles", label: "Stories" },
+  { href: "/articles", label: "Episodes" },
   { href: "/games/today", label: "Missions" },
   { href: "/games", label: "Games" },
   { href: "/calendar", label: "Archive" },
@@ -158,8 +158,31 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
           text-decoration: none;
         }
 
+        .dt-atlas-cta {
+          display: inline-flex;
+          align-items: center;
+          white-space: nowrap;
+          border: 1px solid var(--primary, #0a82b3);
+          background: transparent;
+          color: var(--primary, #0a82b3);
+          font-family: var(--font-data, ui-monospace, monospace);
+          font-size: 0.68rem;
+          font-weight: 700;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          text-decoration: none;
+          padding: 0.5rem 0.75rem;
+        }
+
+        .dt-atlas-cta:hover {
+          background: var(--primary, #0a82b3);
+          color: #fff;
+          text-decoration: none;
+        }
+
         @media (max-width: 640px) {
-          .dt-landnam-cta {
+          .dt-landnam-cta,
+          .dt-atlas-cta {
             display: none;
           }
         }
@@ -292,11 +315,11 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
       `}</style>
       <header className="dt-masthead">
         <div className="dt-masthead-top">
-          <Link href="/" className="dt-brand" aria-label="The Daily Transit home">
+          <Link href="/" className="dt-brand" aria-label="The Daily Transit podcast home">
             <Image src="/logo-icon.png" alt="" width={34} height={34} className="dt-brand-mark" />
             <span className="dt-brand-copy">
               <span className="dt-brand-name">The Daily <em>Transit</em></span>
-              <span className="dt-brand-sub">Citizen Science Daily</span>
+              <span className="dt-brand-sub">A Star Sailors publication</span>
             </span>
           </Link>
 
@@ -313,6 +336,14 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
           </nav>
 
           <div className="dt-actions">
+            <a
+              href="https://youratlas.cc"
+              target="_blank"
+              rel="noreferrer"
+              className="dt-atlas-cta"
+            >
+              Explore Atlas
+            </a>
             <a
               href="https://playlandnam.space"
               target="_blank"
@@ -358,6 +389,15 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
             onClick={() => setMenuOpen(false)}
           >
             Play Landnam
+          </a>
+          <a
+            href="https://youratlas.cc"
+            target="_blank"
+            rel="noreferrer"
+            className="dt-mobile-nav-link"
+            onClick={() => setMenuOpen(false)}
+          >
+            Explore Atlas
           </a>
         </nav>
       </header>

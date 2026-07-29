@@ -96,3 +96,13 @@ Open decisions needing Liam's input go in a `status: blocked` ticket, each quest
 **Compass** (`/Applications/Compass.app`) reads `~/Navigation/.knowns/` for its board, but ticket state of record is the workspace ticket files above — Compass reflects them, it does not own them.
 
 To find the current sprint Saturday: run `date +%Y-%m-%d` and count to the nearest Saturday.
+
+## Documentation & Decisions: Craft, Desk, ZenNotes
+
+As of 2026-07-21, this is the canonical split for where writing lives, monorepo-wide (see `~/Navigation/CLAUDE.md`):
+
+- **Craft** — long-form writing: planning docs, ideation, proposals, spec drafts, feedback/playtest triage write-ups, research notes. Every Craft doc tied to active Saily work must be **tagged** and **attached to its Desk ticket(s)/story** (`attach_craft_doc`) — don't leave it floating with no ticket link.
+- **ZenNotes** (`~/Navigation/workspace`, ZenNotes MCP) — canonical home for **decisions and rules**: finalized specs, feature/mission definitions and their limits, gameplay/content decisions. Search here first for authoritative rules, not Craft.
+- **Desk** — tickets/stories/epics only. Note: this file's "Tickets & Sprints" section above still describes the retired `workspace_ticket.py`/`Current.md` flow — the rest of the monorepo has moved to Desk (MCP server `desk`) as system of record; treat that section as stale until it's updated to match.
+
+Flow: research/ideation in Craft → tag + attach to the Desk ticket once it needs review or action → once a decision lands, write the durable rule/spec into ZenNotes, not just a Craft doc or ticket comment.

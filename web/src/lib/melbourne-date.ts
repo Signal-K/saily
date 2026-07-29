@@ -38,6 +38,9 @@ export function normalizeDateKey(value: string | null | undefined) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
   const parsed = new Date(`${value}T00:00:00.000Z`);
   if (Number.isNaN(parsed.getTime())) return null;
+  // Date silently rolls overflowing components forward (e.g. 2026-02-30 -> 2026-03-02)
+  // instead of producing Invalid Date, so confirm the parsed date roundtrips exactly.
+  if (parsed.toISOString().slice(0, 10) !== value) return null;
   return value;
 }
 

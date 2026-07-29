@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - mvp-sprint
+      - sprint-10
     paths:
       - "backend/**"
       - ".github/workflows/pb-deploy.yml"

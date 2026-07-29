@@ -1,0 +1,260 @@
+{
+  "taskId": "fnjlra",
+  "currentVersion": 5,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "fnjlra",
+      "version": 1,
+      "timestamp": "2026-07-29T20:57:03.350525Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": null,
+          "newValue": "todo"
+        },
+        {
+          "field": "priority",
+          "oldValue": null,
+          "newValue": "medium"
+        }
+      ],
+      "snapshot": {
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "The episode index gives the latest episode clear lead-story prominence and separates recent transcripts into a readable secondary hierarchy"
+          },
+          {
+            "completed": false,
+            "text": "Episode detail pages prioritize the audio player and transcript in a wider editorial layout with useful side rails"
+          },
+          {
+            "completed": false,
+            "text": "Existing branding, colours, typography, copy, URLs, and CMS behavior remain unchanged"
+          },
+          {
+            "completed": false,
+            "text": "The revised layouts collapse cleanly for tablet and mobile widths"
+          },
+          {
+            "completed": false,
+            "text": "Lint, unit tests, and production build pass"
+          }
+        ],
+        "description": "Follow up @task-56di2r with a layout-only refinement. Preserve all current branding, colours, typography, copy, URLs, and CMS behavior while giving the episode index and transcript page a stronger newspaper-style editorial hierarchy centered on listening.",
+        "labels": [
+          "normal",
+          "frontend",
+          "layout",
+          "podcast"
+        ],
+        "priority": "medium",
+        "status": "todo",
+        "title": "Refine podcast editorial layout for The Daily Transit"
+      }
+    },
+    {
+      "id": "v2",
+      "taskId": "fnjlra",
+      "version": 2,
+      "timestamp": "2026-07-29T20:57:07.885706Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "todo",
+          "newValue": "in-progress"
+        },
+        {
+          "field": "assignee",
+          "oldValue": null,
+          "newValue": "@me"
+        }
+      ],
+      "snapshot": {
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "The episode index gives the latest episode clear lead-story prominence and separates recent transcripts into a readable secondary hierarchy"
+          },
+          {
+            "completed": false,
+            "text": "Episode detail pages prioritize the audio player and transcript in a wider editorial layout with useful side rails"
+          },
+          {
+            "completed": false,
+            "text": "Existing branding, colours, typography, copy, URLs, and CMS behavior remain unchanged"
+          },
+          {
+            "completed": false,
+            "text": "The revised layouts collapse cleanly for tablet and mobile widths"
+          },
+          {
+            "completed": false,
+            "text": "Lint, unit tests, and production build pass"
+          }
+        ],
+        "assignee": "@me",
+        "description": "Follow up @task-56di2r with a layout-only refinement. Preserve all current branding, colours, typography, copy, URLs, and CMS behavior while giving the episode index and transcript page a stronger newspaper-style editorial hierarchy centered on listening.",
+        "labels": [
+          "normal",
+          "frontend",
+          "layout",
+          "podcast"
+        ],
+        "priority": "medium",
+        "status": "in-progress",
+        "title": "Refine podcast editorial layout for The Daily Transit"
+      }
+    },
+    {
+      "id": "v3",
+      "taskId": "fnjlra",
+      "version": 3,
+      "timestamp": "2026-07-29T20:57:23.261308Z",
+      "changes": [
+        {
+          "field": "implementationPlan",
+          "oldValue": null,
+          "newValue": "1. Restructure `web/src/app/articles/page.tsx` into a wider editorial front: the newest episode becomes the lead package, the next entries form a compact transcript rail, and remaining episodes retain the existing card content below. No branding, colour, URL, metadata, or editorial-copy changes.\n2. Restructure `web/src/app/articles/[slug]/page.tsx` so the episode header and optional player span the page, the transcript remains the central reading column, and the existing involvement/Atlas actions sit in restrained side rails.\n3. Add responsive layout classes to `web/src/app/globals.css`, using only existing font and colour variables; collapse all grids to a single reading column at tablet/mobile widths.\n4. Run `git diff --check`, lint, the unit suite, and the production build; record the unavailable browser backend if visual QA remains inaccessible.\n\nFollow-up to @task-56di2r. This is layout-only: no content-model, route, branding, colour, or typography changes."
+        }
+      ],
+      "snapshot": {
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "The episode index gives the latest episode clear lead-story prominence and separates recent transcripts into a readable secondary hierarchy"
+          },
+          {
+            "completed": false,
+            "text": "Episode detail pages prioritize the audio player and transcript in a wider editorial layout with useful side rails"
+          },
+          {
+            "completed": false,
+            "text": "Existing branding, colours, typography, copy, URLs, and CMS behavior remain unchanged"
+          },
+          {
+            "completed": false,
+            "text": "The revised layouts collapse cleanly for tablet and mobile widths"
+          },
+          {
+            "completed": false,
+            "text": "Lint, unit tests, and production build pass"
+          }
+        ],
+        "assignee": "@me",
+        "description": "Follow up @task-56di2r with a layout-only refinement. Preserve all current branding, colours, typography, copy, URLs, and CMS behavior while giving the episode index and transcript page a stronger newspaper-style editorial hierarchy centered on listening.",
+        "implementationPlan": "1. Restructure `web/src/app/articles/page.tsx` into a wider editorial front: the newest episode becomes the lead package, the next entries form a compact transcript rail, and remaining episodes retain the existing card content below. No branding, colour, URL, metadata, or editorial-copy changes.\n2. Restructure `web/src/app/articles/[slug]/page.tsx` so the episode header and optional player span the page, the transcript remains the central reading column, and the existing involvement/Atlas actions sit in restrained side rails.\n3. Add responsive layout classes to `web/src/app/globals.css`, using only existing font and colour variables; collapse all grids to a single reading column at tablet/mobile widths.\n4. Run `git diff --check`, lint, the unit suite, and the production build; record the unavailable browser backend if visual QA remains inaccessible.\n\nFollow-up to @task-56di2r. This is layout-only: no content-model, route, branding, colour, or typography changes.",
+        "labels": [
+          "normal",
+          "frontend",
+          "layout",
+          "podcast"
+        ],
+        "priority": "medium",
+        "status": "in-progress",
+        "title": "Refine podcast editorial layout for The Daily Transit"
+      }
+    },
+    {
+      "id": "v4",
+      "taskId": "fnjlra",
+      "version": 4,
+      "timestamp": "2026-07-29T21:05:08.026123Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "oldValue": null,
+          "newValue": "Done: lead-episode front with transcript rail, wider episode header/player, central transcript with metadata/action side rails, and single-column responsive collapse. Preserved existing branding, colours, typography, copy, routes, and CMS behavior. Verification: git diff --check; npm run lint; npm run test:unit (53/53); npm run build. Visual browser QA unavailable because no browser backend is connected."
+        }
+      ],
+      "snapshot": {
+        "acceptanceCriteria": [
+          {
+            "completed": true,
+            "text": "The episode index gives the latest episode clear lead-story prominence and separates recent transcripts into a readable secondary hierarchy"
+          },
+          {
+            "completed": true,
+            "text": "Episode detail pages prioritize the audio player and transcript in a wider editorial layout with useful side rails"
+          },
+          {
+            "completed": true,
+            "text": "Existing branding, colours, typography, copy, URLs, and CMS behavior remain unchanged"
+          },
+          {
+            "completed": true,
+            "text": "The revised layouts collapse cleanly for tablet and mobile widths"
+          },
+          {
+            "completed": true,
+            "text": "Lint, unit tests, and production build pass"
+          }
+        ],
+        "assignee": "@me",
+        "description": "Follow up @task-56di2r with a layout-only refinement. Preserve all current branding, colours, typography, copy, URLs, and CMS behavior while giving the episode index and transcript page a stronger newspaper-style editorial hierarchy centered on listening.",
+        "implementationNotes": "Done: lead-episode front with transcript rail, wider episode header/player, central transcript with metadata/action side rails, and single-column responsive collapse. Preserved existing branding, colours, typography, copy, routes, and CMS behavior. Verification: git diff --check; npm run lint; npm run test:unit (53/53); npm run build. Visual browser QA unavailable because no browser backend is connected.",
+        "implementationPlan": "1. Restructure `web/src/app/articles/page.tsx` into a wider editorial front: the newest episode becomes the lead package, the next entries form a compact transcript rail, and remaining episodes retain the existing card content below. No branding, colour, URL, metadata, or editorial-copy changes.\n2. Restructure `web/src/app/articles/[slug]/page.tsx` so the episode header and optional player span the page, the transcript remains the central reading column, and the existing involvement/Atlas actions sit in restrained side rails.\n3. Add responsive layout classes to `web/src/app/globals.css`, using only existing font and colour variables; collapse all grids to a single reading column at tablet/mobile widths.\n4. Run `git diff --check`, lint, the unit suite, and the production build; record the unavailable browser backend if visual QA remains inaccessible.\n\nFollow-up to @task-56di2r. This is layout-only: no content-model, route, branding, colour, or typography changes.",
+        "labels": [
+          "normal",
+          "frontend",
+          "layout",
+          "podcast"
+        ],
+        "priority": "medium",
+        "status": "in-progress",
+        "title": "Refine podcast editorial layout for The Daily Transit"
+      }
+    },
+    {
+      "id": "v5",
+      "taskId": "fnjlra",
+      "version": 5,
+      "timestamp": "2026-07-29T21:05:17.509753Z",
+      "changes": [
+        {
+          "field": "status",
+          "oldValue": "in-progress",
+          "newValue": "done"
+        }
+      ],
+      "snapshot": {
+        "acceptanceCriteria": [
+          {
+            "text": "The episode index gives the latest episode clear lead-story prominence and separates recent transcripts into a readable secondary hierarchy",
+            "completed": true
+          },
+          {
+            "text": "Episode detail pages prioritize the audio player and transcript in a wider editorial layout with useful side rails",
+            "completed": true
+          },
+          {
+            "text": "Existing branding, colours, typography, copy, URLs, and CMS behavior remain unchanged",
+            "completed": true
+          },
+          {
+            "text": "The revised layouts collapse cleanly for tablet and mobile widths",
+            "completed": true
+          },
+          {
+            "text": "Lint, unit tests, and production build pass",
+            "completed": true
+          }
+        ],
+        "assignee": "@me",
+        "description": "Follow up @task-56di2r with a layout-only refinement. Preserve all current branding, colours, typography, copy, URLs, and CMS behavior while giving the episode index and transcript page a stronger newspaper-style editorial hierarchy centered on listening.",
+        "implementationNotes": "Done: lead-episode front with transcript rail, wider episode header/player, central transcript with metadata/action side rails, and single-column responsive collapse. Preserved existing branding, colours, typography, copy, routes, and CMS behavior. Verification: git diff --check; npm run lint; npm run test:unit (53/53); npm run build. Visual browser QA unavailable because no browser backend is connected.",
+        "implementationPlan": "1. Restructure `web/src/app/articles/page.tsx` into a wider editorial front: the newest episode becomes the lead package, the next entries form a compact transcript rail, and remaining episodes retain the existing card content below. No branding, colour, URL, metadata, or editorial-copy changes.\n2. Restructure `web/src/app/articles/[slug]/page.tsx` so the episode header and optional player span the page, the transcript remains the central reading column, and the existing involvement/Atlas actions sit in restrained side rails.\n3. Add responsive layout classes to `web/src/app/globals.css`, using only existing font and colour variables; collapse all grids to a single reading column at tablet/mobile widths.\n4. Run `git diff --check`, lint, the unit suite, and the production build; record the unavailable browser backend if visual QA remains inaccessible.\n\nFollow-up to @task-56di2r. This is layout-only: no content-model, route, branding, colour, or typography changes.",
+        "labels": [
+          "normal",
+          "frontend",
+          "layout",
+          "podcast"
+        ],
+        "priority": "medium",
+        "status": "done",
+        "title": "Refine podcast editorial layout for The Daily Transit"
+      }
+    }
+  ]
+}

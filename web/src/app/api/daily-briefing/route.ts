@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/pocketbase/server";
+import { MELBOURNE_TIME_ZONE } from "@/lib/melbourne-date";
 
 export const dynamic = "force-dynamic";
 
@@ -185,6 +186,7 @@ export async function GET(request: Request) {
         weekday: "long",
         day: "numeric",
         month: "long",
+        timeZone: MELBOURNE_TIME_ZONE,
       }),
       moonPhase: getMoonPhaseName(now),
       apod: apod

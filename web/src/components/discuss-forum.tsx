@@ -14,6 +14,7 @@ type Thread = {
   title: string;
   continue_thread_id: string | null;
   is_locked: boolean;
+  is_hidden: boolean;
 };
 
 type DayAccess = {
@@ -201,6 +202,7 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
   const dayRestrictedThread = selectedThread?.kind === "daily_live";
   const interactionLocked =
     Boolean(selectedThread?.is_locked) ||
+    Boolean(selectedThread?.is_hidden) ||
     !isAuthenticated ||
     (dayRestrictedThread && dayAccess ? !dayAccess.allowed : false);
   const tree = useMemo(() => buildTree(posts), [posts]);
@@ -271,10 +273,12 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
 
   useEffect(() => {
     if (!selectedThreadId) return;
+    const selectedThread = threads.find((thread) => thread.id === selectedThreadId);
     if (dayAccess && !dayAccess.allowed) return;
+    if (selectedThread?.is_hidden) return;
     const handle = window.setTimeout(() => { void loadPosts(selectedThreadId); }, 0);
     return () => window.clearTimeout(handle);
-  }, [selectedThreadId, loadPosts, dayAccess]);
+  }, [selectedThreadId, loadPosts, dayAccess, threads]);
 
   async function createPost(parentPostId: string | null) {
     if (!isAuthenticated) { setFeedback("Sign in to post comments and replies."); return; }
@@ -342,9 +346,11 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
     try {
       const response = await fetch(`/api/game/today?date=${encodeURIComponent(date)}`, { cache: "no-store" });
       if (!response.ok) return;
-      const payload = (await response.json()) as { play?: { score?: number } | null };
-      const maybeScore = payload.play?.score;
-      if (typeof maybeScore === "number" && Number.isFinite(maybeScore)) setSharedScore(maybeScore);
+      const payload = (await response.json()) as { completedGames?: { game: string; score: number }[] };
+      const scores = (payload.completedGames ?? []).map((row) => row.score).filter((value) => Number.isFinite(value));
+      if (scores.length > 0) {
+        setSharedScore(Math.round(scores.reduce((sum, value) => sum + value, 0) / scores.length));
+      }
     } catch {
       // keep composer usable even if preload fails
     }
@@ -598,7 +604,7 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
                 <p className="muted m-0 text-sm">Log preview</p>
                 <div className="flex gap-2">
                   <button className="button" type="button" onClick={() => void preloadSharedResult()} disabled={interactionLocked}>
-                    Sync from mission
+                    Sync from today&apos;s games
                   </button>
                   <button className="button" type="button" onClick={() => setShowShareDetails((v) => !v)} disabled={interactionLocked}>
                     {showShareDetails ? "Hide fields" : "Edit fields"}
@@ -608,8 +614,8 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
 
               {/* Preview card */}
               <div className="border border-[var(--outline-variant)] p-4" style={{ background: "var(--surface-container)" }}>
-                <p className="m-0 mb-1" style={{ ...dataText, fontSize: "0.75rem", fontWeight: 700 }}>Daily Mission Log</p>
-                <p className="m-0 mb-2" style={{ ...dataText, fontSize: "0.6rem", color: "var(--muted)" }}>Mission {date}</p>
+                <p className="m-0 mb-1" style={{ ...dataText, fontSize: "0.75rem", fontWeight: 700 }}>Daily Games Log</p>
+                <p className="m-0 mb-2" style={{ ...dataText, fontSize: "0.6rem", color: "var(--muted)" }}>{date}</p>
                 {sharedScore !== null ? <p className="my-1" style={{ ...dataText, fontSize: "0.8rem", color: "var(--primary)" }}>Score <strong>{sharedScore}</strong></p> : null}
                 {composerBody.trim() ? <p className="text-sm my-2">{composerBody.trim().slice(0, 180)}</p> : null}
                 <div className="my-2">
@@ -665,7 +671,7 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
                   </label>
                   {sharedAnswers.map((answer, idx) => (
                     <label className="flex flex-col gap-1" key={`answer-${idx}`} style={{ ...dataText, fontSize: "0.65rem", color: "var(--muted)" }}>
-                      <span>Mission component {idx + 1} analysis</span>
+                      <span>Game {idx + 1} analysis</span>
                       <input
                         className="input"
                         value={answer}
@@ -742,7 +748,19 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
                 className="button button-primary"
                 href={dayAccess.signInRequired ? `/auth/sign-in?next=${returnTo}` : `/games/today?date=${date}&returnTo=${returnTo}`}
               >
-                {dayAccess.signInRequired ? "Sign in" : "Open Mission"}
+                {dayAccess.signInRequired ? "Sign in" : "Play Today's Games"}
+              </Link>
+              <Link className="button" href="/calendar">Calendar</Link>
+            </div>
+          </div>
+        ) : null}
+
+        {dayAccess?.allowed && selectedThread?.is_hidden ? (
+          <div className="flex justify-between items-center flex-wrap gap-3 border border-[var(--outline-variant)] p-4 text-sm" style={{ background: "var(--surface-container-low)" }}>
+            <p className="m-0">Finish a game today before opening this puzzle discussion.</p>
+            <div className="flex gap-2">
+              <Link className="button button-primary" href={`/games/today?date=${date}&returnTo=${returnTo}`}>
+                Play Today&apos;s Games
               </Link>
               <Link className="button" href="/calendar">Calendar</Link>
             </div>
@@ -800,7 +818,11 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
               </div>
             ) : null}
 
-            {selectedThreadId === liveThread.id ? (
+            {selectedThreadId === liveThread.id && liveThread.is_hidden ? (
+              <div className="border border-[var(--outline-variant)] p-4 text-sm" style={{ background: "var(--surface-container-low)" }}>
+                <p className="m-0">Discussion opens after a game is completed for this day.</p>
+              </div>
+            ) : selectedThreadId === liveThread.id ? (
               <>
                 {loadingPosts ? <p className="muted text-sm">Loading posts...</p> : null}
                 {!loadingPosts && tree.length === 0 ? <p className="muted text-sm">No posts yet. Start the discussion.</p> : null}
@@ -846,7 +868,11 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
                 </span>
               </div>
 
-              {isSelected ? (
+              {isSelected && thread.is_hidden ? (
+                <div className="border border-[var(--outline-variant)] p-4 text-sm" style={{ background: "var(--surface-container-low)" }}>
+                  <p className="m-0">Discussion opens after a game is completed for this day.</p>
+                </div>
+              ) : isSelected ? (
                 <>
                   {loadingPosts ? <p className="muted text-sm">Loading posts...</p> : null}
                   {!loadingPosts && tree.length === 0 ? <p className="muted text-sm">No posts yet.</p> : null}
@@ -941,7 +967,7 @@ export function DiscussForum({ initialDate, isAuthenticated }: { initialDate: st
           className="button button-full"
           href={`/games/today?date=${date}&returnTo=${returnTo}`}
         >
-          Open Mission
+          Play Today&apos;s Games
         </Link>
       </aside>
     </div>

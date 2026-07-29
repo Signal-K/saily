@@ -1,4 +1,6 @@
 import { getSailyPocketBaseUrl } from "@/lib/pocketbase/config";
+import { readFile, readdir } from "node:fs/promises";
+import path from "node:path";
 
 export type CmsArticle = {
   id: string;
@@ -13,6 +15,16 @@ export type CmsArticle = {
   hero_image: string;
   published_at: string;
   updated_at: string;
+  episode_number: string | null;
+  audio_url: string | null;
+  audio_duration: string | null;
+};
+
+type RawCmsArticle = Omit<CmsArticle, "episode_number" | "audio_url" | "audio_duration"> & {
+  episode_number?: unknown;
+  audio_url?: unknown;
+  audio_duration?: unknown;
+  extra_frontmatter?: Record<string, unknown> | null;
 };
 
 type PocketBaseListResponse<T> = {
@@ -22,6 +34,99 @@ type PocketBaseListResponse<T> = {
   totalItems: number;
   totalPages: number;
 };
+
+const FILE_ARTICLES_DIR = path.join(process.cwd(), "content", "articles");
+
+function parseArrayField(value: string | undefined): string[] | null {
+  if (!value) return null;
+  return value
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function parseOptionalText(value: unknown): string | null {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return String(value);
+  }
+  if (typeof value !== "string") return null;
+  const normalized = value.trim();
+  return normalized || null;
+}
+
+function normalizeArticle(article: RawCmsArticle): CmsArticle {
+  const extra = article.extra_frontmatter ?? {};
+
+  return {
+    ...article,
+    episode_number: parseOptionalText(
+      article.episode_number ?? extra.episodeNumber ?? extra.episode_number,
+    ),
+    audio_url: parseOptionalText(article.audio_url ?? extra.audioUrl ?? extra.audio_url),
+    audio_duration: parseOptionalText(
+      article.audio_duration ?? extra.audioDuration ?? extra.audio_duration,
+    ),
+  };
+}
+
+function parseFrontmatter(raw: string): { frontmatter: Record<string, string>; body: string } {
+  if (!raw.startsWith("---\n")) return { frontmatter: {}, body: raw.trim() };
+  const end = raw.indexOf("\n---\n", 4);
+  if (end === -1) return { frontmatter: {}, body: raw.trim() };
+
+  const frontmatterText = raw.slice(4, end);
+  const body = raw.slice(end + 5).trim();
+  const frontmatter: Record<string, string> = {};
+  for (const line of frontmatterText.split("\n")) {
+    const separator = line.indexOf(":");
+    if (separator === -1) continue;
+    const key = line.slice(0, separator).trim();
+    const value = line.slice(separator + 1).trim();
+    if (key) frontmatter[key] = value;
+  }
+  return { frontmatter, body };
+}
+
+async function listFileArticles(): Promise<CmsArticle[]> {
+  let files: string[];
+  try {
+    files = await readdir(FILE_ARTICLES_DIR);
+  } catch {
+    return [];
+  }
+
+  const articles = await Promise.all(
+    files
+      .filter((file) => file.endsWith(".md"))
+      .map(async (file) => {
+        const raw = await readFile(path.join(FILE_ARTICLES_DIR, file), "utf8");
+        const { frontmatter, body } = parseFrontmatter(raw);
+        const slug = frontmatter.slug || file.replace(/\.md$/, "");
+        const publishedAt = frontmatter.publishedAt || "";
+        return normalizeArticle({
+          id: `file:${slug}`,
+          slug,
+          title: frontmatter.title || slug,
+          status: frontmatter.status || "published",
+          summary: frontmatter.summary || "",
+          body,
+          tags: parseArrayField(frontmatter.tags),
+          sources: parseArrayField(frontmatter.sources),
+          citizen_science_links: parseArrayField(frontmatter.citizenScienceLinks),
+          hero_image: frontmatter.heroImage || "",
+          published_at: publishedAt,
+          updated_at: frontmatter.updatedAt || publishedAt,
+          episode_number: frontmatter.episodeNumber,
+          audio_url: frontmatter.audioUrl,
+          audio_duration: frontmatter.audioDuration,
+        });
+      }),
+  );
+
+  return articles
+    .filter((article) => article.status === "published")
+    .sort((a, b) => b.published_at.localeCompare(a.published_at));
+}
 
 /**
  * Published articles are publicly readable directly from PocketBase's REST
@@ -37,11 +142,11 @@ export async function listPublishedArticles(): Promise<CmsArticle[]> {
 
   const response = await fetch(url, { cache: "no-store" });
   if (!response.ok) {
-    return [];
+    return listFileArticles();
   }
 
-  const data = (await response.json()) as PocketBaseListResponse<CmsArticle>;
-  return data.items;
+  const data = (await response.json()) as PocketBaseListResponse<RawCmsArticle>;
+  return data.items.length > 0 ? data.items.map(normalizeArticle) : listFileArticles();
 }
 
 export async function getLatestPublishedArticle(): Promise<CmsArticle | null> {
@@ -52,11 +157,14 @@ export async function getLatestPublishedArticle(): Promise<CmsArticle | null> {
 
   const response = await fetch(url, { cache: "no-store" });
   if (!response.ok) {
-    return null;
+    const articles = await listFileArticles();
+    return articles[0] ?? null;
   }
 
-  const data = (await response.json()) as PocketBaseListResponse<CmsArticle>;
-  return data.items[0] ?? null;
+  const data = (await response.json()) as PocketBaseListResponse<RawCmsArticle>;
+  if (data.items[0]) return normalizeArticle(data.items[0]);
+  const articles = await listFileArticles();
+  return articles[0] ?? null;
 }
 
 export async function getPublishedArticle(slug: string): Promise<CmsArticle | null> {
@@ -66,9 +174,12 @@ export async function getPublishedArticle(slug: string): Promise<CmsArticle | nu
 
   const response = await fetch(url, { cache: "no-store" });
   if (!response.ok) {
-    return null;
+    const articles = await listFileArticles();
+    return articles.find((article) => article.slug === slug) ?? null;
   }
 
-  const data = (await response.json()) as PocketBaseListResponse<CmsArticle>;
-  return data.items[0] ?? null;
+  const data = (await response.json()) as PocketBaseListResponse<RawCmsArticle>;
+  if (data.items[0]) return normalizeArticle(data.items[0]);
+  const articles = await listFileArticles();
+  return articles.find((article) => article.slug === slug) ?? null;
 }

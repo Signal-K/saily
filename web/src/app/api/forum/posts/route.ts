@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getDayAccessForUser } from "@/lib/day-access";
-import { isDailyLiveThreadLocked } from "@/lib/forum";
+import { isDailyLiveThreadLocked, isThreadHiddenUntilCompletion } from "@/lib/forum";
 import { createClient } from "@/lib/pocketbase/server";
 
 type ThreadMeta = {
@@ -8,12 +8,13 @@ type ThreadMeta = {
   kind: "daily_live" | "ongoing";
   puzzle_date: string;
   continue_thread_id: string | null;
+  hidden_until_completion: boolean;
 };
 
 async function getThreadMeta(pocketbase: Awaited<ReturnType<typeof createClient>>, threadId: string) {
   const { data, error } = await pocketbase
     .from("forum_threads")
-    .select("id,kind,puzzle_date,continue_thread_id")
+    .select("id,kind,puzzle_date,continue_thread_id,hidden_until_completion")
     .eq("id", threadId)
     .maybeSingle();
 
@@ -44,7 +45,11 @@ export async function GET(request: Request) {
   }
 
   const access = await getDayAccessForUser(pocketbase, user?.id, threadMeta.puzzle_date);
-  if (!access.allowed) {
+  const isHidden = isThreadHiddenUntilCompletion(
+    { hidden_until_completion: threadMeta.hidden_until_completion ?? true },
+    { completed: access.completed },
+  );
+  if (!access.allowed || isHidden) {
     return NextResponse.json({ error: "Complete or unlock this day before opening the discussion.", access }, { status: 403 });
   }
 
@@ -165,7 +170,11 @@ export async function POST(request: Request) {
   }
 
   const access = await getDayAccessForUser(pocketbase, user.id, threadMeta.puzzle_date);
-  if (!access.allowed) {
+  const isHidden = isThreadHiddenUntilCompletion(
+    { hidden_until_completion: threadMeta.hidden_until_completion ?? true },
+    { completed: access.completed },
+  );
+  if (!access.allowed || isHidden) {
     return NextResponse.json({ error: "Complete or unlock this day before posting.", access }, { status: 403 });
   }
 

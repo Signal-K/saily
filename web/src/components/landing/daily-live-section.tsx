@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Kicker, StatusPill } from "@/components/landing/landing-shared";
+import { MELBOURNE_TIME_ZONE } from "@/lib/melbourne-date";
 
 type LocationState =
   | { status: "idle" }
@@ -41,10 +42,15 @@ type BriefingState =
   | { status: "error"; data: Briefing };
 
 const fallbackBriefing: Briefing = {
+  // Explicit timeZone keeps this identical between SSR (container clock, usually UTC)
+  // and client hydration (browser-local clock) — without it the two can render
+  // different calendar days around the Melbourne midnight reset and trigger a
+  // React hydration mismatch.
   dateLabel: new Date().toLocaleDateString("en-AU", {
     weekday: "long",
     day: "numeric",
     month: "long",
+    timeZone: MELBOURNE_TIME_ZONE,
   }),
   moonPhase: "Daily sky",
   apod: null,

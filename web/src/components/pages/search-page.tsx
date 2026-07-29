@@ -44,10 +44,18 @@ type DailyGameRow = {
 type DailyPlayRow = {
   id: number;
   game_date: string;
+  game: string | null;
   attempts: number;
   won: boolean;
   score: number;
   played_at: string;
+};
+
+const GAME_LABELS: Record<string, string> = {
+  crossword: "Crossword",
+  dsmr: "Transit Spotter",
+  close_approach: "Close Approach Ranker",
+  cloudspotting_mars: "Cloudspotting on Mars",
 };
 
 type UserStatsRow = {
@@ -306,7 +314,7 @@ export default async function SearchPage({
               .limit(fetchLimit)
           : Promise.resolve({ data: [] as DailyGameRow[], error: null }),
     user
-      ? pocketbase.from("daily_plays").select("id,game_date,attempts,won,score,played_at").eq("user_id", user.id).order("played_at", { ascending: false }).limit(250)
+      ? pocketbase.from("daily_plays").select("id,game_date,game,attempts,won,score,played_at").eq("user_id", user.id).order("played_at", { ascending: false }).limit(250)
       : Promise.resolve({ data: [] as DailyPlayRow[], error: null }),
     user
       ? pocketbase.from("user_stats").select("games_played,wins,current_streak,best_streak,total_score,updated_at").eq("user_id", user.id).maybeSingle()
@@ -657,7 +665,9 @@ export default async function SearchPage({
             {playRows.map((play) => (
               <li key={play.id} className="search-item">
                 <div>
-                  <p className="search-item-title">{play.game_date}</p>
+                  <p className="search-item-title">
+                    {play.game_date} {play.game ? `• ${GAME_LABELS[play.game] ?? play.game}` : null}
+                  </p>
                   <p className="muted">
                     {play.won ? "Won" : "Lost"} • Score {play.score} • Attempts {play.attempts}
                   </p>

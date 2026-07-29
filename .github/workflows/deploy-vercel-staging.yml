@@ -1,0 +1,56 @@
+name: Deploy Vercel Staging (sprint-10)
+
+on:
+  push:
+    branches: [sprint-10]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vercel-staging-sprint-10
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy thedailysail preview to Vercel
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_TEAM_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify Vercel token
+        run: npx vercel@latest whoami --token="$VERCEL_TOKEN"
+
+      # Pulls Vercel's "preview" environment config (not production) — this
+      # keeps env vars/behavior aligned with a normal PR preview rather than
+      # accidentally building against production env values.
+      - name: Pull Vercel preview environment
+        run: npx vercel@latest pull --yes --environment=preview --token="$VERCEL_TOKEN"
+
+      - name: Build preview artifact
+        run: npx vercel@latest build --token="$VERCEL_TOKEN"
+
+      - name: Deploy preview artifact
+        id: deploy
+        run: |
+          URL=$(npx vercel@latest deploy --prebuilt --token="$VERCEL_TOKEN")
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "Deployed staging preview: $URL"

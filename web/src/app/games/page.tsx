@@ -4,9 +4,24 @@ export const metadata = { title: "Games — The Daily Transit" };
 
 const MISSIONS = [
   {
-    href: "/games/today",
-    title: "Today's Mission",
-    body: "A new science crossword and a real transit-spotting round every day — the daily rotating puzzle, built from real data.",
+    href: "/games/crossword",
+    title: "Crossword",
+    body: "A new science crossword every day, clued from real sky events and discoveries. Play it any time — completing it earns a Data Chip.",
+  },
+  {
+    href: "/games/transit-spotter",
+    title: "Transit Spotter",
+    body: "Spot real transit dips in genuine Planet Hunters TESS light curves. Play it any time — completing it earns a Data Chip.",
+  },
+  {
+    href: "/games/close-approaches",
+    title: "Close Approach Ranker",
+    body: "Rank real NASA/JPL near-Earth flybys by closest approach. Play it any time — completing it earns a Data Chip.",
+  },
+  {
+    href: "/games/cloudspotting-mars",
+    title: "Cloudspotting on Mars",
+    body: "Classify real Mars surface imagery from Zooniverse's Cloudspotting on Mars project. Play it any time — completing it earns a Data Chip.",
   },
 ];
 
@@ -61,6 +76,18 @@ export default function GamesPage() {
         </p>
         <a href="https://playlandnam.space" target="_blank" rel="noreferrer" className="button button-primary">
           Play Landnam now →
+        </a>
+      </div>
+
+      <div className="panel" style={{ padding: "1.25rem", marginTop: "1rem" }}>
+        <p className="eyebrow">Star Sailors</p>
+        <h2 style={{ margin: "0 0 0.35rem" }}>Atlas</h2>
+        <p className="muted" style={{ margin: "0 0 1rem" }}>
+          Track real sky events and plan your own observations — the
+          Star Sailors companion for going outside and looking up.
+        </p>
+        <a href="https://youratlas.cc" target="_blank" rel="noreferrer" className="button button-primary">
+          Visit Atlas →
         </a>
       </div>
 
