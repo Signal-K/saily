@@ -61,7 +61,7 @@ export function PuzzleWidget() {
       ) : null}
       <div className="cta-row">
         <Link href={missionHref} className="button button-primary">
-          {completed ? "Replay mission" : "Play today&apos;s mission"}
+          {completed ? "Replay mission" : "Play today's mission"}
         </Link>
         {completed && state?.date ? (
           <Link href={`/discuss?date=${state.date}`} className="button">
