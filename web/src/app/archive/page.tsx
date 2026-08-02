@@ -40,7 +40,7 @@ export default function ArchivePage() {
         <p className="eyebrow">The Daily Transit</p>
         <h1>Archive</h1>
         <p className="muted" style={{ maxWidth: "62ch" }}>
-          Recent editions, source pulls, and daily mission records. The live archive starts with today&apos;s automated
+          Recent editions, source pulls, and daily mission records. The live archive starts with today&apos;s
           briefing and will retain each daily edition as the feed matures.
         </p>
       </section>

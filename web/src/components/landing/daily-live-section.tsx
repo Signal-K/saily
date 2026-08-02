@@ -153,13 +153,13 @@ export function DailyLiveSection() {
   }
 
   return (
-    <main id="daily" className="tx-section tx-live" aria-label="Daily automated astronomy briefing">
+    <main id="daily" className="tx-section tx-live" aria-label="Daily astronomy briefing">
       <div className="tx-live-head">
         <div>
           <Kicker>The Daily Transit</Kicker>
           <h1>{briefing.data.dateLabel}</h1>
           <p>
-            Today&apos;s automated astronomy front page: NASA image, sky events, local mode, and Star Sailors activity.
+            Today&apos;s astronomy front page: NASA image, sky events, local mode, and Star Sailors activity.
           </p>
         </div>
         <div className="tx-live-status">
