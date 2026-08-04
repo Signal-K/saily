@@ -10,16 +10,95 @@ type Props = {
   initialTheme: "light" | "dark";
 };
 
-const NAV_LINKS = [
+type MegaItem = {
+  href: string;
+  label: string;
+  description: string;
+  tone?: "science" | "puzzle" | "discover" | "community" | "streak" | "ink";
+};
+
+const megaSections: Array<{
+  label: string;
+  href: string;
+  columns: MegaItem[][];
+}> = [
+  {
+    label: "Today",
+    href: "/games/today",
+    columns: [
+      [
+        { href: "/games/today", label: "Today's Mission", description: "Daily citizen-science puzzle", tone: "science" },
+        { href: "/games", label: "All Games", description: "Browse every mission", tone: "discover" },
+      ],
+      [
+        { href: "/discuss", label: "Consensus Desk", description: "Compare field reports", tone: "community" },
+        { href: "/calendar", label: "Edition Archive", description: "Replay previous editions", tone: "ink" },
+      ],
+    ],
+  },
+  {
+    label: "Stories",
+    href: "/articles",
+    columns: [
+      [
+        { href: "/articles", label: "Episodes", description: "Narrative dispatches", tone: "science" },
+        { href: "/about", label: "About", description: "What The Daily Transit is", tone: "ink" },
+      ],
+      [
+        { href: "/postcards", label: "Postcards", description: "Share a discovery", tone: "discover" },
+        { href: "/profile", label: "Personnel File", description: "Progress, badges, history", tone: "ink" },
+      ],
+    ],
+  },
+  {
+    label: "Progress",
+    href: "/calendar",
+    columns: [
+      [
+        { href: "/calendar", label: "All Editions", description: "Browse by mission date", tone: "ink" },
+        { href: "/leaderboard", label: "Leaderboard", description: "Top personnel records", tone: "streak" },
+      ],
+      [
+        { href: "/chips", label: "Data Chips", description: "Balance and streak repair", tone: "puzzle" },
+        { href: "/search", label: "Registry", description: "Search the archive", tone: "discover" },
+      ],
+    ],
+  },
+  {
+    label: "Feedback",
+    href: "/feedback",
+    columns: [
+      [
+        { href: "/feedback", label: "Suggestions Desk", description: "Review assets, vote on ideas", tone: "community" },
+        { href: "/feedback#assets", label: "Asset Review", description: "Rate Landnam room art", tone: "discover" },
+      ],
+    ],
+  },
+];
+
+const MOBILE_NAV_LINKS = [
   { href: "/articles", label: "Episodes" },
   { href: "/games/today", label: "Missions" },
   { href: "/games", label: "Games" },
   { href: "/calendar", label: "Archive" },
   { href: "/discuss", label: "Consensus" },
   { href: "/leaderboard", label: "Stats" },
+  { href: "/feedback", label: "Feedback" },
   { href: "/search", label: "Registry" },
   { href: "/about", label: "About" },
 ];
+
+function MegaIcon({ tone = "science" }: { tone?: MegaItem["tone"] }) {
+  const glyphs = {
+    science: "◎",
+    puzzle: "◫",
+    discover: "◌",
+    community: "§",
+    streak: "†",
+    ink: "¶",
+  };
+  return <span className={`dt-mega-icon is-${tone}`} aria-hidden>{glyphs[tone]}</span>;
+}
 
 export function DailyTransitMasthead({ initialTheme }: Props) {
   const pathname = usePathname();
@@ -39,8 +118,9 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
 
         .dt-masthead-top {
           display: grid;
-          grid-template-columns: minmax(190px, auto) 1fr auto;
+          grid-template-columns: minmax(190px, auto) auto;
           align-items: center;
+          justify-content: space-between;
           gap: 0.75rem;
           width: min(var(--spacing-content-max, 1180px), calc(100% - 2rem));
           margin-inline: auto;
@@ -57,7 +137,9 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
           text-decoration: none;
         }
 
-        .dt-brand:hover {
+        .dt-brand:hover,
+        .dt-nav-link:hover,
+        .dt-mega-item:hover {
           text-decoration: none;
         }
 
@@ -96,36 +178,6 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
           text-transform: uppercase;
           color: var(--fg-faded, #9099a4);
           white-space: nowrap;
-        }
-
-        .dt-primary-nav {
-          display: inline-flex;
-          align-items: center;
-          gap: 1.1rem;
-          min-width: 0;
-          overflow-x: auto;
-          scrollbar-width: none;
-        }
-
-        .dt-primary-nav::-webkit-scrollbar {
-          display: none;
-        }
-
-        .dt-primary-nav-link {
-          font-family: var(--font-data, ui-monospace, monospace);
-          font-size: 0.72rem;
-          font-weight: 600;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          color: var(--fg-faded, #9099a4);
-          text-decoration: none;
-          white-space: nowrap;
-          padding: 0.35rem 0.1rem;
-        }
-
-        .dt-primary-nav-link:hover,
-        .dt-primary-nav-link.is-active {
-          color: var(--ink, #16181c);
         }
 
         .dt-actions {
@@ -243,9 +295,140 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
           display: none;
         }
 
+        .dt-nav {
+          position: relative;
+          display: flex;
+          align-items: stretch;
+          width: min(var(--spacing-content-max, 1180px), calc(100% - 2rem));
+          margin-inline: auto;
+          overflow: visible;
+        }
+
+        .dt-nav-item {
+          position: relative;
+        }
+
+        .dt-nav-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.45rem;
+          padding: 0.7rem 0.95rem;
+          border-bottom: 2px solid transparent;
+          color: var(--fg-muted, #5b636f);
+          font-family: var(--font-data, ui-monospace, monospace);
+          font-size: 0.72rem;
+          font-weight: 700;
+          line-height: 1.1;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          text-decoration: none;
+          white-space: nowrap;
+        }
+
+        .dt-nav-link:hover,
+        .dt-nav-item:focus-within .dt-nav-link,
+        .dt-nav-item:hover .dt-nav-link,
+        .dt-nav-link.is-active {
+          border-bottom-color: var(--primary, #0a82b3);
+          color: var(--primary, #0a82b3);
+        }
+
+        .dt-mega {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          z-index: 95;
+          display: none;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          width: min(480px, calc(100vw - 2rem));
+          border: 1px solid var(--ink, #16181c);
+          background: var(--bg-surface, #fff);
+          box-shadow: 0 16px 32px -18px rgba(7, 41, 56, 0.35);
+        }
+
+        .dt-nav-item:hover .dt-mega,
+        .dt-nav-item:focus-within .dt-mega {
+          display: grid;
+        }
+
+        .dt-mega-head {
+          grid-column: 1 / -1;
+          display: flex;
+          justify-content: space-between;
+          gap: 1rem;
+          border-bottom: 1px solid var(--rule, #d9dde3);
+          background: var(--bg-surface-warm, #f4efe6);
+          padding: 0.65rem 0.8rem;
+          font-family: var(--font-data, ui-monospace, monospace);
+          font-size: 0.62rem;
+          font-weight: 700;
+          line-height: 1.1;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: var(--ink, #16181c);
+        }
+
+        .dt-mega-head em {
+          color: var(--primary, #0a82b3);
+          font-style: normal;
+        }
+
+        .dt-mega-col {
+          display: grid;
+          align-content: start;
+          gap: 0.15rem;
+          padding: 0.65rem;
+        }
+
+        .dt-mega-col + .dt-mega-col {
+          border-left: 1px solid var(--rule, #d9dde3);
+        }
+
+        .dt-mega-item {
+          display: grid;
+          grid-template-columns: 2rem minmax(0, 1fr);
+          gap: 0.65rem;
+          align-items: start;
+          color: inherit;
+          padding: 0.55rem;
+          text-decoration: none;
+        }
+
+        .dt-mega-item:hover {
+          background: var(--bg-surface-warm, #f4efe6);
+        }
+
+        .dt-mega-icon {
+          display: grid;
+          place-items: center;
+          width: 2rem;
+          height: 2rem;
+          border: 1px solid var(--rule, #d9dde3);
+          background: var(--primary-soft, #cfeaf6);
+          color: var(--primary, #0a82b3);
+          font-family: var(--font-data, ui-monospace, monospace);
+          font-weight: 800;
+        }
+
+        .dt-mega-item strong {
+          display: block;
+          font-family: var(--font-display, "Turret Road", Georgia, serif);
+          font-size: 0.95rem;
+          line-height: 1.1;
+          color: var(--ink, #16181c);
+        }
+
+        .dt-mega-item small {
+          display: block;
+          margin-top: 0.15rem;
+          color: var(--fg-muted, #5b636f);
+          font-size: 0.78rem;
+          line-height: 1.3;
+        }
+
         @media (max-width: 900px) {
           .dt-masthead-top {
-            grid-template-columns: minmax(180px, 1fr) auto auto;
+            grid-template-columns: minmax(180px, 1fr) auto;
           }
         }
 
@@ -256,7 +439,7 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
             gap: 0.5rem;
           }
 
-          .dt-primary-nav {
+          .dt-nav {
             display: none;
           }
 
@@ -315,25 +498,13 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
       `}</style>
       <header className="dt-masthead">
         <div className="dt-masthead-top">
-          <Link href="/" className="dt-brand" aria-label="The Daily Transit podcast home">
+          <Link href="/" className="dt-brand" aria-label="The Daily Transit home">
             <Image src="/logo-icon.png" alt="" width={34} height={34} className="dt-brand-mark" />
             <span className="dt-brand-copy">
               <span className="dt-brand-name">The Daily <em>Transit</em></span>
               <span className="dt-brand-sub">A Star Sailors publication</span>
             </span>
           </Link>
-
-          <nav className="dt-primary-nav" aria-label="Primary">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`dt-primary-nav-link${pathname.startsWith(link.href) ? " is-active" : ""}`}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
 
           <div className="dt-actions">
             <a
@@ -366,12 +537,45 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
           </div>
         </div>
 
+        <nav className="dt-nav" aria-label="Main navigation">
+          {megaSections.map((section) => (
+            <div className="dt-nav-item" key={section.label}>
+              <Link
+                href={section.href}
+                className={`dt-nav-link${pathname.startsWith(section.href) ? " is-active" : ""}`}
+              >
+                {section.label}
+                <span aria-hidden>▾</span>
+              </Link>
+              <div className="dt-mega">
+                <div className="dt-mega-head">
+                  <span>{section.label} <em>Desk</em></span>
+                  <span>Daily Transit</span>
+                </div>
+                {section.columns.map((column, index) => (
+                  <div className="dt-mega-col" key={`${section.label}-${index}`}>
+                    {column.map((item) => (
+                      <Link href={item.href} className="dt-mega-item" key={item.label}>
+                        <MegaIcon tone={item.tone} />
+                        <span>
+                          <strong>{item.label}</strong>
+                          <small>{item.description}</small>
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </nav>
+
         <nav
           id="dt-mobile-nav"
           className={`dt-mobile-nav${menuOpen ? " is-open" : ""}`}
           aria-label="Primary"
         >
-          {NAV_LINKS.map((link) => (
+          {MOBILE_NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
