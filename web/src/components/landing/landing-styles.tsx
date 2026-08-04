@@ -10,7 +10,7 @@ export function LandingStyles() {
       /* ── Shared landing typography ──────────────────────────────────── */
 
       .tx-kicker {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.65rem;
         font-weight: 700;
         letter-spacing: 0.12em;
@@ -58,7 +58,7 @@ export function LandingStyles() {
         gap: 0.4rem;
         padding: 0.35rem 0.75rem;
         font-size: 0.78rem;
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         border: 1px solid var(--rule);
         border-radius: 4px;
         background: transparent;
@@ -71,6 +71,17 @@ export function LandingStyles() {
         background: var(--ink);
         border-color: var(--ink);
         color: #fff;
+      }
+
+      .tx-chip-mark {
+        width: 0.8em;
+        height: 0.8em;
+        flex-shrink: 0;
+        border: 1px solid currentColor;
+        border-radius: 2px;
+      }
+      .tx-chip.is-active .tx-chip-mark {
+        background: currentColor;
       }
 
       /* ── Survey / briefing section ───────────────────────────────────── */
@@ -196,7 +207,7 @@ export function LandingStyles() {
 
       .tx-brand-public span span {
         color: var(--fg-muted, #9099a4);
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.58rem;
         font-weight: 800;
         letter-spacing: 0.16em;
@@ -218,7 +229,7 @@ export function LandingStyles() {
 
       .tx-public-nav a {
         color: var(--fg-2, #3d4149);
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.62rem;
         font-weight: 850;
         letter-spacing: 0.08em;
@@ -263,7 +274,7 @@ export function LandingStyles() {
 
       .tx-update-ribbon span,
       .tx-update-ribbon a {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.58rem;
         font-weight: 900;
         letter-spacing: 0.08em;
@@ -331,7 +342,7 @@ export function LandingStyles() {
 
       .tx-live-status span {
         color: var(--fg-muted, #9099a4);
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.62rem;
         font-weight: 800;
         letter-spacing: 0.08em;
@@ -371,7 +382,7 @@ export function LandingStyles() {
       }
 
       .tx-live-image-wrap.is-empty span {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.8rem;
         font-weight: 900;
         letter-spacing: 0.12em;
@@ -423,7 +434,7 @@ export function LandingStyles() {
       .tx-live-card a,
       .tx-live-meta {
         color: var(--fg-muted, #9099a4);
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.62rem;
         font-weight: 800;
         letter-spacing: 0.08em;
@@ -441,7 +452,7 @@ export function LandingStyles() {
         background: var(--ink, #16181c);
         color: #fff;
         padding: 0.65rem 0.85rem;
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.68rem;
         font-weight: 900;
         letter-spacing: 0.08em;
@@ -493,7 +504,7 @@ export function LandingStyles() {
 
       .tx-live-event span {
         color: var(--primary, #0a82b3);
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.58rem;
         font-weight: 900;
         letter-spacing: 0.08em;
@@ -526,14 +537,14 @@ export function LandingStyles() {
 
       .tx-live-ticker-item strong {
         color: var(--primary, #0a82b3);
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: clamp(1.35rem, 4vw, 2.2rem);
         line-height: 1;
       }
 
       .tx-live-ticker-item span {
         color: var(--fg-muted, #9099a4);
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.62rem;
         font-weight: 800;
         letter-spacing: 0.06em;
@@ -682,7 +693,7 @@ export function LandingStyles() {
       }
 
       .tx-ph-step-n {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.65rem;
         font-weight: 900;
         letter-spacing: 0.1em;
@@ -705,7 +716,7 @@ export function LandingStyles() {
       }
 
       .tx-ph-see-all {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.65rem;
         font-weight: 900;
         letter-spacing: 0.1em;
@@ -737,7 +748,7 @@ export function LandingStyles() {
       }
 
       .tx-ph-card-tag {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.58rem;
         font-weight: 900;
         letter-spacing: 0.1em;
@@ -746,7 +757,7 @@ export function LandingStyles() {
       }
 
       .tx-ph-card-date {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.58rem;
         font-weight: 700;
         letter-spacing: 0.06em;
@@ -769,7 +780,7 @@ export function LandingStyles() {
       }
 
       .tx-ph-card-read {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.58rem;
         font-weight: 800;
         letter-spacing: 0.08em;
@@ -801,7 +812,7 @@ export function LandingStyles() {
       }
 
       .tx-ph-aside-label {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.6rem;
         font-weight: 900;
         letter-spacing: 0.12em;
@@ -821,7 +832,7 @@ export function LandingStyles() {
       .tx-ph-stat-item { display: grid; gap: 0.1rem; }
 
       .tx-ph-stat-n {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 1.4rem;
         font-weight: 900;
         color: var(--primary, #0a82b3);
@@ -829,7 +840,7 @@ export function LandingStyles() {
       }
 
       .tx-ph-stat-label {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.6rem;
         font-weight: 700;
         letter-spacing: 0.06em;
@@ -973,7 +984,7 @@ export function LandingStyles() {
       }
 
       .tx-tab-bar-label {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.6rem;
         font-weight: 900;
         letter-spacing: 0.14em;
@@ -1027,7 +1038,7 @@ export function LandingStyles() {
       }
 
       .tx-tab-label {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.58rem;
         font-weight: 800;
         letter-spacing: 0.1em;
@@ -1046,7 +1057,7 @@ export function LandingStyles() {
         background: transparent;
         color: var(--ink);
         padding: 0.4rem 0.85rem;
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.65rem;
         font-weight: 900;
         letter-spacing: 0.1em;
@@ -1094,7 +1105,7 @@ export function LandingStyles() {
       }
 
       .tx-rank-sheet-title {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.72rem;
         font-weight: 900;
         letter-spacing: 0.12em;
@@ -1114,7 +1125,7 @@ export function LandingStyles() {
 
       .tx-rank-sheet-sub {
         color: var(--fg-muted);
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.65rem;
         font-weight: 700;
         letter-spacing: 0.08em;
@@ -1146,7 +1157,7 @@ export function LandingStyles() {
       }
 
       .tx-rank-pos {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 1rem;
         font-weight: 900;
         text-align: center;
@@ -1156,14 +1167,14 @@ export function LandingStyles() {
 
       .tx-rank-meta { display: grid; gap: 0.1rem; }
       .tx-rank-meta strong {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.7rem;
         font-weight: 900;
         letter-spacing: 0.1em;
         text-transform: uppercase;
       }
       .tx-rank-meta span {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.58rem;
         font-weight: 700;
         letter-spacing: 0.06em;
@@ -1189,7 +1200,7 @@ export function LandingStyles() {
         background: var(--bg-surface);
         color: var(--fg-muted);
         padding: 0.28rem 0.55rem;
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.58rem;
         font-weight: 900;
         letter-spacing: 0.08em;
@@ -1211,7 +1222,7 @@ export function LandingStyles() {
         background: var(--ink);
         color: #fff;
         padding: 0.75rem 1.5rem;
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.72rem;
         font-weight: 900;
         letter-spacing: 0.1em;
@@ -1220,7 +1231,7 @@ export function LandingStyles() {
       }
 
       .tx-rank-thanks {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.72rem;
         font-weight: 800;
         color: #22c55e;
@@ -1257,7 +1268,7 @@ export function LandingStyles() {
       .tx-ed-mast-stripe {
         display: flex;
         justify-content: space-between;
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.6rem;
         font-weight: 800;
         letter-spacing: 0.12em;
@@ -1303,7 +1314,7 @@ export function LandingStyles() {
       }
 
       .tx-ed-mast-nav a {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.65rem;
         font-weight: 900;
         letter-spacing: 0.12em;
@@ -1324,7 +1335,7 @@ export function LandingStyles() {
       }
 
       .tx-ed-kicker {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.62rem;
         font-weight: 900;
         letter-spacing: 0.14em;
@@ -1342,7 +1353,7 @@ export function LandingStyles() {
       }
 
       .tx-ed-byline {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.62rem;
         font-weight: 700;
         color: #9099a4;
@@ -1396,7 +1407,7 @@ export function LandingStyles() {
         background: #16181c;
         color: #fff;
         padding: 0.65rem 1rem;
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.68rem;
         font-weight: 900;
         letter-spacing: 0.1em;
@@ -1423,7 +1434,7 @@ export function LandingStyles() {
       .tx-ed-stat:last-child { border-right: none; }
 
       .tx-ed-stat-n {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 1.5rem;
         font-weight: 900;
         color: #0a82b3;
@@ -1431,7 +1442,7 @@ export function LandingStyles() {
       }
 
       .tx-ed-stat span:last-child {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.55rem;
         font-weight: 800;
         letter-spacing: 0.1em;
@@ -1493,7 +1504,7 @@ export function LandingStyles() {
       .tx-ed-col p { margin: 0 0 0.85rem; }
 
       .tx-ed-link {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.68rem;
         font-weight: 900;
         letter-spacing: 0.1em;
@@ -1507,7 +1518,7 @@ export function LandingStyles() {
         border: 1px solid #d9dde3;
         background: #f4efe6;
         padding: 0.25rem 0.5rem;
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.6rem;
         font-weight: 800;
         letter-spacing: 0.1em;
@@ -1525,7 +1536,7 @@ export function LandingStyles() {
       .tx-ed-board-member { display: grid; gap: 0.2rem; }
       .tx-ed-board-member strong { font-size: 1rem; }
       .tx-ed-board-member span {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.65rem;
         font-weight: 700;
         letter-spacing: 0.08em;
@@ -1603,7 +1614,7 @@ export function LandingStyles() {
       }
 
       .tx-cos-nav-brand {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.75rem;
         font-weight: 900;
         letter-spacing: 0.16em;
@@ -1617,7 +1628,7 @@ export function LandingStyles() {
       }
 
       .tx-cos-nav-links a {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.65rem;
         font-weight: 800;
         letter-spacing: 0.12em;
@@ -1649,7 +1660,7 @@ export function LandingStyles() {
         display: inline-flex;
         align-items: center;
         gap: 0.65rem;
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.65rem;
         font-weight: 800;
         letter-spacing: 0.16em;
@@ -1714,7 +1725,7 @@ export function LandingStyles() {
         background: rgba(124, 58, 237, 0.12);
         color: #c4b5fd;
         padding: 0.35rem 0.65rem;
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.62rem;
         font-weight: 900;
         letter-spacing: 0.1em;
@@ -1737,7 +1748,7 @@ export function LandingStyles() {
         background: rgba(255,255,255,0.06);
         color: #e2e8f0;
         padding: 0.75rem 1rem;
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.85rem;
         backdrop-filter: blur(8px);
       }
@@ -1749,7 +1760,7 @@ export function LandingStyles() {
         background: #7c3aed;
         color: #fff;
         padding: 0.75rem 1.5rem;
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.72rem;
         font-weight: 900;
         letter-spacing: 0.1em;
@@ -1761,7 +1772,7 @@ export function LandingStyles() {
       .tx-cos-btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
       .tx-cos-success {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.82rem;
         font-weight: 800;
         color: #a78bfa;
@@ -1817,7 +1828,7 @@ export function LandingStyles() {
       }
 
       .tx-cos-card-n {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 2.5rem;
         font-weight: 900;
         color: #a78bfa;
@@ -1825,7 +1836,7 @@ export function LandingStyles() {
       }
 
       .tx-cos-card-label {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.72rem;
         font-weight: 900;
         letter-spacing: 0.1em;
@@ -1850,7 +1861,7 @@ export function LandingStyles() {
       }
 
       .tx-cos-log-kicker {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.62rem;
         font-weight: 900;
         letter-spacing: 0.18em;
@@ -1872,7 +1883,7 @@ export function LandingStyles() {
       }
 
       .tx-cos-log-id {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.65rem;
         font-weight: 900;
         letter-spacing: 0.12em;
@@ -1895,7 +1906,7 @@ export function LandingStyles() {
       }
 
       .tx-cos-link {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.65rem;
         font-weight: 800;
         letter-spacing: 0.1em;
@@ -1905,7 +1916,7 @@ export function LandingStyles() {
       }
 
       .tx-cos-status {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.6rem;
         font-weight: 900;
         letter-spacing: 0.14em;
@@ -1945,7 +1956,7 @@ export function LandingStyles() {
       }
 
       .tx-cos-crew-callsign {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.6rem;
         font-weight: 900;
         letter-spacing: 0.16em;
@@ -1959,7 +1970,7 @@ export function LandingStyles() {
       }
 
       .tx-cos-crew-card span {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.65rem;
         font-weight: 700;
         letter-spacing: 0.08em;
@@ -1988,7 +1999,7 @@ export function LandingStyles() {
         gap: 1.25rem;
         padding: 0.85rem 0;
         border-bottom: 2px solid #c27a0e;
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.6rem;
         font-weight: 800;
         letter-spacing: 0.14em;
@@ -2007,7 +2018,7 @@ export function LandingStyles() {
       }
 
       .tx-sol-category {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.62rem;
         font-weight: 900;
         letter-spacing: 0.16em;
@@ -2047,7 +2058,7 @@ export function LandingStyles() {
       }
 
       .tx-sol-note-label {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.6rem;
         font-weight: 900;
         letter-spacing: 0.14em;
@@ -2150,7 +2161,7 @@ export function LandingStyles() {
       }
 
       .tx-sol-exp-status {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.6rem;
         font-weight: 900;
         letter-spacing: 0.12em;
@@ -2167,7 +2178,7 @@ export function LandingStyles() {
       }
 
       .tx-sol-link {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.65rem;
         font-weight: 900;
         letter-spacing: 0.1em;
@@ -2211,7 +2222,7 @@ export function LandingStyles() {
         background: #c27a0e;
         color: #fff;
         padding: 0.65rem 1rem;
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.68rem;
         font-weight: 900;
         letter-spacing: 0.1em;
@@ -2235,7 +2246,7 @@ export function LandingStyles() {
       .tx-sol-footer {
         border-top: 2px solid #c27a0e;
         padding: 1rem 0;
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.62rem;
         font-weight: 800;
         letter-spacing: 0.1em;
@@ -2449,7 +2460,7 @@ export function LandingStyles() {
       .tx-footer-brand em { font-style: italic; }
 
       .tx-footer-brand > span > span {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.6rem;
         font-weight: 700;
         letter-spacing: 0.1em;
@@ -2465,7 +2476,7 @@ export function LandingStyles() {
       }
 
       .tx-footer-links a {
-        font-family: ui-monospace, monospace;
+        font-family: var(--font-data);
         font-size: 0.65rem;
         font-weight: 800;
         letter-spacing: 0.1em;

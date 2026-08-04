@@ -44,7 +44,7 @@ export function Chip({
 }) {
   return (
     <button type="button" className={`tx-chip ${active ? "is-active" : ""}`} aria-pressed={active} onClick={onClick}>
-      <span aria-hidden>{active ? "[x]" : "[ ]"}</span>
+      <span className="tx-chip-mark" aria-hidden />
       {label}
     </button>
   );

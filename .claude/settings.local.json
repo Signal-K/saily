@@ -75,7 +75,13 @@
       "mcp__desk__list_projects",
       "mcp__desk__list_workflow_states",
       "mcp__desk__create_ticket",
-      "mcp__desk__link_tickets"
+      "mcp__desk__link_tickets",
+      "WebFetch(domain:claude.ai)",
+      "mcp__linear__list_projects",
+      "mcp__linear__list_teams",
+      "mcp__linear__save_issue",
+      "mcp__linear__get_project",
+      "mcp__linear__save_project"
     ]
   },
   "enabledMcpjsonServers": [

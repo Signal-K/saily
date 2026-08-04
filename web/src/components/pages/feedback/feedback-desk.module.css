@@ -1,0 +1,309 @@
+/* ── Feedback Desk — CSS Module ─────────────────────────────────────────────
+   Replaces the broken <style jsx> block (App Router ignores jsx-scoped styles).
+   All class names here are imported as a module in feedback-desk.tsx.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* ── Hero intro ─────────────────────────────────────────────────────────── */
+
+.hero {
+  max-width: 68ch;
+}
+
+.hero h1 {
+  margin: 0.35rem 0 0.75rem;
+}
+
+/* ── Identity / email link ──────────────────────────────────────────────── */
+
+.identity {
+  margin-top: 0.75rem;
+  font-family: var(--font-data);
+  font-size: 0.72rem;
+  color: var(--color-primary);
+}
+
+.identityForm {
+  margin-top: 1rem;
+  max-width: 46ch;
+}
+
+.identityNote {
+  margin: 0.4rem 0 0;
+  font-size: 0.72rem;
+  color: var(--color-fg-muted);
+  line-height: 1.5;
+}
+
+/* ── Section heading (kind block) ───────────────────────────────────────── */
+
+.kindBlock {
+  margin-top: 2rem;
+}
+
+.kindHead {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--color-rule);
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.6rem;
+}
+
+.kindHead h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+}
+
+.kindSub {
+  font-family: var(--font-data);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.kindBlurb {
+  margin: 0 0 0.75rem;
+  color: var(--color-fg-muted);
+  max-width: 62ch;
+  line-height: 1.55;
+  font-size: 0.85rem;
+}
+
+/* ── Gallery grid ───────────────────────────────────────────────────────── */
+
+.tileRow {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 140px;
+  gap: 0.55rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  /* Ensure grid doesn't clip the hover shadow */
+  margin-bottom: 0.25rem;
+}
+
+@media (min-width: 900px) {
+  .tileRow {
+    grid-auto-flow: unset;
+    grid-template-columns: repeat(5, 1fr);
+    grid-auto-columns: unset;
+    overflow-x: visible;
+  }
+}
+
+/* ── Compact tile card ──────────────────────────────────────────────────── */
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-rule);
+  background: var(--color-bg-surface);
+  cursor: default;
+  transition: box-shadow 0.12s ease, transform 0.12s ease;
+}
+
+.tile:hover {
+  box-shadow: var(--shadow-card);
+  transform: translateY(-1px);
+}
+
+/* Image area */
+.tileArt {
+  position: relative;
+  aspect-ratio: 1;
+  background: var(--color-bg-surface-warm);
+  border-bottom: 1px solid var(--color-rule);
+  overflow: hidden;
+}
+
+.tileArt img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.tileTier {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  font-family: var(--font-data);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  background: var(--color-ink);
+  color: #fff;
+  padding: 2px 5px;
+  line-height: 1.2;
+}
+
+/* Footer strip */
+.tileFooter {
+  padding: 0.45rem 0.5rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tileName {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tileMeta {
+  margin: 0;
+  font-family: var(--font-data);
+  font-size: 0.6rem;
+  color: var(--color-fg-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Vote buttons ───────────────────────────────────────────────────────── */
+
+.voteRow {
+  display: flex;
+  gap: 0.3rem;
+  margin-top: 0.2rem;
+}
+
+.voteBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  border: 1px solid var(--color-rule);
+  background: transparent;
+  font-family: var(--font-data);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.2rem;
+  cursor: pointer;
+  color: var(--color-fg-muted);
+  line-height: 1;
+  transition: background 0.1s ease, color 0.1s ease, border-color 0.1s ease;
+}
+
+.voteBtn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: var(--color-glacier-50);
+}
+
+.voteBtnYes:hover {
+  border-color: var(--color-success);
+  color: var(--color-success);
+  background: color-mix(in oklab, var(--color-success) 8%, transparent);
+}
+
+.voteBtnNo:hover {
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+  background: color-mix(in oklab, var(--color-danger) 8%, transparent);
+}
+
+/* ── Voted / result state ───────────────────────────────────────────────── */
+
+.votedBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  margin-top: 0.2rem;
+  padding: 0.3rem 0.3rem;
+  font-family: var(--font-data);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--color-glacier-50);
+  color: var(--color-primary);
+  border: 1px solid var(--color-glacier-100);
+  line-height: 1;
+}
+
+.votedBadgeNo {
+  background: color-mix(in oklab, var(--color-danger) 8%, transparent);
+  color: var(--color-danger);
+  border-color: color-mix(in oklab, var(--color-danger) 20%, transparent);
+}
+
+.voteLive {
+  margin: 0;
+  font-family: var(--font-data);
+  font-size: 0.56rem;
+  color: var(--color-fg-faded);
+  text-align: center;
+  line-height: 1.3;
+}
+
+/* ── Form labels (shared between identity form and suggestion form) ─────── */
+
+.label {
+  display: grid;
+  gap: 0.3rem;
+  font-family: var(--font-data);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+}
+
+.label textarea,
+.label input {
+  font-family: var(--font-system);
+  font-size: 0.95rem;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid var(--color-rule);
+  background: var(--color-bg-surface);
+  color: var(--color-ink);
+}
+
+.label input {
+  width: 100%;
+}
+
+/* ── Suggestions section ────────────────────────────────────────────────── */
+
+.suggestions {
+  margin-top: 2.5rem;
+  border-top: 3px double var(--color-ink);
+  padding-top: 1.75rem;
+}
+
+.suggestions h2 {
+  margin: 0.35rem 0 0.5rem;
+}
+
+.lede {
+  max-width: 60ch;
+  color: var(--color-fg-muted);
+  line-height: 1.6;
+}
+
+.form {
+  margin-top: 1.25rem;
+  display: grid;
+  gap: 0.75rem;
+  max-width: 60ch;
+}
+
+.total {
+  margin-top: 1rem;
+  font-family: var(--font-data);
+  font-size: 0.68rem;
+  color: var(--color-fg-muted);
+}
