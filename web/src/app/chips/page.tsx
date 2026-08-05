@@ -67,17 +67,17 @@ export default function ChipsPage() {
 
   if (!userId) {
     return (
-      <main className="panel" style={{ maxWidth: "480px", margin: "2rem auto", textAlign: "center" }}>
+      <section className="panel content-tight" style={{ textAlign: "center" }}>
         <p>Sign in to manage your Data Chips.</p>
         <Link href="/auth/sign-in?next=/chips" className="button button-primary" style={{ marginTop: "1rem" }}>
           Sign in
         </Link>
-      </main>
+      </section>
     );
   }
 
   return (
-    <main style={{ maxWidth: "480px", margin: "2rem auto", padding: "0 1rem" }}>
+    <div className="content-tight">
       <div style={{ marginBottom: "1.5rem" }}>
         <p className="eyebrow">Economy</p>
         <h1>Data Chips</h1>
@@ -122,6 +122,6 @@ export default function ChipsPage() {
       </section>
 
       <Link href="/" className="button">Back to Home</Link>
-    </main>
+    </div>
   );
 }

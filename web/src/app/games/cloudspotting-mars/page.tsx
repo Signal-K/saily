@@ -6,10 +6,10 @@ export const metadata = { title: "Cloudspotting on Mars - The Daily Transit" };
 
 export default function CloudspottingMarsPage() {
   return (
-    <main style={{ maxWidth: "760px", margin: "2rem auto", padding: "0 1rem" }}>
+    <div className="content-game">
       <Suspense fallback={<p className="muted">Loading Cloudspotting on Mars…</p>}>
         <StandaloneGamePage game="cloudspotting_mars" label="Cloudspotting on Mars" GameComponent={CloudspottingMarsGamePage} />
       </Suspense>
-    </main>
+    </div>
   );
 }

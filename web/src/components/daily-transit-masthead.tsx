@@ -311,7 +311,7 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
         .dt-nav-link {
           display: inline-flex;
           align-items: center;
-          gap: 0.45rem;
+          gap: 0.4rem;
           padding: 0.7rem 0.95rem;
           border-bottom: 2px solid transparent;
           color: var(--fg-muted, #5b636f);
@@ -323,6 +323,11 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
           text-transform: uppercase;
           text-decoration: none;
           white-space: nowrap;
+        }
+
+        .dt-nav-caret {
+          flex: none;
+          display: block;
         }
 
         .dt-nav-link:hover,
@@ -545,7 +550,9 @@ export function DailyTransitMasthead({ initialTheme }: Props) {
                 className={`dt-nav-link${pathname.startsWith(section.href) ? " is-active" : ""}`}
               >
                 {section.label}
-                <span aria-hidden>▾</span>
+                <svg className="dt-nav-caret" width="8" height="6" viewBox="0 0 8 6" fill="none" aria-hidden="true">
+                  <path d="M0 0.5H8L4 5.5L0 0.5Z" fill="currentColor" />
+                </svg>
               </Link>
               <div className="dt-mega">
                 <div className="dt-mega-head">

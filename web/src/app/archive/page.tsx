@@ -35,7 +35,7 @@ const archiveEntries = [
 
 export default function ArchivePage() {
   return (
-    <main className="dt-page-shell">
+    <>
       <section className="panel" style={{ borderTop: "3px double var(--ink, #16181c)" }}>
         <p className="eyebrow">The Daily Transit</p>
         <h1>Archive</h1>
@@ -66,6 +66,6 @@ export default function ArchivePage() {
         <Link href="/" className="button">Today</Link>
         <Link href="/articles" className="button button-secondary">Articles</Link>
       </div>
-    </main>
+    </>
   );
 }

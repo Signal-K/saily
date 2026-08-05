@@ -27,7 +27,7 @@ const MISSIONS = [
 
 export default function GamesPage() {
   return (
-    <main style={{ maxWidth: "640px", margin: "2rem auto", padding: "0 1rem" }}>
+    <div className="content-prose">
       <div style={{ marginBottom: "1.5rem" }}>
         <p className="eyebrow">The Daily Transit</p>
         <h1>Games</h1>
@@ -94,6 +94,6 @@ export default function GamesPage() {
       <div style={{ marginTop: "1.5rem" }}>
         <Link href="/" className="button">Back to Home</Link>
       </div>
-    </main>
+    </div>
   );
 }

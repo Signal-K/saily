@@ -6,10 +6,10 @@ export const metadata = { title: "Close Approach Ranker - The Daily Transit" };
 
 export default function CloseApproachesPage() {
   return (
-    <main style={{ maxWidth: "760px", margin: "2rem auto", padding: "0 1rem" }}>
+    <div className="content-game">
       <Suspense fallback={<p className="muted">Loading close approach ranker…</p>}>
         <StandaloneGamePage game="close_approach" label="Close Approach Ranker" GameComponent={CloseApproachRankerGamePage} />
       </Suspense>
-    </main>
+    </div>
   );
 }

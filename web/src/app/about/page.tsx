@@ -2,7 +2,7 @@ export const metadata = { title: "About — The Daily Transit" };
 
 export default function AboutPage() {
   return (
-    <main className="panel" style={{ maxWidth: "640px", margin: "2rem auto" }}>
+    <section className="panel content-prose">
       <p className="eyebrow">About</p>
       <h1>The Daily Transit</h1>
       <p className="muted">
@@ -32,6 +32,6 @@ export default function AboutPage() {
         </a>
         .
       </p>
-    </main>
+    </section>
   );
 }

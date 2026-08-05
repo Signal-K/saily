@@ -27,7 +27,7 @@ export default async function LeaderboardPage() {
   }));
 
   return (
-    <main className="panel" style={{ maxWidth: "640px", margin: "2rem auto" }}>
+    <section className="panel content-prose">
       <div style={{ marginBottom: "1.5rem" }}>
         <p className="eyebrow">Global Rankings</p>
         <h1>Leaderboard</h1>
@@ -78,6 +78,6 @@ export default async function LeaderboardPage() {
           Back to Home
         </Link>
       </div>
-    </main>
+    </section>
   );
 }

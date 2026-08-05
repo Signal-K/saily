@@ -8,7 +8,7 @@ const OLD_DESIGNS_URL = "https://thedailysail-i2ce19z1z-signal-k.vercel.app";
 
 export default function VotePage() {
   return (
-    <main className="dt-page-shell">
+    <>
       <section className="panel" style={{ borderTop: "3px double var(--ink, #16181c)" }}>
         <p className="eyebrow">The Daily Transit</p>
         <h1>Design vote</h1>
@@ -32,6 +32,6 @@ export default function VotePage() {
           View old designs
         </a>
       </div>
-    </main>
+    </>
   );
 }

@@ -977,7 +977,7 @@ export function LandingStyles() {
         grid-template-columns: auto 1fr auto;
         align-items: center;
         gap: 0.75rem;
-        max-width: 1180px;
+        max-width: var(--spacing-content-max, 1180px);
         margin: 0 auto;
         padding: 0 1rem;
         height: 56px;
@@ -1254,7 +1254,7 @@ export function LandingStyles() {
         font-family: Georgia, "Times New Roman", serif;
         color: #16181c;
         background: #fffef9;
-        max-width: 1180px;
+        max-width: var(--spacing-content-max, 1180px);
         margin: 0 auto;
         padding: 0 1.5rem 3rem;
       }
@@ -1608,7 +1608,7 @@ export function LandingStyles() {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        max-width: 1180px;
+        max-width: var(--spacing-content-max, 1180px);
         margin: 0 auto;
         padding: 1.25rem 1.5rem;
       }
@@ -1811,7 +1811,7 @@ export function LandingStyles() {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 1px;
-        max-width: 1180px;
+        max-width: var(--spacing-content-max, 1180px);
         margin: 0 auto;
         padding: 0 1.5rem 4rem;
         background: rgba(255,255,255,0.05);
@@ -1854,7 +1854,7 @@ export function LandingStyles() {
       .tx-cos-log {
         position: relative;
         z-index: 10;
-        max-width: 1180px;
+        max-width: var(--spacing-content-max, 1180px);
         margin: 0 auto;
         padding: 3rem 1.5rem;
         border-top: 1px solid rgba(255,255,255,0.06);
@@ -1933,7 +1933,7 @@ export function LandingStyles() {
       .tx-cos-crew {
         position: relative;
         z-index: 10;
-        max-width: 1180px;
+        max-width: var(--spacing-content-max, 1180px);
         margin: 0 auto;
         padding: 3rem 1.5rem;
         border-top: 1px solid rgba(255,255,255,0.06);

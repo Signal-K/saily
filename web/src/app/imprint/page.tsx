@@ -2,7 +2,7 @@ export const metadata = { title: "Imprint — The Daily Transit" };
 
 export default function ImprintPage() {
   return (
-    <main className="panel" style={{ maxWidth: "640px", margin: "2rem auto" }}>
+    <section className="panel content-prose">
       <p className="eyebrow">Legal</p>
       <h1>Imprint</h1>
       <p className="muted">
@@ -15,6 +15,6 @@ export default function ImprintPage() {
         </a>
         .
       </p>
-    </main>
+    </section>
   );
 }

@@ -76,7 +76,7 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               .dt-page-shell {
-                width: min(var(--spacing-content-max, 1180px), calc(100% - 3rem));
+                width: min(var(--spacing-content-max, 1180px), calc(100% - 2rem));
                 margin-inline: auto;
                 padding: 1rem 0 5rem;
               }

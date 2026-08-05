@@ -260,50 +260,54 @@ export function FeedbackDesk() {
 
       {/* ── Suggestions form ── */}
       <div className={s.suggestions}>
-        <p className="eyebrow">Propose an idea</p>
-        <h2>Got a suggestion, feature idea, or another game we should feature?</h2>
-        <p className={s.lede}>
-          Mention a mechanic you&apos;d like to see, a citizen-science project we should cover, or
-          another Star Sailors game/asset set worth reviewing here next.
-        </p>
-
-        {suggestionState !== "sent" ? (
-          <form onSubmit={handleSuggestionSubmit} className={s.form}>
-            <label className={s.label}>
-              Your suggestion
-              <textarea
-                rows={4}
-                value={suggestionText}
-                onChange={(event) => setSuggestionText(event.target.value)}
-                placeholder="e.g. Add a difficulty toggle for the crossword, or bring back Rubin Comet Catchers once the data path is real..."
-                required
-                disabled={suggestionState === "sending"}
-              />
-            </label>
-            <label className={s.label}>
-              Relates to (optional)
-              <input
-                type="text"
-                value={suggestionRelatesTo}
-                onChange={(event) => setSuggestionRelatesTo(event.target.value)}
-                placeholder="e.g. Landnam, Mars Atlas, crossword mission"
-                disabled={suggestionState === "sending"}
-              />
-            </label>
-            <button className="button button-primary" type="submit" disabled={suggestionState === "sending"}>
-              {suggestionState === "sending" ? "Sending..." : "Submit suggestion"}
-            </button>
-            {suggestionState === "error" && <p className="muted">Something went wrong. Please try again.</p>}
-          </form>
-        ) : (
-          <p className="muted">Thanks — logged for the team. Feel free to send another.</p>
-        )}
-
-        {suggestionTotal !== null && (
-          <p className={s.total}>
-            {suggestionTotal.toLocaleString()} suggestion{suggestionTotal === 1 ? "" : "s"} submitted so far
+        <div>
+          <p className="eyebrow">Propose an idea</p>
+          <h2>Got a suggestion, feature idea, or another game we should feature?</h2>
+          <p className={s.lede}>
+            Mention a mechanic you&apos;d like to see, a citizen-science project we should cover, or
+            another Star Sailors game/asset set worth reviewing here next.
           </p>
-        )}
+        </div>
+
+        <div>
+          {suggestionState !== "sent" ? (
+            <form onSubmit={handleSuggestionSubmit} className={s.form}>
+              <label className={s.label}>
+                Your suggestion
+                <textarea
+                  rows={4}
+                  value={suggestionText}
+                  onChange={(event) => setSuggestionText(event.target.value)}
+                  placeholder="e.g. Add a difficulty toggle for the crossword, or bring back Rubin Comet Catchers once the data path is real..."
+                  required
+                  disabled={suggestionState === "sending"}
+                />
+              </label>
+              <label className={s.label}>
+                Relates to (optional)
+                <input
+                  type="text"
+                  value={suggestionRelatesTo}
+                  onChange={(event) => setSuggestionRelatesTo(event.target.value)}
+                  placeholder="e.g. Landnam, Mars Atlas, crossword mission"
+                  disabled={suggestionState === "sending"}
+                />
+              </label>
+              <button className="button button-primary" type="submit" disabled={suggestionState === "sending"}>
+                {suggestionState === "sending" ? "Sending..." : "Submit suggestion"}
+              </button>
+              {suggestionState === "error" && <p className="muted">Something went wrong. Please try again.</p>}
+            </form>
+          ) : (
+            <p className="muted">Thanks — logged for the team. Feel free to send another.</p>
+          )}
+
+          {suggestionTotal !== null && (
+            <p className={s.total}>
+              {suggestionTotal.toLocaleString()} suggestion{suggestionTotal === 1 ? "" : "s"} submitted so far
+            </p>
+          )}
+        </div>
       </div>
     </>
   );
