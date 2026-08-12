@@ -1,4 +1,4 @@
-.PHONY: up pb-up pb-stop web start bootstrap down logs lint build unit test test-e2e cypress cypress-spec tour
+.PHONY: up pb-up pb-stop pb-dev web start bootstrap down logs lint build unit test test-e2e cypress cypress-spec tour
 
 ROOT_DIR := $(shell pwd)
 WEB_DIR := $(ROOT_DIR)/web
@@ -18,6 +18,12 @@ pb-up:
 
 pb-stop:
 	$(PARENT_COMPOSE) stop saily-backend backend
+
+# The Saily backend is a single static Go/PocketBase binary — Docker buys
+# nothing for the local inner dev loop and only costs build/image disk
+# space. Data lands in backend/pb_data (gitignored).
+pb-dev:
+	cd backend && SHARED_PB_URL=$${SHARED_PB_URL:-http://localhost:8090} go run . serve --http=0.0.0.0:8092
 
 web:
 	cd $(WEB_DIR) && npm run dev
@@ -42,6 +48,7 @@ lint:
 
 build:
 	docker build --target build -t saily-web-build ./web
+	@docker image prune -f >/dev/null
 
 unit:
 	cd $(WEB_DIR) && npm run test:unit
