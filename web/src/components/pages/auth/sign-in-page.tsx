@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useSearchParams } from "next/navigation";
-import { SignIn, SignUp, useAuth as useClerkAuth } from "@clerk/nextjs";
+import { SignUp, useAuth as useClerkAuth, useSignIn } from "@clerk/nextjs";
 import { createClient } from "@/lib/pocketbase/client";
+import { getBrowserSharedPocketBaseUrl } from "@/lib/pocketbase/config";
 
 type AuthMode = "sign-in" | "sign-up";
 
@@ -111,7 +112,7 @@ export default function SignInPage() {
               "The requested resource wasn't found." */}
           {!isSignedIn &&
             (mode === "sign-in" ? (
-              <SignIn routing="hash" appearance={clerkAppearance} fallbackRedirectUrl="/auth/sign-in" />
+              <ClerkSignInPanel formError={error} setFormError={setError} exchanging={exchanging} />
             ) : (
               <SignUp routing="hash" appearance={clerkAppearance} fallbackRedirectUrl="/auth/sign-in" />
             ))}
@@ -123,4 +124,149 @@ export default function SignInPage() {
       </section>
     </section>
   );
+}
+
+// Hand-rolled in place of Clerk's prebuilt <SignIn> (KES-190) so a failed
+// password attempt can be told apart from "this account doesn't exist in
+// Clerk yet" -- the prebuilt widget doesn't expose that distinction, and
+// it's exactly the case every account created before this migration hits
+// on its first sign-in since Clerk never learned their PocketBase
+// password. Mirrors Atlas's AuthForm.tsx. See claimLegacyAccount below and
+// backend/clerk_claim.go.
+function ClerkSignInPanel({
+  formError,
+  setFormError,
+  exchanging,
+}: {
+  formError: string | null;
+  setFormError: (error: string | null) => void;
+  exchanging: boolean;
+}) {
+  const { signIn, fetchStatus } = useSignIn();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [claiming, setClaiming] = useState(false);
+  const busy = fetchStatus === "fetching" || claiming || exchanging;
+
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    if (!signIn || busy) return;
+    setFormError(null);
+
+    let error;
+    try {
+      ({ error } = await signIn.password({ identifier: email, password }));
+    } catch {
+      setFormError("Something went wrong. Please try again.");
+      return;
+    }
+    if (!error) {
+      await signIn.finalize();
+      return;
+    }
+
+    // signIn.password()'s rejection is a ClerkAPIResponseError: the
+    // field-level code we need to distinguish "no such account" from
+    // "wrong password" lives in .errors[0].code, not .code itself (that's
+    // the wrapper's own generic 'api_response_error').
+    const fieldCode = (error as { errors?: Array<{ code?: string }> }).errors?.[0]?.code;
+    if (fieldCode !== "form_identifier_not_found") {
+      setFormError(error.longMessage || error.message || "Incorrect email or password.");
+      return;
+    }
+
+    // Clerk has never heard of this email -- almost certainly a
+    // pre-migration account, since every real signup goes through <SignUp>
+    // first. Silently claim it rather than showing an error a returning
+    // user has no way to act on.
+    setClaiming(true);
+    try {
+      const claimed = await claimLegacyAccount(email, password);
+      if (!claimed) {
+        setFormError("Incorrect email or password.");
+        return;
+      }
+      const { error: ticketError } = await signIn.ticket({ ticket: claimed });
+      if (ticketError) {
+        setFormError("Incorrect email or password.");
+        return;
+      }
+      await signIn.finalize();
+    } finally {
+      setClaiming(false);
+    }
+  }
+
+  async function handleGoogle() {
+    if (!signIn) return;
+    setFormError(null);
+    const redirectUrl = window.location.href;
+    const { error } = await signIn.sso({ strategy: "oauth_google", redirectUrl, redirectCallbackUrl: redirectUrl });
+    if (error) setFormError(error.longMessage || error.message || "Could not start Google sign-in.");
+  }
+
+  return (
+    <form className="auth-form" onSubmit={handleSubmit}>
+      <button type="button" className="auth-oauth" onClick={handleGoogle} disabled={busy}>
+        Continue with Google
+      </button>
+      <div className="auth-divider">or</div>
+      <div>
+        <label className="auth-label" htmlFor="clerk-sign-in-email">
+          Email address
+        </label>
+        <input
+          id="clerk-sign-in-email"
+          className="auth-input"
+          type="email"
+          autoComplete="email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          required
+        />
+      </div>
+      <div>
+        <label className="auth-label" htmlFor="clerk-sign-in-password">
+          Password
+        </label>
+        <input
+          id="clerk-sign-in-password"
+          className="auth-input"
+          type="password"
+          autoComplete="current-password"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+          required
+        />
+      </div>
+      <button type="submit" className="auth-submit" disabled={busy}>
+        {claiming ? "Signing in…" : "Continue"}
+      </button>
+      {!formError && !exchanging && claiming && (
+        <p className="auth-message">Setting up your account for the new sign-in…</p>
+      )}
+    </form>
+  );
+}
+
+// POST /auth/clerk-claim (backend/clerk_claim.go) admin-creates a Clerk user
+// for a pre-migration PocketBase account and returns a one-time sign-in
+// token to redeem via signIn.ticket() -- no OTP round-trip, since the
+// product decision (KES-190) is to not require email verification yet.
+// Returns null on any failure (account doesn't exist, or already claimed --
+// the backend 409s that case so a real wrong-password attempt on an
+// already-migrated account still fails normally).
+async function claimLegacyAccount(email: string, password: string): Promise<string | null> {
+  try {
+    const response = await fetch(`${getBrowserSharedPocketBaseUrl()}/auth/clerk-claim`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    const payload = (await response.json().catch(() => null)) as { token?: string } | null;
+    if (!response.ok || !payload?.token) return null;
+    return payload.token;
+  } catch {
+    return null;
+  }
 }
