@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { cookies } from "next/headers";
+import { ClerkProvider } from "@clerk/nextjs";
 import { Analytics } from "@vercel/analytics/react";
 import { SWRegister } from "@/components/sw-register";
 import { BreadcrumbsNav } from "@/components/breadcrumbs-nav";
@@ -72,6 +73,7 @@ export default async function RootLayout({
       data-period={timePeriod}
     >
       <body>
+        <ClerkProvider>
         <style
           dangerouslySetInnerHTML={{
             __html: `
@@ -458,6 +460,7 @@ export default async function RootLayout({
           {children}
         </main>
         <Analytics />
+        </ClerkProvider>
       </body>
     </html>
   );

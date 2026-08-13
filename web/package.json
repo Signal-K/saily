@@ -20,6 +20,7 @@
     "posthog:create-landing-dashboard": "node scripts/posthog/create-landing-dashboard.mjs"
   },
   "dependencies": {
+    "@clerk/nextjs": "^7.7.4",
     "@dicebear/bottts": "^9.4.2",
     "@dicebear/bottts-neutral": "^9.3.1",
     "@dicebear/core": "^9.3.1",
@@ -32,12 +33,15 @@
     "web-push": "^3.6.7"
   },
   "devDependencies": {
+    "@clerk/backend": "^3.16.4",
+    "@clerk/testing": "^2.2.22",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/web-push": "^3.6.4",
     "cypress": "^15.10.0",
+    "dotenv": "^17.4.2",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
     "start-server-and-test": "^2.1.3",

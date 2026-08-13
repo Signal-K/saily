@@ -65,46 +65,25 @@ export function createClient() {
         const session = readSession();
         return { data: { user: session?.user ?? null }, error: null };
       },
-      async signInWithPassword({ email, password }: { email: string; password: string }) {
+      // Clerk (KES-190) owns credential verification and sign-in/sign-up UI;
+      // this exchanges a Clerk session token for a shared-PocketBase token via
+      // the same backend/clerk_exchange.go endpoint Atlas uses (KES-189),
+      // mirroring the old signInWithPassword/signUp's session write so
+      // everything downstream (getSession/getUser/onAuthStateChange/the
+      // ss_shared_pb_auth cookie server.ts reads) keeps working unchanged.
+      async exchangeClerkSession(clerkToken: string) {
         try {
-          const payload = await requestSharedAuth("/api/collections/users/auth-with-password", {
-            identity: email,
-            password,
-          });
-          writeSession(mapAuthPayload(payload));
-          return { data: payload, error: null };
-        } catch (error) {
-          return { data: null, error: error instanceof Error ? error : new Error("Sign in failed") };
-        }
-      },
-      async signUp({ email, password, options }: { email: string; password: string; options?: { data?: Record<string, unknown> } }) {
-        try {
-          await requestSharedAuth("/api/collections/users/records", {
-            email,
-            password,
-            passwordConfirm: password,
-            ...options?.data,
-          });
-          const payload = await requestSharedAuth("/api/collections/users/auth-with-password", {
-            identity: email,
-            password,
-          });
+          const payload = await requestSharedAuth("/auth/clerk-exchange", { token: clerkToken });
           const session = mapAuthPayload(payload);
           writeSession(session);
           return { data: { ...payload, session }, error: null };
         } catch (error) {
-          return { data: null, error: error instanceof Error ? error : new Error("Sign up failed") };
+          return { data: null, error: error instanceof Error ? error : new Error("Clerk exchange failed") };
         }
       },
       async signOut() {
         writeSession(null);
         return { error: null };
-      },
-      async signInWithOAuth() {
-        return {
-          data: null,
-          error: new Error("OAuth is not wired for shared PocketBase auth yet"),
-        };
       },
       onAuthStateChange(callback: AuthChangeCallback) {
         listeners.add(callback);
