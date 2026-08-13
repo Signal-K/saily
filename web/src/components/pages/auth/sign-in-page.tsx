@@ -102,12 +102,19 @@ export default function SignInPage() {
           {/* routing="hash" keeps Clerk's multi-step widget (email -> code,
               etc) entirely client-side within this page, matching how
               Atlas's AuthForm avoids Next's default path-based routing,
-              which would need dedicated catch-all routes under /auth/sign-in. */}
-          {mode === "sign-in" ? (
-            <SignIn routing="hash" appearance={clerkAppearance} fallbackRedirectUrl="/auth/sign-in" />
-          ) : (
-            <SignUp routing="hash" appearance={clerkAppearance} fallbackRedirectUrl="/auth/sign-in" />
-          )}
+              which would need dedicated catch-all routes under /auth/sign-in.
+              Once isSignedIn flips true, the widget must stop rendering:
+              Clerk's own SignIn/SignUp guard against being mounted while
+              already signed in and will fire its own competing redirect
+              (via its legacy afterSignIn/afterSignUp fallback) that races
+              exchangeClerkSession()'s window.location.assign, surfacing as
+              "The requested resource wasn't found." */}
+          {!isSignedIn &&
+            (mode === "sign-in" ? (
+              <SignIn routing="hash" appearance={clerkAppearance} fallbackRedirectUrl="/auth/sign-in" />
+            ) : (
+              <SignUp routing="hash" appearance={clerkAppearance} fallbackRedirectUrl="/auth/sign-in" />
+            ))}
           {exchanging && <p className="auth-message">Finishing sign-in…</p>}
         </div>
 

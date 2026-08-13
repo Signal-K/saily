@@ -76,13 +76,17 @@ describe("Auth and profile sanity", () => {
   // and { force: true }. The identical interaction pattern (type by [name],
   // click by button text) works reliably in Atlas's Playwright suite
   // (KES-189, e2e/support/clerk.ts), so this looks like an Electron/Clerk
-  // click-simulation quirk rather than an app bug. The migration itself is
-  // independently verified: a scripted real-Clerk-user round trip through
-  // the live shared backend (create user -> mint session -> POST
-  // /auth/clerk-exchange -> valid PocketBase token, KES-190 verification
-  // pass) exercises the exact same exchangeClerkSession() path these tests
-  // would. Re-enable (drop .skip) if this ever needs revisiting, e.g. after
-  // trying Cypress's Chrome family instead of the Electron default.
+  // click-simulation quirk rather than an app bug. This was re-verified
+  // 2026-08-13 after fixing two real bugs that were also breaking this flow
+  // (sign-in-page.tsx redirect race + missing CLERK_SECRET_KEY on the
+  // navigation-backend-1 container saily actually points at) -- the OTP
+  // step never appears in Electron because Continue's click still doesn't
+  // register, confirming this reproduces independently of those fixes. The
+  // migration itself is verified working end-to-end via a real browser (see
+  // KES-190 comments): sign-up -> OTP -> exchangeClerkSession -> /profile
+  // with the correct account. Re-enable (drop .skip) if this ever needs
+  // revisiting, e.g. after trying Cypress's Chrome family instead of the
+  // Electron default.
   it.skip("completes real Clerk sign-up and lands on the profile page with a shared PocketBase session", () => {
     const email = clerkTestEmail("signup");
 
