@@ -5,6 +5,7 @@ import { LandingFooter } from "@/components/landing/landing-footer";
 import { ReaderBriefingSection } from "@/components/landing/reader-briefing-section";
 import { DailyLiveSection } from "@/components/landing/daily-live-section";
 import { ProjectSurvey } from "@/components/landing/project-survey";
+import { TerrainLabSurvey } from "@/components/landing/terrain-lab-survey";
 import { CrosswordFocalSection } from "@/components/landing/crossword-focal-section";
 
 export default function LandingPage() {
@@ -14,6 +15,7 @@ export default function LandingPage() {
       <DailyLiveSection />
       <CrosswordFocalSection />
       <ReaderBriefingSection />
+      <TerrainLabSurvey />
       <ProjectSurvey />
       <LandingFooter />
     </div>
