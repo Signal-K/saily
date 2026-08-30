@@ -51,6 +51,27 @@ async function readSession(): Promise<PocketBaseSession | null> {
   }
 }
 
+// Fly's PocketBase machines run with min_machines_running=0 — a sleeping
+// instance takes ~10-15s to cold-start (see Landnam/web/lib/contexts/
+// useAuthSync.ts, which documents the same figure). Without a client-side
+// timeout, a sleeping shared backend left this fetch to hang on whatever
+// the platform's own TCP connect timeout is, blocking every server-rendered
+// page that awaits getUser() (home, calendar, discuss, search, profile).
+// Bound each attempt and retry once so a cold start still resolves within
+// the wake window instead of stalling navigation indefinitely — and so a
+// real session isn't misreported as signed-out just because the first
+// attempt landed mid-wake.
+const AUTH_REFRESH_TIMEOUTS_MS = [4_000, 7_000];
+
+async function fetchAuthRefresh(baseUrl: string, token: string, timeoutMs: number) {
+  return fetch(`${baseUrl}/api/collections/users/auth-refresh`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}` },
+    cache: "no-store",
+    signal: AbortSignal.timeout(timeoutMs),
+  });
+}
+
 // The cookie's `token` is client-supplied and its `user` field is derived
 // from it client-side (see pocketbase/client.ts) — nothing here can trust
 // either without checking. Mirrors backend/internal/sharedauth/verifier.go:
@@ -59,22 +80,31 @@ async function readSession(): Promise<PocketBaseSession | null> {
 // token actually belongs to. Only that verified record may be trusted as
 // the acting user — never the cookie's embedded `user.id`/`email`, which a
 // client can set to anything.
+//
+// Failure here (timeout, network error, or a non-OK response) only affects
+// this one render — it never touches the session cookie, so a transient
+// cold-start miss shows the page as signed-out for one request rather than
+// actually signing the user out; the next navigation retries cleanly once
+// the backend is warm.
 async function verifySharedAuthToken(token: string): Promise<{ id: string; email: string } | null> {
   if (!token) return null;
-  try {
-    const baseUrl = getSharedPocketBaseUrl().replace(/\/$/, "");
-    const response = await fetch(`${baseUrl}/api/collections/users/auth-refresh`, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${token}` },
-      cache: "no-store",
-    });
-    if (!response.ok) return null;
-    const payload = (await response.json()) as { record?: { id?: string; email?: string } };
-    if (!payload?.record?.id) return null;
-    return { id: payload.record.id, email: payload.record.email ?? "" };
-  } catch {
-    return null;
+  const baseUrl = getSharedPocketBaseUrl().replace(/\/$/, "");
+  let lastError: unknown = null;
+  for (const timeoutMs of AUTH_REFRESH_TIMEOUTS_MS) {
+    try {
+      const response = await fetchAuthRefresh(baseUrl, token, timeoutMs);
+      if (!response.ok) return null;
+      const payload = (await response.json()) as { record?: { id?: string; email?: string } };
+      if (!payload?.record?.id) return null;
+      return { id: payload.record.id, email: payload.record.email ?? "" };
+    } catch (error) {
+      lastError = error;
+    }
   }
+  if (lastError) {
+    console.warn("[pocketbase] shared auth-refresh unreachable after retry (backend cold start?)", lastError);
+  }
+  return null;
 }
 
 export async function createClient() {
