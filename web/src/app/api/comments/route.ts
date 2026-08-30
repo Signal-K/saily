@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/pocketbase/server";
+import { createClient, awardCommentBadges } from "@/lib/pocketbase/server";
 
 // Minimal rate-limit-only moderation path (uq74a2 — full report/flag/
 // admin-view tooling — is still `backlog`, per
@@ -126,7 +126,13 @@ export async function POST(request: Request) {
   }
 
   if (row.record_type === "daily_game") {
-    await pocketbase.rpc("award_comment_badges", { user_id: user.id });
+    // Best-effort — the comment itself already saved; a badge-award hiccup
+    // shouldn't turn a successful post into a 500.
+    try {
+      await awardCommentBadges();
+    } catch (badgeError) {
+      console.warn("[comments] award-badges failed", badgeError);
+    }
   }
   return NextResponse.json({ ok: true });
 }

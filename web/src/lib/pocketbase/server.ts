@@ -1,44 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { cookies } from "next/headers";
-import { POCKETBASE_COOKIE_NAME, getSharedPocketBaseUrl, type PocketBaseSession } from "./config";
+import { POCKETBASE_COOKIE_NAME, getSharedPocketBaseUrl, getSailyPocketBaseUrl, type PocketBaseSession } from "./config";
 import { RealPocketBaseQuery } from "./real-query";
-
-type BadgeRow = { id: string; slug: string; kind: string; threshold: number };
-
-// Awards any "comments"-kind badge the user has newly crossed the comment-count
-// threshold for. Mirrors the wins/streak/games badge-award logic in
-// app/api/game/complete/route.ts, but keyed on total comment count instead of
-// game stats.
-async function awardCommentBadges(userId: string): Promise<{ badgesAwarded: number }> {
-  const { count } = await new RealPocketBaseQuery("comments")
-    .select("id", { count: "exact", head: true })
-    .eq("user_id", userId);
-
-  const [{ data: badges }, { data: earnedBadges }] = await Promise.all([
-    new RealPocketBaseQuery("badges").select("id,slug,kind,threshold").eq("kind", "comments"),
-    new RealPocketBaseQuery("user_badges").select("badge").eq("user_id", userId),
-  ]);
-
-  const earnedBadgeIds = new Set((earnedBadges ?? []).map((row: { badge: string }) => row.badge));
-  const commentCount = count ?? 0;
-  const toAward = ((badges ?? []) as BadgeRow[]).filter(
-    (badge) => !earnedBadgeIds.has(badge.id) && commentCount >= badge.threshold,
-  );
-
-  if (toAward.length > 0) {
-    await Promise.all(
-      toAward.map((badge) =>
-        new RealPocketBaseQuery("user_badges").insert({
-          user_id: userId,
-          badge: badge.id,
-          awarded_at: new Date().toISOString(),
-        }),
-      ),
-    );
-  }
-
-  return { badgesAwarded: toAward.length };
-}
 
 async function readSession(): Promise<PocketBaseSession | null> {
   const cookieStore = await cookies();
@@ -107,6 +70,28 @@ async function verifySharedAuthToken(token: string): Promise<{ id: string; email
   return null;
 }
 
+// Calls saily/backend's atomic POST /api/comments/award-badges (see
+// internal/extensions/comment_badges.go), replacing the old client-side
+// read-diff-write that had no unique-constraint backstop and awarded off a
+// client-supplied user id. The backend re-derives the acting user from this
+// same session token via sharedauth, so there's nothing left to spoof here.
+export async function awardCommentBadges(): Promise<{ badgesAwarded: number }> {
+  const session = await readSession();
+  if (!session?.token) return { badgesAwarded: 0 };
+
+  const baseUrl = getSailyPocketBaseUrl().replace(/\/$/, "");
+  const response = await fetch(`${baseUrl}/api/comments/award-badges`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${session.token}` },
+    cache: "no-store",
+  });
+  if (!response.ok) {
+    throw new Error(`award-badges failed: ${response.status}`);
+  }
+  const payload = (await response.json()) as { badgesAwarded?: number };
+  return { badgesAwarded: payload.badgesAwarded ?? 0 };
+}
+
 export async function createClient() {
   return {
     auth: {
@@ -124,19 +109,7 @@ export async function createClient() {
     from(collection: string) {
       return new RealPocketBaseQuery(collection);
     },
-    async rpc(fn: string, params?: any): Promise<any> {
-      if (fn === "award_comment_badges") {
-        const userId = params?.user_id;
-        if (!userId) {
-          return { data: null, error: { message: "award_comment_badges requires user_id" } };
-        }
-        try {
-          const data = await awardCommentBadges(userId);
-          return { data, error: null };
-        } catch (error) {
-          return { data: null, error: { message: error instanceof Error ? error.message : "award_comment_badges failed" } };
-        }
-      }
+    async rpc(fn: string): Promise<any> {
       console.warn(`[pocketbase] rpc("${fn}") called but is unknown — no-op.`);
       return Promise.resolve({ data: null, error: null });
     },
