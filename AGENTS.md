@@ -1,5 +1,12 @@
 # Saily / The Daily Transit — Agent Instructions
 
+## Navigation commit policy
+
+- Commit only after a coherent ticket outcome or acceptance slice is implemented and verified; never use checkpoint, progress, one-file, or speculative commits.
+- From the Saily repository root, inspect `git status --short`, run appropriate checks, stage the complete task with `git add .`, then review `git diff --cached` and `git status --short`. Preserve and disclose unrelated user-owned work instead of staging it.
+- Every subject must be `🚀🐺 ↝ [KES-299 ATL-999]: Commit message`: two different non-flag, non-smiley/human-face emoji; exact arrow and spacing; every worked ticket key in one space-separated bracket pair including the active Desk key; concise achieved outcome.
+- A coding request authorizes the final task commit unless the user says not to commit. Never bypass the hook with `--no-verify`.
+
 ## What this project is
 
 Saily ("The Daily Transit") is a Wordle-style daily citizen-science app: players help characters in short multi-chapter stories classify real astronomical/planetary data (TESS transits, Mars surface imagery, and whichever mission games are currently live — check `web/src/lib/mission.ts`'s `MISSION_GAMES` for the current live roster, it changes). One mission per day, resetting at Melbourne/AEST midnight. No procedurally generated puzzle data — every puzzle is real data or nothing.
