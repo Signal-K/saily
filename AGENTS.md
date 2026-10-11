@@ -1,5 +1,11 @@
 # Saily / The Daily Transit — Agent Instructions
 
+## Commit rules (from Liam, mandatory)
+1. Commit only when real work has been done: a finished, coherent unit (feature, fix, ticket). No commits every few minutes, no WIP, no CI-poke or test-matching commits, no one-line churn.
+2. When you commit, commit ALL files that have changes in the worktree, in one commit. Do not leave stray changes behind and do not split a unit of work into many small commits.
+3. Prefer one commit (or at most a few meaningful ones) per ticket/PR; squash before merging.
+4. Don't wait on CI; CI pipelines were removed except deployments.
+
 ## Navigation commit policy
 
 - Commit only after a coherent ticket outcome or acceptance slice is implemented and verified; never use checkpoint, progress, one-file, or speculative commits.
